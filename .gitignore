@@ -1,0 +1,17 @@
+node_modules
+.next/
+node_modules/
+*.pack
+hasura/payload*
+hasura/type:connection_init
+hasura/output.txt
+hasura/seeds/
+hasura/migrations/
+hasura/metadata/
+node_modules/
+.next/
+*.pack
+*.node
+dist/
+out/
+coverage/

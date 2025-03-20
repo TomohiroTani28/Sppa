@@ -1,0 +1,75 @@
+{{!-- api-template.hbs --}}
+{{!-- このファイルは自動生成されます。直接編集しないでください。 --}}
+type UserSession = any;
+
+import { getSessionRole } from '@/app/lib/auth';
+
+{{#each tables}}
+{{#if table.name}}
+// Table: {{table.name}}
+{{#each select_permissions as |perm|}}
+{{#if perm.role}}
+/**
+ * Select permission for {{../table.name}} ({{perm.role}})
+ * Columns: {{#each perm.permission.columns}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+ * Filter: {{json-stringify perm.permission.filter}}
+ */
+export const canSelect{{namePascalCase ../table.name}}{{namePascalCase perm.role}} = (userSession: UserSession): boolean => {
+  // TODO: Implement logic
+  return true;
+};
+{{/if}}
+{{/each}}
+
+{{#each insert_permissions as |perm|}}
+{{#if perm.role}}
+/**
+ * Insert permission for {{../table.name}} ({{perm.role}})
+ * Columns: {{#each perm.permission.columns}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+ * Check: {{json-stringify perm.permission.check}}
+ */
+export const canInsert{{namePascalCase ../table.name}}{{namePascalCase perm.role}} = (userSession: UserSession): boolean => {
+  return true;
+};
+{{/if}}
+{{/each}}
+
+{{#each update_permissions as |perm|}}
+{{#if perm.role}}
+/**
+ * Update permission for {{../table.name}} ({{perm.role}})
+ * Columns: {{#each perm.permission.columns}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+ * Filter: {{json-stringify perm.permission.filter}}
+ */
+export const canUpdate{{namePascalCase ../table.name}}{{namePascalCase perm.role}} = (userSession: UserSession): boolean => {
+  return true;
+};
+{{/if}}
+{{/each}}
+
+{{#each delete_permissions as |perm|}}
+{{#if perm.role}}
+/**
+ * Delete permission for {{../table.name}} ({{perm.role}})
+ * Filter: {{json-stringify perm.permission.filter}}
+ */
+export const canDelete{{namePascalCase ../table.name}}{{namePascalCase perm.role}} = (userSession: UserSession): boolean => {
+  return true;
+};
+{{/if}}
+{{/each}}
+
+{{#each subscription_permissions as |perm|}}
+{{#if perm.role}}
+/**
+ * Subscription permission for {{../table.name}} ({{perm.role}})
+ * Columns: {{#each perm.permission.columns}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+ * Filter: {{json-stringify perm.permission.filter}}
+ */
+export const canSubscribe{{namePascalCase ../table.name}}{{namePascalCase perm.role}} = (userSession: UserSession): boolean => {
+  return true;
+};
+{{/if}}
+{{/each}}
+{{/if}}
+{{/each}}

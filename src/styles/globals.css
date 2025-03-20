@@ -1,0 +1,45 @@
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f8f8f8;
+    --foreground: #333;
+    --primary: #2b6cb0;
+    --secondary: #38b2ac;
+    --muted: #718096;
+    --white: #ffffff;
+    --gray: #e2e8f0;
+    --success: #38a169;
+    --error: #e53e3e;
+    --warning: #f6ad55;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-md p-4;
+  }
+}
+
+@layer utilities {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    margin: 0;
+    padding: 0;
+  }
+
+  .masonry-grid {
+    column-count: 2;
+    column-gap: 8px;
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 8px;
+  }
+}

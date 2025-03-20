@@ -1,0 +1,54 @@
+// src/app/tourist/bookings/components/BookingList.tsx
+"use client";
+
+import { useSubscription } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { Card } from "@/app/components/ui/Card";
+import Badge from "@/app/components/ui/Badge";
+
+const BOOKING_SUBSCRIPTION = gql`
+  subscription MyBookings($guestId: uuid!) {
+    bookings(where: { guest_id: { _eq: $guestId } }) {
+      id
+      start_time
+      end_time
+      status
+      therapist {
+        name
+      }
+    }
+  }
+`;
+
+export default function BookingList({ guestId }: { guestId: string }) {
+  const { data, loading } = useSubscription(BOOKING_SUBSCRIPTION, {
+    variables: { guestId },
+  });
+
+  if (loading) return <p>Loading bookings...</p>;
+
+  const bookings = data?.bookings || [];
+
+  return (
+    <div className="space-y-4">
+      {bookings.map((booking: any) => (
+        <Card key={booking.id} className="p-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="font-medium">Therapist: {booking.therapist.name}</p>
+              <p>
+                {new Date(booking.start_time).toLocaleString()} -{" "}
+                {new Date(booking.end_time).toLocaleTimeString()}
+              </p>
+            </div>
+            <Badge
+              variant={booking.status === "confirmed" ? "success" : "default"}
+            >
+              {booking.status}
+            </Badge>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}

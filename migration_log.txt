@@ -1,0 +1,80 @@
+psql:hasura/migrations/default/20250226120000_create_tables.sql:14: NOTICE:  drop cascades to column role of table users
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:17: NOTICE:  drop cascades to column status of table bookings
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:20: NOTICE:  drop cascades to column media_type of table media
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:23: NOTICE:  drop cascades to column payment_status of table transactions
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:26: NOTICE:  drop cascades to column type of table notifications
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:29: NOTICE:  drop cascades to column status of table therapist_profiles
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:32: NOTICE:  drop cascades to column payment_method of table transactions
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:35: NOTICE:  drop cascades to column review_type of table reviews
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:38: NOTICE:  drop cascades to column access_level of table media
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:41: NOTICE:  drop cascades to column activity_type of table activity_logs
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:44: NOTICE:  drop cascades to column post_type of table posts
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:47: NOTICE:  drop cascades to 4 other objects
+DETAIL:  drop cascades to column currency of table therapist_profiles
+drop cascades to column currency of table therapist_services
+drop cascades to column currency of table transactions
+drop cascades to column currency of table local_experiences
+DROP TYPE
+CREATE TYPE
+psql:hasura/migrations/default/20250226120000_create_tables.sql:64: ERROR:  relation "users" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:87: ERROR:  relation "therapist_profiles" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:103: ERROR:  relation "tourist_profiles" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:117: ERROR:  relation "therapist_availability" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:134: ERROR:  relation "therapist_services" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:153: ERROR:  relation "bookings" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:165: ERROR:  relation "likes" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:178: ERROR:  relation "matches" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:195: ERROR:  relation "media" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:211: ERROR:  relation "reviews" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:229: ERROR:  relation "transactions" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:245: ERROR:  relation "user_preferences" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:259: ERROR:  relation "notifications" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:275: ERROR:  relation "events" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:293: ERROR:  relation "local_experiences" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:305: ERROR:  relation "activity_logs" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:319: ERROR:  relation "error_logs" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:332: ERROR:  relation "service_categories" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:345: ERROR:  relation "local_experience_categories" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:358: ERROR:  relation "regions" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:370: ERROR:  relation "unavailable_dates" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:382: ERROR:  relation "service_media" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:394: ERROR:  relation "event_media" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:406: ERROR:  relation "local_experience_media" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:418: ERROR:  relation "application_settings" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:434: ERROR:  relation "realtime_messages" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:444: ERROR:  relation "storage_buckets" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:455: ERROR:  relation "storage_objects" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:469: ERROR:  relation "posts" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:474: ERROR:  relation "idx_users_email" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:475: ERROR:  relation "idx_therapist_profiles_user_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:476: ERROR:  relation "idx_bookings_guest_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:477: ERROR:  relation "idx_bookings_therapist_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:478: ERROR:  relation "idx_activity_logs_user_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:479: ERROR:  relation "idx_notifications_user_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:480: ERROR:  relation "idx_realtime_messages_sender_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:481: ERROR:  relation "idx_realtime_messages_receiver_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:482: ERROR:  relation "idx_posts_user_id" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:483: ERROR:  relation "idx_bookings_start_time" already exists
+psql:hasura/migrations/default/20250226120000_create_tables.sql:484: ERROR:  relation "idx_bookings_therapist_id_start_time" already exists
