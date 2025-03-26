@@ -935,6 +935,7 @@ sppa/
 ├── tailwind.config.js
 └── tsconfig.json
 ```
+<details>
 
 ## Sppaプロジェクト Issueテンプレートの使用方法
 
