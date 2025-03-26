@@ -104,13 +104,13 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
 ## お問い合わせ・参加方法
 
 - **参加方法:**
-  - まずはGitHub上の[Issues](https://github.com/TomohiroTani28/Sppa/issues):や[Discussions](https://github.com/TomohiroTani28/Sppa/discussions):に積極的に参加し、あなたの意見やアイデアをどんどん共有してください。
+  - まずはGitHub上の[Issues](https://github.com/TomohiroTani28/Sppa/issues) や [Discussions](https://github.com/TomohiroTani28/Sppa/discussions)に積極的に参加し、あなたの意見やアイデアをどんどん共有してください。
   - 初回のコミットが確認された時点で、リポジトリの管理権限（Admin相当）を即座に付与いたします。
 
 - **リアルタイムのコミュニケーション:**
   - 日々のディスカッションや緊急連絡にはSlackを利用しています。
   - 下記の招待リンクからSlackに参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
-  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)) 
+  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
 
 - **その他のお問い合わせ:**
   - バグ報告や機能提案はGitHub Issuesから。
