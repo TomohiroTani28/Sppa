@@ -21,7 +21,7 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
 ### オープンなコミュニケーション環境
 
 - **GitHub Discussions & Issues**
-  - 提案、機能改善、設計の議論はGitHub上で活発に行い、IssueやPull Requestを通じてコードレビューと意見交換を実施します。
+  - 提案、機能改善、設計の議論はGitHub上で活発に行い、[Issues](https://github.com/TomohiroTani28/Sppa/issues)やPull Requestを通じてコードレビューと意見交換を実施します。
 
 - **リアルタイムチャット（Slack）**
   - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングにはSlackを活用しています。
@@ -110,11 +110,10 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
 - **リアルタイムのコミュニケーション:**
   - 日々のディスカッションや緊急連絡にはSlackを利用しています。
   - 下記の招待リンクからSlackに参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
+  - バグ報告や機能提案は[Issues](https://github.com/TomohiroTani28/Sppa/issues)から。
+  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は
   - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
 
-- **その他のお問い合わせ:**
-  - バグ報告や機能提案はGitHub Issuesから。
-  - 参加希望やストックオプションについては、[tani.party@gmail.com](mailto:tani.party@gmail.com)までご連絡ください。
 
 ---
 
