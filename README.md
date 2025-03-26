@@ -123,42 +123,6 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
 
 ---
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>プロジェクトの起動手順</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      line-height: 1.6;
-      margin: 20px;
-    }
-    pre {
-      position: relative;
-      background-color: #f5f5f5;
-      padding: 10px;
-      border-radius: 4px;
-      overflow-x: auto;
-    }
-    button.copy-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      padding: 2px 6px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    h1, h2 {
-      color: #333;
-    }
-    code {
-      background-color: #eee;
-      padding: 2px 4px;
-      border-radius: 3px;
-    }
-  </style>
-</head>
 <body>
   <h1>プロジェクトの起動手順</h1>
   <p>
