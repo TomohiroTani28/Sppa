@@ -1194,10 +1194,10 @@ assignees: ''
 **💡 ヒント**: 質問は遠慮せずに！コミュニティメンバーが親切に答えてくれるはずです。Slackでも気軽に聞いてみてください。
 ```
 
-5. リンク
+### 5. リンク
 
 [SppaのIssuesページ](https://github.com/TomohiroTani28/Sppa/issues): Issueの作成や確認はこちらから。  
 [SppaのDiscussionsページ](https://github.com/TomohiroTani28/Sppa/discussions): よりオープンな議論をしたい場合は、Discussionsを活用してください。
 
-## まとめ  
+### 6. まとめ  
 SppaプロジェクトのIssueテンプレートは、コミュニティ参加を促進し、プロジェクトを効率的に進めるための重要なツールです。テンプレートに沿ってIssueを作成することで、誰でも簡単に貢献できます。あなたの報告やアイデアが、Sppaをさらに素晴らしいプロジェクトにする一歩となるでしょう。ぜひ積極的に活用し、コミュニティの一員として参加してください！
