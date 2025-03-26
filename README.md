@@ -1,7 +1,7 @@
 **バリ島の熟練セラピストと世界の観光客をリアルタイム・多言語でつなぐSNS**
 **共同開発・コミュニティ運営を通じて最高の体験を実現する**
 
-# Sppa（スパ）- バリ島のセラピストと観光客を繋ぐコンテンツファーストSNS
+# Sppa（スッパ）- バリ島のセラピストと観光客を繋ぐコンテンツファーストSNS
 
 **Sppa**は、バリ島の熟練セラピストと、オーストラリア、ドイツ、フランス、韓国、日本、中国など主要国を含む世界中の観光客を、リアルタイムかつ多言語で繋ぐ新感覚SNSプラットフォームです。
 言葉の壁や予約の手間を解消し、誰もが心からリラックスできる体験を提供するため、エンジニア同士が自主的に協力しあえるオープンなコミュニティ運営を実現しています。
@@ -29,7 +29,8 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
 - **リアルタイムチャット（Slack）**
   - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングにはSlackを活用しています。
   - 以下の招待リンクから参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で活発に意見交換をしましょう。
-  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-2dx91m6hy-cf6BsjfIyMQ4BS6PewjV1w)
+  - [Slack招待リンク]
+https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg
 
 - **自動化されたCI/CD**
   - GitHub Actionsによる自動テストとデプロイメントを導入。コードがマージされる前に品質チェックが行われ、安心して開発に集中できます。
@@ -113,7 +114,8 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
 - **リアルタイムのコミュニケーション:**
   - 日々のディスカッションや緊急連絡にはSlackを利用しています。
   - 下記の招待リンクからSlackに参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
-  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-2dx91m6hy-cf6BsjfIyMQ4BS6PewjV1w)
+  - [Slack招待リンク]
+https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg
 
 - **その他のお問い合わせ:**
   - バグ報告や機能提案はGitHub Issuesから。
