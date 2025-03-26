@@ -14,7 +14,6 @@ services:
         condition: service_healthy
       libretranslate:
         condition: service_started
-    # 開発時にホットリロード等を使いたい場合、volumes や command を追加してもOK
 
   # ▼ Hasura コンテナ（ローカルSupabaseに接続）
   hasura:
@@ -25,11 +24,11 @@ services:
     env_file:
       - .env.development
     environment:
-      # 開発環境では Docker 内コンテナ名 "supabase" & ポート "5432" で接続
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@supabase:5432/sppa
+      # Docker内の接続先は.env.developmentで指定された値を利用
+      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_ADMIN_SECRET: ${NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET}
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw=="}'
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_SERVER_PORT: "8081"
       HASURA_GRAPHQL_SERVER_HOST: "0.0.0.0"
       HASURA_GRAPHQL_ENABLED_APIS: "metadata,graphql,pgdump,config"

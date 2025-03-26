@@ -1,7 +1,7 @@
 # config.yaml
 version: 3
 endpoint: http://localhost:8081
-admin_secret: 3lKK6v5dGIe6EqmrA2UXWxuSCO4prhgasehH0spIJOJojxYdDGW0sVg5hCU4EoBf
+admin_secret: ${NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET}
 
 metadata_directory: metadata
 actions:
