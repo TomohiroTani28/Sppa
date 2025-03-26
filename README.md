@@ -1000,7 +1000,7 @@ Sppaの動作に関する問題を報告し、開発者が迅速に修正に取�
 再現手順や環境情報を具体的に書くと、開発者が問題を特定しやすくなります。
 
 ### bug_report.md
-```text
+```
 ---
 name: バグ報告
 about: Sppaの動作に関する問題を報告し、改善に協力してください
@@ -1195,9 +1195,8 @@ assignees: ''
 ```
 
 5. リンク
-SppaのIssuesページ: Issueの作成や確認はこちらから。
+[SppaのIssuesページ](https://github.com/TomohiroTani28/Sppa/issues): Issueの作成や確認はこちらから。  
+[SppaのDiscussionsページ](https://github.com/TomohiroTani28/Sppa/discussions): よりオープンな議論をしたい場合は、Discussionsを活用してください。
 
-SppaのDiscussionsページ: よりオープンな議論をしたい場合は、Discussionsを活用してください。
-
-6. まとめ
+## まとめ  
 SppaプロジェクトのIssueテンプレートは、コミュニティ参加を促進し、プロジェクトを効率的に進めるための重要なツールです。テンプレートに沿ってIssueを作成することで、誰でも簡単に貢献できます。あなたの報告やアイデアが、Sppaをさらに素晴らしいプロジェクトにする一歩となるでしょう。ぜひ積極的に活用し、コミュニティの一員として参加してください！
