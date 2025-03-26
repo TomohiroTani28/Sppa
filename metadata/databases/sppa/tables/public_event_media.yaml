@@ -1,0 +1,10 @@
+table:
+  name: event_media
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: medium
+    using:
+      foreign_key_constraint_on: media_id

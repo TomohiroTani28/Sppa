@@ -14,9 +14,9 @@ import { useRouter } from 'next/router';
  * in the Sppa application. Designed to be displayed on the tourist home page.
  */
 const MultiLanguageSupport: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language || 'en');
+  const [selectedLanguage, setSelectedLanguage] = useState(router.locale || 'en');
 
   // Available languages in the application
   const availableLanguages = [
@@ -37,10 +37,10 @@ const MultiLanguageSupport: React.FC = () => {
     <Card className="w-full bg-white shadow-sm border border-gray-100">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-gray-900">
-          {t('home.languageSupport.title', 'Language Support')}
+          {t('home.languageSupport.title')}
         </CardTitle>
         <CardDescription className="text-sm text-gray-500">
-          {t('home.languageSupport.description', 'Choose your preferred language for communication')}
+          {t('home.languageSupport.description')}
         </CardDescription>
       </CardHeader>
       
@@ -48,11 +48,11 @@ const MultiLanguageSupport: React.FC = () => {
         <div className="space-y-4">
           <div className="flex flex-col space-y-2">
             <Text className="text-sm font-medium text-gray-700">
-              {t('home.languageSupport.currentLanguage', 'Current Language')}
+              {t('home.languageSupport.currentLanguage')}
             </Text>
             <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={t('home.languageSupport.selectLanguage', 'Select language')} />
+                <SelectValue placeholder={t('home.languageSupport.selectLanguage')} />
               </SelectTrigger>
               <SelectContent>
                 {availableLanguages.map(lang => (
@@ -66,7 +66,7 @@ const MultiLanguageSupport: React.FC = () => {
           
           <div className="bg-blue-50 p-3 rounded-md">
             <Text className="text-sm text-blue-700">
-              {t('home.languageSupport.translationInfo', 'Real-time translation is available in chats with therapists.')}
+              {t('home.languageSupport.translationInfo')}
             </Text>
           </div>
         </div>
@@ -75,7 +75,7 @@ const MultiLanguageSupport: React.FC = () => {
       <CardFooter className="border-t border-gray-100 pt-4">
         <div className="flex flex-col w-full space-y-2">
           <Text className="text-xs text-gray-500">
-            {t('home.languageSupport.therapistLanguageNote', 'Find therapists who speak your language:')}
+            {t('home.languageSupport.therapistLanguageNote')}
           </Text>
           <div className="flex flex-wrap gap-2">
             {availableLanguages.map((lang) => (
@@ -88,7 +88,7 @@ const MultiLanguageSupport: React.FC = () => {
                   query: { language: lang.value }
                 })}
               >
-                {lang.label} {t('home.languageSupport.speakers', 'speakers')}
+                {lang.label} {t('home.languageSupport.speakers')}
               </Button>
             ))}
           </div>

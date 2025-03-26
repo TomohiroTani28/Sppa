@@ -1,0 +1,36 @@
+table:
+  name: media
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: therapist_id
+array_relationships:
+  - name: event_media
+    using:
+      foreign_key_constraint_on:
+        column: media_id
+        table:
+          name: event_media
+          schema: public
+  - name: local_experience_media
+    using:
+      foreign_key_constraint_on:
+        column: media_id
+        table:
+          name: local_experience_media
+          schema: public
+  - name: posts
+    using:
+      foreign_key_constraint_on:
+        column: media_id
+        table:
+          name: posts
+          schema: public
+  - name: service_media
+    using:
+      foreign_key_constraint_on:
+        column: media_id
+        table:
+          name: service_media
+          schema: public

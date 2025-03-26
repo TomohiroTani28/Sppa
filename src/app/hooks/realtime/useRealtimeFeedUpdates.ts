@@ -61,15 +61,18 @@ export const useRealtimeFeedUpdates = (selectedTab: "tourist" | "therapist" = "t
   const role = selectedTab || "tourist";
 
   // デバッグ用ログ
-  console.log("useRealtimeFeedUpdates - Selected Tab:", selectedTab);
-  console.log("useRealtimeFeedUpdates - Role Value:", role);
+  console.log("useRealtimeFeedUpdates - サブスクリプション開始:", {
+    selectedTab,
+    role,
+    timestamp: new Date().toISOString(),
+  });
 
   // Apollo Client のサブスクリプションを使用してデータを取得
   const { data, error, loading } = useSubscription(FEED_SUBSCRIPTION, {
     variables: { role },
     skip: !role,
     onError: (err) => {
-      console.error("Subscription Error:", {
+      console.error("サブスクリプションエラー:", {
         message: err.message,
         graphQLErrors: err.graphQLErrors?.map((e) => ({
           message: e.message,
@@ -79,21 +82,31 @@ export const useRealtimeFeedUpdates = (selectedTab: "tourist" | "therapist" = "t
           message: e.message,
         })),
         networkError: err.networkError ? err.networkError.message : null,
+        timestamp: new Date().toISOString(),
       });
     },
     onData: ({ data }) => {
-      console.log("Realtime Subscription Data:", data?.data?.posts || []);
+      console.log("リアルタイムサブスクリプションデータ受信:", {
+        posts: data?.data?.posts || [],
+        timestamp: new Date().toISOString(),
+      });
     },
   });
 
   // データが更新されたときにフィードを更新
   useEffect(() => {
     if (data?.posts) {
-      console.log("Updating feed with new posts:", data.posts);
+      console.log("フィードを更新:", {
+        newPosts: data.posts,
+        timestamp: new Date().toISOString(),
+      });
       updateFeed(data.posts);
     }
     if (error) {
-      console.warn("Subscription Failed:", error.message);
+      console.warn("サブスクリプション失敗:", {
+        message: error.message,
+        timestamp: new Date().toISOString(),
+      });
     }
   }, [data, error, updateFeed]);
 

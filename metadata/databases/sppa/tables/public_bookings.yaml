@@ -1,0 +1,28 @@
+table:
+  name: bookings
+  schema: public
+object_relationships:
+  - name: therapist_service
+    using:
+      foreign_key_constraint_on: service_id
+  - name: user
+    using:
+      foreign_key_constraint_on: guest_id
+  - name: userByTherapistId
+    using:
+      foreign_key_constraint_on: therapist_id
+array_relationships:
+  - name: reviews
+    using:
+      foreign_key_constraint_on:
+        column: booking_id
+        table:
+          name: reviews
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: booking_id
+        table:
+          name: transactions
+          schema: public

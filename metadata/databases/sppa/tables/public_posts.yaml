@@ -1,0 +1,10 @@
+table:
+  name: posts
+  schema: public
+object_relationships:
+  - name: medium
+    using:
+      foreign_key_constraint_on: media_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id

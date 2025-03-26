@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/Ca
 import Badge from "@/app/components/ui/Badge";
 import { Spinner } from "@/app/components/ui/Spinner";
 import { useTranslation } from "next-i18next";
+import { TFunction } from "i18next";
 import Avatar from "@/app/components/common/Avatar";
 
 // GraphQL Queries and Subscriptions
@@ -72,12 +73,12 @@ interface TherapistProfileProps {
   readonly className?: string;
 }
 
-// サブコンポーネントに分割して複雑さを軽減
 interface ProfileSectionProps {
   readonly title: string;
   readonly content: string | JSX.Element;
 }
 
+// Reusable Profile Section Component
 function ProfileSection({ title, content }: ProfileSectionProps) {
   return (
     <div>
@@ -87,19 +88,62 @@ function ProfileSection({ title, content }: ProfileSectionProps) {
   );
 }
 
-// 可用性データを処理する関数を分離して複雑さを軽減
+// Sub-component for Bio
+function BioSection({ bio, t }: { bio: string; t: TFunction<"common"> }) {
+  return <ProfileSection title={t("profile.bio")} content={bio} />;
+}
+
+// Sub-component for Business Info
+function BusinessSection({
+  business_name,
+  address,
+  t,
+}: {
+  business_name: string;
+  address?: string;
+  t: TFunction<"common">;
+}) {
+  return (
+    <ProfileSection
+      title={t("profile.business")}
+      content={
+        <>
+          <p>{business_name}</p>
+          {address && <p className="text-gray-600">{address}</p>}
+        </>
+      }
+    />
+  );
+}
+
+// Process Availability Data
 function processAvailabilityData(availability: any[]) {
-  // Boolean conversion to fix TS6439
   const isAvailable = Boolean(availability.some((slot) => slot.is_available));
   const hasNextAvailableTime = Boolean(availability.length > 0);
   const nextAvailableTime = hasNextAvailableTime ? availability[0].start_time : undefined;
-  
+
   return { isAvailable, hasNextAvailableTime, nextAvailableTime };
 }
 
-// メインコンポーネント
+// Generate Availability Text
+function getAvailabilityText(
+  t: TFunction<"common">,
+  isAvailable: boolean,
+  hasNextAvailableTime: boolean,
+  nextAvailableTime?: string
+): string {
+  if (isAvailable) {
+    return t("profile.available_now");
+  } else if (hasNextAvailableTime) {
+    return t("profile.next_available", { time: nextAvailableTime });
+  } else {
+    return t("profile.not_available");
+  }
+}
+
+// Main Component
 export default function TherapistProfile({ therapistId, className }: TherapistProfileProps) {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("common") as { t: TFunction<"common"> }; // Fix TypeScript error
   const { data: profileData, loading, error } = useQuery<{
     therapist_profiles_by_pk: TherapistProfile;
   }>(GET_THERAPIST_PROFILE, {
@@ -126,24 +170,15 @@ export default function TherapistProfile({ therapistId, className }: TherapistPr
 
   const therapist = profileData.therapist_profiles_by_pk;
   const { isAvailable, hasNextAvailableTime, nextAvailableTime } = processAvailabilityData(availability);
-
-  // 可用性テキストを計算
-  let availabilityText: string;
-  if (isAvailable) {
-    availabilityText = t("profile.available_now");
-  } else if (hasNextAvailableTime) {
-    availabilityText = t("profile.next_available", { time: nextAvailableTime });
-  } else {
-    availabilityText = t("profile.not_available");
-  }
+  const availabilityText = getAvailabilityText(t, isAvailable, hasNextAvailableTime, nextAvailableTime);
 
   return (
     <Card className={cn("w-full max-w-2xl mx-auto", className)}>
       <CardHeader className="flex flex-col items-center">
         <div className="w-24 h-24 mb-4">
-          <Avatar 
-            imageUrl={therapist.user.profile_picture || "/images/user1.jpg"} 
-            alt={therapist.user.name} 
+          <Avatar
+            imageUrl={therapist.user.profile_picture ?? "/images/user1.jpg"}
+            alt={therapist.user.name}
             size="lg"
           />
         </div>
@@ -158,17 +193,9 @@ export default function TherapistProfile({ therapistId, className }: TherapistPr
         </Badge>
       </CardHeader>
       <CardContent className="space-y-6">
-        {therapist.bio && <ProfileSection title={t("profile.bio")} content={therapist.bio} />}
+        {therapist.bio && <BioSection bio={therapist.bio} t={t} />}
         {therapist.business_name && (
-          <ProfileSection
-            title={t("profile.business")}
-            content={
-              <>
-                <p>{therapist.business_name}</p>
-                {therapist.address && <p className="text-gray-600">{therapist.address}</p>}
-              </>
-            }
-          />
+          <BusinessSection business_name={therapist.business_name} address={therapist.address} t={t} />
         )}
         {therapist.languages.length > 0 && (
           <ProfileSection
@@ -202,7 +229,7 @@ export default function TherapistProfile({ therapistId, className }: TherapistPr
             content={
               <ul className="list-disc pl-5">
                 {Object.entries(therapist.certifications).map(([key, cert]) => (
-                  <li key={key}>{typeof cert === "string" ? cert : cert.name || key}</li>
+                  <li key={key}>{typeof cert === "string" ? cert : cert.name ?? key}</li>
                 ))}
               </ul>
             }

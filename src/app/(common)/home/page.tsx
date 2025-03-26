@@ -1,77 +1,26 @@
 "use client";
 // src/app/(common)/home/page.tsx
-
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "@/app/components/common/LoadingSpinner";
 import HomeHeader from "@/app/components/common/HomeHeader";
 import BottomNavigation from "@/app/components/common/BottomNavigation";
-import { MasonryFeed } from "./components/MasonryFeed";
+import { MasonryFeed } from "@/app/(common)/home/components/MasonryFeed";
 import Text from "@/app/components/ui/Text";
 import { TabSelector } from "@/app/(common)/home/components/TabSelector";
 import { useAuth } from "@/app/hooks/api/useAuth";
+import { useNotifications } from "@/app/hooks/realtime/useNotifications";
+import useTherapistData from "@/app/hooks/api/useTherapistData";
 
 // 型定義
 interface Notification {
   id: string;
-  message: string;
+  message?: string | null;
   type: string;
-  is_read?: boolean;
+  is_read: boolean;
 }
 
-interface TherapistData {
-  id: string;
-  userId: string;
-  bio: string;
-  languages: string[];
-  workingHours: { day: string; startTime: string; endTime: string }[];
-  status: "online" | "offline" | "busy" | "vacation";
-}
-
-/**
- * Sppa向けモックデータ・フック例
- */
-const mockNotifications: Notification[] = [
-  { id: "notif-1", message: "Your booking has been confirmed!", type: "booking_update", is_read: false },
-  { id: "notif-2", message: "New review received", type: "review", is_read: true },
-  { id: "notif-3", message: "You have a new chat message", type: "chat", is_read: false },
-];
-
-const useNotificationsMock = (userId: string | undefined) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (userId) {
-        setNotifications(mockNotifications);
-      } else {
-        setError("User not authenticated");
-      }
-      setLoading(false);
-    }, 1000);
-  }, [userId]);
-
-  return { notifications, loading, error };
-};
-
-const useTherapistDataMock = (userId: string, authLoading: boolean, role: string) => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (role !== "therapist") {
-        setError(null);
-      }
-      setLoading(false);
-    }, 1500);
-  }, [userId, role]);
-
-  return { loading, error };
-};
-
+// ErrorDisplay コンポーネント
 interface ErrorDisplayProps {
   error: string | null;
   t: (key: string) => string;
@@ -89,6 +38,7 @@ const ErrorDisplay = ({ error, t }: ErrorDisplayProps) => {
   );
 };
 
+// HomeMainContent コンポーネント
 interface HomeMainContentProps {
   userData: any;
   selectedTab: "tourist" | "therapist";
@@ -115,6 +65,7 @@ const HomeMainContent = ({
   );
 };
 
+// getUserData 関数
 const getUserData = (user: any) =>
   user
     ? {
@@ -131,24 +82,31 @@ export default function SppaHomePage() {
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
   const userId = user?.id;
 
-  console.log("User ID:", userId, "Role:", role ?? "tourist");
+  // Move hooks to top level to ensure they're always called
+  const { notifications, error: notificationsError } = useNotifications(userId);
+  const { therapistData, loading: therapistLoading, error: therapistError } = useTherapistData(userId, authLoading, role);
 
-  // モック通知データ取得
-  const { notifications, error: notificationsError } = useNotificationsMock(userId);
-  // セラピストの場合のモックデータ取得
-  const { loading: therapistLoading, error: therapistError } = useTherapistDataMock(userId ?? "", authLoading, role);
+  // Calculate all derived state here, before any conditional returns
+  const userData = getUserData(user);
+  
+  // 未読通知数の計算
+  const unreadCount = useMemo(() => {
+    return notifications?.filter((n: Notification) => !n.is_read)?.length || 0;
+  }, [notifications]);
 
-  // ローディング処理を明示的にする
+  // エラーメッセージの処理
+  const notificationErrorMessage = notificationsError ? notificationsError.message : null;
+  const therapistErrorMessage = therapistError ? therapistError.message : null;
+
+  // All hooks are called before any conditional returns
+  // Now we can safely have early returns
   if (authLoading) {
     return <LoadingSpinner />;
   }
+
   if (role === "therapist" && therapistLoading) {
     return <LoadingSpinner />;
   }
-
-  const userData = getUserData(user);
-  const unreadCount = notifications.filter((n) => !n.is_read).length;
-  const therapistErrorToDisplay = role === "therapist" ? therapistError : null;
 
   return (
     <Text tag="div" className="min-h-screen bg-background">
@@ -160,8 +118,8 @@ export default function SppaHomePage() {
         userData={userData}
         selectedTab={selectedTab}
         t={t}
-        notificationError={notificationsError}
-        therapistError={therapistErrorToDisplay}
+        notificationError={notificationErrorMessage}
+        therapistError={therapistErrorMessage}
       />
       <BottomNavigation />
     </Text>

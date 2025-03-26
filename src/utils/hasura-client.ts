@@ -1,11 +1,11 @@
 // src/utils/hasura-client.ts
-import { GraphQLClient } from 'graphql-request';
-import { createClient, Client } from 'graphql-ws';
-import WebSocket from 'ws';
 import { getAuthToken } from '@/utils/auth';
+import { GraphQLClient } from 'graphql-request';
+import { Client, createClient } from 'graphql-ws';
+import WebSocket from 'ws';
 
 const HASURA_GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT || 'http://localhost:8081/v1/graphql';
-const HASURA_WS_ENDPOINT = process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT || 'wss://localhost:8081/v1/graphql';
+const HASURA_WS_ENDPOINT = process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT || 'ws://localhost:8081/v1/graphql';
 const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET;
 
 export const hasuraClient = async (customHeaders: Record<string, string> = {}) => {
@@ -22,7 +22,6 @@ export const hasuraClient = async (customHeaders: Record<string, string> = {}) =
   return new GraphQLClient(HASURA_GRAPHQL_ENDPOINT, { headers });
 };
 
-// HASURA_ADMIN_SECRET が undefined の場合にエラーをスローするヘルパー関数
 const throwErrorIfUndefined = (): never => {
   throw new Error('HASURA_ADMIN_SECRET is not defined in environment variables');
 };

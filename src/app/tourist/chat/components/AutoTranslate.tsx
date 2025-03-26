@@ -35,6 +35,7 @@ const AutoTranslate: React.FC<AutoTranslateProps> = ({
   targetLanguage: initialTargetLanguage,
   onTranslated,
 }) => {
+  // @ts-ignore
   const { t, i18n } = useTranslation();
   const [isTranslated, setIsTranslated] = useState(false);
   const [translatedText, setTranslatedText] = useState<string>("");

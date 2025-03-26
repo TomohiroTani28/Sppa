@@ -1,0 +1,10 @@
+table:
+  name: service_media
+  schema: public
+object_relationships:
+  - name: medium
+    using:
+      foreign_key_constraint_on: media_id
+  - name: therapist_service
+    using:
+      foreign_key_constraint_on: service_id

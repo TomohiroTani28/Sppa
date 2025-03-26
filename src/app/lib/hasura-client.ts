@@ -16,32 +16,31 @@ import { setContext } from "@apollo/client/link/context";
 const isBuildPhase =
   process.env.NODE_ENV === "production" && typeof window === "undefined";
 
-const HASURA_HTTP_ENDPOINT = isBuildPhase
-  ? ""
-  : process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT || "http://localhost:8081/v1/graphql";
-// ここを変更：ローカル環境でも wss を使用する
-const HASURA_WS_ENDPOINT = isBuildPhase
-  ? ""
-  : process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT || "wss://localhost:8081/v1/graphql";
-const HASURA_ADMIN_SECRET = process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET || "";
+const HASURA_HTTP_ENDPOINT =
+  isBuildPhase
+    ? ""
+    : process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT || "http://localhost:8081/v1/graphql";
+const HASURA_WS_ENDPOINT =
+  isBuildPhase
+    ? ""
+    : process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT || "ws://localhost:8081/v1/graphql";
+// クライアント側では管理者シークレットを使用しない
+const HASURA_ADMIN_SECRET = "";
 
 const authMiddleware = (token?: string) =>
   setContext((_, { headers = {} }) => {
     const role = token ? "therapist" : "tourist";
-    return {
-      headers: {
-        ...headers,
-        "Content-Type": "application/json",
-        "x-hasura-role": role,
-        "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
+    const newHeaders = {
+      ...headers,
+      "Content-Type": "application/json",
+      "x-hasura-role": role,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      // 管理者シークレットはクライアント側では使用しません
     };
+    return { headers: newHeaders };
   });
 
-const httpLink = new HttpLink({
-  uri: HASURA_HTTP_ENDPOINT,
-});
+const httpLink = new HttpLink({ uri: HASURA_HTTP_ENDPOINT });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -65,7 +64,6 @@ export const createHasuraClient = (token?: string) => {
     });
   }
 
-  // WebSocket Link の初期化
   const wsLink =
     typeof window !== "undefined"
       ? new GraphQLWsLink(
@@ -75,7 +73,6 @@ export const createHasuraClient = (token?: string) => {
               const headers = {
                 "Content-Type": "application/json",
                 "x-hasura-role": token ? "therapist" : "tourist",
-                "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
                 ...(token ? { Authorization: `Bearer ${token}` } : {}),
               };
               console.log("GraphQLWsLink connectionParams:", headers);
@@ -86,7 +83,6 @@ export const createHasuraClient = (token?: string) => {
         )
       : null;
 
-  // splitLink で Subscription とそれ以外のリクエストを振り分け
   const splitLink = wsLink
     ? split(
         ({ query }) => {

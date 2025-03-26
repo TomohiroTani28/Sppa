@@ -24,11 +24,11 @@ export function useWebSocketSubscription<T = any>({
     // SSRのときはスキップ
     if (typeof window === "undefined") return;
     setLoading(true);
-    // WebSocket クライアントの生成（wssに修正）
+    // WebSocket クライアントの生成（wsに修正）
     const client = createClient({
       url:
         process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ||
-        "wss://localhost:8081/v1/graphql",
+        "ws://localhost:8081/v1/graphql",
       connectionParams: {
         headers: {
           "x-hasura-admin-secret":

@@ -1,0 +1,25 @@
+table:
+  name: buckets
+  schema: storage
+array_relationships:
+  - name: objects
+    using:
+      foreign_key_constraint_on:
+        column: bucket_id
+        table:
+          name: objects
+          schema: storage
+  - name: s3_multipart_uploads
+    using:
+      foreign_key_constraint_on:
+        column: bucket_id
+        table:
+          name: s3_multipart_uploads
+          schema: storage
+  - name: s3_multipart_uploads_parts
+    using:
+      foreign_key_constraint_on:
+        column: bucket_id
+        table:
+          name: s3_multipart_uploads_parts
+          schema: storage

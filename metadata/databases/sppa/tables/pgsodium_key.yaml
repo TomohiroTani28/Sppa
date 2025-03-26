@@ -1,0 +1,22 @@
+table:
+  name: key
+  schema: pgsodium
+object_relationships:
+  - name: key
+    using:
+      foreign_key_constraint_on: parent_key
+array_relationships:
+  - name: keys
+    using:
+      foreign_key_constraint_on:
+        column: parent_key
+        table:
+          name: key
+          schema: pgsodium
+  - name: secrets
+    using:
+      foreign_key_constraint_on:
+        column: key_id
+        table:
+          name: secrets
+          schema: vault

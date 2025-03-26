@@ -5,6 +5,8 @@ metadata_directory: metadata
 actions:
   kind: synchronous
   handler_webhook_baseurl: http://localhost:3000
+
 databases:
   - name: sppa
-    url: postgres://postgres:postgres@localhost:54330/sppa
+    url:
+      from_env: HASURA_GRAPHQL_DATABASE_URL

@@ -1,0 +1,13 @@
+table:
+  name: reviews
+  schema: public
+object_relationships:
+  - name: booking
+    using:
+      foreign_key_constraint_on: booking_id
+  - name: user
+    using:
+      foreign_key_constraint_on: guest_id
+  - name: userByTherapistId
+    using:
+      foreign_key_constraint_on: therapist_id

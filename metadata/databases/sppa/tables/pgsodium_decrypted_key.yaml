@@ -1,0 +1,3 @@
+table:
+  name: decrypted_key
+  schema: pgsodium

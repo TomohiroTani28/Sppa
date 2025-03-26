@@ -180,6 +180,7 @@ export function useTherapistSearch() {
   }, [searchTerm, refetch]);
 
   const error = queryError ? {
+    // @ts-ignore
     message: t('search.error', { 
       message: queryError.message || 'Unknown error occurred' 
     })

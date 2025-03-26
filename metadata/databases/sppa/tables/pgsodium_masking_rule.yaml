@@ -1,0 +1,3 @@
+table:
+  name: masking_rule
+  schema: pgsodium

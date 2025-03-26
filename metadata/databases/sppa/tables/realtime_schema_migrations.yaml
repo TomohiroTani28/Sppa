@@ -1,0 +1,3 @@
+table:
+  name: schema_migrations
+  schema: realtime

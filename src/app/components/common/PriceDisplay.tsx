@@ -2,6 +2,7 @@
 import React from 'react';
 import { cn } from '@/app/lib/utils';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 interface PriceDisplayProps {
   amount?: number;
@@ -42,8 +43,10 @@ export function PriceDisplay({
   originalAmount,
   showDiscount = false,
 }: PriceDisplayProps) {
-  const { i18n } = useTranslation();
-  
+  const { t } = useTranslation();
+  const router = useRouter();
+  const locale = router.locale || 'en';
+
   // Prioritize price if both amount and price are provided
   const displayAmount = price ?? amount;
 
@@ -51,10 +54,7 @@ export function PriceDisplay({
   if (displayAmount === undefined) {
     throw new Error('Either amount or price must be provided to PriceDisplay');
   }
-  
-  // Get current locale from i18n
-  const locale = i18n.language || 'en';
-  
+
   // Currency symbols mapping
   const currencySymbols: Record<string, string> = {
     IDR: 'Rp',
@@ -103,7 +103,7 @@ export function PriceDisplay({
           <span className="ml-1 text-gray-500 text-sm">{currency}</span>
         )}
       </div>
-      
+
       {showDiscount && originalAmount && originalAmount > displayAmount && (
         <div className="flex items-center mt-1">
           <span className="line-through text-gray-400 text-sm mr-2">
@@ -111,7 +111,7 @@ export function PriceDisplay({
           </span>
           {discountPercentage && (
             <span className="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full">
-              {Math.round(discountPercentage)}% {i18n.t('common:off')}
+              {Math.round(discountPercentage)}% {t('common:off')}
             </span>
           )}
         </div>

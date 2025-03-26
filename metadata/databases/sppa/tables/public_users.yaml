@@ -1,0 +1,159 @@
+table:
+  name: users
+  schema: public
+object_relationships:
+  - name: therapist_profile
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: therapist_profiles
+          schema: public
+  - name: tourist_profile
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: tourist_profiles
+          schema: public
+  - name: user_preference
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: user_preferences
+          schema: public
+array_relationships:
+  - name: activity_logs
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: activity_logs
+          schema: public
+  - name: bookings
+    using:
+      foreign_key_constraint_on:
+        column: guest_id
+        table:
+          name: bookings
+          schema: public
+  - name: bookingsByTherapistId
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: bookings
+          schema: public
+  - name: error_logs
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: error_logs
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: events
+          schema: public
+  - name: likes
+    using:
+      foreign_key_constraint_on:
+        column: guest_id
+        table:
+          name: likes
+          schema: public
+  - name: likesByTherapistId
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: likes
+          schema: public
+  - name: matches
+    using:
+      foreign_key_constraint_on:
+        column: guest_id
+        table:
+          name: matches
+          schema: public
+  - name: matchesByTherapistId
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: matches
+          schema: public
+  - name: media
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: media
+          schema: public
+  - name: notifications
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: notifications
+          schema: public
+  - name: posts
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: posts
+          schema: public
+  - name: reviews
+    using:
+      foreign_key_constraint_on:
+        column: guest_id
+        table:
+          name: reviews
+          schema: public
+  - name: reviewsByTherapistId
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: reviews
+          schema: public
+  - name: therapist_availabilities
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: therapist_availability
+          schema: public
+  - name: therapist_services
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: therapist_services
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: guest_id
+        table:
+          name: transactions
+          schema: public
+  - name: transactionsByTherapistId
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: transactions
+          schema: public
+  - name: unavailable_dates
+    using:
+      foreign_key_constraint_on:
+        column: therapist_id
+        table:
+          name: unavailable_dates
+          schema: public
