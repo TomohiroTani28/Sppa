@@ -6,14 +6,18 @@
 **Sppa**は、バリ島の熟練セラピストと、オーストラリア、ドイツ、フランス、韓国、日本、中国など主要国を含む世界中の観光客を、リアルタイムかつ多言語で繋ぐ新感覚SNSプラットフォームです。
 言葉の壁や予約の手間を解消し、誰もが心からリラックスできる体験を提供するため、エンジニア同士が自主的に協力しあえるオープンなコミュニティ運営を実現しています。
 
+
 ---
+
 
 ## プロジェクトのコンセプト
 
 Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能、SNSフィード**を中核に、セラピストとユーザーの体験を根本から革新します。
 私たちは、単なるプロダクト開発に留まらず、参加する全てのメンバーが「創業メンバー」として、自らの力でサービスを共に作り上げることを目指しています。
 
+
 ---
+
 
 ## 自主的なコミュニティでの開発推進
 
@@ -40,7 +44,9 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
   - Sppaの成長を共に担う創業メンバーとして、あなたの技術や情熱がサービスの進化に直結します。
   - 将来的なIPO（株式公開）に伴い、貢献度に応じた**最大5%のストックオプション**（または株式）が付与される仕組みを計画中です。
 
+
 ---
+
 
 ## ストックオプション付与の詳細条件
 
@@ -60,7 +66,9 @@ Sppaは、グローバル市場での急成長とIPOを視野に入れ、貢献�
 
 > これらの条件はあくまでガイドラインです。最終的な付与割合や具体的な契約条件は、個々の貢献内容に応じた面談の上で決定します。
 
+
 ---
+
 
 ## 技術スタック & 特徴
 
@@ -76,6 +84,7 @@ Sppaは、グローバル市場での急成長とIPOを視野に入れ、貢献�
 | **CI/CD & セキュリティ**| GitHub Actions, Cloudflare WAF    | 自動テスト・自動デプロイに加え、堅牢なWAFでセキュリティを強化                       |
 
 ---
+
 
 ## 今後の展望
 
@@ -119,6 +128,154 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
 **創業メンバーとして参加し、共にSppaを世界標準のサービスへと育て上げる仲間を心からお待ちしています。**
 
 さあ、あなたのアイデアとスキルで、未来のSppaを共に創りましょう！
+
+
+---
+
+
+## プロジェクトの起動手順
+
+
+## 🔧 必要な環境
+
+このプロジェクトを動作させるために、以下のツールが必要です。
+
+- **pnpm**（パッケージマネージャ）
+- **Docker & Docker Compose**（コンテナ管理）
+- **Node.js**（開発環境）
+
+必要に応じて、以下のコマンドでインストールしてください。
+
+```text
+npm install -g pnpm
+```
+
+1️⃣ 依存パッケージのインストール
+まず、pnpm install を実行して必要なパッケージをインストールします。
+
+```text
+pnpm install
+```
+このコマンドを実行すると、package.json に記載されている依存パッケージが node_modules にインストールされます。
+
+2️⃣ Docker コンテナの起動
+次に、Docker コンテナをバックグラウンドで起動します。
+
+```text
+docker-compose up -d
+```
+このコマンドを実行すると、docker-compose.yml に記載されているコンテナが起動し、Hasura や Supabase などのバックエンドが立ち上がります。
+
+📝 補足
+
+-d オプションは、バックグラウンドでコンテナを実行するためのオプションです。
+
+コンテナのステータスを確認する場合は、以下のコマンドを実行してください。
+
+```text
+docker ps
+```
+コンテナのログを確認する場合は、以下のコマンドを使用できます。
+
+```text
+docker-compose logs -f
+```
+3️⃣ 開発サーバーの起動
+コンテナが起動したら、開発サーバーを実行します。
+
+```text
+pnpm dev
+```
+このコマンドを実行すると、Next.js の開発サーバーが起動し、http://localhost:3000 でアクセスできるようになります。
+
+🛠 トラブルシューティング（問題が発生した場合）
+🔹 docker-compose up -d でエラーが発生する場合
+Docker が起動していることを確認してください。
+
+.env ファイルが正しく設定されていることを確認してください。
+
+すでにコンテナが起動している場合、以下のコマンドで再起動できます。
+
+```text
+docker-compose restart
+```
+🔹 .env ファイルが正しく設定されているか確認する
+.env ファイルの環境変数が正しく設定されていない場合、サーバーが起動しない可能性があります。
+
+環境変数の設定が正しいかどうかを確認するには、以下のコマンドを実行してください。
+
+```text
+cat .env.development
+```
+もし .env ファイルが不足している場合は、.env.example をコピーして作成してください。
+
+```text
+cp .env.example .env.development
+```
+🛑 開発終了時の停止方法
+開発を終了する際は、以下のコマンドでコンテナを停止してください。
+
+```text
+docker-compose down
+```
+このコマンドを実行すると、起動していたコンテナが停止し、すべてのプロセスが終了します。
+
+🎯 まとめ
+```text
+pnpm install
+```
+で依存関係をインストール
+```text
+docker-compose up -d
+```
+ でバックエンドを起動
+```text
+pnpm dev
+```
+で開発サーバーを起動
+
+この手順でプロジェクトが正しく起動します。問題が発生した場合は、トラブルシューティングセクションを参考にしてください。
+
+
+---
+
+
+## .env テンプレート
+
+```text
+------------- Supabase 設定 -------------
+# Client-side（ブラウザ側で使用）
+NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# Server-side（サーバー側で使用）
+SUPABASE_URL=https://your-supabase-url.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+
+# ------------- NextAuth 設定 -------------
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret
+
+# ------------- Google OAuth 設定 -------------
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# ------------- Hasura 設定 -------------
+# Client-side 用（GraphQLエンドポイント）
+NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=http://localhost:8081/v1/graphql
+NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT=ws://localhost:8081/v1/graphql
+NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET=your-hasura-admin-secret
+
+# Server-side 用（Hasura 接続情報）
+HASURA_GRAPHQL_DATABASE_URL=your-hasura-database-url
+HASURA_GRAPHQL_JWT_SECRET='{"type":"HS256","key":"your-hasura-jwt-secret-key"}'
+
+# =============================================
+# ※ 上記各項目を、各自の環境に合わせた値に変更してください。
+# ※ このファイルを.env.development や .env.production として利用することで、
+#    環境毎の設定管理が可能です。
+# =============================================
+```
 
 ---
 
@@ -779,3 +936,4 @@ sppa/
 │ └── config.toml
 ├── tailwind.config.js
 └── tsconfig.json
+```
