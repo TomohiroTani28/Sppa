@@ -964,9 +964,9 @@ Issueテンプレートを使用することで、Issueの作成が簡単にな�
 3. **テンプレートを選択**  
    テンプレート選択画面が表示されます。目的に合ったテンプレートを選びます：
    - バグ報告：`bug_report.md`
-   - 議論：`discussion.md`
+   - 議論・提案：`discussion.md`
    - 機能提案：`feature_request.md`
-   - 質問：`question.md`
+   - 質問・相談：`question.md`
 4. **テンプレートの入力欄を埋める**  
    選択したテンプレートに用意された項目に、必要な情報を記入します。
 5. **Issueを投稿**  
@@ -1042,7 +1042,7 @@ assignees: ''
 ---
 
 
-### 3.2 議論（discussion.md）
+### 3.2 議論・提案（discussion.md）
 
 #### 目的
 Sppaの開発やコミュニティに関するオープンな議論を始める。
@@ -1060,9 +1060,9 @@ Sppaの開発やコミュニティに関するオープンな議論を始める�
 #### discussion.md
 ```
 ---
-name: 議論
+name: 議論・提案
 about: Sppaの開発やコミュニティに関するオープンな議論を始めましょう
-title: '[議論] '
+title: '[議論・提案] '
 labels: discussion
 assignees: ''
 ---
@@ -1145,7 +1145,7 @@ assignees: ''
 ---
 
 
-### 3.4 質問（question.md）
+### 3.4 質問・相談（question.md）
 
 #### 目的
 Sppaに関する疑問を解消し、理解を深める。
@@ -1162,9 +1162,9 @@ Sppaに関する疑問を解消し、理解を深める。
 ### question.md
 ```
 ---
-name: 質問
+name: 質問・相談
 about: Sppaに関する疑問を解消するための質問をしてください
-title: '[質問] '
+title: '[質問・相談] '
 labels: question
 assignees: ''
 ---
