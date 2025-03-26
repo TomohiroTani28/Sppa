@@ -6,14 +6,18 @@
 **Sppa**は、バリ島の熟練セラピストと、オーストラリア、ドイツ、フランス、韓国、日本、中国など主要国を含む世界中の観光客を、リアルタイムかつ多言語で繋ぐ新感覚SNSプラットフォームです。
 言葉の壁や予約の手間を解消し、誰もが心からリラックスできる体験を提供するため、エンジニア同士が自主的に協力しあえるオープンなコミュニティ運営を実現しています。
 
+
 ---
+
 
 ## プロジェクトのコンセプト
 
 Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能、SNSフィード**を中核に、セラピストとユーザーの体験を根本から革新します。
 私たちは、単なるプロダクト開発に留まらず、参加する全てのメンバーが「創業メンバー」として、自らの力でサービスを共に作り上げることを目指しています。
 
+
 ---
+
 
 ## 自主的なコミュニティでの開発推進
 
@@ -40,7 +44,9 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
   - Sppaの成長を共に担う創業メンバーとして、あなたの技術や情熱がサービスの進化に直結します。
   - 将来的なIPO（株式公開）に伴い、貢献度に応じた**最大5%のストックオプション**（または株式）が付与される仕組みを計画中です。
 
+
 ---
+
 
 ## ストックオプション付与の詳細条件
 
@@ -60,7 +66,9 @@ Sppaは、グローバル市場での急成長とIPOを視野に入れ、貢献�
 
 > これらの条件はあくまでガイドラインです。最終的な付与割合や具体的な契約条件は、個々の貢献内容に応じた面談の上で決定します。
 
+
 ---
+
 
 ## 技術スタック & 特徴
 
@@ -76,6 +84,7 @@ Sppaは、グローバル市場での急成長とIPOを視野に入れ、貢献�
 | **CI/CD & セキュリティ**| GitHub Actions, Cloudflare WAF    | 自動テスト・自動デプロイに加え、堅牢なWAFでセキュリティを強化                       |
 
 ---
+
 
 ## 今後の展望
 
@@ -122,6 +131,7 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
 
 
 ---
+
 
 <body>
   <h1>プロジェクトの起動手順</h1>
@@ -198,22 +208,46 @@ docker-compose down
     問題が発生した場合は、注意事項を参考にしてください。<br>
     開発がスムーズに進むことを願っています！
   </p>
-
-  <script>
-    function copyToClipboard(elementId) {
-      // コードブロック内のテキストから「コピー」ボタンの文字列を除外
-      const element = document.getElementById(elementId);
-      const text = element.innerText.replace("コピー", "").trim();
-      navigator.clipboard.writeText(text).then(function() {
-        alert("コマンドをコピーしました！");
-      }, function(err) {
-        alert("コピーに失敗しました: " + err);
-      });
-    }
-  </script>
 </body>
-</html>
 
+
+---
+
+
+## .env テンプレート
+
+# ------------- Supabase 設定 -------------
+# Client-side（ブラウザ側で使用）
+NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# Server-side（サーバー側で使用）
+SUPABASE_URL=https://your-supabase-url.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+
+# ------------- NextAuth 設定 -------------
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret
+
+# ------------- Google OAuth 設定 -------------
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# ------------- Hasura 設定 -------------
+# Client-side 用（GraphQLエンドポイント）
+NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=http://localhost:8081/v1/graphql
+NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT=ws://localhost:8081/v1/graphql
+NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET=your-hasura-admin-secret
+
+# Server-side 用（Hasura 接続情報）
+HASURA_GRAPHQL_DATABASE_URL=your-hasura-database-url
+HASURA_GRAPHQL_JWT_SECRET='{"type":"HS256","key":"your-hasura-jwt-secret-key"}'
+
+# =============================================
+# ※ 上記各項目を、各自の環境に合わせた値に変更してください。
+# ※ このファイルを.env.development や .env.production として利用することで、
+#    環境毎の設定管理が可能です。
+# =============================================
 
 ---
 
