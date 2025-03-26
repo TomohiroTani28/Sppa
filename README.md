@@ -114,7 +114,8 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
 - **リアルタイムのコミュニケーション:**
   - 日々のディスカッションや緊急連絡にはSlackを利用しています。
   - 下記の招待リンクからSlackに参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
-  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-2dx91m6hy-cf6BsjfIyMQ4BS6PewjV1w)
+  - [Slack招待リンク]
+https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
 
 - **その他のお問い合わせ:**
   - バグ報告や機能提案はGitHub Issuesから。
