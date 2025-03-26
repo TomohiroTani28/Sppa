@@ -216,7 +216,8 @@ docker-compose down
 
 ## .env テンプレート
 
-# ------------- Supabase 設定 -------------
+```text
+------------- Supabase 設定 -------------
 # Client-side（ブラウザ側で使用）
 NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
@@ -248,6 +249,7 @@ HASURA_GRAPHQL_JWT_SECRET='{"type":"HS256","key":"your-hasura-jwt-secret-key"}'
 # ※ このファイルを.env.development や .env.production として利用することで、
 #    環境毎の設定管理が可能です。
 # =============================================
+```
 
 ---
 
@@ -908,3 +910,4 @@ sppa/
 │ └── config.toml
 ├── tailwind.config.js
 └── tsconfig.json
+```
