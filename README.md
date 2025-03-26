@@ -730,7 +730,7 @@ sppa
 ├── supabase
 │   └── config.toml
 ├── tailwind.config.js
-└── tsconfig.json|
+└── tsconfig.json
 
 ---
 
