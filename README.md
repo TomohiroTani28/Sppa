@@ -127,6 +127,7 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
 <details>
 <summary>クリックして展開</summary>
 
+```text
 sppa/
 ├── %
 ├── Dockerfile
@@ -778,6 +779,7 @@ sppa/
 │ └── config.toml
 ├── tailwind.config.js
 └── tsconfig.json
+```text
 
 </details>
 
