@@ -21,7 +21,7 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
 ### オープンなコミュニケーション環境
 
 - **GitHub Discussions & Issues**
-  - 提案、機能改善、設計の議論はGitHub上で活発に行い、[Issues](https://github.com/TomohiroTani28/Sppa/issues)やPull Requestを通じてコードレビューと意見交換を実施します。
+  - 提案、機能改善、設計の議論はGitHub上で活発に行い、[Issues](https://github.com/TomohiroTani28/Sppa/issues)や[Pull Request](https://github.com/TomohiroTani28/Sppa/pulls)を通じてコードレビューと意見交換を実施します。
 
 - **リアルタイムチャット（Slack）**
   - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングにはSlackを活用しています。
