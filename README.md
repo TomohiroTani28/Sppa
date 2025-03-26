@@ -7,9 +7,13 @@ ____
 ___) || |_) | |_) | (_| |
 |____/ | .__/| .__/ \__,_|
       |_|   |_|
-   - バリ島のセラピストを世界へ繋ぐSNS -
-<div align="center"> <strong>Sppa（スパ）</strong><br /> <i>バリ島の熟練セラピストと世界の観光客をリアルタイム・多言語でつなぐSNS</i><br /><br /> <a href="https://join.slack.com/t/sppaworld/shared_invite/zt-2dx91m6hy-cf6BsjfIyMQ4BS6PewjV1w"> <img src="https://img.shields.io/badge/Slack-%23sppa-4A154B?logo=slack&style=flat-square" alt="Slack invite" /> </a> <a href="#"> <img src="https://img.shields.io/github/issues-raw/owner/sppa?style=flat-square" alt="GitHub Issues" /> </a> <img src="https://img.shields.io/badge/Language-Japanese%20%2F%20English-important?style=flat-square" alt="Multi Language" /> <br /> <em>共同開発・コミュニティ運営を通じて最高の体験を実現する</em> </div>
+
+バリ島の熟練セラピストと世界の観光客をリアルタイム・多言語でつなぐSNS
+共同開発・コミュニティ運営を通じて最高の体験を実現する
+
+
 目次
+
 Sppaとは？
 
 プロジェクトのコンセプト
@@ -24,7 +28,7 @@ Sppaとは？
 
 技術スタック & 特徴
 
-アーキテクチャイメージ (Mermaid)
+アーキテクチャイメージ
 
 今後の展望
 
