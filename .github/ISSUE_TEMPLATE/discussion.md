@@ -1,5 +1,5 @@
 ---
-name: 議論
+name: 議論・提案
 about: Sppaの開発やコミュニティに関するオープンな議論を始めましょう
 title: '[議論] '
 labels: discussion
