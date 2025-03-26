@@ -123,59 +123,6 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
 
 ---
 
-# プロジェクトの起動手順
-
-このドキュメントでは、プロジェクトを起動するための手順を説明します。
-以下のステップに従ってください。
-
-依存パッケージのインストール、Dockerコンテナの起動、開発サーバーの起動という流れで進めます。
-また、注意事項や開発終了時の停止方法も記載しています。
-全てを一つのファイルとしてまとめていますので、このままご利用ください。
-
-## 1. 依存パッケージのインストール
-```pnpm install``` 
-このコマンドを実行すると、`package.json` に記載されている依存パッケージがインストールされます。
-プロジェクトに必要なライブラリやツールが準備されます。
-初回実行時や依存関係が更新された場合には必ずこの手順を行ってください。
-
-## 2. Docker コンテナの起動
-```docker-compose up -d```
-このコマンドを実行すると、`docker-compose.yml` に記載されているコンテナがバックグラウンドで起動します。
-これにより、データベースやその他のサービスが利用可能になります。
-`-d`オプションにより、ターミナルが占有されずに動作します。
-
-## 3. 開発サーバーの起動 
-```pnpm dev```
-このコマンドを実行すると、開発用のローカルサーバーが起動します。
-通常、`http://localhost:3000` でプロジェクトにアクセスできます。
-コードの変更がリアルタイムで反映されるので、開発中に便利です。
-
-## 💡 注意事項 - 
-**`docker-compose up -d` の実行後**: 
-コンテナが完全に起動するまで少し時間がかかる場合があります。
-起動状況を確認したい場合は、`docker ps` コマンドを使用してください。
-コンテナが正常に動作しているか確認することでトラブルを回避できます。
-
-**`.env` ファイルの確認**: 
-環境変数が正しく設定されているか確認してください。
-設定が間違っていると起動に失敗する可能性があります。
-必要に応じて、`.env.example` を参考にしてください。
-
-**コンテナのリロード**: 
-すでにコンテナが起動している場合、以下のコマンドで再起動できます。
-```docker-compose restart``` 
-このコマンドは、設定変更を反映させたい場合にも役立ちます。
-
-## 開発終了時の停止方法 開発を終える際は、以下のコマンドでコンテナを停止してください。
-```docker-compose down``` 
-このコマンドにより、起動していたコンテナが停止し、リソースが解放されます。
-コンテナを完全に削除したい場合は、`docker-compose down --volumes` を使用してボリュームも削除できます。
-これでプロジェクトの起動が完了です。
-上記の手順をコピーしてそのまま使用できます。
-問題が発生した場合は、注意事項を参考にしてください。
-開発がスムーズに進むことを願っています！
-
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -225,7 +172,6 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
   <h2>1. 依存パッケージのインストール</h2>
   <pre id="cmd-install">
 pnpm install
-<button class="copy-btn" onclick="copyToClipboard('cmd-install')">コピー</button>
   </pre>
   <p>
     このコマンドを実行すると、<code>package.json</code> に記載されている依存パッケージがインストールされます。<br>
@@ -236,7 +182,6 @@ pnpm install
   <h2>2. Docker コンテナの起動</h2>
   <pre id="cmd-docker-up">
 docker-compose up -d
-<button class="copy-btn" onclick="copyToClipboard('cmd-docker-up')">コピー</button>
   </pre>
   <p>
     このコマンドを実行すると、<code>docker-compose.yml</code> に記載されているコンテナがバックグラウンドで起動します。<br>
@@ -247,7 +192,6 @@ docker-compose up -d
   <h2>3. 開発サーバーの起動</h2>
   <pre id="cmd-dev">
 pnpm dev
-<button class="copy-btn" onclick="copyToClipboard('cmd-dev')">コピー</button>
   </pre>
   <p>
     このコマンドを実行すると、開発用のローカルサーバーが起動します。<br>
@@ -272,7 +216,6 @@ pnpm dev
   <h2>コンテナのリロード</h2>
   <pre id="cmd-docker-restart">
 docker-compose restart
-<button class="copy-btn" onclick="copyToClipboard('cmd-docker-restart')">コピー</button>
   </pre>
   <p>
     すでにコンテナが起動している場合、以下のコマンドで再起動できます。<br>
@@ -282,7 +225,6 @@ docker-compose restart
   <h2>開発終了時の停止方法</h2>
   <pre id="cmd-docker-down">
 docker-compose down
-<button class="copy-btn" onclick="copyToClipboard('cmd-docker-down')">コピー</button>
   </pre>
   <p>
     このコマンドにより、起動していたコンテナが停止し、リソースが解放されます。<br>
@@ -307,7 +249,6 @@ docker-compose down
   </script>
 </body>
 </html>
-
 
 
 ---
