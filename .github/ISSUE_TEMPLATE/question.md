@@ -1,5 +1,5 @@
 ---
-name: 質問
+name: 質問・相談
 about: Sppaに関する疑問を解消するための質問をしてください
 title: '[質問] '
 labels: question
