@@ -30,7 +30,7 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
   - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングにはSlackを活用しています。
   - 以下の招待リンクから参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で活発に意見交換をしましょう。
   - [Slack招待リンク]
-https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
+https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg
 
 - **自動化されたCI/CD**
   - GitHub Actionsによる自動テストとデプロイメントを導入。コードがマージされる前に品質チェックが行われ、安心して開発に集中できます。
@@ -115,7 +115,7 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
   - 日々のディスカッションや緊急連絡にはSlackを利用しています。
   - 下記の招待リンクからSlackに参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
   - [Slack招待リンク]
-https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
+https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg
 
 - **その他のお問い合わせ:**
   - バグ報告や機能提案はGitHub Issuesから。
