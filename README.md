@@ -286,7 +286,6 @@ HASURA_GRAPHQL_JWT_SECRET='{"type":"HS256","key":"your-hasura-jwt-secret-key"}'
 
 ```text
 sppa/
-├── %
 ├── Dockerfile
 ├── Sppa概要
 ├── api-template.hbs
