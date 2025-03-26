@@ -133,19 +133,19 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
 全てを一つのファイルとしてまとめていますので、このままご利用ください。
 
 ## 1. 依存パッケージのインストール
-```bash pnpm install ``` 
+```pnpm install``` 
 このコマンドを実行すると、`package.json` に記載されている依存パッケージがインストールされます。
 プロジェクトに必要なライブラリやツールが準備されます。
 初回実行時や依存関係が更新された場合には必ずこの手順を行ってください。
 
 ## 2. Docker コンテナの起動
-```bash docker-compose up -d ```
+```docker-compose up -d```
 このコマンドを実行すると、`docker-compose.yml` に記載されているコンテナがバックグラウンドで起動します。
 これにより、データベースやその他のサービスが利用可能になります。
 `-d`オプションにより、ターミナルが占有されずに動作します。
 
 ## 3. 開発サーバーの起動 
-```bash pnpm dev ```
+```pnpm dev```
 このコマンドを実行すると、開発用のローカルサーバーが起動します。
 通常、`http://localhost:3000` でプロジェクトにアクセスできます。
 コードの変更がリアルタイムで反映されるので、開発中に便利です。
@@ -163,17 +163,152 @@ Sppaは、あなたの技術と情熱によって進化するプラットフォ�
 
 **コンテナのリロード**: 
 すでにコンテナが起動している場合、以下のコマンドで再起動できます。
-```bash docker-compose restart ``` 
+```docker-compose restart``` 
 このコマンドは、設定変更を反映させたい場合にも役立ちます。
 
 ## 開発終了時の停止方法 開発を終える際は、以下のコマンドでコンテナを停止してください。
-```bash docker-compose down ``` 
+```docker-compose down``` 
 このコマンドにより、起動していたコンテナが停止し、リソースが解放されます。
 コンテナを完全に削除したい場合は、`docker-compose down --volumes` を使用してボリュームも削除できます。
 これでプロジェクトの起動が完了です。
 上記の手順をコピーしてそのまま使用できます。
 問題が発生した場合は、注意事項を参考にしてください。
 開発がスムーズに進むことを願っています！
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>プロジェクトの起動手順</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+    }
+    pre {
+      position: relative;
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    button.copy-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 2px 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    code {
+      background-color: #eee;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>プロジェクトの起動手順</h1>
+  <p>
+    このドキュメントでは、プロジェクトを起動するための手順を説明します。<br>
+    以下のステップに従ってください。<br>
+    依存パッケージのインストール、Dockerコンテナの起動、開発サーバーの起動という流れで進めます。<br>
+    また、注意事項や開発終了時の停止方法も記載しています。<br>
+    全てを一つのファイルとしてまとめていますので、このままご利用ください。
+  </p>
+
+  <h2>1. 依存パッケージのインストール</h2>
+  <pre id="cmd-install">
+pnpm install
+<button class="copy-btn" onclick="copyToClipboard('cmd-install')">コピー</button>
+  </pre>
+  <p>
+    このコマンドを実行すると、<code>package.json</code> に記載されている依存パッケージがインストールされます。<br>
+    プロジェクトに必要なライブラリやツールが準備されます。<br>
+    初回実行時や依存関係が更新された場合には必ずこの手順を行ってください。
+  </p>
+
+  <h2>2. Docker コンテナの起動</h2>
+  <pre id="cmd-docker-up">
+docker-compose up -d
+<button class="copy-btn" onclick="copyToClipboard('cmd-docker-up')">コピー</button>
+  </pre>
+  <p>
+    このコマンドを実行すると、<code>docker-compose.yml</code> に記載されているコンテナがバックグラウンドで起動します。<br>
+    これにより、データベースやその他のサービスが利用可能になります。<br>
+    <code>-d</code> オプションにより、ターミナルが占有されずに動作します。
+  </p>
+
+  <h2>3. 開発サーバーの起動</h2>
+  <pre id="cmd-dev">
+pnpm dev
+<button class="copy-btn" onclick="copyToClipboard('cmd-dev')">コピー</button>
+  </pre>
+  <p>
+    このコマンドを実行すると、開発用のローカルサーバーが起動します。<br>
+    通常、<code>http://localhost:3000</code> でプロジェクトにアクセスできます。<br>
+    コードの変更がリアルタイムで反映されるので、開発中に便利です。
+  </p>
+
+  <h2>💡 注意事項</h2>
+  <p>
+    <strong>`docker-compose up -d` の実行後</strong>:<br>
+    コンテナが完全に起動するまで少し時間がかかる場合があります。<br>
+    起動状況を確認したい場合は、<code>docker ps</code> コマンドを使用してください。<br>
+    コンテナが正常に動作しているか確認することでトラブルを回避できます。
+  </p>
+  <p>
+    <strong>`.env` ファイルの確認</strong>:<br>
+    環境変数が正しく設定されているか確認してください。<br>
+    設定が間違っていると起動に失敗する可能性があります。<br>
+    必要に応じて、<code>.env.example</code> を参考にしてください。
+  </p>
+
+  <h2>コンテナのリロード</h2>
+  <pre id="cmd-docker-restart">
+docker-compose restart
+<button class="copy-btn" onclick="copyToClipboard('cmd-docker-restart')">コピー</button>
+  </pre>
+  <p>
+    すでにコンテナが起動している場合、以下のコマンドで再起動できます。<br>
+    このコマンドは、設定変更を反映させたい場合にも役立ちます。
+  </p>
+
+  <h2>開発終了時の停止方法</h2>
+  <pre id="cmd-docker-down">
+docker-compose down
+<button class="copy-btn" onclick="copyToClipboard('cmd-docker-down')">コピー</button>
+  </pre>
+  <p>
+    このコマンドにより、起動していたコンテナが停止し、リソースが解放されます。<br>
+    コンテナを完全に削除したい場合は、<code>docker-compose down --volumes</code> を使用してボリュームも削除できます。<br>
+    これでプロジェクトの起動が完了です。<br>
+    上記の手順をコピーしてそのまま使用できます。<br>
+    問題が発生した場合は、注意事項を参考にしてください。<br>
+    開発がスムーズに進むことを願っています！
+  </p>
+
+  <script>
+    function copyToClipboard(elementId) {
+      // コードブロック内のテキストから「コピー」ボタンの文字列を除外
+      const element = document.getElementById(elementId);
+      const text = element.innerText.replace("コピー", "").trim();
+      navigator.clipboard.writeText(text).then(function() {
+        alert("コマンドをコピーしました！");
+      }, function(err) {
+        alert("コピーに失敗しました: " + err);
+      });
+    }
+  </script>
+</body>
+</html>
+
+
 
 ---
 
