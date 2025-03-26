@@ -779,8 +779,3 @@ sppa/
 │ └── config.toml
 ├── tailwind.config.js
 └── tsconfig.json
-```text
-
-</details>
-
----
