@@ -24,7 +24,7 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
   - 提案、機能改善、設計の議論はGitHub上で活発に行い、[Issues](https://github.com/TomohiroTani28/Sppa/issues)や[Pull Request](https://github.com/TomohiroTani28/Sppa/pulls)を通じてコードレビューと意見交換を実施します。
 
 - **リアルタイムチャット（Slack）**
-  - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングにはSlackを活用しています。
+  - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングには[Slack](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)を活用しています。
   - 以下の招待リンクから参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で活発に意見交換をしましょう。[Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
 
 - **自動化されたCI/CD**
