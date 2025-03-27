@@ -7,6 +7,12 @@
 ---
 
 
+GitHubリポジトリ編集権限の申請は[Slack](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
+
+
+---
+
+
 ## プロジェクトのコンセプト
 
 Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能、SNSフィード**を中核に、セラピストとユーザーの体験を根本から革新します。
