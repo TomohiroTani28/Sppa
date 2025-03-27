@@ -55,7 +55,7 @@ Sppaは、グローバル市場での急成長とIPOを視野に入れ、貢献�
    - リアルタイムチャット、予約管理、翻訳機能など、サービスの中核部分の設計と実装で主導的役割を果たすこと。
 
 3. **積極的なコミュニケーション:**
-   - GitHub上でのIssue、Discussions、Pull Requestを通じた建設的な意見交換およびコードレビューに積極的に参加すること。
+   - GitHub上での[Issues](https://github.com/TomohiroTani28/Sppa/issues) 、 [Discussions](https://github.com/TomohiroTani28/Sppa/discussions)、Pull [Pull Request](https://github.com/TomohiroTani28/Sppa/pulls)を通じた建設的な意見交換およびコードレビューに積極的に参加すること。
 
 4. **プロダクトへの提案と実行:**
    - 新機能や改善点の提案を実行に移し、実際にプロトタイプや実装を通してプロダクトの向上に寄与すること.
@@ -110,7 +110,7 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
   - 日々のディスカッションや緊急連絡にはSlackを利用しています。
   - 下記の招待リンクからSlackに参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
   - バグ報告や機能提案は[Issues](https://github.com/TomohiroTani28/Sppa/issues)から。
-  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
+  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
 
 
 ---
