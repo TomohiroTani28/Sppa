@@ -7,7 +7,7 @@
 ---
 
 
-**GitHubリポジトリ編集権限の申請**は[Slack](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
+**GitHubリポジトリ編集権限の申請**は[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から。
 
 
 ---
