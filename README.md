@@ -31,7 +31,7 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
 
 - **リアルタイムチャット（Slack）**
   - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングには[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)を活用しています。
-  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で活発に意見交換をしましょう。
+  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から参加し、**#sppa** チャネルで活発に意見交換をしましょう。
 
 - **自動化されたCI/CD**
   - GitHub Actionsによる自動テストとデプロイメントを導入。コードがマージされる前に品質チェックが行われ、安心して開発に集中できます。
@@ -115,7 +115,7 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
 
 - **リアルタイムのコミュニケーション:**
   - 日々のディスカッションや緊急連絡には[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)を利用しています。
-  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)に参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
+  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)に参加し、**#sppa** チャネルで、メンバー同士の交流を深めましょう。
   - バグ報告や機能提案は[Issues](https://github.com/TomohiroTani28/Sppa/issues)から。
   - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack #sppa](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
 
