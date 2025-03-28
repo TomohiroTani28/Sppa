@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.
-RequestId:a5f6dbfd-501e-003b-2ab5-9f7514000000
-Time:2025-03-28T07:46:58.5637916Z</Message><AuthenticationErrorDetail>Signed expiry time [Thu, 27 Mar 2025 03:12:23 GMT] must be after signed start time [Fri, 28 Mar 2025 07:46:58 GMT]</AuthenticationErrorDetail></Error>
 # Sppa（スッパ）- バリ島のセラピストと観光客を繋ぐコンテンツファーストSNS
 
 **Sppa**は、バリ島の熟練セラピストと、オーストラリア、ドイツ、フランス、韓国、日本、中国など主要国を含む世界中の観光客を、リア![ChatGPT Image 2025年3月28日 16_46_58](https://github.com/user-attachments/assets/7e67a101-7fe2-432b-82cf-52747efd91c9)
