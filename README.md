@@ -30,8 +30,8 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
   - 提案、機能改善、設計の議論はGitHub上で活発に行い、[Issues](https://github.com/TomohiroTani28/Sppa/issues)や[Pull Request](https://github.com/TomohiroTani28/Sppa/pulls)を通じてコードレビューと意見交換を実施します。
 
 - **リアルタイムチャット（Slack）**
-  - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングには[Slack]([https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109))を活用しています。
-  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で活発に意見交換をしましょう。
+  - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングには[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)を活用しています。
+  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で活発に意見交換をしましょう。
 
 - **自動化されたCI/CD**
   - GitHub Actionsによる自動テストとデプロイメントを導入。コードがマージされる前に品質チェックが行われ、安心して開発に集中できます。
@@ -45,7 +45,7 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
 - **創業メンバーとしての参加**
   - Sppaの成長を共に担う創業メンバーとして、あなたの技術や情熱がサービスの進化に直結します。
   - 将来的なIPO（株式公開）に伴い、貢献度に応じた**最大5%のストックオプション**（または株式）が付与される仕組みを計画中です。最大発行数は45%を想定しています。貢献度が高い方に多くのストックオプションを付与します。定員は設けていませんが、貢献度や重要度が高い順にSppaのコミュニティの承認を経て45%を振り分けます。
-  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
+  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から。
 
 
 ---
@@ -115,9 +115,9 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
 
 - **リアルタイムのコミュニケーション:**
   - 日々のディスカッションや緊急連絡にはSlackを利用しています。
-  - [招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から[Slack](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)に参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
+  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)に参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
   - バグ報告や機能提案は[Issues](https://github.com/TomohiroTani28/Sppa/issues)から。
-  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
+  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack #sppa](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
 
 
 ---
