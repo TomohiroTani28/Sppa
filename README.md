@@ -77,6 +77,10 @@ Sppaは、グローバル市場での急成長とIPOを視野に入れ、貢献�
 ---
 
 
+<p align="center">
+  <img src="./public/images/technology_stack.png" alt="Sppa Thumbnail" width="600">
+</p>
+
 ## 技術スタック & 特徴
 
 | 項目                   | 使用技術                          | 特徴・メリット                                                               |
