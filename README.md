@@ -1,7 +1,17 @@
+<p align="center">
+  <img src="./public/images/sppa.png" alt="Sppa Thumbnail" width="600">
+</p>
+
 # Sppa（スッパ）- バリ島のセラピストと観光客を繋ぐコンテンツファーストSNS
 
 **Sppa**は、バリ島の熟練セラピストと、オーストラリア、ドイツ、フランス、韓国、日本、中国など主要国を含む世界中の観光客を、リアルタイムかつ多言語で繋ぐコンテンツファーストSNSプラットフォームです。
 言葉の壁や予約の手間を解消し、誰もが心からリラックスできる体験を提供するため、エンジニア同士が自主的に協力しあえるオープンなコミュニティ運営を実現しています。
+
+
+---
+
+
+**GitHubリポジトリ編集権限の申請**は[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から。
 
 
 ---
@@ -24,9 +34,8 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
   - 提案、機能改善、設計の議論はGitHub上で活発に行い、[Issues](https://github.com/TomohiroTani28/Sppa/issues)や[Pull Request](https://github.com/TomohiroTani28/Sppa/pulls)を通じてコードレビューと意見交換を実施します。
 
 - **リアルタイムチャット（Slack）**
-  - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングにはSlackを活用しています。
-  - 以下の招待リンクから参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で活発に意見交換をしましょう。
-  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
+  - 日々のコミュニケーションや緊急時のディスカッション、ブレインストーミングには[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)を活用しています。
+  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から参加し、**#sppa** チャネルで活発に意見交換をしましょう。
 
 - **自動化されたCI/CD**
   - GitHub Actionsによる自動テストとデプロイメントを導入。コードがマージされる前に品質チェックが行われ、安心して開発に集中できます。
@@ -39,7 +48,8 @@ Sppaは、**リアルタイムチャット、即時予約管理、翻訳機能�
 
 - **創業メンバーとしての参加**
   - Sppaの成長を共に担う創業メンバーとして、あなたの技術や情熱がサービスの進化に直結します。
-  - 将来的なIPO（株式公開）に伴い、貢献度に応じた**最大5%のストックオプション**（または株式）が付与される仕組みを計画中です。
+  - 将来的なIPO（株式公開）に伴い、貢献度に応じた**最大5%のストックオプション**（または株式）が付与される仕組みを計画中です。最大発行数は45%を想定しています。貢献度が高い方に多くのストックオプションを付与します。定員は設けていませんが、貢献度や重要度が高い順にSppaのコミュニティの承認を経て45%を振り分けます。
+  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)から。
 
 
 ---
@@ -56,7 +66,7 @@ Sppaは、グローバル市場での急成長とIPOを視野に入れ、貢献�
    - リアルタイムチャット、予約管理、翻訳機能など、サービスの中核部分の設計と実装で主導的役割を果たすこと。
 
 3. **積極的なコミュニケーション:**
-   - GitHub上でのIssue、Discussions、Pull Requestを通じた建設的な意見交換およびコードレビューに積極的に参加すること。
+   - GitHub上での[Issues](https://github.com/TomohiroTani28/Sppa/issues) 、 [Discussions](https://github.com/TomohiroTani28/Sppa/discussions)、[Pull Request](https://github.com/TomohiroTani28/Sppa/pulls)を通じた建設的な意見交換およびコードレビューに積極的に参加すること。
 
 4. **プロダクトへの提案と実行:**
    - 新機能や改善点の提案を実行に移し、実際にプロトタイプや実装を通してプロダクトの向上に寄与すること.
@@ -108,11 +118,10 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
   - 初回のコミットが確認された時点で、リポジトリの管理権限（Admin相当）を即座に付与いたします。
 
 - **リアルタイムのコミュニケーション:**
-  - 日々のディスカッションや緊急連絡にはSlackを利用しています。
-  - 下記の招待リンクからSlackに参加し、**# sppa** チャネル（チャネルID: C08L0QQ5Q7J）で、メンバー同士の交流を深めましょう。
+  - 日々のディスカッションや緊急連絡には[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)を利用しています。
+  - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)に参加し、**#sppa** チャネルで、メンバー同士の交流を深めましょう。
   - バグ報告や機能提案は[Issues](https://github.com/TomohiroTani28/Sppa/issues)から。
-  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は
-  - [Slack招待リンク](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)
+  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
 
 
 ---
@@ -966,9 +975,9 @@ Issueテンプレートを使用することで、Issueの作成が簡単にな�
 3. **テンプレートを選択**  
    テンプレート選択画面が表示されます。目的に合ったテンプレートを選びます：
    - バグ報告：`bug_report.md`
-   - 議論：`discussion.md`
+   - 議論・提案：`discussion.md`
    - 機能提案：`feature_request.md`
-   - 質問：`question.md`
+   - 質問・相談：`question.md`
 4. **テンプレートの入力欄を埋める**  
    選択したテンプレートに用意された項目に、必要な情報を記入します。
 5. **Issueを投稿**  
@@ -1044,7 +1053,7 @@ assignees: ''
 ---
 
 
-### 3.2 議論（discussion.md）
+### 3.2 議論・提案（discussion.md）
 
 #### 目的
 Sppaの開発やコミュニティに関するオープンな議論を始める。
@@ -1062,9 +1071,9 @@ Sppaの開発やコミュニティに関するオープンな議論を始める�
 #### discussion.md
 ```
 ---
-name: 議論
+name: 議論・提案
 about: Sppaの開発やコミュニティに関するオープンな議論を始めましょう
-title: '[議論] '
+title: '[議論・提案] '
 labels: discussion
 assignees: ''
 ---
@@ -1147,7 +1156,7 @@ assignees: ''
 ---
 
 
-### 3.4 質問（question.md）
+### 3.4 質問・相談（question.md）
 
 #### 目的
 Sppaに関する疑問を解消し、理解を深める。
@@ -1164,9 +1173,9 @@ Sppaに関する疑問を解消し、理解を深める。
 ### question.md
 ```
 ---
-name: 質問
+name: 質問・相談
 about: Sppaに関する疑問を解消するための質問をしてください
-title: '[質問] '
+title: '[質問・相談] '
 labels: question
 assignees: ''
 ---
@@ -1191,10 +1200,10 @@ assignees: ''
 **💡 ヒント**: 質問は遠慮せずに！コミュニティメンバーが親切に答えてくれるはずです。Slackでも気軽に聞いてみてください。
 ```
 
-### 5. リンク
+### 4. リンク
 
 [SppaのIssuesページ](https://github.com/TomohiroTani28/Sppa/issues): Issueの作成や確認はこちらから。  
 [SppaのDiscussionsページ](https://github.com/TomohiroTani28/Sppa/discussions): よりオープンな議論をしたい場合は、Discussionsを活用してください。
 
-### 6. まとめ  
+### 5. まとめ  
 SppaプロジェクトのIssueテンプレートは、コミュニティ参加を促進し、プロジェクトを効率的に進めるための重要なツールです。テンプレートに沿ってIssueを作成することで、誰でも簡単に貢献できます。あなたの報告やアイデアが、Sppaをさらに素晴らしいプロジェクトにする一歩となるでしょう。ぜひ積極的に活用し、コミュニティの一員として参加してください！
