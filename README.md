@@ -117,7 +117,7 @@ Sppaは、バリ島に根ざしたサービスから始まり、世界各国の�
   - 日々のディスカッションや緊急連絡には[Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)を利用しています。
   - [Slack](https://sppaworld.slack.com/archives/C06MP1JQVMK/p1743130927487109)に参加し、**#sppa** チャネルで、メンバー同士の交流を深めましょう。
   - バグ報告や機能提案は[Issues](https://github.com/TomohiroTani28/Sppa/issues)から。
-  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack #sppa](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
+  - 書き込み権限を持つコラボレーターの申請やストックオプションについてのご質問は[Slack](https://join.slack.com/t/sppaworld/shared_invite/zt-32jr6lrgi-kvBFS_3znNlyrB6uaHlEcg)から。
 
 
 ---
