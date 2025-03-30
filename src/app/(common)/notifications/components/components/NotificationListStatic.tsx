@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { useNotificationsApi } from "@/app/hooks/api/useNotificationsApi";
+import { useNotificationsApi } from "@/hooks/api/useNotificationsApi";
 
 // Define the Notification interface locally or import from src/types/notification.ts
 interface Notification {

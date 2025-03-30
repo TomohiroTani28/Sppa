@@ -1,4 +1,4 @@
-// src/app/tourist/search/components/FilterModal.tsx
+// src/app/(common)/search/components/FilterModal.tsx
 "use client";
 import React, { useState } from "react";
 import {
@@ -8,9 +8,9 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/app/components/ui/Dialog";
-import { Button } from "@/app/components/ui/Button";
-import { Label } from "@/app/components/ui/Label";
+} from "@/components/ui/Dialog";
+import { Button } from "@/components/ui/Button";
+import { Label } from "@/components/ui/Label";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -18,8 +18,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/Select";
-import { useServices } from "@/app/hooks/api/useServices";
+} from "@/components/ui/Select";
+import { useServices } from "@/hooks/api/useServices";
 
 // Define FilterOptions type (consistent with SearchPage)
 interface FilterOptions {

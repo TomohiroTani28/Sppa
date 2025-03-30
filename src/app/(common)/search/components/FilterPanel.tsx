@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@radix-ui/react-select";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 
 interface FilterPanelProps {
   onApplyFilters: (filters: Record<string, string>) => void;

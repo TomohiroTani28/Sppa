@@ -1,8 +1,8 @@
-// src/app/tourist/search/components/TrendDisplay.tsx
+// src/app/(common)/search/components/TrendDisplay.tsx
 "use client";
 
 import React from "react";
-import { useFetchTrends } from "@/app/hooks/api/useFetchTrends";
+import { useFetchTrends } from "@/hooks/api/useFetchTrends";
 import { useRouter } from "next/navigation";
 
 const TrendDisplay: React.FC = () => {

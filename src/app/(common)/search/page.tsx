@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import SearchBar from "@/app/(common)/search/components/SearchBar";
 import FilterModal from "@/app/(common)/search/components/FilterModal";
 import TrendDisplay from "@/app/(common)/search/components/TrendDisplay";
-import { useBottomSheet } from "@/app/hooks/ui/useBottomSheet";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
+import { useBottomSheet } from "@/hooks/ui/useBottomSheet";
+import BottomNavigation from "@/components/BottomNavigation";
 import dynamic from "next/dynamic";
 
 // Define FilterOptions type

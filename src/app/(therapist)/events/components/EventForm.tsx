@@ -1,6 +1,6 @@
-// src/app/therapist/events/components/EventForm.tsx
+// src/app/(therapist)/events/components/EventForm.tsx
 import React, { useState } from "react";
-import { useCreateEvent } from "../../../hooks/api/useCreateEvent";
+import { useCreateEvent } from "@/hooks/api/useCreateEvent";
 
 interface EventFormProps {
   onClose: () => void;

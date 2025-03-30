@@ -1,4 +1,4 @@
-// src/app/components/common/FeedFilters.tsx
+// src/components/FeedFilters.tsx
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, gql } from "@apollo/client";
@@ -8,11 +8,11 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/app/components/ui/Select";
-import { Checkbox } from "@/app/components/ui/Checkbox";
-import { Label } from "@/app/components/ui/Label";
-import { Spinner } from "@/app/components/ui/Spinner";
-import { useFeedStore } from "@/app/hooks/useFeedStore";
+} from "@/components/ui/Select";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { Label } from "@/components/ui/Label";
+import { Spinner } from "@/components/ui/Spinner";
+import { useFeedStore } from "@/hooks/useFeedStore";
 
 const GET_SERVICE_CATEGORIES = gql(`
   query GetServiceCategories {

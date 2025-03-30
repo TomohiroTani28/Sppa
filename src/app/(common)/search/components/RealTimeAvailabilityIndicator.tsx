@@ -1,6 +1,6 @@
 // src/app/(common)/search/components/RealTimeAvailabilityIndicator.tsx
-import Badge from '@/app/components/ui/Badge';
-import { useRealtimeAvailability } from '@/app/hooks/api/useRealtimeAvailability';
+import Badge from '@/components/ui/Badge';
+import { useRealtimeAvailability } from '@/hooks/api/useRealtimeAvailability';
 import { useEffect } from 'react';
 
 interface RealTimeAvailabilityIndicatorProps {

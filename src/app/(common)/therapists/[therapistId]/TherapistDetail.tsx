@@ -1,11 +1,11 @@
-// src/app/tourist/therapists/[therapistId]/components/TherapistDetail.tsx
+// src/app/(common)/therapists/[therapistId]/TherapistDetail.tsx
 "use client";
 
-import React from "react"; // React をインポートして JSX を認識可能に
-import { useQuery, gql } from '@apollo/client'; // Apollo Client のインポートを統合
+import React from "react";
+import { useQuery, gql } from '@apollo/client';
 import { Therapist } from '@/types/therapist';
-import { TherapistAvailabilityStatus } from '@/app/components/common/TherapistAvailabilityStatus';
-import RatingStars from '@/app/components/common/RatingStars';
+import { TherapistAvailabilityStatus } from '@/components/TherapistAvailabilityStatus';
+import RatingStars from '@/components/RatingStars';
 
 // GraphQL クエリの定義（Hasuraのスキーマに合わせて `therapist_by_pk` を使用）
 const GET_THERAPIST = gql`

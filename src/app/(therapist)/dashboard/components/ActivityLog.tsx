@@ -1,33 +1,46 @@
-// src/app/therapist/dashboard/components/ActivityLog.tsx
-import React from "react";
-import { useActivityLogs } from "../../hooks/useActivityLogs";
+// src/app/(therapist)/dashboard/components/ActivityLog.tsx
+import { useActivityLogs } from '@/hooks/api/useActivityLogs';
+import type { ActivityLog as ActivityLogType } from '@/types/activity-log';
 
 interface ActivityLogProps {
-  therapistId: string | number;
+  userId: string; // セラピストのユーザーIDを必須プロパティとして受け取る
 }
 
-// If you know for sure your therapistId is always a string,
-// feel free to change the above to `therapistId: string` only.
+export const ActivityLog = ({ userId }: ActivityLogProps) => {
+  // useActivityLogsフックを使用
+  const { activityLogs, isLoading, error, refreshLogs } = useActivityLogs({
+    userId, // オブジェクト形式で渡す
+    limit: 5, // 必要に応じて調整
+  });
 
-const ActivityLog: React.FC<ActivityLogProps> = ({ therapistId }) => {
-  const { data, loading, error } = useActivityLogs(String(therapistId));
+  // ローディング中
+  if (isLoading) {
+    return <div>Loading activity logs...</div>;
+  }
 
-  if (loading) return <p>Loading activity logs...</p>;
-  if (error) return <p>Error loading activity logs: {error.message}</p>;
+  // エラー時
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
-    <div className="activity-log p-4">
-      <h2 className="text-xl font-bold">Activity Log</h2>
-      <ul className="mt-4 space-y-2">
-        {data.map((log: any) => (
-          <li key={log.id} className="border-b py-2">
-            <p className="font-medium">{log.action}</p>
-            <p className="text-sm text-gray-500">{log.timestamp}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="activity-log">
+      <h2>Recent Activity</h2>
+      <button onClick={refreshLogs} disabled={isLoading}>
+        Refresh Logs
+      </button>
+      {activityLogs.length === 0 ? (
+        <p>No activity logs available.</p>
+      ) : (
+        <ul>
+          {activityLogs.map((log: ActivityLogType) => (
+            <li key={log.id}>
+              <span>{log.action}</span> - <span>{log.details}</span>{' '}
+              <span>({new Date(log.created_at).toLocaleString()})</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
-
-export default ActivityLog;

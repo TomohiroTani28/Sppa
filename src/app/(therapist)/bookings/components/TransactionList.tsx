@@ -1,15 +1,15 @@
 "use client";
-// src/app/therapist/bookings/components/TransactionList.tsx
+// src/app/(therapist)/bookings/components/TransactionList.tsx
 import React from "react";
-import { useTransactions } from "@/app/hooks/api/useTransactions";
-import { Transaction } from "@/types/transaction"; // Transaction型をインポート（必要に応じて調整）
+import { useTransactions } from "@/hooks/api/useTransactions";
+import { Transaction } from "@/types/transaction";
 
 interface TransactionListProps {
   bookingId: string;
 }
 
 const TransactionList: React.FC<TransactionListProps> = ({ bookingId }) => {
-  const { transactions, loading, error } = useTransactions(bookingId); // Pass bookingId
+  const { transactions, loading, error } = useTransactions(bookingId);
 
   if (loading) return <div>Loading transactions...</div>;
   if (error) return <div>Error loading transactions: {error.message}</div>;

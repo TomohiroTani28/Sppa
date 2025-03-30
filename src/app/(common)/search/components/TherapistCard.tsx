@@ -1,12 +1,12 @@
-// src/app/tourist/components/TherapistCard.tsx
+// src/app/(common)/search/components/TherapistCard.tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Therapist } from '@/types/therapist';
-import { Card } from '@/app/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { useTranslation } from 'react-i18next';
-import Badge from '@/app/components/ui/Badge';
-import { TherapistAvailabilityStatus } from '@/app/components/common/TherapistAvailabilityStatus';
+import Badge from '@/components/ui/Badge';
+import { TherapistAvailabilityStatus } from '@/components/TherapistAvailabilityStatus';
 
 // Component for displaying language badges
 const LanguageBadges: React.FC<{

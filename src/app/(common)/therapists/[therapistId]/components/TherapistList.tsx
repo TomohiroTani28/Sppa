@@ -1,11 +1,11 @@
-// src/app/tourist/therapists/components/TherapistList.tsx
+// src/app/(common)/therapists/[therapistId]/components/TherapistList.tsx
 "use client";
 import React, { useEffect, useState } from "react";
-import { useFetchTherapists } from "@app/hooks/api/useFetchTherapists";
-import { useTherapistAvailabilityApi } from "@app/hooks/api/useTherapistAvailabilityApi";
-import { useLikeTherapist } from "@app/hooks/api/useLikeTherapist";
+import { useFetchTherapists } from "@/hooks/api/useFetchTherapists";
+import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
+import { useLikeTherapist } from "@/hooks/api/useLikeTherapist";
 import { useRouter, usePathname } from "next/navigation";
-import Text from "@app/components/ui/Text";
+import Text from "@/components/ui/Text";
 import TherapistCard from "./TherapistCard";
 import { TherapistFilter, Therapist } from "@/types/therapist";
 import { TherapistAvailabilitySlot, TherapistAvailability } from "@/types/availability";

@@ -1,8 +1,8 @@
 "use client";
 // src/app/(therapist)/bookings/page.tsx
-import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
-import BookingCalendar from "@/app/therapist/bookings/components/BookingCalendar";
-import BookingList from "@/app/therapist/bookings/components/BookingList";
+import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
+import BookingCalendar from "@/app/(therapist)/bookings/components/BookingCalendar";
+import BookingList from "@/app/(therapist)/bookings/components/BookingList";
 import RealtimeBookingList from "@/realtime/RealtimeBookingList";
 import { Booking } from "@/types/booking";
 import { gql, useQuery } from "@apollo/client";

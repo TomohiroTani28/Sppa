@@ -1,4 +1,4 @@
-// /Users/tanitomohiro/github/Sppa/src/components/ChatHeader.tsx
+// src/components/ChatHeader.tsx
 "use client";
 
 import React from "react";

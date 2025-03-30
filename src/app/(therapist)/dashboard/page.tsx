@@ -3,10 +3,10 @@
 import DashboardSummary from "./components/DashboardSummary";
 import BookingSummary from "./components/BookingSummary";
 import RevenueChart from "./components/RevenueChart";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
-import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
+import BottomNavigation from "@/components/BottomNavigation";
+import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
 import { useAuth } from "@/hooks/api/useAuth";
-import PushNotification from "@/app/components/common/PushNotification";
+import PushNotification from "@/components/PushNotification";
 import { Booking } from "@/types/booking";
 
 export default function DashboardPage() {

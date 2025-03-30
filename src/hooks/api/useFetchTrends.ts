@@ -1,8 +1,8 @@
 "use client";
-// src/app/hooks/api/useFetchTrends.ts
+// src/hooks/api/useFetchTrends.ts
 import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { useErrorLogApi } from "./useErrorLogApi";
+import { useErrorLogApi } from "@/hooks/api/useErrorLogApi";
 import { error_type_enum } from "@/types/enums";
 import type { ErrorLogCreateInput } from "@/types/error-log";
 

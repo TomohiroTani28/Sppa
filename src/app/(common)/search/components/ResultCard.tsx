@@ -1,9 +1,9 @@
 // src/app/(common)/search/components/ResultCard.tsx
-import { Card, CardContent } from '@/app/components/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card';
 import { TherapistProfile } from '@/types/therapist';
-import Avatar from '@/app/components/common/Avatar';
+import Avatar from '@/components/Avatar';
 import Link from 'next/link';
-import RatingStars from '@/app/components/common/RatingStars';
+import RatingStars from '@/components/RatingStars';
 
 interface ResultCardProps {
   readonly therapist: TherapistProfile;

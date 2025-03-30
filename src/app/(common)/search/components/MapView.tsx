@@ -1,7 +1,7 @@
-// src/app/tourist/search/components/MapView.tsx
+// src/app/(common)/search/components/MapView.tsx
 "use client";
 import { useLocationService } from "@/app/(common)/components/LocationService";
-import { useFetchTherapistLocations } from "@/app/hooks/api/useFetchTherapistLocations";
+import { useFetchTherapistLocations } from "@/hooks/api/useFetchTherapistLocations";
 import Feature from "ol/Feature";
 import Map from "ol/Map";
 import View from "ol/View";

@@ -1,8 +1,8 @@
 "use client";
-// src/app/therapist/dashboard/components/DashboardSummary.tsx
+// src/app/(therapist)/dashboard/components/DashboardSummary.tsx
 import React, { useEffect, useState } from "react";
-import { useTherapistAvailabilityApi } from "@/app/hooks/api/useTherapistAvailabilityApi";
-import { useUser } from "@/app/hooks/api/useUser";
+import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
+import { useUser } from "@/hooks/api/useUser";
 import { Booking } from "@/types/booking";
 import { TherapistAvailabilitySlot } from "@/types/availability"; // 正しい型をインポート
 

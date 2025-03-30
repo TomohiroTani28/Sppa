@@ -1,5 +1,5 @@
 "use client";
-// src/app/therapist/bookings/components/BookingList.tsx
+// src/app/(therapist)/bookings/components/BookingList.tsx
 import React from "react";
 import { Booking } from "@/types/booking";
 

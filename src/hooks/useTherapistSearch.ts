@@ -2,6 +2,16 @@
 import { useState, useEffect } from "react";
 import { fetchTherapists } from "@/backend/api/graphql/therapists";
 
+// Define the shape of the raw therapist data returned by fetchTherapists
+interface RawTherapist {
+  id: string;
+  name: string;
+  services: { service_name: string }[];
+  average_rating: number;
+  hourly_rate: number;
+  working_hours: string[];
+}
+
 interface Therapist {
   id: string;
   name: string;
@@ -22,10 +32,11 @@ export const useTherapistSearch = (filters: {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchTherapists({ service: filters.specialty });
+        // Explicitly type the return value of fetchTherapists
+        const data: RawTherapist[] = await fetchTherapists({ service: filters.specialty });
         const filtered = data
-          .filter((t) => !filters.minRating || t.average_rating >= filters.minRating)
-          .map((t) => ({
+          .filter((t: RawTherapist) => !filters.minRating || t.average_rating >= filters.minRating)
+          .map((t: RawTherapist) => ({
             id: t.id,
             name: t.name,
             specialty: t.services[0]?.service_name || "",

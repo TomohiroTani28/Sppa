@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useSubscription, gql } from '@apollo/client';
 import { TherapistProfile } from '@/types/therapist';
-import hasuraClient from '@/app/lib/hasura-client';
+import hasuraClient from '@/lib/hasura-client';
 import { useTranslation } from 'next-i18next';
 
 interface FilterOptions {

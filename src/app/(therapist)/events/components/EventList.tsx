@@ -1,7 +1,7 @@
-// src/app/therapist/events/components/EventList.tsx
+// src/app/(therapist)/events/components/EventList.tsx
 "use client";
 import React from "react";
-import { useRealtimeEvents } from "@/app/hooks/realtime/useRealtimeEvents";
+import { useRealtimeEvents } from "@/realtime/useRealtimeEvents";
 import EventCard from "./EventCard";
 import { Event } from "@/types/event";
 

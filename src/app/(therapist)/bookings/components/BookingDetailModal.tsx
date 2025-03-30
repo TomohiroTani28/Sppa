@@ -1,5 +1,5 @@
 "use client";
-// src/app/therapist/bookings/components/BookingDetailModal.tsx
+// src/app/(therapist)/bookings/components/BookingDetailModal.tsx
 import React from "react";
 import {
   Dialog,
@@ -9,8 +9,8 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTrigger,
-} from "@/app/components/ui/Dialog";
-import { Button } from "@/app/components/ui/Button";
+} from "@/components/ui/Dialog";
+import { Button } from "@/components/ui/Button";
 import { Booking } from "@/types/booking";
 
 interface BookingDetailModalProps {

@@ -1,7 +1,7 @@
-// src/app/tourist/therapists/[therapistId]/components/ReviewList.tsx
+// src/app/(common)/therapists/[therapistId]/ReviewList.tsx
 import React from "react";
 import { Review } from "@/types/review";
-import RatingStars from "@/app/components/common/RatingStars";
+import RatingStars from "@/components/RatingStars";
 
 interface ReviewListProps {
   reviews: Review[];

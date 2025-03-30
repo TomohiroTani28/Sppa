@@ -1,8 +1,8 @@
 "use client";
-// src/app/therapist/dashboard/components/RevenueChart.tsx
+// src/app/(therapist)/dashboard/components/RevenueChart.tsx
 import { LineChart } from "@mantine/charts";
-import { useTransactions } from "@/app/hooks/api/useTransactions";
-import { Transaction } from "@/types/transaction"; // Transaction型をインポート
+import { useTransactions } from "@/hooks/api/useTransactions";
+import { Transaction } from "@/types/transaction";
 
 interface RevenueChartProps {
   therapistId: string;

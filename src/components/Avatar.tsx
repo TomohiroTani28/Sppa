@@ -1,4 +1,4 @@
-// src/app/components/common/Avatar.tsx
+// src/components/Avatar.tsx
 import React from "react";
 interface AvatarProps {
   imageUrl: string;

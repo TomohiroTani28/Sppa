@@ -1,6 +1,6 @@
-// src/app/therapist/components/TherapistAvailabilityPanel.tsx
+// src/app/(therapist)/components/TherapistAvailabilityPanel.tsx
 import React, { useState, useEffect } from "react";
-import { useTherapistAvailabilityApi } from "@/app/hooks/api/useTherapistAvailabilityApi";
+import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
 import { TherapistAvailabilitySlot } from "@/types/availability";
 
 interface TherapistAvailabilityPanelProps {

@@ -3,14 +3,14 @@
 import React from 'react';
 import { useQuery, useSubscription } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/Card';
-import Badge from '@/app/components/ui/Badge';
-import { Button } from '@/app/components/ui/Button';
-import { Spinner } from '@/app/components/ui/Spinner';
-import { ErrorMessage } from '@/app/components/ui/ErrorMessage';
-import { MediaGallery } from '@/app/components/common/MediaGallery';
-import { formatCurrency } from '@/app/lib/utils';
-import { GET_SERVICE_DETAIL as GET_SERVICE_DETAILS, SUBSCRIBE_TO_THERAPIST_SERVICES as SUBSCRIBE_SERVICE_UPDATES } from '@/app/lib/graphql/queries/service';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Spinner } from '@/components/ui/Spinner';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { MediaGallery } from '@/components/MediaGallery';
+import { formatCurrency } from '@/lib/utils';
+import { GET_SERVICE_DETAIL as GET_SERVICE_DETAILS, SUBSCRIBE_TO_THERAPIST_SERVICES as SUBSCRIBE_SERVICE_UPDATES } from '@/lib/queries/service';
 import { Media } from '@/types/media';
 
 interface ServiceDetailsProps {

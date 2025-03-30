@@ -1,12 +1,12 @@
-// src/app/tourist/therapists/[therapistId]/components/TherapistAvailability.tsx
+// src/app/(common)/therapists/[therapistId]/TherapistAvailability.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import { useSubscription } from "@apollo/client";
 import { gql } from "@apollo/client";
-import { Calendar } from "@/app/components/ui/Calendar";
-import { Button } from "@/app/components/ui/Button";
-import { Spinner } from "@/app/components/ui/Spinner";
+import { Calendar } from "@/components/ui/Calendar";
+import { Button } from "@/components/ui/Button";
+import { Spinner } from "@/components/ui/Spinner";
 
 const AVAILABILITY_SUBSCRIPTION = gql`
   subscription TherapistAvailability($therapistId: uuid!) {

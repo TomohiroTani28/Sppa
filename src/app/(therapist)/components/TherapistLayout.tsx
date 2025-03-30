@@ -1,5 +1,5 @@
 "use client";
-// src/app/therapist/components/TherapistLayout.tsx
+// src/app/(therapist)/components/TherapistLayout.tsx
 import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import { usePathname } from "next/navigation";

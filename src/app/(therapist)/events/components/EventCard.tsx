@@ -1,9 +1,7 @@
-// src/app/therapist/events/components/EventCard.tsx
+// src/app/(therapist)/events/components/EventCard.tsx
 import { FaCalendarAlt } from "react-icons/fa";
-import { Card } from "@/app/components/ui/Card"; // パスはプロジェクト構造に合わせてください
-import { Event } from "@/types/event"; // Event 型をインポート
-
-// EventCardProps は event オブジェクトを受け取るように変更
+import { Card } from "@/components/ui/Card";
+import { Event } from "@/types/event";
 interface EventCardProps {
   event: Event;
 }

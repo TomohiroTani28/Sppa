@@ -2,8 +2,8 @@
 "use client";
 
 import React, { FC } from "react";
-import { useRealtimeMatchList } from "@/app/hooks/realtime/useRealtimeMatchList";
-import UserCard from "@/app/components/UserCard"; 
+import { useRealtimeMatchList } from "@/realtime/useRealtimeMatchList";
+import UserCard from "@/components/UserCard"; 
 // ↑ TherapistCardではなく「ユーザカード」として汎用化する想定
 import { User } from "@/types/user";
 

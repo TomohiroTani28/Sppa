@@ -3,9 +3,9 @@
 
 import { useSubscription } from "@apollo/client";
 import { gql } from "@apollo/client";
-import { Card } from "@/app/components/ui/Card";
-import Badge from "@/app/components/ui/Badge";
-import { UserPreferences } from "@/app/tourist/hooks/useUserPreferences";
+import { Card } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import { UserPreferences } from "@/hooks/useUserPreferences";
 
 const NOTIFICATION_SUBSCRIPTION = gql`
   subscription MyNotifications($userId: uuid!) {

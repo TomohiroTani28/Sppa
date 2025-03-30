@@ -1,8 +1,8 @@
 "use client";
 // src/app/(common)/search/components/SearchBar.tsx
-import { Input } from '@/app/components/ui/Input';
-import { Button } from '@/app/components/ui/Button';
-import { cn } from '@/app/lib/utils';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 interface SearchBarProps {

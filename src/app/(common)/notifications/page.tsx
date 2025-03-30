@@ -1,12 +1,12 @@
 "use client";
 // src/app/tourist/notifications/page.tsx
 import React from "react";
-import { useNotifications, Notification } from "@/app/hooks/realtime/useNotifications";
+import { useNotifications, Notification } from "@/realtime/useNotifications";
 import { useAuth } from "@/hooks/api/useAuth";
-import { Card, CardHeader, CardTitle, CardContent } from "@/app/components/ui/Card";
-import Badge from "@/app/components/ui/Badge";
-import { Button } from "@/app/components/ui/Button";
-import { Spinner } from "@/app/components/ui/Spinner";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Spinner } from "@/components/ui/Spinner";
 import { useTranslation } from "react-i18next";
 import { useMutation, gql } from "@apollo/client";
 

@@ -1,4 +1,4 @@
-// src/app/tourist/therapists/components/TherapistFilter.tsx
+// src/app/(common)/therapists/[therapistId]/components/TherapistFilter.tsx
 "use client";
 import React, { useCallback, useState, useEffect } from "react";
 import {
@@ -8,10 +8,10 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/app/components/ui/Dialog";
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
-import { Label } from "@/app/components/ui/Label";
+} from "@/components/ui/Dialog";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -19,8 +19,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/Select";
-import { useFetchServiceCategories } from "@/app/hooks/api/useFetchServiceCategories";
+} from "@/components/ui/Select";
+import { useFetchServiceCategories } from "@/hooks/api/useFetchServiceCategories";
 
 interface TherapistFilterProps {
   isOpen: boolean;

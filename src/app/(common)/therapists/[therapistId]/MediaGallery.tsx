@@ -1,6 +1,6 @@
-// src/app/tourist/therapists/[therapistId]/components/MediaGallery.tsx
+// src/app/(common)/therapists/[therapistId]/MediaGallery.tsx
 import React from "react";
-import { MediaDisplay } from "@/app/components/common/MediaDisplay"; // デフォルト → 名前付きに変更
+import { MediaDisplay } from "@/components/MediaDisplay";
 
 interface MediaGalleryProps {
   media: string[]; // URLs of media (photos/videos)

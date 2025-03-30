@@ -1,9 +1,9 @@
-// src/app/(common)/therapists/[therapistId]/page.tsx
+// src/app/(common)/treatment/[id]/page.tsx
 import { gql } from "@apollo/client";
-import TherapistProfile from "./components/TherapistProfile";
-import ServiceDetails from "./components/ServiceDetails";
-import BookingButton from "@/app/components/common/BookingButton";
-import graphqlClient from "@/app/lib/hasura-client";
+import TherapistProfile from "@/app/(common)/therapists/[therapistId]/components/TherapistProfile";
+import ServiceDetails from "@/app/(common)/therapists/[therapistId]/components/ServiceDetails";
+import BookingButton from "@/components/BookingButton";
+import graphqlClient from "@/lib/hasura-client";
 
 // 動的レンダリングを強制して静的生成をスキップ
 export const dynamic = "force-dynamic";

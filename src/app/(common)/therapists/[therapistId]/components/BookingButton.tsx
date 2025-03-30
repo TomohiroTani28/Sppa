@@ -1,22 +1,22 @@
 "use client";
 // src/app/(common)/therapists/[therapistId]/components/BookingButton.tsx
 import React, { useState, useEffect } from "react";
-import { Button } from "@/app/components/ui/Button";
-import { Calendar } from "@/app/components/ui/Calendar";
+import { Button } from "@/components/ui/Button";
+import { Calendar } from "@/components/ui/Calendar";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/app/components/ui/Dialog";
+} from "@/components/ui/Dialog";
 import { useTranslation } from "next-i18next";
-import { PriceDisplay } from "@/app/components/common/PriceDisplay";
-import { useCreateBooking } from "@/app/hooks/api/useCreateBooking";
-import { useRealtimeAvailability } from "@/app/hooks/realtime/useRealtimeAvailability";
-import { TherapistAvailabilityStatus } from "@/app/components/common/TherapistAvailabilityStatus";
+import { PriceDisplay } from "@/components/PriceDisplay";
+import { useCreateBooking } from "@/hooks/api/useCreateBooking";
+import { useRealtimeAvailability } from "@/realtime/useRealtimeAvailability";
+import { TherapistAvailabilityStatus } from "@/components/TherapistAvailabilityStatus";
 import { format, addHours } from "date-fns";
-import { useErrorLogApi } from "@/app/hooks/api/useErrorLogApi";
+import { useErrorLogApi } from "@/hooks/api/useErrorLogApi";
 import { useRouter } from "next/navigation";
 import {
   Select as RadixSelect,

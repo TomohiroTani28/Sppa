@@ -1,7 +1,7 @@
 "use client";
-// src/app/tourist/search/components/SearchResults.tsx
+// src/app/(common)/search/components/SearchResults.tsx
 import React from "react";
-import useFetchSearchResults from "@/app/hooks/api/useFetchSearchResults";
+import useFetchSearchResults from "@/hooks/api/useFetchSearchResults";
 
 interface SearchResultsProps {
   query: string;

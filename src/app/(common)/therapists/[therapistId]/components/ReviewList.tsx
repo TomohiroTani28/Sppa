@@ -1,5 +1,5 @@
 // src/app/(common)/therapists/[therapistId]/components/ReviewList.tsx
-import useRealTimeReviews from '@/app/hooks/realtime/useRealtimeReviews';
+import useRealTimeReviews from '@/realtime/useRealtimeReviews';
 
 // レビューの型定義
 interface Review {

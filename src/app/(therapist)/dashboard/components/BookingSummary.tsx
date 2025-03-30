@@ -1,4 +1,4 @@
-// src/app/therapist/dashboard/components/BookingSummary.tsx
+// src/app/(therapist)/dashboard/components/BookingSummary.tsx
 interface BookingSummaryProps {
   bookings: any[];
 }

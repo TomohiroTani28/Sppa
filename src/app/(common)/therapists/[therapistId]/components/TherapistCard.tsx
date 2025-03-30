@@ -1,15 +1,15 @@
-// src/app/tourist/therapists/components/TherapistCard.tsx
+// src/app/(common)/therapists/[therapistId]/components/TherapistCard.tsx
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Therapist } from "@/types/therapist";
 import { TherapistAvailability } from "@/types/availability";
-import { Button } from "@app/components/ui/Button";
-import Text from "@app/components/ui/Text";
-import Avatar from "@app/components/common/Avatar";
-import RatingStars from "@app/components/common/RatingStars";
-import { MediaDisplay } from "@app/components/common/MediaDisplay";
-import { Card, CardContent, CardFooter } from "@app/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import Text from "@/components/ui/Text";
+import Avatar from "@/components/Avatar";
+import RatingStars from "@/components/RatingStars";
+import { MediaDisplay } from "@/components/MediaDisplay";
+import { Card, CardContent, CardFooter } from "@/components/ui/Card";
 import { Heart } from "lucide-react";
 
 interface TherapistCardProps {

@@ -2,13 +2,13 @@
 // src/app/(common)/therapists/[therapistId]/components/TherapistProfile.tsx
 import { useQuery, useSubscription, gql } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { cn } from "@/app/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/Card";
-import Badge from "@/app/components/ui/Badge";
-import { Spinner } from "@/app/components/ui/Spinner";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import { Spinner } from "@/components/ui/Spinner";
 import { useTranslation } from "next-i18next";
 import { TFunction } from "i18next";
-import Avatar from "@/app/components/common/Avatar";
+import Avatar from "@/components/Avatar";
 
 // GraphQL Queries and Subscriptions
 const GET_THERAPIST_PROFILE = gql`

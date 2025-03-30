@@ -1,6 +1,6 @@
-// src/components/common/EventCard.tsx
+// src/components/EventCard.tsx
 import React from 'react';
-import { Card, CardContent, CardTitle, CardDescription } from "../ui/Card";
+import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/Card";
 import { FaCalendarAlt } from "react-icons/fa";
 
 interface EventCardProps {
