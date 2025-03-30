@@ -1,39 +1,42 @@
 // src/app/(common)/likes/components/LikeButton.tsx
+"use client";
+
 import { useState } from "react";
-import { useLikeTherapist } from "@/app/hooks/api/useLikeTherapist";
-import { Button } from "@/app/components/ui/Button"; // Fixed import: Default import
+import { useLikeUser } from "@/app/hooks/api/useLikeUser";
+import { Button } from "@/app/components/ui/Button";
 
 interface LikeButtonProps {
-  therapistId: string;
-  liked: boolean;
-  guestId: string; // Added guestId prop
+  /** いいねをするユーザのID */
+  currentUserId: string;
+  /** いいねされる対象ユーザのID */
+  targetUserId: string;
+  /** 初期状態として「いいね」済みかどうか */
+  initialLiked: boolean;
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({
-  therapistId,
-  liked,
-  guestId,
+  currentUserId,
+  targetUserId,
+  initialLiked,
 }) => {
-  // Destructure guestId from props
-  const [isLiked, setIsLiked] = useState(liked);
-  const { likeTherapist, unlikeTherapist } = useLikeTherapist(); // Assuming useLikeTherapist returns unlikeTherapist now
+  const [isLiked, setIsLiked] = useState(initialLiked);
+
+  // 汎用的な "likeUser / unlikeUser" フック
+  // 例: likeUser( likerId, likedUserId )
+  //     unlikeUser( likerId, likedUserId )
+  const { likeUser, unlikeUser } = useLikeUser();
 
   const handleLike = async () => {
-    if (isLiked) {
-      // Assuming unlikeTherapist is now available and takes guestId and therapistId
-      if (unlikeTherapist) {
-        // Check if unlikeTherapist exists to avoid runtime error if hook is not correctly updated yet
-        await unlikeTherapist(guestId, therapistId);
+    try {
+      if (isLiked) {
+        await unlikeUser(currentUserId, targetUserId);
       } else {
-        console.error(
-          "unlikeTherapist is not available from useLikeTherapist hook. Please check the hook implementation.",
-        );
-        return; // Exit handler to prevent further actions if unlikeTherapist is missing
+        await likeUser(currentUserId, targetUserId);
       }
-    } else {
-      await likeTherapist(guestId, therapistId); // Pass guestId and therapistId
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.error("Error while liking/unliking user:", error);
     }
-    setIsLiked(!isLiked);
   };
 
   return (

@@ -1,13 +1,15 @@
 // src/app/(common)/likes/components/MatchList.tsx
-import { FC } from "react";
-import { useRealtimeMatchList } from "@app/hooks/realtime/useRealtimeMatchList";
-import TherapistCard from "@/app/(common)/therapists/[therapistId]/components/TherapistCard";
-import { Therapist } from "@/types/therapist";
-import { TherapistAvailabilitySlot } from "@/types/availability";
+"use client";
 
-// 仮に userId を取得する方法としてコンテキストやpropsを使用
-// ここでは仮の値を使用
-const currentUserId = "YOUR_CURRENT_USER_ID";
+import React, { FC } from "react";
+import { useRealtimeMatchList } from "@/app/hooks/realtime/useRealtimeMatchList";
+import UserCard from "@/app/components/UserCard"; 
+// ↑ TherapistCardではなく「ユーザカード」として汎用化する想定
+import { User } from "@/types/user";
+
+// 仮にログイン中のユーザIDを取得する処理
+// 実際には useAuth() 等から取得してください
+const currentUserId = "CURRENT_USER_ID";
 
 const MatchList: FC = () => {
   const { matchList, loading, error } = useRealtimeMatchList(currentUserId);
@@ -15,34 +17,28 @@ const MatchList: FC = () => {
   if (loading) return <p>Loading matches...</p>;
   if (error) return <p>Error loading matches: {error.message}</p>;
 
-  const therapists: Therapist[] = matchList.map((match) => ({
-    ...match.therapist,
-    bio: "",
-    rating: 0,
-    languages: [],
-    status: "online" as const,
-    user_id: match.therapist_id,
-    experience_years: 0,
-    price_range_min: 0,
-    price_range_max: 0,
-    currency: "USD",
-    // matched_at が undefined の場合は空文字列を使用
-    created_at: match.matched_at ?? "",
-    updated_at: match.matched_at ?? "",
+  // matchList の構造はアプリの仕様次第ですが、例として:
+  // [{ matchedUser: {...}, matchedAt: "2025-01-01" }, ... ] の形を想定
+  // DB/スキーマに合わせて調整してください。
+  const matchedUsers: User[] = matchList.map((match: any) => ({
+    ...match.matchedUser,
+    // もし "therapist_id" や "guest_id" 等があれば rename
+    // role: match.matchedUser.role,
+    // created_at, updated_at などを補完
   }));
 
   return (
     <div className="space-y-4">
-      {therapists.length === 0 ? (
+      {matchedUsers.length === 0 ? (
         <p>No matches yet</p>
       ) : (
-        therapists.map((therapist) => (
-          <TherapistCard
-            key={therapist.id}
-            therapist={therapist}
-            availability={{ available_slots: [] }}
-            onLike={() => {}}
-            onUnlike={() => {}}
+        matchedUsers.map((user) => (
+          <UserCard
+            key={user.id}
+            user={user}
+            // 例: カード内で LikeButton を使う or "onLike" コールバックを定義
+            onLike={() => {/* handle like logic */}}
+            onUnlike={() => {/* handle unlike logic */}}
           />
         ))
       )}
