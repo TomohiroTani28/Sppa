@@ -1,15 +1,15 @@
 // src/app/(common)/chat/page.tsx
 "use client";
 
-import { useOnlineUsers } from "@/app/(common)/hooks/useOnlineUsers";
-import { useRecentChats } from "@/app/(common)/hooks/useRecentChats";
-import { useSearchUsers } from "@/app/(common)/hooks/useSearchUsers";
 import SearchBar from "@/app/(common)/search/components/SearchBar";
 import Avatar from "@/app/components/common/Avatar";
 import BottomNavigation from "@/app/components/common/BottomNavigation";
 import ChatHeader from "@/app/components/common/ChatHeader";
 import { ChatProvider } from "@/app/contexts/ChatContext";
 import useIsomorphicLayoutEffect from "@/app/hooks/api/useIsomorphicLayoutEffect";
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
+import { useRecentChats } from "@/hooks/useRecentChats";
+import { useSearchUsers } from "@/hooks/useSearchUsers";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 

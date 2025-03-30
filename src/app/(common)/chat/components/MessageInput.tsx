@@ -6,7 +6,7 @@ import { useAuth } from "@/app/hooks/api/useAuth";
 import { gql, useMutation } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
-import { useAutoTranslation } from "../../hooks/useAutoTranslation";
+import { useAutoTranslation } from "../../../../hooks/useAutoTranslation";
 
 const SEND_MESSAGE = gql`
   mutation SendMessage($sender_id: UUID!, $receiver_id: UUID!, $content: String!, $translated_content: jsonb) {

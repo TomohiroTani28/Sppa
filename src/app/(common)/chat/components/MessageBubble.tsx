@@ -2,7 +2,7 @@
 import { cn } from '@/app/lib/utils';
 import { ChatMessage } from '@/types/chat';
 import { format } from 'date-fns';
-import { useAutoTranslation } from '../../hooks/useAutoTranslation';
+import { useAutoTranslation } from '../../../../hooks/useAutoTranslation';
 
 interface MessageBubbleProps {
   readonly message: ChatMessage; // readonly を追加

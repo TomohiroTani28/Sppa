@@ -2,7 +2,7 @@
 import { Label } from '@/app/components/ui/Label';
 import { Switch } from '@/app/components/ui/Switch';
 import { useTranslation } from 'next-i18next';
-import { useAutoTranslation } from '../../hooks/useAutoTranslation';
+import { useAutoTranslation } from '../../../../hooks/useAutoTranslation';
 
 export default function AutoTranslateToggle() {
   const { t } = useTranslation('common');
