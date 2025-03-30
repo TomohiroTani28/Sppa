@@ -1,8 +1,8 @@
 // src/app/tourist/home/hooks/usePageData.ts
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 import { useHomeData } from "./useHomeData";
-import useMultiLanguage from "@/app/components/common/MultiLanguageSupport";
-import { useNotificationsApi } from "@/app/hooks/api/useNotificationsApi";
+import useMultiLanguage from "@/components/MultiLanguageSupport";
+import { useNotificationsApi } from "@/hooks/api/useNotificationsApi";
 
 export const usePageData = () => {
   const { user, loading: authLoading } = useAuth();

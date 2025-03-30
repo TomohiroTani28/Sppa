@@ -1,4 +1,4 @@
-// src/app/(common)/home/components/TabSelector.tsx
+// src/app/(common)/feed/components/TabSelector.tsx
 "use client";
 import { useTranslation } from "next-i18next";
 import { UserIcon, BriefcaseIcon } from "@heroicons/react/24/outline";

@@ -1,4 +1,4 @@
-// src/app/tourist/chat/components/PriorityMessage.tsx
+// src/app/(common)/chat/components/PriorityMessage.tsx
 "use client";
 
 import { useEffect, useState } from "react";

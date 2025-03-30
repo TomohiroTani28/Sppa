@@ -1,12 +1,12 @@
 // src/app/(common)/chat/components/MessageBubble.tsx
-import { cn } from '@/app/lib/utils';
+import { cn } from '@/lib/utils';
 import { ChatMessage } from '@/types/chat';
 import { format } from 'date-fns';
-import { useAutoTranslation } from '../../../../hooks/useAutoTranslation';
+import { useAutoTranslation } from '@/hooks/useAutoTranslation';
 
 interface MessageBubbleProps {
-  readonly message: ChatMessage; // readonly を追加
-  readonly isOwnMessage: boolean; // readonly を追加
+  readonly message: ChatMessage;
+  readonly isOwnMessage: boolean;
 }
 
 export default function MessageBubble({ message, isOwnMessage }: MessageBubbleProps) {

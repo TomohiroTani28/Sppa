@@ -1,4 +1,4 @@
-// src/app/hooks/realtime/useNotifications.ts
+// src/realtime/useNotifications.ts
 import { useSubscription, gql } from "@apollo/client";
 import { useMemo } from "react";
 

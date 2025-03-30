@@ -1,8 +1,8 @@
 "use client";
 // src/app/(common)/chat/components/MessageInput.tsx
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { useAuth } from "@/hooks/api/useAuth";
 import { gql, useMutation } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";

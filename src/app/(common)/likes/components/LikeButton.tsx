@@ -2,8 +2,8 @@
 "use client";
 
 import { useState } from "react";
-import { useLikeUser } from "@/app/hooks/api/useLikeUser";
-import { Button } from "@/app/components/ui/Button";
+import { useLikeUser } from "@/hooks/api/useLikeUser";
+import { Button } from "@/components/ui/Button";
 
 interface LikeButtonProps {
   /** いいねをするユーザのID */

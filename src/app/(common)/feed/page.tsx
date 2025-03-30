@@ -1,16 +1,16 @@
 "use client";
-// src/app/(common)/home/page.tsx
+// src/app/(common)/feed/page.tsx
 import { Suspense, useState, useMemo } from "react";
 import { useTranslation } from "next-i18next";
-import { LoadingSpinner } from "@/app/components/common/LoadingSpinner";
-import HomeHeader from "@/app/components/common/HomeHeader";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
-import { MasonryFeed } from "@/app/(common)/home/components/MasonryFeed";
-import Text from "@/app/components/ui/Text";
-import { TabSelector } from "@/app/(common)/home/components/TabSelector";
-import { useAuth } from "@/app/hooks/api/useAuth";
-import { useNotifications } from "@/app/hooks/realtime/useNotifications";
-import useTherapistData from "@/app/hooks/api/useTherapistData";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import HomeHeader from "@/components/HomeHeader";
+import BottomNavigation from "@/components/BottomNavigation";
+import { MasonryFeed } from "@/app/(common)/feed/components/MasonryFeed";
+import Text from "@/components/ui/Text";
+import { TabSelector } from "@/app/(common)/feed/components/TabSelector";
+import { useAuth } from "@/hooks/api/useAuth";
+import { useNotifications } from "@/realtime/useNotifications";
+import useTherapistData from "@/hooks/api/useTherapistData";
 
 // 型定義
 interface Notification {

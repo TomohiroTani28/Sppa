@@ -2,11 +2,11 @@
 "use client";
 
 import SearchBar from "@/app/(common)/search/components/SearchBar";
-import Avatar from "@/app/components/common/Avatar";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
-import ChatHeader from "@/app/components/common/ChatHeader";
-import { ChatProvider } from "@/app/contexts/ChatContext";
-import useIsomorphicLayoutEffect from "@/app/hooks/api/useIsomorphicLayoutEffect";
+import Avatar from "@/components/Avatar";
+import BottomNavigation from "@/components/BottomNavigation";
+import ChatHeader from "@/components/ChatHeader";
+import { ChatProvider } from "@/contexts/ChatContext";
+import useIsomorphicLayoutEffect from "@/hooks/api/useIsomorphicLayoutEffect";
 import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 import { useRecentChats } from "@/hooks/useRecentChats";
 import { useSearchUsers } from "@/hooks/useSearchUsers";

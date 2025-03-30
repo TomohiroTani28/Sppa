@@ -1,7 +1,7 @@
-// src/app/(common)/home/components/TranslationToggle.tsx
+// src/app/(common)/feed/components/TranslationToggle.tsx
 "use client";
 import { useTranslation } from "next-i18next";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 
 interface TranslationToggleProps {
   isTranslated: boolean;

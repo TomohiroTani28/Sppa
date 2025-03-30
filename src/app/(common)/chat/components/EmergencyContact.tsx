@@ -1,9 +1,9 @@
-// src/app/tourist/chat/components/EmergencyContact.tsx
+// src/app/(common)/chat/components/EmergencyContact.tsx
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/app/components/ui/Button";
-import { Dialog } from "@/app/components/ui/Dialog";
+import { Button } from "@/components/ui/Button";
+import { Dialog } from "@/components/ui/Dialog";
 import { useTranslation } from "next-i18next";
 
 interface EmergencyContactProps {

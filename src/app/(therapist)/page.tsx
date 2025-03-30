@@ -1,4 +1,4 @@
-// src/app/therapist/page.tsx
+// src/app/(therapist)/page.tsx
 import TherapistLayout from "@/app/therapist/components/TherapistLayout";
 import DashboardSummary from "@/app/therapist/dashboard/components/DashboardSummary";
 import ActivityLog from "@/app/therapist/dashboard/components/ActivityLog";

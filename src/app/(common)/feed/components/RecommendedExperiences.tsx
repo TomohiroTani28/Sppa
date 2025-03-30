@@ -1,11 +1,11 @@
-// src/app/tourist/components/RecommendedExperiences.tsx
+// src/app/(common)/feed/components/RecommendedExperiences.tsx
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { LocalExperience } from "@/types/local-experience";
 import { useTranslation } from "next-i18next";
-import { Spinner } from "@/app/components/ui/Spinner";
-import { useFetchLocalExperiences } from "@/app/hooks/api/useFetchLocalExperiences";
+import { Spinner } from "@/components/ui/Spinner";
+import { useFetchLocalExperiences } from "@/hooks/api/useFetchLocalExperiences";
 
 // Make sure these match your actual types
 interface Media {

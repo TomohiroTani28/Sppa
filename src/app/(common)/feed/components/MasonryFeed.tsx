@@ -1,10 +1,10 @@
-// src/app/(common)/home/components/MasonryFeed.tsx
+// src/app/(common)/feed/components/MasonryFeed.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useRealtimeFeedUpdates } from "@/app/hooks/realtime/useRealtimeFeedUpdates";
+import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
 import { Post } from "@/types/post";
-import { LoadingSpinner } from "@/app/components/common/LoadingSpinner";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { PostCard } from "./PostCard";
 
 interface MasonryFeedProps {

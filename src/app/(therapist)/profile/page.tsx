@@ -1,5 +1,5 @@
 "use client";
-// src/app/therapist/profile/page.tsx
+// src/app/(therapist)/profile/page.tsx
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/app/hooks/api/useAuth";

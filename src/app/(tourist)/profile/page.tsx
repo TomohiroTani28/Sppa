@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 import { useFetchUser } from "@/app/hooks/api/useFetchUser";
 import ProfileView from "@/app/tourist/profile/components/ProfileView";
 import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";

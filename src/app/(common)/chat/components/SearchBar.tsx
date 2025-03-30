@@ -1,8 +1,8 @@
-// src/app/tourist/chat/components/SearchBar.tsx
+// src/app/(common)/chat/components/SearchBar.tsx
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/app/components/ui/Input";
+import { Input } from "@/components/ui/Input";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;

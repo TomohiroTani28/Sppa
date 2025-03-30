@@ -1,9 +1,9 @@
-// src/app/tourist/chat/components/OnlineTherapists.tsx
+// src/app/(common)/chat/components/OnlineTherapists.tsx
 "use client";
 
 import { useEffect, useState } from "react";
-import supabase from "@/app/lib/supabase-client";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import supabase from "@/lib/supabase-client";
+import { useAuth } from "@/hooks/api/useAuth";
 
 interface OnlineTherapistsProps {
   therapists: any[];

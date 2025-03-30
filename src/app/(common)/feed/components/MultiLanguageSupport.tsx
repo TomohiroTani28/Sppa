@@ -1,8 +1,8 @@
-// src/app/tourist/components/MultiLanguageSupport.tsx
+// src/app/(common)/feed/components/MultiLanguageSupport.tsx
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useUserPreferences } from "@/app/tourist/hooks/useUserPreferences";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useAuth } from "@/hooks/api/useAuth";
 
 // 多言語対応のカスタムフック
 export const useMultiLanguage = () => {
@@ -29,8 +29,8 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 // 翻訳リソースのインポート（プロジェクトの構成に応じて調整）
-import enTranslation from "@/app/locales/en.json";
-import idTranslation from "@/app/locales/id.json";
+import enTranslation from "@/locales/en.json";
+import idTranslation from "@/locales/id.json";
 
 i18n.use(initReactI18next).init({
   resources: {

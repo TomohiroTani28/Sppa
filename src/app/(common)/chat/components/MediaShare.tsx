@@ -1,10 +1,10 @@
-// src/app/tourist/chat/components/MediaShare.tsx
+// src/app/(common)/chat/components/MediaShare.tsx
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { useTranslation } from "next-i18next";
-import supabaseClient from "@/app/lib/supabase-client";
+import supabaseClient from "@/lib/supabase-client";
 
 interface MediaShareProps {
   onUploadComplete: (url: string) => void;

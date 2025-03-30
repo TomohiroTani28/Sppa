@@ -1,4 +1,4 @@
-// src/app/tourist/components/LocationService.ts
+// src/app/(common)/components/LocationService.ts
 import { useEffect, useState } from "react";
 
 export interface Location {

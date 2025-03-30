@@ -1,10 +1,10 @@
-// src/app/components/common/MultiLanguageSupport.tsx
+// src/components/MultiLanguageSupport.tsx
 import React, { useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/app/components/ui/Card';
-import { Button } from '@/app/components/ui/Button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/Select';
-import Text from '@/app/components/ui/Text';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
+import Text from '@/components/ui/Text';
 import { useRouter } from 'next/router';
 
 /**

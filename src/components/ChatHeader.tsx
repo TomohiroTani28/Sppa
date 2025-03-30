@@ -1,9 +1,9 @@
-// src/app/components/common/ChatHeader.tsx
+// /Users/tanitomohiro/github/Sppa/src/components/ChatHeader.tsx
 "use client";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/app/components/ui/Button"; // shadcn/uiのButtonを想定
+import { Button } from "@/components/ui/Button";
 
 const ChatHeader: React.FC = () => {
   const { t } = useTranslation();

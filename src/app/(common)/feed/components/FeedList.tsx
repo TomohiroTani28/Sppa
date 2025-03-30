@@ -1,11 +1,11 @@
-// src/app/(common)/home/components/FeedList.tsx
+// src/app/(common)/feed/components/FeedList.tsx
 'use client';
 
 import { useEffect } from 'react';
 import { PostCard } from './PostCard';
-import { useFetchEvents } from '@/app/hooks/api/useFetchEvents';
-import { useRealtimeAvailability } from '@/app/hooks/api/useRealtimeAvailability';
-import { Spinner } from '@/app/components/ui/Spinner';
+import { useFetchEvents } from '@/hooks/api/useFetchEvents';
+import { useRealtimeAvailability } from '@/hooks/api/useRealtimeAvailability';
+import { Spinner } from '@/components/ui/Spinner';
 interface FeedEvent {
   id: string | number;
   therapist_id?: string | number;

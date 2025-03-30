@@ -1,9 +1,9 @@
-// src/app/tourist/hooks/useUserPreferences.ts
+// src/hooks/useUserPreferences.ts
 "use client";
 
 import { useState, useEffect } from "react";
-import { useUser } from "@/app/hooks/api/useUser";
-import useAuth from "@/app/hooks/api/useAuth";
+import { useUser } from "@/hooks/api/useUser";
+import useAuth from "@/hooks/api/useAuth";
 
 export interface UserPreferences {
   preferred_services?: string[];

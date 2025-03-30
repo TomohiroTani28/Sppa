@@ -1,8 +1,8 @@
-// src/app/tourist/home/components/OfferCarousel.tsx
+// src/app/(common)/feed/components/OfferCarousel.tsx
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { useFetchEvents } from "@/app/hooks/api/useFetchEvents";
+import { useFetchEvents } from "@/hooks/api/useFetchEvents";
 
 const OfferCarousel = () => {
   const { events, loading } = useFetchEvents();

@@ -1,12 +1,12 @@
 // src/app/tourist/home/hooks/useHomeData.ts
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { useUserPreferences } from "@/app/tourist/hooks/useUserPreferences";
-import { useLocationService } from "@/app/tourist/hooks/useLocationService";
-import { useFetchLocalExperiences } from "@/app/hooks/api/useFetchLocalExperiences";
-import { useFetchTherapists } from "@/app/hooks/api/useFetchTherapists";
-import { useFetchEvents } from "@/app/hooks/api/useFetchEvents";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useLocationService } from "@/hooks/useLocationService";
+import { useFetchLocalExperiences } from "@/hooks/api/useFetchLocalExperiences";
+import { useFetchTherapists } from "@/hooks/api/useFetchTherapists";
+import { useFetchEvents } from "@/hooks/api/useFetchEvents";
+import { useAuth } from "@/hooks/api/useAuth";
 
 /**
  * ホーム画面で必要なデータを効率的に取得するカスタムフック

@@ -1,7 +1,7 @@
-// src/app/hooks/api/useAuth.ts
+// src/hooks/api/useAuth.ts
 "use client";
 import { useState, useEffect } from "react";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 import { User, Session } from "@supabase/supabase-js";
 
 // JWTトークンをデコードしてロールを取得する関数

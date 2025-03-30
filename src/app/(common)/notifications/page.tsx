@@ -2,7 +2,7 @@
 // src/app/tourist/notifications/page.tsx
 import React from "react";
 import { useNotifications, Notification } from "@/app/hooks/realtime/useNotifications";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 import { Card, CardHeader, CardTitle, CardContent } from "@/app/components/ui/Card";
 import Badge from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";

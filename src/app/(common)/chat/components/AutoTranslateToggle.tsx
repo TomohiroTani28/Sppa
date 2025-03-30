@@ -1,6 +1,6 @@
 // src/app/(common)/chat/components/AutoTranslateToggle.tsx
-import { Label } from '@/app/components/ui/Label';
-import { Switch } from '@/app/components/ui/Switch';
+import { Label } from '@/components/ui/Label';
+import { Switch } from '@/components/ui/Switch';
 import { useTranslation } from 'next-i18next';
 import { useAutoTranslation } from '../../../../hooks/useAutoTranslation';
 

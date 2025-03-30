@@ -1,8 +1,8 @@
-// src/app/tourist/chat/components/TemplateMessage.tsx
+// src/app/(common)/chat/components/TemplateMessage.tsx
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { useTranslation } from "next-i18next";
 
 interface TemplateMessageProps {

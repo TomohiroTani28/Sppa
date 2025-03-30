@@ -1,5 +1,5 @@
-// src/app/(common)/home/components/RealTimeAvailabilityBadge.tsx
-import Badge from '@/app/components/ui/Badge';
+// src/app/(common)/feed/components/RealTimeAvailabilityBadge.tsx
+import Badge from '@/components/ui/Badge';
 import { useTranslation } from 'next-i18next';
 
 interface RealTimeAvailabilityBadgeProps {

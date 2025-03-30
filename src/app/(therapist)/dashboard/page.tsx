@@ -5,7 +5,7 @@ import BookingSummary from "./components/BookingSummary";
 import RevenueChart from "./components/RevenueChart";
 import BottomNavigation from "@/app/components/common/BottomNavigation";
 import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 import PushNotification from "@/app/components/common/PushNotification";
 import { Booking } from "@/types/booking";
 

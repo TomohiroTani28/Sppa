@@ -1,8 +1,8 @@
-// src/app/tourist/chat/components/AutoTranslate.tsx
+// src/app/(common)/chat/components/AutoTranslate.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { useTranslation } from "next-i18next";
 
 interface AutoTranslateProps {

@@ -1,9 +1,9 @@
-// src/app/(common)/home/components/PostCard.tsx
+// src/app/(common)/feed/components/PostCard.tsx
 "use client";
 import { useState } from "react";
 import { useTranslation } from "next-i18next";
 import { Post } from "@/types/post";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { TranslationToggle } from "./TranslationToggle";
 
 // Event 型を仮定（必要に応じて実際の型をインポート）

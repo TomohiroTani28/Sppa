@@ -4,12 +4,12 @@
 import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useTranslation } from "next-i18next";
-import ChatHeader from "@/app/components/common/ChatHeader";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
+import ChatHeader from "@/components/ChatHeader";
+import BottomNavigation from "@/components/BottomNavigation";
 import ChatWindow from "@/app/(common)/chat/components/ChatWindow";
 import AutoTranslateToggle from "@/app/(common)/chat/components/AutoTranslateToggle";
-import { useAuth } from "@/app/hooks/api/useAuth";
-import { LoadingSpinner } from "@/app/components/common/LoadingSpinner";
+import { useAuth } from "@/hooks/api/useAuth";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 export default function ChatPage() {
   const { t } = useTranslation("common");

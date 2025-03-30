@@ -1,8 +1,8 @@
 "use client";
-// src/app/components/common/BottomNavigation.tsx
+// src/components/BottomNavigation.tsx
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getSessionRole } from "@/app/lib/auth";
+import { getSessionRole } from "@/lib/auth";
 import { Home, Search, Calendar, MessageSquare } from "lucide-react";
 import Image from "next/image";
 

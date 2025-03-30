@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useCreateEvent } from "@/app/hooks/api/useCreateEvent";
 import { Event } from "@/types/event";
-import { useAuth } from "@/app/hooks/api/useAuth"; // Added to get therapistId
+import { useAuth } from "@/hooks/api/useAuth";
 
 const EventForm: React.FC = () => {
   const [eventTitle, setEventTitle] = useState("");

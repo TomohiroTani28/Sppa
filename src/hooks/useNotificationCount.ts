@@ -3,7 +3,7 @@ import { useQuery, useSubscription } from '@apollo/client';
 import { gql } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAuth } from '@/app/hooks/api/useAuth';
+import { useAuth } from '@/hooks/api/useAuth';
 
 // GraphQL query to fetch initial unread notification count
 const GET_UNREAD_NOTIFICATIONS_COUNT = gql`

@@ -1,7 +1,7 @@
-// src/app/tourist/home/components/WelcomeMessage.tsx
+// src/app/(common)/feed/components/WelcomeMessage.tsx
 "use client";
 import React from "react";
-import Text from "@/app/components/ui/Text";
+import Text from "@/components/ui/Text";
 
 interface WelcomeMessageProps {
   user: { email: string } | null;

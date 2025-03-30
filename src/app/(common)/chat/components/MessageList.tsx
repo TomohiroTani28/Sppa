@@ -1,9 +1,9 @@
-// src/app/tourist/chat/components/MessageList.tsx
+// src/app/(common)/chat/components/MessageList.tsx
 "use client";
 
 import React, { useEffect, useRef } from "react";
 import { FixedSizeList as List } from "react-window";
-import useRealtimeChat from "@/app/hooks/realtime/useRealtimeChat";
+import useRealtimeChat from "@/realtime/useRealtimeChat";
 
 // メッセージの型を定義
 interface Message {

@@ -1,8 +1,8 @@
-// src/app/tourist/components/TouristLayout.tsx
+// src/app/(common)/components/TouristLayout.tsx
 import React from "react";
-import Navbar from "@app/components/ui/Navbar";
-import NotificationList from "@app/tourist/notifications/components/NotificationList";
-import { useUserPreferences } from "@/app/tourist/hooks/useUserPreferences";
+import Navbar from "@/components/ui/Navbar";
+import NotificationList from "@/app/(common)/notifications/components/NotificationList";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 
 // TouristLayoutのプロパティ
 type TouristLayoutProps = {

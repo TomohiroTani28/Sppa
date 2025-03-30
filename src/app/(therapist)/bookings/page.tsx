@@ -1,5 +1,5 @@
 "use client";
-// src/app/therapist/bookings/page.tsx
+// src/app/(therapist)/bookings/page.tsx
 import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
 import BookingCalendar from "@/app/therapist/bookings/components/BookingCalendar";
 import BookingList from "@/app/therapist/bookings/components/BookingList";

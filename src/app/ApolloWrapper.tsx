@@ -14,7 +14,7 @@ import { onError } from "@apollo/client/link/error";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { setContext } from "@apollo/client/link/context";
-import { useAuth } from "@/app/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 
 // エンドポイント（環境変数未設定時のフォールバック）
 const httpEndpoint =

@@ -1,8 +1,8 @@
 // src/app/(common)/chat/components/ChatWindow.tsx
 "use client";
 
-import { LoadingSpinner } from '@/app/components/common/LoadingSpinner';
-import { useAuth } from '@/app/hooks/api/useAuth';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { useAuth } from '@/hooks/api/useAuth';
 import { ChatMessage } from '@/types/chat';
 import { useTranslation } from 'next-i18next';
 import { useRealtimeChat } from '../../../../hooks/useRealtimeChat';
