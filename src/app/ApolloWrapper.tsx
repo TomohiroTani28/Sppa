@@ -22,7 +22,7 @@ const httpEndpoint =
 const wsEndpoint =
   process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ?? "ws://localhost:8081/v1/graphql";
 // ※ クライアント側では管理者シークレットは利用しない（セキュリティ上の理由）
-const adminSecret = process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET ?? "";
+const adminSecret = process.env.HASURA_GRAPHQL_ADMIN_SECRET ?? "";
 
 type ApolloWrapperProps = {
   children: React.ReactNode;

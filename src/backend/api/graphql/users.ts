@@ -44,7 +44,7 @@ export const createUserAPI = async (variables: Record<string, any>) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET ?? '',
+        'x-hasura-admin-secret': process.env.HASURA_GRAPHQL_ADMIN_SECRET ?? '',
       },
       body: JSON.stringify({
         query: print(CREATE_USER_DOC),

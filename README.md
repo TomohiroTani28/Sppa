@@ -273,7 +273,7 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 # Client-side 用（GraphQLエンドポイント）
 NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=http://localhost:8081/v1/graphql
 NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT=ws://localhost:8081/v1/graphql
-NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET=your-hasura-admin-secret
+HASURA_GRAPHQL_ADMIN_SECRET=your-hasura-admin-secret
 
 # Server-side 用（Hasura 接続情報）
 HASURA_GRAPHQL_DATABASE_URL=your-hasura-database-url

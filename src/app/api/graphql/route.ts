@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ||
     "http://localhost:8081/v1/graphql";
   const HASURA_ADMIN_SECRET =
-    process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET;
+    process.env.HASURA_GRAPHQL_ADMIN_SECRET;
 
   console.log("Proxying request to:", HASURA_GRAPHQL_ENDPOINT);
 
