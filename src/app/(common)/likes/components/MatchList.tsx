@@ -1,4 +1,4 @@
-// src/app/tourist/likes/components/MatchList.tsx
+// src/app/(common)/likes/components/MatchList.tsx
 import { FC } from "react";
 import { useRealtimeMatchList } from "@app/hooks/realtime/useRealtimeMatchList";
 import TherapistCard from "@/app/(common)/therapists/[therapistId]/components/TherapistCard";

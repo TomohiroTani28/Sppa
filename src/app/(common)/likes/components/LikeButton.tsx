@@ -1,4 +1,4 @@
-// src/app/tourist/likes/components/LikeButton.tsx
+// src/app/(common)/likes/components/LikeButton.tsx
 import { useState } from "react";
 import { useLikeTherapist } from "@/app/hooks/api/useLikeTherapist";
 import { Button } from "@/app/components/ui/Button"; // Fixed import: Default import

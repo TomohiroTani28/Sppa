@@ -1,4 +1,4 @@
-// src/app/tourist/preferences/page.tsx
+// src/app/(common)/preferences/page.tsx
 import PreferenceForm from "./components/PreferenceForm";
 
 const PreferencesPage = () => {

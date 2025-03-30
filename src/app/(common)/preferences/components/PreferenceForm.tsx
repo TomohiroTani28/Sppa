@@ -1,4 +1,4 @@
-// src/app/tourist/preferences/components/PreferenceForm.tsx
+// src/app/(common)/preferences/components/PreferenceForm.tsx
 "use client";
 import { useState } from "react";
 import { useUserPreferences } from "@/app/tourist/hooks/useUserPreferences";
