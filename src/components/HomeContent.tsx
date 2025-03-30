@@ -1,9 +1,8 @@
 // src/app/components/common/HomeContent.tsx
+import RecommendedTherapists from "@/app/(common)/home/components/RecommendedTherapists";
 import React from "react";
-import RecommendedTherapists from "@/app/tourist/home/components/RecommendedTherapists";
 // Import from the correct location
-import { RecommendedExperiences } from "@/app/components/common/OfferCarousel";
-import OfferCarousel from "@/app/components/common/OfferCarousel";
+import OfferCarousel, { RecommendedExperiences } from "@/app/components/common/OfferCarousel";
 
 interface HomeContentProps {
   events: any[];

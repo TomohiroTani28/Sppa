@@ -3,8 +3,8 @@
 import React, { useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "@/app/(common)/search/components/SearchBar";
-import FilterModal from "@/app/tourist/search/components/FilterModal";
-import TrendDisplay from "@/app/tourist/search/components/TrendDisplay";
+import FilterModal from "@/app/(common)/search/components/FilterModal";
+import TrendDisplay from "@/app/(common)/search/components/TrendDisplay";
 import { useBottomSheet } from "@/app/hooks/ui/useBottomSheet";
 import BottomNavigation from "@/app/components/common/BottomNavigation";
 import dynamic from "next/dynamic";
@@ -19,12 +19,12 @@ interface SearchResultsProps {
 }
 
 // Dynamic imports
-const SearchResults = dynamic(() => import("@/app/tourist/search/components/SearchResults").then(mod => mod.default), {
+const SearchResults = dynamic(() => import("@/app/(common)/search/components/SearchResults").then(mod => mod.default), {
   loading: () => <div className="h-32 bg-gray-100 animate-pulse rounded-md" />,
   ssr: false,
 });
 
-const MapView = dynamic(() => import("@/app/tourist/search/components/MapView").then(mod => mod.default), {
+const MapView = dynamic(() => import("@/app/(common)/search/components/MapView").then(mod => mod.default), {
   loading: () => (
     <div className="flex justify-center items-center h-80 bg-gray-50 rounded-md">
       <div className="text-gray-500">地図をロード中...</div>

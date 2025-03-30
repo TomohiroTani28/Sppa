@@ -1,11 +1,11 @@
 // src/app/tourist/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import supabase from "@/app/lib/supabase-client";
-import WelcomeMessage from "@/app/tourist/home/components/WelcomeMessage";
+import WelcomeMessage from "@/app/(common)/home/components/WelcomeMessage";
 import BottomNavigation from "@/app/components/common/BottomNavigation";
+import supabase from "@/app/lib/supabase-client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface UserPreferences {
   language: string;

@@ -1,11 +1,11 @@
 // src/app/tourist/local-experiences/page.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import TouristLayout from "@/app/tourist/components/TouristLayout";
-import { useFetchLocalExperiences } from "@/app/hooks/api/useFetchLocalExperiences";
-import ExperienceCard from "./components/ExperienceCard";
+import TouristLayout from "@/app/(common)/components/TouristLayout";
 import BottomNavigation from "@/app/components/common/BottomNavigation";
+import { useFetchLocalExperiences } from "@/app/hooks/api/useFetchLocalExperiences";
+import { useEffect, useState } from "react";
+import ExperienceCard from "./components/ExperienceCard";
 
 const categories = [
   { id: "d2587e51-90b6-4d3e-a1f0-44cd7d5a68a7", name: "ビーチアクティビティ" },

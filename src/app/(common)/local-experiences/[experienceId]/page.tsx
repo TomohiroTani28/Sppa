@@ -1,12 +1,12 @@
 // src/app/tourist/local-experiences/[experienceId]/page.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
-import TouristLayout from "@/app/tourist/components/TouristLayout";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
+import TouristLayout from "@/app/(common)/components/TouristLayout";
 import { LocalExperience } from "@/app/api/experiences/route";
+import BottomNavigation from "@/app/components/common/BottomNavigation";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const ExperienceDetailPage = () => {
   const params = useParams();

@@ -1,22 +1,22 @@
 // src/app/tourist/search/components/MapView.tsx
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { useLocationService } from "@/app/tourist/components/LocationService";
+import { useLocationService } from "@/app/(common)/components/LocationService";
 import { useFetchTherapistLocations } from "@/app/hooks/api/useFetchTherapistLocations";
+import Feature from "ol/Feature";
 import Map from "ol/Map";
 import View from "ol/View";
-import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
-import { fromLonLat } from "ol/proj";
-import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
+import TileLayer from "ol/layer/Tile";
 import VectorLayer from "ol/layer/Vector";
+import { fromLonLat } from "ol/proj";
+import OSM from "ol/source/OSM";
 import VectorSource from "ol/source/Vector";
-import Style from "ol/style/Style";
-import Icon from "ol/style/Icon";
-import Text from "ol/style/Text";
 import Fill from "ol/style/Fill";
+import Icon from "ol/style/Icon";
 import Stroke from "ol/style/Stroke";
+import Style from "ol/style/Style";
+import Text from "ol/style/Text";
+import React, { useEffect, useRef, useState } from "react";
 
 // Types for map objects
 interface TherapistMarkerProps {

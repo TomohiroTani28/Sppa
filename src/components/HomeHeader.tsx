@@ -1,8 +1,7 @@
 'use client';
 // src/app/components/common/HomeHeader.tsx
+import WelcomeMessage from "@/app/(common)/home/components/WelcomeMessage";
 import Link from "next/link";
-import WelcomeMessage from "@/app/tourist/home/components/WelcomeMessage";
-import React from "react";
 
 interface HomeHeaderProps {
   readonly user: { name: string; profilePicture: string; email: string };
