@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/images/sppa.png" alt="Sppa Thumbnail" width="600">
+  <img src="./public/images/sppa2.png" alt="Sppa Thumbnail" width="600">
 </p>
 
 # Sppa（スッパ）- バリ島のセラピストと観光客を繋ぐコンテンツファーストSNS
