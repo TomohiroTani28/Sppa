@@ -3,7 +3,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Link from "next/link";
-import TherapistCard from "@/app/tourist/components/TherapistCard";
+import TherapistCard from "@/app/(common)/search/components/TherapistCard";
 import { Spinner } from "@/app/components/ui/Spinner";
 import { useTranslation } from "react-i18next";
 import { Therapist } from "@/types/therapist";
