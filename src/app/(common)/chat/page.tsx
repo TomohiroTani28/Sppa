@@ -1,17 +1,17 @@
 // src/app/(common)/chat/page.tsx
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ChatProvider } from "@/app/contexts/ChatContext";
-import useIsomorphicLayoutEffect from "@/app/hooks/api/useIsomorphicLayoutEffect";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
-import ChatHeader from "@/app/components/common/ChatHeader";
+import { useOnlineUsers } from "@/app/(common)/hooks/useOnlineUsers";
+import { useRecentChats } from "@/app/(common)/hooks/useRecentChats";
+import { useSearchUsers } from "@/app/(common)/hooks/useSearchUsers";
 import SearchBar from "@/app/(common)/search/components/SearchBar";
 import Avatar from "@/app/components/common/Avatar";
-import { useOnlineUsers } from "@/app/(common)/chat/hooks/useOnlineUsers";
-import { useRecentChats } from "@/app/(common)/chat/hooks/useRecentChats";
-import { useSearchUsers } from "@/app/(common)/chat/hooks/useSearchUsers";
+import BottomNavigation from "@/app/components/common/BottomNavigation";
+import ChatHeader from "@/app/components/common/ChatHeader";
+import { ChatProvider } from "@/app/contexts/ChatContext";
+import useIsomorphicLayoutEffect from "@/app/hooks/api/useIsomorphicLayoutEffect";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 // 型定義
 interface User {

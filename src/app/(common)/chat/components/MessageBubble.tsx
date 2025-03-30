@@ -1,8 +1,8 @@
 // src/app/(common)/chat/components/MessageBubble.tsx
 import { cn } from '@/app/lib/utils';
-import { useAutoTranslation } from '../hooks/useAutoTranslation';
 import { ChatMessage } from '@/types/chat';
 import { format } from 'date-fns';
+import { useAutoTranslation } from '../../hooks/useAutoTranslation';
 
 interface MessageBubbleProps {
   readonly message: ChatMessage; // readonly を追加

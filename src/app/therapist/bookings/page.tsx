@@ -1,12 +1,12 @@
 "use client";
 // src/app/therapist/bookings/page.tsx
-import React, { useEffect, useState, useCallback } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
 import BookingCalendar from "@/app/therapist/bookings/components/BookingCalendar";
 import BookingList from "@/app/therapist/bookings/components/BookingList";
-import RealtimeBookingList from "@/app/realtime/RealtimeBookingList";
-import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
+import RealtimeBookingList from "@/realtime/RealtimeBookingList";
 import { Booking } from "@/types/booking";
+import { gql, useQuery } from "@apollo/client";
+import React, { useCallback, useEffect, useState } from "react";
 
 // GraphQL query to fetch bookings
 const FETCH_BOOKINGS_QUERY = gql`

@@ -1,6 +1,6 @@
 // src/app/components/common/PushNotification.tsx
+import { setupPushNotifications } from "@/realtime/notifications-push";
 import { useEffect } from "react";
-import { setupPushNotifications } from "@/app/realtime/notifications-push";
 
 const PushNotification = () => {
   useEffect(() => {

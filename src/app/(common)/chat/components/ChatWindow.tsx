@@ -1,13 +1,13 @@
 // src/app/(common)/chat/components/ChatWindow.tsx
 "use client";
 
-import { useTranslation } from 'next-i18next';
-import MessageBubble from './MessageBubble';
-import MessageInput from './MessageInput';
-import { useRealtimeChat } from '../hooks/useRealtimeChat';
 import { LoadingSpinner } from '@/app/components/common/LoadingSpinner';
 import { useAuth } from '@/app/hooks/api/useAuth';
 import { ChatMessage } from '@/types/chat';
+import { useTranslation } from 'next-i18next';
+import { useRealtimeChat } from '../../hooks/useRealtimeChat';
+import MessageBubble from './MessageBubble';
+import MessageInput from './MessageInput';
 
 interface ChatWindowProps {
   receiverId: string;

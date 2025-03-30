@@ -1,12 +1,12 @@
 "use client";
 // src/app/(common)/chat/components/MessageInput.tsx
-import React, { useState } from "react";
-import { useTranslation } from "next-i18next";
-import { Input } from "@/app/components/ui/Input";
 import { Button } from "@/app/components/ui/Button";
+import { Input } from "@/app/components/ui/Input";
 import { useAuth } from "@/app/hooks/api/useAuth";
-import { useMutation, gql } from "@apollo/client";
-import { useAutoTranslation } from "../hooks/useAutoTranslation";
+import { gql, useMutation } from "@apollo/client";
+import { useTranslation } from "next-i18next";
+import { useState } from "react";
+import { useAutoTranslation } from "../../hooks/useAutoTranslation";
 
 const SEND_MESSAGE = gql`
   mutation SendMessage($sender_id: UUID!, $receiver_id: UUID!, $content: String!, $translated_content: jsonb) {

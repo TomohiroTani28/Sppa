@@ -1,6 +1,6 @@
 // src/app/lib/auth.client.ts
 import { User } from "@/types/user";
-import supabase from "./supabase-client";
+import supabase from "./lib/supabase-client";
 
 // Sppa 用のユーザー型（User を拡張しつつ Supabase の実態に合わせる）
 interface SppaUser extends Omit<User, 'password_hash'> {

@@ -1,46 +1,41 @@
-// src/realtime/chat-listener.ts
-import supabase from '@/app/lib/supabase-client';
+// src/app/realtime/chat-listener.ts
+import { gql } from "@apollo/client";
+import { graphqlClient } from "@/app/lib/hasura-client";
+import { Observable } from "rxjs";
 
-// リアルタイム変更イベントの型定義
-interface ChatMessageChange {
-  event: 'INSERT' | 'UPDATE' | 'DELETE';
-  data: any; // 将来的には `chat_messages` テーブルの具体的な型に置き換え可能
-}
+const CHAT_SUBSCRIPTION = gql`
+  subscription ChatMessages($chatId: UUID!) {
+    chat_messages(where: { chat_id: { _eq: $chatId } }, order_by: { created_at: asc }) {
+      id
+      sender_id
+      receiver_id
+      message_text
+      translated_text
+      is_read
+      created_at
+    }
+  }
+`;
 
-/**
- * チャットメッセージの変更をリアルタイムで購読する関数
- * @param chatRoomId チャットルームのID
- * @param callback 変更イベントを受け取るコールバック関数
- * @returns 購読を解除する関数
- */
-export const subscribeToChatMessages = (
-  chatRoomId: string,
-  callback: (change: ChatMessageChange) => void,
-) => {
-  // ユニークなチャンネル名を生成
-  const channel = supabase
-    .channel(`chat_${chatRoomId}`)
-    .on(
-      'postgres_changes',
-      {
-        event: '*', // 挿入、更新、削除のすべてのイベントをリッスン
-        schema: 'public',
-        table: 'chat_messages',
-        filter: `chat_room_id=eq.${chatRoomId}`, // 指定したチャットルームIDにフィルタリング
-      },
-      (payload) => {
-        // イベントタイプに応じてコールバックに適切なデータを渡す
-        if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
-          callback({ event: payload.eventType, data: payload.new });
-        } else if (payload.eventType === 'DELETE') {
-          callback({ event: 'DELETE', data: payload.old });
+export const subscribeToChat = (chatId: string, callback: (messages: any[]) => void) => {
+  return new Observable((observer) => {
+    const subscription = graphqlClient.subscribe({
+      query: CHAT_SUBSCRIPTION as any,
+      variables: { chatId },
+    }).subscribe({
+      next: (response) => {
+        if (response.data) {
+          observer.next(response.data.chat_messages);
+          callback(response.data.chat_messages);
         }
       },
-    )
-    .subscribe();
+      error: (err) => {
+        console.error("Chat subscription error:", err);
+        observer.error(err);
+      },
+      complete: () => observer.complete(),
+    });
 
-  // クリーンアップ関数を返す（購読解除用）
-  return () => {
-    supabase.removeChannel(channel);
-  };
+    return () => subscription.unsubscribe();
+  });
 };
