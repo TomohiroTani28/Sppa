@@ -30,11 +30,13 @@
 Sppa
 ├── Dockerfile
 ├── README.md
-├── Sppa概要
-├── api-template.hbs
 ├── bug_report.md
-├── docker-compose.dev.yml
-├── docker-compose.prod.yml
+├── config
+│   ├── docker-compose.dev.yml
+│   ├── docker-compose.prod.yml
+│   └── pg_hba.conf
+├── docs
+│   └── Sppa概要.md
 ├── hasura
 │   ├── config.yaml
 │   ├── metadata
@@ -106,7 +108,6 @@ Sppa
 ├── next-i18next.config.js
 ├── next.config.js
 ├── package.json
-├── pg_hba.conf
 ├── postcss.config.js
 ├── public
 │   └── images
@@ -120,29 +121,20 @@ Sppa
 │       ├── user1.jpg
 │       └── user2.jpg
 ├── scripts
+│   ├── dev
+│   │   ├── organize_sppa_dirs.sh
+│   │   └── server.js
+│   ├── generate
+│   │   └── api-template.hbs
 │   ├── generate-api-from-permissions.js
-│   ├── migration_log.txt
-│   ├── organize_sppa_dirs.sh
-│   ├── output.txt
-│   ├── script.sql
-│   └── server.js
+│   ├── logs
+│   │   ├── migration_log.txt
+│   │   └── output.txt
+│   └── migrations
+│       └── script.sql
 ├── src
 │   ├── app
 │   │   ├── (common)
-│   │   │   ├── bookings
-│   │   │   │   ├── components
-│   │   │   │   │   ├── AddOption.tsx
-│   │   │   │   │   ├── BookingCalendar.tsx
-│   │   │   │   │   ├── BookingCard.tsx
-│   │   │   │   │   ├── BookingDetailModal.tsx
-│   │   │   │   │   ├── BookingForm.tsx
-│   │   │   │   │   ├── BookingList.tsx
-│   │   │   │   │   ├── CancelPolicy.tsx
-│   │   │   │   │   ├── MyBookingsList.tsx
-│   │   │   │   │   ├── RealTimeAvailability.tsx
-│   │   │   │   │   ├── ReminderNotification.tsx
-│   │   │   │   │   └── TransactionDetails.tsx
-│   │   │   │   └── page.tsx
 │   │   │   ├── chat
 │   │   │   │   ├── [userId]
 │   │   │   │   │   └── page.tsx
@@ -164,7 +156,7 @@ Sppa
 │   │   │   ├── components
 │   │   │   │   ├── LocationService.ts
 │   │   │   │   └── TouristLayout.tsx
-│   │   │   ├── home
+│   │   │   ├── feed
 │   │   │   │   ├── components
 │   │   │   │   │   ├── FeedList.tsx
 │   │   │   │   │   ├── MasonryFeed.tsx
@@ -182,15 +174,6 @@ Sppa
 │   │   │   │   └── components
 │   │   │   │       ├── LikeButton.tsx
 │   │   │   │       └── MatchList.tsx
-│   │   │   ├── local-experiences
-│   │   │   │   ├── [experienceId]
-│   │   │   │   │   ├── components
-│   │   │   │   │   │   └── MediaGallery.tsx
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── components
-│   │   │   │   │   ├── ExperienceCard.tsx
-│   │   │   │   │   └── ExperienceList.tsx
-│   │   │   │   └── page.tsx
 │   │   │   ├── notifications
 │   │   │   │   ├── components
 │   │   │   │   │   ├── NotificationList.tsx
@@ -198,20 +181,6 @@ Sppa
 │   │   │   │   │       └── NotificationListStatic.tsx
 │   │   │   │   └── page.tsx
 │   │   │   ├── page.tsx
-│   │   │   ├── preferences
-│   │   │   │   ├── components
-│   │   │   │   │   └── PreferenceForm.tsx
-│   │   │   │   └── page.tsx
-│   │   │   ├── profile
-│   │   │   │   ├── components
-│   │   │   │   │   ├── DarkModeToggle.tsx
-│   │   │   │   │   ├── PaymentMethod.tsx
-│   │   │   │   │   ├── PreferencesForm.tsx
-│   │   │   │   │   ├── ProfileEdit.tsx
-│   │   │   │   │   ├── ProfileForm.tsx
-│   │   │   │   │   ├── ProfileView.tsx
-│   │   │   │   │   └── ReviewHistory.tsx
-│   │   │   │   └── page.tsx
 │   │   │   ├── search
 │   │   │   │   ├── components
 │   │   │   │   │   ├── FilterModal.tsx
@@ -226,24 +195,116 @@ Sppa
 │   │   │   │   │   ├── TrendTags.tsx
 │   │   │   │   │   └── TrendingSearches.tsx
 │   │   │   │   └── page.tsx
-│   │   │   └── therapists
-│   │   │       └── [therapistId]
-│   │   │           ├── MediaGallery.tsx
-│   │   │           ├── ReviewList.tsx
-│   │   │           ├── TherapistAvailability.tsx
-│   │   │           ├── TherapistDetail.tsx
-│   │   │           ├── components
-│   │   │           │   ├── BookingButton.tsx
-│   │   │           │   ├── FilterPanel.tsx
-│   │   │           │   ├── RealTimeStatus.tsx
-│   │   │           │   ├── ReviewList.tsx
-│   │   │           │   ├── ServiceDetails.tsx
-│   │   │           │   ├── TherapistCard.tsx
-│   │   │           │   ├── TherapistFilter.tsx
-│   │   │           │   ├── TherapistList.tsx
-│   │   │           │   ├── TherapistMap.tsx
-│   │   │           │   └── TherapistProfile.tsx
+│   │   │   ├── therapists
+│   │   │   │   └── [therapistId]
+│   │   │   │       ├── MediaGallery.tsx
+│   │   │   │       ├── ReviewList.tsx
+│   │   │   │       ├── TherapistAvailability.tsx
+│   │   │   │       ├── TherapistDetail.tsx
+│   │   │   │       └── components
+│   │   │   │           ├── BookingButton.tsx
+│   │   │   │           ├── FilterPanel.tsx
+│   │   │   │           ├── RealTimeStatus.tsx
+│   │   │   │           ├── ReviewList.tsx
+│   │   │   │           ├── ServiceDetails.tsx
+│   │   │   │           ├── TherapistCard.tsx
+│   │   │   │           ├── TherapistFilter.tsx
+│   │   │   │           ├── TherapistList.tsx
+│   │   │   │           ├── TherapistMap.tsx
+│   │   │   │           └── TherapistProfile.tsx
+│   │   │   └── treatment
+│   │   │       └── [id]
 │   │   │           └── page.tsx
+│   │   ├── (therapist)
+│   │   │   ├── bookings
+│   │   │   │   ├── components
+│   │   │   │   │   ├── BookingCalendar.tsx
+│   │   │   │   │   ├── BookingDetailModal.tsx
+│   │   │   │   │   ├── BookingList.tsx
+│   │   │   │   │   └── TransactionList.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── components
+│   │   │   │   ├── Sidebar.tsx
+│   │   │   │   ├── TherapistAvailabilityPanel.tsx
+│   │   │   │   └── TherapistLayout.tsx
+│   │   │   ├── dashboard
+│   │   │   │   ├── components
+│   │   │   │   │   ├── ActivityLog.tsx
+│   │   │   │   │   ├── BookingSummary.tsx
+│   │   │   │   │   ├── DashboardSummary.tsx
+│   │   │   │   │   └── RevenueChart.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── events
+│   │   │   │   ├── components
+│   │   │   │   │   ├── EventCard.tsx
+│   │   │   │   │   ├── EventForm.tsx
+│   │   │   │   │   └── EventList.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── hooks
+│   │   │   │   ├── useActivityLogs.ts
+│   │   │   │   ├── useBookingData.ts
+│   │   │   │   ├── useEventData.ts
+│   │   │   │   └── useReviewData.ts
+│   │   │   ├── page.tsx
+│   │   │   ├── profile
+│   │   │   │   ├── components
+│   │   │   │   │   ├── AvailabilitySettings.tsx
+│   │   │   │   │   ├── EventForm.tsx
+│   │   │   │   │   ├── MediaUploadForm.tsx
+│   │   │   │   │   ├── ProfileForm.tsx
+│   │   │   │   │   ├── ProfileSettings.tsx
+│   │   │   │   │   ├── ServiceForm.tsx
+│   │   │   │   │   ├── ServiceManagement.tsx
+│   │   │   │   │   └── hooks
+│   │   │   │   │       ├── useProfileData.ts
+│   │   │   │   │       └── useRealTimeProfileUpdates.ts
+│   │   │   │   └── page.tsx
+│   │   │   ├── reviews
+│   │   │   │   ├── components
+│   │   │   │   │   ├── ReviewDetailModal.tsx
+│   │   │   │   │   ├── ReviewList.tsx
+│   │   │   │   │   └── ReviewOverview.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── settings
+│   │   │       └── page.tsx
+│   │   ├── (tourist)
+│   │   │   ├── bookings
+│   │   │   │   ├── components
+│   │   │   │   │   ├── AddOption.tsx
+│   │   │   │   │   ├── BookingCalendar.tsx
+│   │   │   │   │   ├── BookingCard.tsx
+│   │   │   │   │   ├── BookingDetailModal.tsx
+│   │   │   │   │   ├── BookingForm.tsx
+│   │   │   │   │   ├── BookingList.tsx
+│   │   │   │   │   ├── CancelPolicy.tsx
+│   │   │   │   │   ├── MyBookingsList.tsx
+│   │   │   │   │   ├── RealTimeAvailability.tsx
+│   │   │   │   │   ├── ReminderNotification.tsx
+│   │   │   │   │   └── TransactionDetails.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── local-experiences
+│   │   │   │   ├── [experienceId]
+│   │   │   │   │   ├── components
+│   │   │   │   │   │   └── MediaGallery.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── ExperienceCard.tsx
+│   │   │   │   │   └── ExperienceList.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── preferences
+│   │   │   │   ├── components
+│   │   │   │   │   └── PreferenceForm.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── profile
+│   │   │       ├── components
+│   │   │       │   ├── DarkModeToggle.tsx
+│   │   │       │   ├── PaymentMethod.tsx
+│   │   │       │   ├── PreferencesForm.tsx
+│   │   │       │   ├── ProfileEdit.tsx
+│   │   │       │   ├── ProfileForm.tsx
+│   │   │       │   ├── ProfileView.tsx
+│   │   │       │   └── ReviewHistory.tsx
+│   │   │       └── page.tsx
 │   │   ├── ApolloWrapper.tsx
 │   │   ├── api
 │   │   │   ├── activity-logs
@@ -281,60 +342,8 @@ Sppa
 │   │   │   └── page.tsx
 │   │   ├── page.tsx
 │   │   ├── providers.tsx
-│   │   ├── signup
-│   │   │   └── page.tsx
-│   │   └── therapist
-│   │       ├── bookings
-│   │       │   ├── components
-│   │       │   │   ├── BookingCalendar.tsx
-│   │       │   │   ├── BookingDetailModal.tsx
-│   │       │   │   ├── BookingList.tsx
-│   │       │   │   └── TransactionList.tsx
-│   │       │   └── page.tsx
-│   │       ├── components
-│   │       │   ├── Sidebar.tsx
-│   │       │   ├── TherapistAvailabilityPanel.tsx
-│   │       │   └── TherapistLayout.tsx
-│   │       ├── dashboard
-│   │       │   ├── components
-│   │       │   │   ├── ActivityLog.tsx
-│   │       │   │   ├── BookingSummary.tsx
-│   │       │   │   ├── DashboardSummary.tsx
-│   │       │   │   └── RevenueChart.tsx
-│   │       │   └── page.tsx
-│   │       ├── events
-│   │       │   ├── components
-│   │       │   │   ├── EventCard.tsx
-│   │       │   │   ├── EventForm.tsx
-│   │       │   │   └── EventList.tsx
-│   │       │   └── page.tsx
-│   │       ├── hooks
-│   │       │   ├── useActivityLogs.ts
-│   │       │   ├── useBookingData.ts
-│   │       │   ├── useEventData.ts
-│   │       │   └── useReviewData.ts
-│   │       ├── page.tsx
-│   │       ├── profile
-│   │       │   ├── components
-│   │       │   │   ├── AvailabilitySettings.tsx
-│   │       │   │   ├── EventForm.tsx
-│   │       │   │   ├── MediaUploadForm.tsx
-│   │       │   │   ├── ProfileForm.tsx
-│   │       │   │   ├── ProfileSettings.tsx
-│   │       │   │   ├── ServiceForm.tsx
-│   │       │   │   ├── ServiceManagement.tsx
-│   │       │   │   └── hooks
-│   │       │   │       ├── useProfileData.ts
-│   │       │   │       └── useRealTimeProfileUpdates.ts
-│   │       │   └── page.tsx
-│   │       ├── reviews
-│   │       │   ├── components
-│   │       │   │   ├── ReviewDetailModal.tsx
-│   │       │   │   ├── ReviewList.tsx
-│   │       │   │   └── ReviewOverview.tsx
-│   │       │   └── page.tsx
-│   │       └── settings
-│   │           └── page.tsx
+│   │   └── signup
+│   │       └── page.tsx
 │   ├── backend
 │   │   └── api
 │   │       ├── generated-api.ts
