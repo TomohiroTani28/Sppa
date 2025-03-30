@@ -294,654 +294,549 @@ HASURA_GRAPHQL_JWT_SECRET='{"type":"HS256","key":"your-hasura-jwt-secret-key"}'
 <summary>クリックして展開</summary>
 
 ```text
-sppa/
+Sppa
 ├── Dockerfile
-├── Sppa概要
-├── api-template.hbs
-├── config.yaml
-├── docker-compose.dev.yml
-├── docker-compose.prod.yml
-├── hasura/
-│ ├── config.yaml
-│ ├── metadata/
-│ │ ├── actions.graphql
-│ │ ├── actions.yaml
-│ │ ├── allow_list.yaml
-│ │ ├── api_limits.yaml
-│ │ ├── backend_configs.yaml
-│ │ ├── cron_triggers.yaml
-│ │ ├── databases/
-│ │ │ ├── databases.yaml
-│ │ │ └── default/
-│ │ │ └── tables/
-│ │ │ ├── public_activity_logs.yaml
-│ │ │ ├── public_application_settings.yaml
-│ │ │ ├── public_bookings.yaml
-│ │ │ ├── public_error_logs.yaml
-│ │ │ ├── public_event_media.yaml
-│ │ │ ├── public_events.yaml
-│ │ │ ├── public_geography_columns.yaml
-│ │ │ ├── public_geometry_columns.yaml
-│ │ │ ├── public_likes.yaml
-│ │ │ ├── public_local_experience_categories.yaml
-│ │ │ ├── public_local_experience_media.yaml
-│ │ │ ├── public_local_experiences.yaml
-│ │ │ ├── public_matches.yaml
-│ │ │ ├── public_media.yaml
-│ │ │ ├── public_notifications.yaml
-│ │ │ ├── public_posts.yaml
-│ │ │ ├── public_realtime_messages.yaml
-│ │ │ ├── public_regions.yaml
-│ │ │ ├── public_reviews.yaml
-│ │ │ ├── public_service_categories.yaml
-│ │ │ ├── public_service_media.yaml
-│ │ │ ├── public_spatial_ref_sys.yaml
-│ │ │ ├── public_storage_buckets.yaml
-│ │ │ ├── public_storage_objects.yaml
-│ │ │ ├── public_therapist_availability.yaml
-│ │ │ ├── public_therapist_profiles.yaml
-│ │ │ ├── public_therapist_services.yaml
-│ │ │ ├── public_tourist_profiles.yaml
-│ │ │ ├── public_transactions.yaml
-│ │ │ ├── public_unavailable_dates.yaml
-│ │ │ ├── public_user_preferences.yaml
-│ │ │ ├── public_users.yaml
-│ │ │ └── tables.yaml
-│ │ ├── graphql_schema_introspection.yaml
-│ │ ├── inherited_roles.yaml
-│ │ ├── metrics_config.yaml
-│ │ ├── network.yaml
-│ │ ├── opentelemetry.yaml
-│ │ ├── permission.yaml
-│ │ ├── query_collections.yaml
-│ │ ├── remote_schemas.yaml
-│ │ ├── rest_endpoints.yaml
-│ │ └── version.yaml
-│ ├── migrations/
-│ │ └── default/
-│ │ ├── 1742053444159_init/
-│ │ │ └── up.sql
-│ │ ├── 1742054367761_init/
-│ │ │ └── up.sql
-│ │ └── 20250226120000_create_tables.sql
-│ ├── output.txt
-│ ├── payload:{headers:Authorization:Bearer <your-token>}
-│ ├── payload:{headers:Authorization:Bearer eyJhbGci...}
-│ ├── payload:{headers:x-hasura-role:tourist}
-│ ├── seeds/
-│ │ └── default/
-│ │ └── 1741574725086_initial_data.sql
-│ └── type:connection_init
-├── metadata/
-│ ├── actions.graphql
-│ ├── actions.yaml
-│ ├── allow_list.yaml
-│ ├── api_limits.yaml
-│ ├── backend_configs.yaml
-│ ├── cron_triggers.yaml
-│ ├── databases/
-│ │ ├── databases.yaml
-│ │ ├── default/
-│ │ │ └── tables/
-│ │ │ ├── public_geography_columns.yaml
-│ │ │ ├── public_geometry_columns.yaml
-│ │ │ ├── public_spatial_ref_sys.yaml
-│ │ │ └── tables.yaml
-│ │ └── sppa/
-│ │ └── tables/
-│ │ ├── pgsodium_decrypted_key.yaml
-│ │ ├── pgsodium_key.yaml
-│ │ ├── pgsodium_mask_columns.yaml
-│ │ ├── pgsodium_masking_rule.yaml
-│ │ ├── pgsodium_valid_key.yaml
-│ │ ├── public_activity_logs.yaml
-│ │ ├── public_application_settings.yaml
-│ │ ├── public_bookings.yaml
-│ │ ├── public_error_logs.yaml
-│ │ ├── public_event_media.yaml
-│ │ ├── public_events.yaml
-│ │ ├── public_likes.yaml
-│ │ ├── public_local_experience_categories.yaml
-│ │ ├── public_local_experience_media.yaml
-│ │ ├── public_local_experiences.yaml
-│ │ ├── public_matches.yaml
-│ │ ├── public_media.yaml
-│ │ ├── public_notifications.yaml
-│ │ ├── public_posts.yaml
-│ │ ├── public_regions.yaml
-│ │ ├── public_reviews.yaml
-│ │ ├── public_service_categories.yaml
-│ │ ├── public_service_media.yaml
-│ │ ├── public_therapist_availability.yaml
-│ │ ├── public_therapist_profiles.yaml
-│ │ ├── public_therapist_services.yaml
-│ │ ├── public_tourist_profiles.yaml
-│ │ ├── public_transactions.yaml
-│ │ ├── public_unavailable_dates.yaml
-│ │ ├── public_user_preferences.yaml
-│ │ ├── public_users.yaml
-│ │ ├── realtime_messages.yaml
-│ │ ├── realtime_schema_migrations.yaml
-│ │ ├── realtime_subscription.yaml
-│ │ ├── storage_buckets.yaml
-│ │ ├── storage_migrations.yaml
-│ │ ├── storage_objects.yaml
-│ │ ├── storage_s3_multipart_uploads.yaml
-│ │ ├── storage_s3_multipart_uploads_parts.yaml
-│ │ ├── supabase_migrations_schema_migrations.yaml
-│ │ ├── supabase_migrations_seed_files.yaml
-│ │ ├── tables.yaml
-│ │ ├── vault_decrypted_secrets.yaml
-│ │ └── vault_secrets.yaml
-│ ├── graphql_schema_introspection.yaml
-│ ├── inherited_roles.yaml
-│ ├── metrics_config.yaml
-│ ├── network.yaml
-│ ├── opentelemetry.yaml
-│ ├── query_collections.yaml
-│ ├── remote_schemas.yaml
-│ ├── rest_endpoints.yaml
-│ └── version.yaml
-├── metadata.json
+├── README.md
+├── bug_report.md
+├── config
+│   ├── docker-compose.dev.yml
+│   ├── docker-compose.prod.yml
+│   └── pg_hba.conf
+├── docs
+│   └── Sppa概要.md
+├── hasura
+│   ├── config.yaml
+│   ├── metadata
+│   │   ├── actions.graphql
+│   │   ├── actions.yaml
+│   │   ├── allow_list.yaml
+│   │   ├── api_limits.yaml
+│   │   ├── backend_configs.yaml
+│   │   ├── cron_triggers.yaml
+│   │   ├── databases
+│   │   │   ├── databases.yaml
+│   │   │   └── default
+│   │   │       └── tables
+│   │   │           ├── public_activity_logs.yaml
+│   │   │           ├── public_application_settings.yaml
+│   │   │           ├── public_bookings.yaml
+│   │   │           ├── public_error_logs.yaml
+│   │   │           ├── public_event_media.yaml
+│   │   │           ├── public_events.yaml
+│   │   │           ├── public_geography_columns.yaml
+│   │   │           ├── public_geometry_columns.yaml
+│   │   │           ├── public_likes.yaml
+│   │   │           ├── public_local_experience_categories.yaml
+│   │   │           ├── public_local_experience_media.yaml
+│   │   │           ├── public_local_experiences.yaml
+│   │   │           ├── public_matches.yaml
+│   │   │           ├── public_media.yaml
+│   │   │           ├── public_notifications.yaml
+│   │   │           ├── public_posts.yaml
+│   │   │           ├── public_realtime_messages.yaml
+│   │   │           ├── public_regions.yaml
+│   │   │           ├── public_reviews.yaml
+│   │   │           ├── public_service_categories.yaml
+│   │   │           ├── public_service_media.yaml
+│   │   │           ├── public_spatial_ref_sys.yaml
+│   │   │           ├── public_storage_buckets.yaml
+│   │   │           ├── public_storage_objects.yaml
+│   │   │           ├── public_therapist_availability.yaml
+│   │   │           ├── public_therapist_profiles.yaml
+│   │   │           ├── public_therapist_services.yaml
+│   │   │           ├── public_tourist_profiles.yaml
+│   │   │           ├── public_transactions.yaml
+│   │   │           ├── public_unavailable_dates.yaml
+│   │   │           ├── public_user_preferences.yaml
+│   │   │           ├── public_users.yaml
+│   │   │           └── tables.yaml
+│   │   ├── graphql_schema_introspection.yaml
+│   │   ├── inherited_roles.yaml
+│   │   ├── metrics_config.yaml
+│   │   ├── network.yaml
+│   │   ├── opentelemetry.yaml
+│   │   ├── permission.yaml
+│   │   ├── query_collections.yaml
+│   │   ├── remote_schemas.yaml
+│   │   ├── rest_endpoints.yaml
+│   │   └── version.yaml
+│   ├── migrations
+│   │   └── default
+│   │       ├── 1742053444159_init
+│   │       │   └── up.sql
+│   │       ├── 1742054367761_init
+│   │       │   └── up.sql
+│   │       └── 20250226120000_create_tables.sql
+│   └── seeds
+│       └── default
+│           └── 1741574725086_initial_data.sql
 ├── middleware.ts
-├── migration_log.txt
-├── migrations/
-│ ├── default/
-│ └── sppa/
 ├── next-env.d.ts
 ├── next-i18next.config.js
 ├── next.config.js
-├── output.txt
 ├── package.json
-├── pg_hba.conf
 ├── postcss.config.js
-├── public/
-│ └── images/
-│ ├── event1.jpg
-│ ├── event2.jpg
-│ ├── event3.jpg
-│ ├── favicon.ico
-│ ├── user1.jpg
-│ └── user2.jpg
-├── script.sql
-├── scripts/
-│ └── organize_sppa_dirs.sh
-├── seeds/
-├── server.js
-├── src/
-│ ├── @types/
-│ │ └── shadcn__ui.d.ts
-│ ├── api/
-│ │ ├── generate-api-from-permissions.js
-│ │ ├── generated-api.ts
-│ │ └── notifications/
-│ │ └── unread/
-│ │ └── route.ts
-│ ├── app/
-│ │ ├── (common)/
-│ │ │ ├── chat/
-│ │ │ │ ├── [userId]/
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── AutoTranslateToggle.tsx
-│ │ │ │ │ ├── ChatWindow.tsx
-│ │ │ │ │ ├── MessageBubble.tsx
-│ │ │ │ │ └── MessageInput.tsx
-│ │ │ │ ├── hooks/
-│ │ │ │ │ ├── useAutoTranslation.ts
-│ │ │ │ │ ├── useOnlineUsers.ts
-│ │ │ │ │ ├── useRealtimeChat.ts
-│ │ │ │ │ ├── useRecentChats.ts
-│ │ │ │ │ └── useSearchUsers.ts
-│ │ │ │ └── page.tsx
-│ │ │ ├── home/
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── FeedList.tsx
-│ │ │ │ │ ├── MasonryFeed.tsx
-│ │ │ │ │ ├── PostCard.tsx
-│ │ │ │ │ ├── RealTimeAvailabilityBadge.tsx
-│ │ │ │ │ ├── TabSelector.tsx
-│ │ │ │ │ └── TranslationToggle.tsx
-│ │ │ │ ├── hooks/
-│ │ │ │ │ ├── useFeedData.ts
-│ │ │ │ │ ├── useNotificationState.ts
-│ │ │ │ │ └── useTherapistErrorEffect.ts
-│ │ │ │ └── page.tsx
-│ │ │ ├── search/
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── FilterPanel.tsx
-│ │ │ │ │ ├── RealTimeAvailabilityIndicator.tsx
-│ │ │ │ │ ├── ResultCard.tsx
-│ │ │ │ │ └── SearchBar.tsx
-│ │ │ │ ├── hooks/
-│ │ │ │ │ ├── useRealTimeAvailability.ts
-│ │ │ │ │ └── useSearchResults.ts
-│ │ │ │ └── page.tsx
-│ │ │ └── therapists/
-│ │ │ └── [therapistId]/
-│ │ │ ├── components/
-│ │ │ │ ├── BookingButton.tsx
-│ │ │ │ ├── RealTimeStatus.tsx
-│ │ │ │ ├── ReviewList.tsx
-│ │ │ │ ├── ServiceDetails.tsx
-│ │ │ │ ├── TherapistProfile.tsx
-│ │ │ │ ├── useRealTimeReviews.ts
-│ │ │ │ └── useTherapistDetails.ts
-│ │ │ └── page.tsx
-│ │ ├── ApolloWrapper.tsx
-│ │ ├── api/
-│ │ │ ├── activity-logs/
-│ │ │ │ └── route.ts
-│ │ │ ├── auth/
-│ │ │ │ └── [...nextauth]/
-│ │ │ │ └── route.ts
-│ │ │ ├── error-logs/
-│ │ │ │ └── route.ts
-│ │ │ ├── events.ts
-│ │ │ ├── experiences/
-│ │ │ │ └── route.ts
-│ │ │ ├── graphql/
-│ │ │ │ └── route.ts
-│ │ │ ├── graphql-fallback/
-│ │ │ │ └── route.ts
-│ │ │ ├── therapists/
-│ │ │ │ ├── [therapistId]/
-│ │ │ │ │ ├── availability/
-│ │ │ │ │ │ └── route.ts
-│ │ │ │ │ └── route.ts
-│ │ │ │ └── route.ts
-│ │ │ ├── translate/
-│ │ │ │ └── route.ts
-│ │ │ ├── trends/
-│ │ │ │ └── route.ts
-│ │ │ └── users/
-│ │ │ └── [userId]/
-│ │ │ └── route.ts
-│ │ ├── components/
-│ │ │ ├── common/
-│ │ │ │ ├── Avatar.tsx
-│ │ │ │ ├── BookingButton.tsx
-│ │ │ │ ├── BottomNavigation.tsx
-│ │ │ │ ├── ChatHeader.tsx
-│ │ │ │ ├── ErrorBoundary.tsx
-│ │ │ │ ├── EventCard.tsx
-│ │ │ │ ├── FeedFilters.tsx
-│ │ │ │ ├── HomeContent.tsx
-│ │ │ │ ├── HomeHeader.tsx
-│ │ │ │ ├── LanguageSwitcher.tsx
-│ │ │ │ ├── LoadingSpinner.tsx
-│ │ │ │ ├── LoginForm.tsx
-│ │ │ │ ├── MediaDisplay.tsx
-│ │ │ │ ├── MediaGallery.tsx
-│ │ │ │ ├── MultiLanguageSupport.tsx
-│ │ │ │ ├── NotificationItem.tsx
-│ │ │ │ ├── OfferCarousel.tsx
-│ │ │ │ ├── PriceDisplay.tsx
-│ │ │ │ ├── PushNotification.tsx
-│ │ │ │ ├── RatingStars.tsx
-│ │ │ │ ├── RecommendedExperiences.tsx
-│ │ │ │ ├── ReviewCard.tsx
-│ │ │ │ ├── ServiceBadge.tsx
-│ │ │ │ ├── ServiceDetails.tsx
-│ │ │ │ ├── TeaserCard.tsx
-│ │ │ │ ├── TherapistAvailabilityPanel.tsx
-│ │ │ │ └── TherapistAvailabilityStatus.tsx
-│ │ │ └── ui/
-│ │ │ ├── Alert.tsx
-│ │ │ ├── Badge.tsx
-│ │ │ ├── Button.tsx
-│ │ │ ├── Calendar.tsx
-│ │ │ ├── Card.tsx
-│ │ │ ├── Checkbox.tsx
-│ │ │ ├── DatePicker.tsx
-│ │ │ ├── Dialog.tsx
-│ │ │ ├── ErrorMessage.tsx
-│ │ │ ├── Form.tsx
-│ │ │ ├── Input.tsx
-│ │ │ ├── Label.tsx
-│ │ │ ├── Navbar.tsx
-│ │ │ ├── Select.tsx
-│ │ │ ├── Spinner.tsx
-│ │ │ ├── Switch.tsx
-│ │ │ ├── Text.tsx
-│ │ │ └── Toast.tsx
-│ │ ├── contexts/
-│ │ │ └── ChatContext.tsx
-│ │ ├── create-ws-client.ts
-│ │ ├── hooks/
-│ │ │ ├── api/
-│ │ │ │ ├── availability.ts
-│ │ │ │ ├── index.ts
-│ │ │ │ ├── useActivityLogging.ts
-│ │ │ │ ├── useAuth.ts
-│ │ │ │ ├── useCreateBooking.ts
-│ │ │ │ ├── useCreateEvent.ts
-│ │ │ │ ├── useCreateReview.ts
-│ │ │ │ ├── useCreateTransaction.ts
-│ │ │ │ ├── useErrorLogApi.ts
-│ │ │ │ ├── useFetchEvents.ts
-│ │ │ │ ├── useFetchFilters.ts
-│ │ │ │ ├── useFetchLocalExperiences.ts
-│ │ │ │ ├── useFetchMedia.ts
-│ │ │ │ ├── useFetchReviews.ts
-│ │ │ │ ├── useFetchSearchResults.ts
-│ │ │ │ ├── useFetchServiceCategories.ts
-│ │ │ │ ├── useFetchServices.ts
-│ │ │ │ ├── useFetchTherapistLocations.ts
-│ │ │ │ ├── useFetchTherapists.ts
-│ │ │ │ ├── useFetchTrends.ts
-│ │ │ │ ├── useFetchUser.ts
-│ │ │ │ ├── useIsomorphicLayoutEffect.ts
-│ │ │ │ ├── useLikeTherapist.ts
-│ │ │ │ ├── useMatchList.ts
-│ │ │ │ ├── useMedia.ts
-│ │ │ │ ├── useNotificationsApi.ts
-│ │ │ │ ├── useRealtimeAvailability.ts
-│ │ │ │ ├── useServices.ts
-│ │ │ │ ├── useTherapistAvailabilityApi.ts
-│ │ │ │ ├── useTherapistData.tsx
-│ │ │ │ ├── useTherapistSearch.ts
-│ │ │ │ ├── useTransactions.ts
-│ │ │ │ ├── useTrends.ts
-│ │ │ │ ├── useUnreadNotifications.ts
-│ │ │ │ ├── useUpdateUser.ts
-│ │ │ │ ├── useUser.ts
-│ │ │ │ └── users.ts
-│ │ │ ├── realtime/
-│ │ │ │ ├── RealtimeMatchList.tsx
-│ │ │ │ ├── TherapistAvailabilityPanel.tsx
-│ │ │ │ ├── TherapistAvailabilityStatus.tsx
-│ │ │ │ ├── index.ts
-│ │ │ │ ├── useNotifications.ts
-│ │ │ │ ├── useRealtimeAvailability.ts
-│ │ │ │ ├── useRealtimeBookings.ts
-│ │ │ │ ├── useRealtimeChat.ts
-│ │ │ │ ├── useRealtimeEvents.ts
-│ │ │ │ ├── useRealtimeFeedUpdates.ts
-│ │ │ │ ├── useRealtimeMatchList.ts
-│ │ │ │ ├── useRealtimeReviews.ts
-│ │ │ │ ├── useRealtimeTransactions.ts
-│ │ │ │ └── useTherapistAvailability.ts
-│ │ │ └── ui/
-│ │ │ └── useBottomSheet.ts
-│ │ ├── i18n/
-│ │ │ ├── I18nProvider.tsx
-│ │ │ ├── client.ts
-│ │ │ ├── server.ts
-│ │ │ └── settings.ts
-│ │ ├── layout.tsx
-│ │ ├── lib/
-│ │ │ ├── auth.client.ts
-│ │ │ ├── auth.server.ts
-│ │ │ ├── auth.ts
-│ │ │ ├── authOptions.ts
-│ │ │ ├── currency-utils.ts
-│ │ │ ├── date-utils.ts
-│ │ │ ├── enum-utils.ts
-│ │ │ ├── graphql/
-│ │ │ │ └── queries/
-│ │ │ │ ├── post.ts
-│ │ │ │ └── service.ts
-│ │ │ ├── hasura-client.ts
-│ │ │ ├── i18n.ts
-│ │ │ ├── queries/
-│ │ │ │ ├── media.ts
-│ │ │ │ ├── therapistAvailability.ts
-│ │ │ │ └── user.ts
-│ │ │ ├── storage-utils.ts
-│ │ │ ├── string-utils.ts
-│ │ │ ├── supabase-client.ts
-│ │ │ └── utils.ts
-│ │ ├── locales/
-│ │ │ ├── en.json
-│ │ │ └── id.json
-│ │ ├── login/
-│ │ │ └── page.tsx
-│ │ ├── page.tsx
-│ │ ├── pages/
-│ │ │ └── UserIcon.tsx
-│ │ ├── providers.tsx
-│ │ ├── realtime/
-│ │ │ ├── RealtimeBookingList.tsx
-│ │ │ ├── RealtimeEventList.tsx
-│ │ │ ├── availability-listener.ts
-│ │ │ ├── bookings-listener.ts
-│ │ │ ├── chat-listener.ts
-│ │ │ ├── likes-listener.ts
-│ │ │ ├── notifications-push.tsx
-│ │ │ └── profile-listener.ts
-│ │ ├── signup/
-│ │ │ └── page.tsx
-│ │ ├── therapist/
-│ │ │ ├── bookings/
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── BookingCalendar.tsx
-│ │ │ │ │ ├── BookingDetailModal.tsx
-│ │ │ │ │ ├── BookingList.tsx
-│ │ │ │ │ └── TransactionList.tsx
-│ │ │ │ └── page.tsx
-│ │ │ ├── components/
-│ │ │ │ ├── Sidebar.tsx
-│ │ │ │ ├── TherapistAvailabilityPanel.tsx
-│ │ │ │ └── TherapistLayout.tsx
-│ │ │ ├── dashboard/
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── ActivityLog.tsx
-│ │ │ │ │ ├── BookingSummary.tsx
-│ │ │ │ │ ├── DashboardSummary.tsx
-│ │ │ │ │ └── RevenueChart.tsx
-│ │ │ │ └── page.tsx
-│ │ │ ├── events/
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── EventCard.tsx
-│ │ │ │ │ ├── EventForm.tsx
-│ │ │ │ │ └── EventList.tsx
-│ │ │ │ └── page.tsx
-│ │ │ ├── hooks/
-│ │ │ │ ├── useActivityLogs.ts
-│ │ │ │ ├── useBookingData.ts
-│ │ │ │ ├── useEventData.ts
-│ │ │ │ └── useReviewData.ts
-│ │ │ ├── page.tsx
-│ │ │ ├── profile/
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── AvailabilitySettings.tsx
-│ │ │ │ │ ├── EventForm.tsx
-│ │ │ │ │ ├── MediaUploadForm.tsx
-│ │ │ │ │ ├── ProfileForm.tsx
-│ │ │ │ │ ├── ProfileSettings.tsx
-│ │ │ │ │ ├── ServiceForm.tsx
-│ │ │ │ │ ├── ServiceManagement.tsx
-│ │ │ │ │ └── hooks/
-│ │ │ │ │ ├── useProfileData.ts
-│ │ │ │ │ └── useRealTimeProfileUpdates.ts
-│ │ │ │ └── page.tsx
-│ │ │ ├── reviews/
-│ │ │ │ ├── components/
-│ │ │ │ │ ├── ReviewDetailModal.tsx
-│ │ │ │ │ ├── ReviewList.tsx
-│ │ │ │ │ └── ReviewOverview.tsx
-│ │ │ │ └── page.tsx
-│ │ │ └── settings/
-│ │ │ └── page.tsx
-│ │ └── tourist/
-│ │ ├── bookings/
-│ │ │ ├── components/
-│ │ │ │ ├── AddOption.tsx
-│ │ │ │ ├── BookingCalendar.tsx
-│ │ │ │ ├── BookingCard.tsx
-│ │ │ │ ├── BookingDetailModal.tsx
-│ │ │ │ ├── BookingForm.tsx
-│ │ │ │ ├── BookingList.tsx
-│ │ │ │ ├── CancelPolicy.tsx
-│ │ │ │ ├── MyBookingsList.tsx
-│ │ │ │ ├── RealTimeAvailability.tsx
-│ │ │ │ ├── ReminderNotification.tsx
-│ │ │ │ └── TransactionDetails.tsx
-│ │ │ ├── hooks/
-│ │ │ │ ├── useBookingNotifications.ts
-│ │ │ │ └── useMyBookings.ts
-│ │ │ └── page.tsx
-│ │ ├── chat/
-│ │ │ ├── components/
-│ │ │ │ ├── AutoTranslate.tsx
-│ │ │ │ ├── ChatWindow.tsx
-│ │ │ │ ├── EmergencyContact.tsx
-│ │ │ │ ├── MediaShare.tsx
-│ │ │ │ ├── MessageInput.tsx
-│ │ │ │ ├── MessageList.tsx
-│ │ │ │ ├── OnlineTherapists.tsx
-│ │ │ │ ├── PriorityMessage.tsx
-│ │ │ │ ├── RecentConversations.tsx
-│ │ │ │ ├── SearchBar.tsx
-│ │ │ │ └── TemplateMessage.tsx
-│ │ │ └── page.tsx
-│ │ ├── components/
-│ │ │ ├── LocationService.ts
-│ │ │ ├── RecommendedExperiences.tsx
-│ │ │ ├── SearchBar.tsx
-│ │ │ ├── TherapistCard.tsx
-│ │ │ └── TouristLayout.tsx
-│ │ ├── home/
-│ │ │ ├── components/
-│ │ │ │ ├── MultiLanguageSupport.tsx
-│ │ │ │ ├── OfferCarousel.tsx
-│ │ │ │ ├── RecommendedExperiences.tsx
-│ │ │ │ ├── RecommendedTherapists.tsx
-│ │ │ │ └── WelcomeMessage.tsx
-│ │ │ ├── hooks/
-│ │ │ │ ├── useHomeData.ts
-│ │ │ │ ├── useNotificationCount.ts
-│ │ │ │ └── usePageData.ts
-│ │ │ └── page.tsx
-│ │ ├── hooks/
-│ │ │ ├── useLocalExperiences.ts
-│ │ │ ├── useLocationService.ts
-│ │ │ ├── useTherapistSearch.ts
-│ │ │ └── useUserPreferences.ts
-│ │ ├── likes/
-│ │ │ └── components/
-│ │ │ ├── LikeButton.tsx
-│ │ │ └── MatchList.tsx
-│ │ ├── local-experiences/
-│ │ │ ├── [experienceId]/
-│ │ │ │ ├── components/
-│ │ │ │ │ └── MediaGallery.tsx
-│ │ │ │ └── page.tsx
-│ │ │ ├── components/
-│ │ │ │ ├── ExperienceCard.tsx
-│ │ │ │ └── ExperienceList.tsx
-│ │ │ └── page.tsx
-│ │ ├── notifications/
-│ │ │ ├── components/
-│ │ │ │ ├── NotificationList.tsx
-│ │ │ │ └── components/
-│ │ │ │ └── NotificationListStatic.tsx
-│ │ │ └── page.tsx
-│ │ ├── page.tsx
-│ │ ├── preferences/
-│ │ │ ├── components/
-│ │ │ │ └── PreferenceForm.tsx
-│ │ │ └── page.tsx
-│ │ ├── profile/
-│ │ │ ├── components/
-│ │ │ │ ├── DarkModeToggle.tsx
-│ │ │ │ ├── PaymentMethod.tsx
-│ │ │ │ ├── PreferencesForm.tsx
-│ │ │ │ ├── ProfileEdit.tsx
-│ │ │ │ ├── ProfileForm.tsx
-│ │ │ │ ├── ProfileView.tsx
-│ │ │ │ ├── ReviewHistory.tsx
-│ │ │ │ └── hooks/
-│ │ │ │ └── useUserProfile.ts
-│ │ │ └── page.tsx
-│ │ ├── search/
-│ │ │ ├── components/
-│ │ │ │ ├── FilterModal.tsx
-│ │ │ │ ├── MapView.tsx
-│ │ │ │ ├── SearchBar.tsx
-│ │ │ │ ├── SearchResults.tsx
-│ │ │ │ ├── TrendDisplay.tsx
-│ │ │ │ ├── TrendTags.tsx
-│ │ │ │ └── TrendingSearches.tsx
-│ │ │ └── page.tsx
-│ │ └── therapists/
-│ │ ├── [therapistId]/
-│ │ │ ├── components/
-│ │ │ │ ├── MediaGallery.tsx
-│ │ │ │ ├── ReviewList.tsx
-│ │ │ │ ├── TherapistAvailability.tsx
-│ │ │ │ └── TherapistDetail.tsx
-│ │ │ └── page.tsx
-│ │ ├── components/
-│ │ │ ├── FilterPanel.tsx
-│ │ │ ├── TherapistCard.tsx
-│ │ │ ├── TherapistFilter.tsx
-│ │ │ ├── TherapistList.tsx
-│ │ │ └── TherapistMap.tsx
-│ │ └── page.tsx
-│ ├── backend/
-│ │ └── api/
-│ │ └── graphql/
-│ │ ├── availability.ts
-│ │ ├── bookings.ts
-│ │ ├── error-logs.ts
-│ │ ├── events.ts
-│ │ ├── index.ts
-│ │ ├── likes.ts
-│ │ ├── local-experiences.ts
-│ │ ├── media.ts
-│ │ ├── reviews.ts
-│ │ ├── services.ts
-│ │ ├── therapists.ts
-│ │ ├── transactions.ts
-│ │ ├── trends.ts
-│ │ └── users.ts
-│ ├── realtime/
-│ │ ├── availability-listener.ts
-│ │ ├── bookings-listener.ts
-│ │ ├── chat-listener.ts
-│ │ ├── likes-listener.ts
-│ │ ├── notifications-listener.ts
-│ │ └── profile-listener.ts
-│ ├── styles/
-│ │ ├── globals.css
-│ │ └── theme.ts
-│ ├── types/
-│ │ ├── activity-log.ts
-│ │ ├── auth.ts
-│ │ ├── availability.ts
-│ │ ├── booking.ts
-│ │ ├── chat.ts
-│ │ ├── enums.ts
-│ │ ├── error-log.ts
-│ │ ├── event.ts
-│ │ ├── graphql.ts
-│ │ ├── like.ts
-│ │ ├── local-experience.ts
-│ │ ├── lodash.d.ts
-│ │ ├── match.ts
-│ │ ├── media.ts
-│ │ ├── next-auth.d.ts
-│ │ ├── next-i18next.d.ts
-│ │ ├── notification.ts
-│ │ ├── post.ts
-│ │ ├── preference.ts
-│ │ ├── react-window.d.ts
-│ │ ├── review.ts
-│ │ ├── therapist.ts
-│ │ ├── tourist.ts
-│ │ ├── transaction.ts
-│ │ ├── user.ts
-│ │ ├── ws.d.ts
-│ │ └── zen-observable-ts.d.ts
-│ └── utils/
-│ ├── auth.ts
-│ ├── hasura-client.ts
-│ └── supabase/
-│ └── server.ts
-├── supabase/
-│ └── config.toml
+├── public
+│   └── images
+│       ├── event1.jpg
+│       ├── event2.jpg
+│       ├── event3.jpg
+│       ├── favicon.ico
+│       ├── sppa.png
+│       ├── sppa2.png
+│       ├── technology_stack.png
+│       ├── user1.jpg
+│       └── user2.jpg
+├── scripts
+│   ├── dev
+│   │   ├── organize_sppa_dirs.sh
+│   │   └── server.js
+│   ├── generate
+│   │   └── api-template.hbs
+│   ├── generate-api-from-permissions.js
+│   ├── logs
+│   │   ├── migration_log.txt
+│   │   └── output.txt
+│   └── migrations
+│       └── script.sql
+├── src
+│   ├── app
+│   │   ├── (common)
+│   │   │   ├── chat
+│   │   │   │   ├── [userId]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── AutoTranslate.tsx
+│   │   │   │   │   ├── AutoTranslateToggle.tsx
+│   │   │   │   │   ├── ChatWindow.tsx
+│   │   │   │   │   ├── EmergencyContact.tsx
+│   │   │   │   │   ├── MediaShare.tsx
+│   │   │   │   │   ├── MessageBubble.tsx
+│   │   │   │   │   ├── MessageInput.tsx
+│   │   │   │   │   ├── MessageList.tsx
+│   │   │   │   │   ├── OnlineTherapists.tsx
+│   │   │   │   │   ├── PriorityMessage.tsx
+│   │   │   │   │   ├── RecentConversations.tsx
+│   │   │   │   │   ├── SearchBar.tsx
+│   │   │   │   │   └── TemplateMessage.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── components
+│   │   │   │   ├── LocationService.ts
+│   │   │   │   └── TouristLayout.tsx
+│   │   │   ├── feed
+│   │   │   │   ├── components
+│   │   │   │   │   ├── FeedList.tsx
+│   │   │   │   │   ├── MasonryFeed.tsx
+│   │   │   │   │   ├── MultiLanguageSupport.tsx
+│   │   │   │   │   ├── OfferCarousel.tsx
+│   │   │   │   │   ├── PostCard.tsx
+│   │   │   │   │   ├── RealTimeAvailabilityBadge.tsx
+│   │   │   │   │   ├── RecommendedExperiences.tsx
+│   │   │   │   │   ├── RecommendedTherapists.tsx
+│   │   │   │   │   ├── TabSelector.tsx
+│   │   │   │   │   ├── TranslationToggle.tsx
+│   │   │   │   │   └── WelcomeMessage.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── likes
+│   │   │   │   └── components
+│   │   │   │       ├── LikeButton.tsx
+│   │   │   │       └── MatchList.tsx
+│   │   │   ├── notifications
+│   │   │   │   ├── components
+│   │   │   │   │   ├── NotificationList.tsx
+│   │   │   │   │   └── components
+│   │   │   │   │       └── NotificationListStatic.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── search
+│   │   │   │   ├── components
+│   │   │   │   │   ├── FilterModal.tsx
+│   │   │   │   │   ├── FilterPanel.tsx
+│   │   │   │   │   ├── MapView.tsx
+│   │   │   │   │   ├── RealTimeAvailabilityIndicator.tsx
+│   │   │   │   │   ├── ResultCard.tsx
+│   │   │   │   │   ├── SearchBar.tsx
+│   │   │   │   │   ├── SearchResults.tsx
+│   │   │   │   │   ├── TherapistCard.tsx
+│   │   │   │   │   ├── TrendDisplay.tsx
+│   │   │   │   │   ├── TrendTags.tsx
+│   │   │   │   │   └── TrendingSearches.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── therapists
+│   │   │   │   └── [therapistId]
+│   │   │   │       ├── MediaGallery.tsx
+│   │   │   │       ├── ReviewList.tsx
+│   │   │   │       ├── TherapistAvailability.tsx
+│   │   │   │       ├── TherapistDetail.tsx
+│   │   │   │       └── components
+│   │   │   │           ├── BookingButton.tsx
+│   │   │   │           ├── FilterPanel.tsx
+│   │   │   │           ├── RealTimeStatus.tsx
+│   │   │   │           ├── ReviewList.tsx
+│   │   │   │           ├── ServiceDetails.tsx
+│   │   │   │           ├── TherapistCard.tsx
+│   │   │   │           ├── TherapistFilter.tsx
+│   │   │   │           ├── TherapistList.tsx
+│   │   │   │           ├── TherapistMap.tsx
+│   │   │   │           └── TherapistProfile.tsx
+│   │   │   └── treatment
+│   │   │       └── [id]
+│   │   │           └── page.tsx
+│   │   ├── (therapist)
+│   │   │   ├── bookings
+│   │   │   │   ├── components
+│   │   │   │   │   ├── BookingCalendar.tsx
+│   │   │   │   │   ├── BookingDetailModal.tsx
+│   │   │   │   │   ├── BookingList.tsx
+│   │   │   │   │   └── TransactionList.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── components
+│   │   │   │   ├── Sidebar.tsx
+│   │   │   │   ├── TherapistAvailabilityPanel.tsx
+│   │   │   │   └── TherapistLayout.tsx
+│   │   │   ├── dashboard
+│   │   │   │   ├── components
+│   │   │   │   │   ├── ActivityLog.tsx
+│   │   │   │   │   ├── BookingSummary.tsx
+│   │   │   │   │   ├── DashboardSummary.tsx
+│   │   │   │   │   └── RevenueChart.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── events
+│   │   │   │   ├── components
+│   │   │   │   │   ├── EventCard.tsx
+│   │   │   │   │   ├── EventForm.tsx
+│   │   │   │   │   └── EventList.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── hooks
+│   │   │   │   ├── useActivityLogs.ts
+│   │   │   │   ├── useBookingData.ts
+│   │   │   │   ├── useEventData.ts
+│   │   │   │   └── useReviewData.ts
+│   │   │   ├── page.tsx
+│   │   │   ├── profile
+│   │   │   │   ├── components
+│   │   │   │   │   ├── AvailabilitySettings.tsx
+│   │   │   │   │   ├── EventForm.tsx
+│   │   │   │   │   ├── MediaUploadForm.tsx
+│   │   │   │   │   ├── ProfileForm.tsx
+│   │   │   │   │   ├── ProfileSettings.tsx
+│   │   │   │   │   ├── ServiceForm.tsx
+│   │   │   │   │   ├── ServiceManagement.tsx
+│   │   │   │   │   └── hooks
+│   │   │   │   │       ├── useProfileData.ts
+│   │   │   │   │       └── useRealTimeProfileUpdates.ts
+│   │   │   │   └── page.tsx
+│   │   │   ├── reviews
+│   │   │   │   ├── components
+│   │   │   │   │   ├── ReviewDetailModal.tsx
+│   │   │   │   │   ├── ReviewList.tsx
+│   │   │   │   │   └── ReviewOverview.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── settings
+│   │   │       └── page.tsx
+│   │   ├── (tourist)
+│   │   │   ├── bookings
+│   │   │   │   ├── components
+│   │   │   │   │   ├── AddOption.tsx
+│   │   │   │   │   ├── BookingCalendar.tsx
+│   │   │   │   │   ├── BookingCard.tsx
+│   │   │   │   │   ├── BookingDetailModal.tsx
+│   │   │   │   │   ├── BookingForm.tsx
+│   │   │   │   │   ├── BookingList.tsx
+│   │   │   │   │   ├── CancelPolicy.tsx
+│   │   │   │   │   ├── MyBookingsList.tsx
+│   │   │   │   │   ├── RealTimeAvailability.tsx
+│   │   │   │   │   ├── ReminderNotification.tsx
+│   │   │   │   │   └── TransactionDetails.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── local-experiences
+│   │   │   │   ├── [experienceId]
+│   │   │   │   │   ├── components
+│   │   │   │   │   │   └── MediaGallery.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── ExperienceCard.tsx
+│   │   │   │   │   └── ExperienceList.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── preferences
+│   │   │   │   ├── components
+│   │   │   │   │   └── PreferenceForm.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── profile
+│   │   │       ├── components
+│   │   │       │   ├── DarkModeToggle.tsx
+│   │   │       │   ├── PaymentMethod.tsx
+│   │   │       │   ├── PreferencesForm.tsx
+│   │   │       │   ├── ProfileEdit.tsx
+│   │   │       │   ├── ProfileForm.tsx
+│   │   │       │   ├── ProfileView.tsx
+│   │   │       │   └── ReviewHistory.tsx
+│   │   │       └── page.tsx
+│   │   ├── ApolloWrapper.tsx
+│   │   ├── api
+│   │   │   ├── activity-logs
+│   │   │   │   └── route.ts
+│   │   │   ├── auth
+│   │   │   │   └── [...nextauth]
+│   │   │   ├── error-logs
+│   │   │   │   └── route.ts
+│   │   │   ├── events
+│   │   │   │   └── route.ts
+│   │   │   ├── experiences
+│   │   │   │   └── route.ts
+│   │   │   ├── graphql
+│   │   │   │   └── route.ts
+│   │   │   ├── graphql-fallback
+│   │   │   │   └── route.ts
+│   │   │   ├── notifications
+│   │   │   │   └── unread
+│   │   │   │       └── route.ts
+│   │   │   ├── therapists
+│   │   │   │   ├── [therapistId]
+│   │   │   │   │   ├── availability
+│   │   │   │   │   │   └── route.ts
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   ├── translate
+│   │   │   │   └── route.ts
+│   │   │   ├── trends
+│   │   │   │   └── route.ts
+│   │   │   └── users
+│   │   │       └── [userId]
+│   │   │           └── route.ts
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   ├── providers.tsx
+│   │   └── signup
+│   │       └── page.tsx
+│   ├── backend
+│   │   └── api
+│   │       ├── generated-api.ts
+│   │       └── graphql
+│   │           ├── availability.ts
+│   │           ├── bookings.ts
+│   │           ├── error-logs.ts
+│   │           ├── events.ts
+│   │           ├── index.ts
+│   │           ├── likes.ts
+│   │           ├── local-experiences.ts
+│   │           ├── media.ts
+│   │           ├── reviews.ts
+│   │           ├── services.ts
+│   │           ├── therapists.ts
+│   │           ├── transactions.ts
+│   │           ├── trends.ts
+│   │           └── users.ts
+│   ├── components
+│   │   ├── Avatar.tsx
+│   │   ├── BookingButton.tsx
+│   │   ├── BottomNavigation.tsx
+│   │   ├── ChatHeader.tsx
+│   │   ├── ErrorBoundary.tsx
+│   │   ├── EventCard.tsx
+│   │   ├── FeedFilters.tsx
+│   │   ├── HomeContent.tsx
+│   │   ├── HomeHeader.tsx
+│   │   ├── LanguageSwitcher.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   ├── LoginForm.tsx
+│   │   ├── MediaDisplay.tsx
+│   │   ├── MediaGallery.tsx
+│   │   ├── MultiLanguageSupport.tsx
+│   │   ├── NotificationItem.tsx
+│   │   ├── OfferCarousel.tsx
+│   │   ├── PriceDisplay.tsx
+│   │   ├── PushNotification.tsx
+│   │   ├── RatingStars.tsx
+│   │   ├── RecommendedExperiences.tsx
+│   │   ├── ReviewCard.tsx
+│   │   ├── ServiceBadge.tsx
+│   │   ├── ServiceDetails.tsx
+│   │   ├── TeaserCard.tsx
+│   │   ├── TherapistAvailabilityPanel.tsx
+│   │   ├── TherapistAvailabilityStatus.tsx
+│   │   └── ui
+│   │       ├── Alert.tsx
+│   │       ├── Badge.tsx
+│   │       ├── Button.tsx
+│   │       ├── Calendar.tsx
+│   │       ├── Card.tsx
+│   │       ├── Checkbox.tsx
+│   │       ├── DatePicker.tsx
+│   │       ├── Dialog.tsx
+│   │       ├── ErrorMessage.tsx
+│   │       ├── Form.tsx
+│   │       ├── Input.tsx
+│   │       ├── Label.tsx
+│   │       ├── Navbar.tsx
+│   │       ├── Select.tsx
+│   │       ├── Spinner.tsx
+│   │       ├── Switch.tsx
+│   │       ├── Text.tsx
+│   │       └── Toast.tsx
+│   ├── contexts
+│   │   └── ChatContext.tsx
+│   ├── graphql
+│   │   └── queries.ts
+│   ├── hooks
+│   │   ├── api
+│   │   │   ├── availability.ts
+│   │   │   ├── index.ts
+│   │   │   ├── useActivityLogging.ts
+│   │   │   ├── useAuth.ts
+│   │   │   ├── useCreateBooking.ts
+│   │   │   ├── useCreateEvent.ts
+│   │   │   ├── useCreateReview.ts
+│   │   │   ├── useCreateTransaction.ts
+│   │   │   ├── useErrorLogApi.ts
+│   │   │   ├── useFetchEvents.ts
+│   │   │   ├── useFetchFilters.ts
+│   │   │   ├── useFetchLocalExperiences.ts
+│   │   │   ├── useFetchMedia.ts
+│   │   │   ├── useFetchReviews.ts
+│   │   │   ├── useFetchSearchResults.ts
+│   │   │   ├── useFetchServiceCategories.ts
+│   │   │   ├── useFetchServices.ts
+│   │   │   ├── useFetchTherapistLocations.ts
+│   │   │   ├── useFetchTherapists.ts
+│   │   │   ├── useFetchTrends.ts
+│   │   │   ├── useFetchUser.ts
+│   │   │   ├── useIsomorphicLayoutEffect.ts
+│   │   │   ├── useLikeTherapist.ts
+│   │   │   ├── useMatchList.ts
+│   │   │   ├── useMedia.ts
+│   │   │   ├── useNotificationsApi.ts
+│   │   │   ├── useRealtimeAvailability.ts
+│   │   │   ├── useServices.ts
+│   │   │   ├── useTherapistAvailabilityApi.ts
+│   │   │   ├── useTherapistData.tsx
+│   │   │   ├── useTherapistSearch.ts
+│   │   │   ├── useTransactions.ts
+│   │   │   ├── useTrends.ts
+│   │   │   ├── useUnreadNotifications.ts
+│   │   │   ├── useUpdateUser.ts
+│   │   │   ├── useUser.ts
+│   │   │   └── users.ts
+│   │   ├── realtime
+│   │   ├── ui
+│   │   │   └── useBottomSheet.ts
+│   │   ├── useAutoTranslation.ts
+│   │   ├── useBookingNotifications.ts
+│   │   ├── useFeedData.ts
+│   │   ├── useFeedStore.ts
+│   │   ├── useHomeData.ts
+│   │   ├── useLocalExperiences.ts
+│   │   ├── useLocationService.ts
+│   │   ├── useMyBookings.ts
+│   │   ├── useNotificationCount.ts
+│   │   ├── useNotificationState.ts
+│   │   ├── useOnlineUsers.ts
+│   │   ├── usePageData.ts
+│   │   ├── usePosts.ts
+│   │   ├── useRealTimeAvailability.ts
+│   │   ├── useRealTimeReviews.ts
+│   │   ├── useRealtimeChat.ts
+│   │   ├── useRecentChats.ts
+│   │   ├── useSearchResults.ts
+│   │   ├── useSearchUsers.ts
+│   │   ├── useTherapistAvailability.ts
+│   │   ├── useTherapistDetails.ts
+│   │   ├── useTherapistErrorEffect.ts
+│   │   ├── useTherapistSearch.ts
+│   │   ├── useUserPreferences.ts
+│   │   ├── useUserProfile.ts
+│   │   └── useWebSocketSubscription.ts
+│   ├── i18n
+│   │   ├── I18nProvider.tsx
+│   │   ├── client.ts
+│   │   ├── server.ts
+│   │   └── settings.ts
+│   ├── lib
+│   │   ├── auth.client.ts
+│   │   ├── auth.server.ts
+│   │   ├── create-ws-client.ts
+│   │   ├── currency-utils.ts
+│   │   ├── date-utils.ts
+│   │   ├── enum-utils.ts
+│   │   ├── geoUtils.ts
+│   │   ├── hasura-client.ts
+│   │   ├── i18n.ts
+│   │   ├── queries
+│   │   │   ├── media.ts
+│   │   │   ├── post.ts
+│   │   │   ├── service.ts
+│   │   │   ├── therapistAvailability.ts
+│   │   │   └── user.ts
+│   │   ├── storage-utils.ts
+│   │   ├── string-utils.ts
+│   │   ├── supabase-client.ts
+│   │   └── utils.ts
+│   ├── locales
+│   │   ├── en.json
+│   │   └── id.json
+│   ├── realtime
+│   │   ├── RealtimeBookingList.tsx
+│   │   ├── RealtimeEventList.tsx
+│   │   ├── RealtimeMatchList.tsx
+│   │   ├── TherapistAvailabilityPanel.tsx
+│   │   ├── TherapistAvailabilityStatus.tsx
+│   │   ├── availability-listener.ts
+│   │   ├── bookings-listener.ts
+│   │   ├── chat-listener.ts
+│   │   ├── index.ts
+│   │   ├── likes-listener.ts
+│   │   ├── notifications-listener.ts
+│   │   ├── notifications-push.tsx
+│   │   ├── profile-listener.ts
+│   │   ├── useNotifications.ts
+│   │   ├── useRealtimeAvailability.ts
+│   │   ├── useRealtimeBookings.ts
+│   │   ├── useRealtimeChat.ts
+│   │   ├── useRealtimeEvents.ts
+│   │   ├── useRealtimeFeedUpdates.ts
+│   │   ├── useRealtimeMatchList.ts
+│   │   ├── useRealtimeReviews.ts
+│   │   ├── useRealtimeTransactions.ts
+│   │   └── useTherapistAvailability.ts
+│   ├── styles
+│   │   ├── globals.css
+│   │   └── theme.ts
+│   ├── types
+│   │   ├── activity-log.ts
+│   │   ├── auth.ts
+│   │   ├── availability.ts
+│   │   ├── booking.ts
+│   │   ├── chat.ts
+│   │   ├── enums.ts
+│   │   ├── error-log.ts
+│   │   ├── event.ts
+│   │   ├── graphql.ts
+│   │   ├── like.ts
+│   │   ├── local-experience.ts
+│   │   ├── lodash.d.ts
+│   │   ├── match.ts
+│   │   ├── media.ts
+│   │   ├── next-i18next.d.ts
+│   │   ├── notification.ts
+│   │   ├── post.ts
+│   │   ├── preference.ts
+│   │   ├── react-window.d.ts
+│   │   ├── review.ts
+│   │   ├── shadcn__ui.d.ts
+│   │   ├── therapist.ts
+│   │   ├── tourist.ts
+│   │   ├── transaction.ts
+│   │   ├── user.ts
+│   │   ├── ws.d.ts
+│   │   └── zen-observable-ts.d.ts
+│   └── utils
+│       ├── auth.ts
+│       └── supabase
+│           └── server.ts
+├── supabase
+│   └── config.toml
 ├── tailwind.config.js
 └── tsconfig.json
 ```
