@@ -1,3 +1,0 @@
-- "!include public_geography_columns.yaml"
-- "!include public_geometry_columns.yaml"
-- "!include public_spatial_ref_sys.yaml"

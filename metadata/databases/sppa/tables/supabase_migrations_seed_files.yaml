@@ -1,3 +1,0 @@
-table:
-  name: seed_files
-  schema: supabase_migrations
