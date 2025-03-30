@@ -1,9 +1,9 @@
 "use client";
 // src/app/hooks/realtime/useRealtimeMatchList.ts
+import { Match } from "@/types/match";
 import { gql, useSubscription } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useUser } from "../api/useUser";
-import { Match } from "@/types/match";
+import { useUser } from "../hooks/api/useUser";
 
 const MATCH_LIST_SUBSCRIPTION = gql`
   subscription GetMatchList($userId: uuid!) {
