@@ -2,7 +2,7 @@
 // src/app/signup/page.tsx
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 
 export default function SignupPage() {
   const router = useRouter();
