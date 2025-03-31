@@ -447,7 +447,6 @@ Sppa
 │   │   │   │   │   └── components
 │   │   │   │   │       └── NotificationListStatic.tsx
 │   │   │   │   └── page.tsx
-│   │   │   ├── page.tsx
 │   │   │   ├── search
 │   │   │   │   ├── components
 │   │   │   │   │   ├── FilterModal.tsx
@@ -578,6 +577,7 @@ Sppa
 │   │   │   │   └── route.ts
 │   │   │   ├── auth
 │   │   │   │   └── [...nextauth]
+│   │   │   │       └── route.ts
 │   │   │   ├── error-logs
 │   │   │   │   └── route.ts
 │   │   │   ├── events
@@ -635,7 +635,6 @@ Sppa
 │   │   ├── BottomNavigation.tsx
 │   │   ├── ChatHeader.tsx
 │   │   ├── ErrorBoundary.tsx
-│   │   ├── EventCard.tsx
 │   │   ├── FeedFilters.tsx
 │   │   ├── HomeContent.tsx
 │   │   ├── HomeHeader.tsx
@@ -657,6 +656,7 @@ Sppa
 │   │   ├── TeaserCard.tsx
 │   │   ├── TherapistAvailabilityPanel.tsx
 │   │   ├── TherapistAvailabilityStatus.tsx
+│   │   ├── UserCard.tsx
 │   │   └── ui
 │   │       ├── Alert.tsx
 │   │       ├── Badge.tsx
@@ -679,12 +679,14 @@ Sppa
 │   ├── contexts
 │   │   └── ChatContext.tsx
 │   ├── graphql
-│   │   └── queries.ts
+│   │   ├── queries.ts
+│   │   └── subscriptions.ts
 │   ├── hooks
 │   │   ├── api
 │   │   │   ├── availability.ts
 │   │   │   ├── index.ts
 │   │   │   ├── useActivityLogging.ts
+│   │   │   ├── useActivityLogs.ts
 │   │   │   ├── useAuth.ts
 │   │   │   ├── useCreateBooking.ts
 │   │   │   ├── useCreateEvent.ts
@@ -708,6 +710,7 @@ Sppa
 │   │   │   ├── useLikeUser.ts
 │   │   │   ├── useMatchList.ts
 │   │   │   ├── useMedia.ts
+│   │   │   ├── useNotification.ts
 │   │   │   ├── useNotificationsApi.ts
 │   │   │   ├── useRealtimeAvailability.ts
 │   │   │   ├── useServices.ts
@@ -720,7 +723,6 @@ Sppa
 │   │   │   ├── useUpdateUser.ts
 │   │   │   ├── useUser.ts
 │   │   │   └── users.ts
-│   │   ├── realtime
 │   │   ├── ui
 │   │   │   └── useBottomSheet.ts
 │   │   ├── useAutoTranslation.ts
@@ -819,12 +821,14 @@ Sppa
 │   │   ├── lodash.d.ts
 │   │   ├── match.ts
 │   │   ├── media.ts
+│   │   ├── next-auth.d.ts
 │   │   ├── next-i18next.d.ts
 │   │   ├── notification.ts
 │   │   ├── post.ts
 │   │   ├── preference.ts
 │   │   ├── react-window.d.ts
 │   │   ├── review.ts
+│   │   ├── service.ts
 │   │   ├── shadcn__ui.d.ts
 │   │   ├── therapist.ts
 │   │   ├── tourist.ts
