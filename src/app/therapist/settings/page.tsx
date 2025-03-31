@@ -1,6 +1,6 @@
 // src/app/(therapist)/settings/page.tsx
-import TherapistLayout from "@/app/(therapist)/components/TherapistLayout";
-import ProfileSettings from "@/app/(therapist)/profile/components/ProfileSettings"; // Fixed path
+import TherapistLayout from "@/app/therapist/components/TherapistLayout";
+import ProfileSettings from "@/app/therapist/profile/components/ProfileSettings"; // Fixed path
 import { auth } from "@/lib/auth.server";
 import { redirect } from "next/navigation";
 

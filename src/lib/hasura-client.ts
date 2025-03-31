@@ -1,131 +1,103 @@
 // src/lib/hasura-client.ts
-import {
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  ApolloLink,
-  NormalizedCacheObject,
-  split,
-} from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { setContext } from "@apollo/client/link/context";
+import { NextRequest, NextResponse } from "next/server";
+import { createHasuraClient } from "@/lib/hasura-client"; // クライアント生成関数をインポート
+import { verifyToken } from "@/utils/auth";
+import { TherapistProfile } from "@/types/therapist";
+import { gql, ApolloClient, NormalizedCacheObject } from "@apollo/client";
 
-const isBuildPhase =
-  process.env.NODE_ENV === "production" && typeof window === "undefined";
-
-const HASURA_HTTP_ENDPOINT =
-  isBuildPhase
-    ? ""
-    : process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT || "http://localhost:8081/v1/graphql";
-const HASURA_WS_ENDPOINT =
-  isBuildPhase
-    ? ""
-    : process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT || "ws://localhost:8081/v1/graphql";
-// クライアント側では管理者シークレットを使用しない
-const HASURA_ADMIN_SECRET = "";
-
-const authMiddleware = (token?: string) =>
-  setContext((_, { headers = {} }) => {
-    const role = token ? "therapist" : "tourist";
-    const newHeaders = {
-      ...headers,
-      "Content-Type": "application/json",
-      "x-hasura-role": role,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      // 管理者シークレットはクライアント側では使用しません
-    };
-    return { headers: newHeaders };
-  });
-
-const httpLink = new HttpLink({ uri: HASURA_HTTP_ENDPOINT });
-
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path }) => {
-      console.error(
-        `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
-          locations
-        )}, Path: ${path}`
-      );
-    });
-  }
-  if (networkError) {
-    console.error(`[Network error]:`, JSON.stringify(networkError, null, 2));
-  }
-});
-
-export const createHasuraClient = (token?: string) => {
-  if (isBuildPhase) {
-    return new ApolloClient({
-      cache: new InMemoryCache(),
-    });
-  }
-
-  const wsLink =
-    typeof window !== "undefined"
-      ? new GraphQLWsLink(
-          createClient({
-            url: HASURA_WS_ENDPOINT,
-            connectionParams: () => {
-              const headers = {
-                "Content-Type": "application/json",
-                "x-hasura-role": token ? "therapist" : "tourist",
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-              };
-              console.log("GraphQLWsLink connectionParams:", headers);
-              return { headers };
-            },
-            shouldRetry: () => true,
-          })
-        )
-      : null;
-
-  const splitLink = wsLink
-    ? split(
-        ({ query }) => {
-          const definition = getMainDefinition(query);
-          return (
-            definition.kind === "OperationDefinition" &&
-            definition.operation === "subscription"
-          );
-        },
-        wsLink,
-        httpLink
-      )
-    : httpLink;
-
-  return new ApolloClient({
-    link: ApolloLink.from([errorLink, authMiddleware(token), splitLink]),
-    cache: new InMemoryCache(),
-    defaultOptions: {
-      query: { fetchPolicy: "no-cache" },
-      mutate: { fetchPolicy: "no-cache" },
-    },
-  });
-};
-
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
-
-export function initializeApollo(
-  initialState: Record<string, any> | null = null,
-  token?: string
-) {
-  const _apolloClient = apolloClient ?? createHasuraClient(token);
-
-  if (initialState) {
-    const existingCache = _apolloClient.extract();
-    _apolloClient.cache.restore({
-      ...existingCache,
-      ...(initialState && typeof initialState === "object" ? initialState : {}),
-    });
-  }
-  if (typeof window === "undefined") return _apolloClient;
-  if (!apolloClient) apolloClient = _apolloClient;
-  return _apolloClient;
+async function authenticateUser(token: string) {
+  const user = await verifyToken(token);
+  return user?.id && user?.role ? user : null;
 }
 
-export const graphqlClient = initializeApollo(null);
-export default graphqlClient;
+async function fetchTrends(
+  client: ApolloClient<NormalizedCacheObject>
+): Promise<TherapistProfile[]> {
+  const query = gql`
+    query GetTrendingTherapists {
+      therapist_profiles(
+        order_by: { bookings_aggregate: { count: desc } }
+        limit: 10
+      ) {
+        id
+        user {
+          id
+          name
+          profile_picture
+        }
+        bio
+        location
+        languages
+        price_range_min
+        price_range_max
+        currency
+        status
+        average_rating: bookings_aggregate {
+          aggregate {
+            avg {
+              rating
+            }
+          }
+        }
+        booking_count: bookings_aggregate {
+          aggregate {
+            count
+          }
+        }
+      }
+    }
+  `;
+  const response = await client.query({ query });
+  return response.data.therapist_profiles;
+}
+
+function formatTrends(trends: TherapistProfile[]) {
+  return trends.map((therapist) => ({
+    id: therapist.id,
+    name: therapist.user.name,
+    profilePicture: therapist.user.profile_picture,
+    bio: therapist.bio,
+    location: therapist.location,
+    languages: therapist.languages,
+    priceRange: {
+      min: therapist.price_range_min,
+      max: therapist.price_range_max,
+      currency: therapist.currency,
+    },
+    status: therapist.status,
+    averageRating: therapist.average_rating?.aggregate?.avg?.rating ?? 0,
+    bookingCount: therapist.booking_count?.aggregate?.count ?? 0,
+  }));
+}
+
+export async function GET(request: NextRequest) {
+  const token = request.headers.get("Authorization")?.split(" ")[1];
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const user = await authenticateUser(token);
+    if (!user) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    // token はそのまま渡し、追加ヘッダーで x-hasura-user-id を指定
+    const client = createHasuraClient(token, {
+      "x-hasura-user-id": user.id,
+    });
+
+    const trends = await fetchTrends(client);
+    const formattedTrends = formatTrends(trends);
+
+    return NextResponse.json(formattedTrends, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching trends:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export const runtime = "edge";

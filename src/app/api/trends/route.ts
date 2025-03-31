@@ -1,7 +1,7 @@
 // src/app/api/trends/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import { hasuraClient } from "@/utils/hasura-client";
+import hasuraClient from "@/lib/hasura-client";
 import { verifyToken } from "@/utils/auth";
 import { TherapistProfile } from "@/types/therapist";
 
