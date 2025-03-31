@@ -1,7 +1,7 @@
 "use client";
 // src/app/components/common/LoadingSpinner.tsx
 import React from "react";
-import { Spinner } from "@/app/components/ui/Spinner";
+import { Spinner } from "@/components/ui/Spinner";
 
 export const LoadingSpinner: React.FC<{ "aria-label"?: string }> = ({ "aria-label": ariaLabel }) => (
   <div className="flex justify-center items-center min-h-screen" aria-label={ariaLabel}>
