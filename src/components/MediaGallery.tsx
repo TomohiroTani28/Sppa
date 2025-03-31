@@ -1,8 +1,8 @@
 // src/app/components/common/MediaGallery.tsx
 import React from 'react';
 import Image from 'next/image';
-import { cn } from '@/app/lib/utils';
-import { Button } from '@/app/components/ui/Button';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/Button';
 import { PlayIcon } from 'lucide-react';
 import { Media } from '@/types/media';
 
