@@ -1,4 +1,4 @@
-// src/app/lib/supabase-client.ts
+// src/lib/supabase-client.ts
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 // 環境変数のチェック

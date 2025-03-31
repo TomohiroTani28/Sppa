@@ -2,9 +2,9 @@
 // src/app/login/page.tsx
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import supabase from "@/app/lib/supabase-client";
-import { saveRedirectPath, getRedirectPath, clearRedirectPath } from "@/app/lib/storage-utils";
-import { getClientSideUser } from "@/app/lib/auth";
+import supabase from "@/lib/supabase-client";
+import { saveRedirectPath, getRedirectPath, clearRedirectPath } from "@/lib/storage-utils";
+import { getUser } from "@/lib/auth.client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,12 +22,12 @@ export default function LoginPage() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const user = await getClientSideUser();
+      const user = await getUser();
       if (user) {
         let redirectTo = getRedirectPath();
         clearRedirectPath();
         if (!redirectTo) {
-          redirectTo = "/tourist/home"; // デフォルトはホーム画面
+          redirectTo = "/tourist/home";
         }
         router.replace(redirectTo);
       }
@@ -43,8 +43,7 @@ export default function LoginPage() {
       setErrorMessage(error.message);
       return;
     }
-    // ログイン成功後、キャッシュされたパスにリダイレクト
-    const redirectTo = getRedirectPath() || "/tourist/home";
+    const redirectTo = getRedirectPath() ?? "/tourist/home";
     clearRedirectPath();
     router.replace(redirectTo);
   };
@@ -55,8 +54,6 @@ export default function LoginPage() {
     if (error) {
       setErrorMessage(error.message);
     }
-    // OAuthログイン後のリダイレクトは Supabase のコールバックで処理されるが、
-    // 必要に応じてキャッシュを活用するために調整可能
   };
 
   return (
