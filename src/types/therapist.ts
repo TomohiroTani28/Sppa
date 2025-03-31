@@ -16,12 +16,19 @@ export interface TherapistCertification {
   expiration_date?: string;
 }
 
-// セラピストの勤務時間を表す型
+// セラピストの勤務時間を表す型（オブジェクト形式）
 export interface TherapistWorkingHours {
   [day: string]: {
     start: string;
     end: string;
   }[];
+}
+
+// セラピストの勤務時間を表す型（配列形式、ServiceDetails.tsx 用）
+export interface WorkingHour {
+  day: string;
+  startTime: string;
+  endTime: string;
 }
 
 // セラピストが提供するサービスを表す型
@@ -109,6 +116,7 @@ export interface TherapistProfile {
       count: number;
     };
   };
+  workingHours: WorkingHour[]; // 追加: GraphQLの working_hours にマッピング
 }
 
 // セラピスト検索結果を表す型
@@ -120,7 +128,7 @@ export interface TherapistSearchResult extends TherapistProfile {
   };
 }
 
-// セラピストの可用性を表す型（別のファイルから移動を想定）
+// セラピストの可用性を表す型
 export interface TherapistAvailability {
   id: string;
   therapist_id: string;

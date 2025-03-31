@@ -1,7 +1,21 @@
 // src/graphql/queries.ts
 import { gql } from '@apollo/client';
 
-// 既存の通知関連クエリ
+// セラピストプロフィール関連クエリ
+export const GET_THERAPIST_PROFILE = gql`
+  query GetTherapistProfile($id: UUID!) {
+    therapist_profiles_by_pk(id: $id) {
+      id
+      user_id
+      bio
+      languages
+      working_hours
+      status
+    }
+  }
+`;
+
+// 通知関連クエリ
 export const GET_NOTIFICATIONS = gql`
   query GetNotifications($userId: UUID!) {
     notifications(where: { user_id: { _eq: $userId } }, order_by: { created_at: desc }) {
@@ -24,20 +38,7 @@ export const MARK_NOTIFICATION_AS_READ = gql`
   }
 `;
 
-export const ON_NEW_NOTIFICATION = gql`
-  subscription OnNewNotification($userId: UUID!) {
-    notifications(where: { user_id: { _eq: $userId } }, order_by: { created_at: desc }, limit: 1) {
-      id
-      type
-      message
-      details
-      is_read
-      created_at
-    }
-  }
-`;
-
-// 予約関連クエリの追加
+// 予約関連クエリ
 export const GET_MY_BOOKINGS = gql`
   query GetMyBookings($guestId: UUID!) {
     bookings(where: { guest_id: { _eq: $guestId } }, order_by: { start_time: desc }) {
@@ -63,25 +64,6 @@ export const CANCEL_BOOKING = gql`
       id
       status
       canceled_at
-    }
-  }
-`;
-
-export const ON_BOOKING_UPDATE = gql`
-  subscription OnBookingUpdate($guestId: UUID!) {
-    bookings(where: { guest_id: { _eq: $guestId } }, order_by: { start_time: desc }) {
-      id
-      therapist_id
-      service_id
-      start_time
-      end_time
-      status
-      booking_notes
-      confirmed_at
-      canceled_at
-      completed_at
-      created_at
-      updated_at
     }
   }
 `;

@@ -1,4 +1,4 @@
-// src/app/components/common/OfferCarousel.tsx
+// src/components/OfferCarousel.tsx
 import React from "react";
 
 // Define interfaces for better type safety

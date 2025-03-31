@@ -2,13 +2,14 @@
 import { FaCalendarAlt } from "react-icons/fa";
 import { Card } from "@/components/ui/Card";
 import { Event } from "@/types/event";
+
 interface EventCardProps {
   event: Event;
 }
 
 export default function EventCard({ event }: EventCardProps) {
-  // 必要に応じて event のプロパティ名を合わせます。ここでは、startDate を date として扱います
   const { title, startDate: date, description, imageUrl } = event;
+
   return (
     <Card className="w-full shadow-md">
       <div className="relative w-full h-48">

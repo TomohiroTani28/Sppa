@@ -1,4 +1,4 @@
-// src/app/components/common/ServiceBadge.tsx
+// src/components/ServiceBadge.tsx
 import React from "react";
 
 interface ServiceBadgeProps {

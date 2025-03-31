@@ -1,7 +1,7 @@
-// src/app/(therapist)/events/page.tsx
 "use client";
+// src/app/(therapist)/events/page.tsx
 import TherapistLayout from "@/app/(therapist)/components/TherapistLayout";
-import EventCard from "@/components/EventCard";
+import EventCard from "@/app/(therapist)/events/components/EventCard";
 import EventForm from "@/app/(therapist)/events/components/EventForm";
 import { useEventData } from "@/app/(therapist)/hooks/useEventData";
 import { RealtimeEventList } from "@/realtime/RealtimeEventList";

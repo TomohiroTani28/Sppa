@@ -1,6 +1,6 @@
-// src/app/therapist/hooks/useBookingData.ts
+// src/app/(therapist)/hooks/useBookingData.ts
 import { gql, useQuery } from "@apollo/client";
-import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
+import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
 
 // Define the GraphQL query inline
 const GET_BOOKINGS = gql`

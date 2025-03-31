@@ -1,4 +1,4 @@
-// src/app/components/common/RatingStars.tsx
+// src/components/RatingStars.tsx
 import React from "react";
 
 interface RatingStarsProps {

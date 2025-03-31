@@ -1,5 +1,5 @@
 "use client";
-// src/app/components/common/BookingButton.tsx
+// src/components/BookingButton.tsx
 import React, { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Calendar as ReactCalendar, CalendarProps } from 'react-calendar';

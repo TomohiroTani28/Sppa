@@ -1,6 +1,6 @@
 'use client';
-// src/app/components/common/HomeHeader.tsx
-import WelcomeMessage from "@/app/(common)/home/components/WelcomeMessage";
+// src/components/HomeHeader.tsx
+import WelcomeMessage from "@/app/(common)/feed/components/WelcomeMessage";
 import Link from "next/link";
 
 interface HomeHeaderProps {

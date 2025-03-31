@@ -1,6 +1,6 @@
 // src/app/therapist/profile/components/AvailabilitySettings.tsx
 import React, { useState } from "react";
-import { useUpdateAvailability } from "@/app/hooks/api/availability";
+import { useUpdateAvailability } from "@/hooks/api/availability";
 import { TherapistAvailability, TherapistAvailabilitySlot } from "@/types/availability";
 
 const AvailabilitySettings: React.FC<{ therapistId: string }> = ({ therapistId }) => {

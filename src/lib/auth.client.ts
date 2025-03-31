@@ -1,19 +1,17 @@
 // src/app/lib/auth.client.ts
 import { User } from "@/types/user";
-import supabase from "./lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 
-// Sppa 用のユーザー型（User を拡張しつつ Supabase の実態に合わせる）
-interface SppaUser extends Omit<User, 'password_hash'> {
-  password_hash?: string; // Supabase では取得不可のためオプショナル
+interface SppaUser extends Omit<User, "password_hash"> {
+  password_hash?: string;
 }
 
-// Supabase ユーザーから SppaUser へのマッピング
 const mapSupabaseUserToSppaUser = (user: any): SppaUser => {
   return {
     id: user.id,
-    name: user.user_metadata?.name || null, // User に準拠（string | null）
+    name: user.user_metadata?.name || null,
     email: user.email || "",
-    role: (user.user_metadata?.role as 'tourist' | 'therapist') || 'tourist', // デフォルト値で必須性を保証
+    role: (user.user_metadata?.role as "tourist" | "therapist") || "tourist",
     profile_picture: user.user_metadata?.profile_picture || null,
     phone_number: user.user_metadata?.phone_number,
     verified_at: user.email_confirmed_at,
@@ -24,7 +22,6 @@ const mapSupabaseUserToSppaUser = (user: any): SppaUser => {
   };
 };
 
-// ユーザー取得関数
 export async function getUser(): Promise<SppaUser | null> {
   const { data: { user }, error } = await supabase.auth.getUser();
 
@@ -36,4 +33,10 @@ export async function getUser(): Promise<SppaUser | null> {
   const sppaUser = mapSupabaseUserToSppaUser(user);
   console.log("User fetched successfully:", sppaUser.email);
   return sppaUser;
+}
+
+// getSessionRole をデフォルトエクスポートとして追加
+export default async function getSessionRole(): Promise<"tourist" | "therapist" | "common" | null> {
+  const user = await getUser();
+  return user ? user.role : null;
 }

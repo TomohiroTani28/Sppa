@@ -1,13 +1,13 @@
 "use client";
-// src/app/components/common/ReviewCard.tsx
+// src/components/ReviewCard.tsx
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from "../ui/Card";
-import Avatar from "../common/Avatar";
+} from "@/components/ui/Card";
+import Avatar from "@/components/Avatar";
 import { FaStar } from "react-icons/fa";
 
 // reviewオブジェクトの型を定義

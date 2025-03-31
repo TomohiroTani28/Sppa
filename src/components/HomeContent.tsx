@@ -1,8 +1,8 @@
-// src/app/components/common/HomeContent.tsx
-import RecommendedTherapists from "@/app/(common)/home/components/RecommendedTherapists";
+// src/components/HomeContent.tsx
+import RecommendedTherapists from "@/app/(common)/feed/components/RecommendedTherapists";
 import React from "react";
 // Import from the correct location
-import OfferCarousel, { RecommendedExperiences } from "@/app/components/common/OfferCarousel";
+import OfferCarousel, { RecommendedExperiences } from "@/components/OfferCarousel";
 
 interface HomeContentProps {
   events: any[];
@@ -43,3 +43,7 @@ const HomeContent: React.FC<HomeContentProps> = ({
 );
 
 export default HomeContent;
+
+
+
+

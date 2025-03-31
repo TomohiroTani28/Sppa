@@ -1,4 +1,4 @@
-// src/app/components/common/PushNotification.tsx
+// src/components/PushNotification.tsx
 import { setupPushNotifications } from "@/realtime/notifications-push";
 import { useEffect } from "react";
 

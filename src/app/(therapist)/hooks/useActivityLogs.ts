@@ -1,6 +1,6 @@
-// src/app/therapist/hooks/useActivityLogs.ts
+// src/app/(therapist)/hooks/useActivityLogs.ts
 import { useQuery, gql } from "@apollo/client";
-import { useUser } from "@/app/hooks/api/useUser"; // 修正済みのパス例
+import { useUser } from "@/hooks/api/useUser";
 
 const GET_ACTIVITY_LOGS = gql`
   query GetActivityLogs($userId: uuid!) {

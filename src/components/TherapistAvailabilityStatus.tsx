@@ -1,7 +1,7 @@
 "use client";
 // src/app/components/TherapistAvailabilityStatus.tsx
 import { gql } from "@apollo/client";
-import { useWebSocketSubscription } from "@/app/hooks/useWebSocketSubscription";
+import { useWebSocketSubscription } from "@/hooks/useWebSocketSubscription";
 
 // GraphQL subscription for therapist availability
 const THERAPIST_AVAILABILITY_SUBSCRIPTION = gql`

@@ -1,9 +1,9 @@
 "use client";
-// src/app/components/common/LanguageSwitcher.tsx
+// src/components/LanguageSwitcher.tsx
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { languages } from "@/app/i18n/settings";
+import { languages } from "@/i18n/settings";
 
 export function LanguageSwitcher() {
   const { i18n } = useTranslation();
