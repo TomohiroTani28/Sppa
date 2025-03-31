@@ -6,7 +6,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env.development
+      - ../.env.development
     depends_on:
       hasura:
         condition: service_healthy
@@ -51,7 +51,7 @@ services:
     ports:
       - "54330:5432"
     env_file:
-      - .env.development
+      - ../.env.development
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: sppa
