@@ -1,9 +1,9 @@
 "use client";
 // src/app/(therapist)/events/page.tsx
-import TherapistLayout from "@/app/(therapist)/components/TherapistLayout";
-import EventCard from "@/app/(therapist)/events/components/EventCard";
-import EventForm from "@/app/(therapist)/events/components/EventForm";
-import { useEventData } from "@/app/(therapist)/hooks/useEventData";
+import TherapistLayout from "@/app/therapist/components/TherapistLayout";
+import EventCard from "@/app/therapist/events/components/EventCard";
+import EventForm from "@/app/therapist/events/components/EventForm";
+import { useEventData } from "@/app/therapist/hooks/useEventData";
 import { RealtimeEventList } from "@/realtime/RealtimeEventList";
 import { Event } from "@/types/event";
 import React, { useEffect, useState } from "react";
