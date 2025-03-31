@@ -1,7 +1,7 @@
 // src/app/therapist/reviews/components/ReviewOverview.tsx
 import React from "react";
-import RatingStars from "../../../components/common/RatingStars";
-import { useFetchReviews } from "../../../hooks/api/useFetchReviews";
+import RatingStars from "@/components/RatingStars";
+import { useFetchReviews } from "@/hooks/api/useFetchReviews";
 
 interface Review {
   rating: number;

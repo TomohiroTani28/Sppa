@@ -1,7 +1,7 @@
 // src/app/therapist/reviews/components/ReviewDetailModal.tsx
 import React, { useState, useEffect } from "react";
-import { useFetchReviews } from "@/app/hooks/api";
-import RatingStars from "@/app/components/common/RatingStars";
+import { useFetchReviews } from "@/hooks/api";
+import RatingStars from "@/components/RatingStars";
 
 interface ReviewDetailModalProps {
   reviewId: string;
