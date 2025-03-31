@@ -2,8 +2,7 @@
 // src/app/components/ui/Toast.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-// next-i18next の useTranslation の代わりに独自の useI18n を使用
-import { useI18n } from "@/app/i18n/I18nProvider";
+import { useI18n } from "@/i18n/I18nProvider";
 
 // トーストの型定義
 type ToastType = "success" | "warning" | "error" | "info";
