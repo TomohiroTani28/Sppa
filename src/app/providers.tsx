@@ -2,7 +2,7 @@
 // src/app/providers.tsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
-import { I18nProvider } from "./i18n/I18nProvider";
+import { I18nProvider } from "@/i18n/I18nProvider";
 import { ApolloWrapper } from "./ApolloWrapper";
 
 interface ProvidersProps {
