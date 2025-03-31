@@ -1,6 +1,5 @@
-// src/app/tourist/profile/page.tsx
 "use client";
-
+// src/app/(tourist)/profile/page.tsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/hooks/api/useAuth";

@@ -1,9 +1,9 @@
-// src/app/tourist/local-experiences/page.tsx
+// src/app/(tourist)/local-experiences/page.tsx
 "use client";
 
 import TouristLayout from "@/app/(common)/components/TouristLayout";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
-import { useFetchLocalExperiences } from "@/app/hooks/api/useFetchLocalExperiences";
+import BottomNavigation from "@/components/BottomNavigation";
+import { useFetchLocalExperiences } from "@/hooks/api/useFetchLocalExperiences";
 import { useEffect, useState } from "react";
 import ExperienceCard from "./components/ExperienceCard";
 
