@@ -4,7 +4,7 @@
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Providers } from "./providers";
-import ToastProvider from "@/app/components/ui/Toast";
+import ToastProvider from "@/components/ui/Toast";
 import { ApolloWrapper } from "./ApolloWrapper";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
