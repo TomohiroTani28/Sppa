@@ -1,6 +1,6 @@
 // src/api/transactions.ts
 import { gql } from '@apollo/client';
-import hasuraClient from '@/app/lib/hasura-client';
+import hasuraClient from '@/lib/hasura-client';
 
 // 取引履歴取得クエリ
 const GET_TRANSACTIONS = gql`

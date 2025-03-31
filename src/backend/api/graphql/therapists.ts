@@ -1,6 +1,6 @@
 // src/backend/api/graphql/therapists.ts
 import { gql } from '@apollo/client';
-import hasuraClient from '@/app/lib/hasura-client';
+import hasuraClient from '@/lib/hasura-client';
 
 type TherapistProfile = {
   user: {

@@ -1,7 +1,6 @@
 // src/backend/api/graphql/bookings.ts
-// src/backend/api/graphql/bookings.ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import hasuraClient from '@/app/lib/hasura-client';
+import hasuraClient from '@/lib/hasura-client';
 import { gql } from '@apollo/client';
 
 // GraphQL ミューテーション定義

@@ -1,6 +1,6 @@
 // src/api/media.ts
 import { gql } from '@apollo/client';
-import hasuraClient from '@/app/lib/hasura-client';
+import hasuraClient from '@/lib/hasura-client';
 
 // メディアアップロードAPIエンドポイント
 export const uploadMedia = async (

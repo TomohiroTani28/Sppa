@@ -1,6 +1,6 @@
 // src/api/services.ts
 import { gql } from '@apollo/client';
-import hasuraClient from '@/app/lib/hasura-client';
+import hasuraClient from '@/lib/hasura-client';
 
 // 施術メニューの作成
 export const createService = async (

@@ -1,8 +1,8 @@
 // src/app/api/users/[userId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { createHasuraClient } from "@/app/lib/hasura-client";
+import { createHasuraClient } from "@/lib/hasura-client";
 import { gql } from "@apollo/client";
-import { verifyIdToken } from "@/app/lib/auth.server";
+import { verifyIdToken } from "@/lib/auth.server";
 
 // GraphQL query to fetch user data
 const GET_USER = gql`

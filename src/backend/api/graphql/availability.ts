@@ -1,6 +1,6 @@
 // src/backend/api/graphql/availability.ts
 import { gql } from "@apollo/client";
-import { graphqlClient } from "@/app/lib/hasura-client";
+import { graphqlClient } from "@/lib/hasura-client";
 import type { TherapistAvailability } from "@/types/availability";
 
 // Update therapist availability

@@ -1,6 +1,6 @@
 // src/api/likes.ts
 import { gql } from '@apollo/client';
-import hasuraClient from '@/app/lib/hasura-client';
+import hasuraClient from '@/lib/hasura-client';
 
 // GraphQL ミューテーション定義
 const LIKE_THERAPIST = gql`
