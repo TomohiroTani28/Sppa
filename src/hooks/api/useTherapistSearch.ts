@@ -1,5 +1,5 @@
 "use client";
-// src/app/hooks/api/useTherapistSearch.ts
+// src/hooks/api/useTherapistSearch.ts
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useSubscription, gql } from '@apollo/client';
 import { TherapistProfile } from '@/types/therapist';

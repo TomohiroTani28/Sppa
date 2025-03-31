@@ -1,4 +1,4 @@
-// src/app/hooks/api/useLikeTherapist.ts
+// src/hooks/api/useLikeTherapist.ts
 import { useMutation, gql } from "@apollo/client";
 import { FetchResult, ApolloError } from "@apollo/client";
 

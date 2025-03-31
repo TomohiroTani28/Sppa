@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchMedia.ts
+// src/hooks/api/useFetchMedia.ts
 import { useQuery, gql } from "@apollo/client";
 import { Media } from "@/types/media";
 

@@ -1,4 +1,4 @@
-// src/app/hooks/api/useUser.ts
+// src/hooks/api/useUser.ts
 import { useState, useEffect } from "react";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client";

@@ -1,7 +1,7 @@
-// src/app/hooks/api/useFetchUser.ts
+// src/hooks/api/useFetchUser.ts
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { GET_USER_PROFILE } from "@/app/lib/queries/user";
+import { GET_USER_PROFILE } from "@/lib/queries/user";
 
 interface UserProfile {
   id: string;

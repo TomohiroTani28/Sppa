@@ -1,4 +1,4 @@
-// src/hooks/api/useActivityLogs.ts
+// src/api/useActivityLogs.ts
 import { useQuery, useSubscription } from '@apollo/client';
 import { useCallback, useMemo } from 'react';
 import { gql } from '@apollo/client';

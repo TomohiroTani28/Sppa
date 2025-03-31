@@ -12,7 +12,7 @@ export const useMyBookings = (userId: string) => {
   // 予約リストを取得するクエリ
   const { data, loading, error, subscribeToMore } = useQuery(GET_MY_BOOKINGS, {
     variables: { guestId: userId },
-    fetchPolicy: 'cache-and-network', // キャッシュとネットワークの両方を使用
+    fetchPolicy: 'cache-and-network',
   });
 
   // 予約の更新をリアルタイムで購読
@@ -54,9 +54,9 @@ export const useMyBookings = (userId: string) => {
   };
 
   return {
-    bookings: data?.bookings || [], // 予約リスト
-    loading, // ローディング状態
-    error, // エラー状態
-    handleCancelBooking, // キャンセル関数
+    bookings: data?.bookings || [],
+    loading,
+    error,
+    handleCancelBooking,
   };
 };

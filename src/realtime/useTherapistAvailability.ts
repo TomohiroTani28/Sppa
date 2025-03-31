@@ -1,8 +1,8 @@
 "use client";
-// src/app/hooks/realtime/useTherapistAvailability.ts
+// src/realtime/useTherapistAvailability.ts
 import { useCallback } from "react";
 import { gql } from "@apollo/client";
-import client from "@/app/lib/hasura-client";
+import client from "@/lib/hasura-client";
 import { TherapistAvailabilitySlot } from "@/types/availability";
 
 const GET_THERAPIST_AVAILABILITY = gql`

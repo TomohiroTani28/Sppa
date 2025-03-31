@@ -67,3 +67,22 @@ export const CANCEL_BOOKING = gql`
     }
   }
 `;
+
+export const ON_BOOKING_UPDATE = gql`
+  subscription OnBookingUpdate($guestId: UUID!) {
+    bookings(where: { guest_id: { _eq: $guestId } }, order_by: { updated_at: desc }) {
+      id
+      therapist_id
+      service_id
+      start_time
+      end_time
+      status
+      booking_notes
+      confirmed_at
+      canceled_at
+      completed_at
+      created_at
+      updated_at
+    }
+  }
+`;

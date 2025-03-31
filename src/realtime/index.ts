@@ -1,10 +1,10 @@
 // src/app/hooks/realtime/index.ts
-export * from "../hooks/realtime/TherapistAvailabilityStatus";
-export * from "../hooks/realtime/useNotifications";
-export * from "../hooks/realtime/useRealtimeAvailability";
-export * from "../hooks/realtime/useRealtimeBookings";
-export * from "../hooks/realtime/useRealtimeChat";
-export * from "../hooks/realtime/useRealtimeMatchList";
-export * from "../hooks/realtime/useRealtimeReviews";
-export * from "./RealtimeMatchList";
+export * from "@/realtime/TherapistAvailabilityStatus";
+export * from "@/realtime/useNotifications";
+export * from "@/realtime/useRealtimeAvailability";
+export * from "@/realtime/useRealtimeBookings";
+export * from "@/realtime/useRealtimeChat";
+export * from "@/realtime/useRealtimeMatchList";
+export * from "@/realtime/useRealtimeReviews";
+export * from "@/realtime/RealtimeMatchList";
 

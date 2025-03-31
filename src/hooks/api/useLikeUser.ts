@@ -1,4 +1,4 @@
-// src/hooks/api/useLikeUser.ts
+// src/api/useLikeUser.ts
 import { gql, useMutation } from "@apollo/client";
 
 // 好きな命名でOKです

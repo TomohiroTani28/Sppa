@@ -1,7 +1,7 @@
-// src/app/hooks/api/useUpdateUser.ts
+// src/hooks/api/useUpdateUser.ts
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { UPDATE_USER_PROFILE } from "@/app/lib/queries/user";
+import { UPDATE_USER_PROFILE } from "@/lib/queries/user";
 
 export const useUpdateUser = () => {
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,4 @@
-// src/app/hooks/api/index.ts
+// src/hooks/api/index.ts
 export { useAuth } from "./useAuth";
 export { useCreateBooking } from "./useCreateBooking";
 export { useCreateEvent } from "./useCreateEvent";

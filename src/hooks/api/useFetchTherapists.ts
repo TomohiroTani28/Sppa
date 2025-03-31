@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchTherapists.ts
+// src/hooks/api/useFetchTherapists.ts
 import { useQuery, gql } from "@apollo/client";
 import { useCallback } from "react";
 import { Therapist } from "@/types/therapist";

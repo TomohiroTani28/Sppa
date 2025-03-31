@@ -1,4 +1,4 @@
-// src/hooks/api/useAuth.ts
+// src/api/useAuth.ts
 "use client";
 import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase-client";

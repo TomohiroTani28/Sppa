@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchTherapistLocations.ts
+// src/hooks/api/useFetchTherapistLocations.ts
 import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 

@@ -1,6 +1,6 @@
-// src/app/hooks/api/useCreateEvent.ts
+// src/hooks/api/useCreateEvent.ts
 import { useState } from "react";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 import { useAuth } from "./useAuth";
 
 interface EventData {

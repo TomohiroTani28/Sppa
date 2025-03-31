@@ -1,12 +1,12 @@
 "use client";
-// src/app/hooks/api/useTherapistAvailabilityApi.ts
+// src/hooks/api/useTherapistAvailabilityApi.ts
 import { useCallback } from "react";
 import { gql } from "@apollo/client";
-import client from "@/app/lib/hasura-client";
+import client from "@/lib/hasura-client";
 import {
   GET_THERAPIST_AVAILABILITY,
   AVAILABILITY_SUBSCRIPTION,
-} from "@/app/lib/queries/therapistAvailability";
+} from "@/lib/queries/therapistAvailability";
 import { TherapistAvailabilitySlot } from "@/types/availability";
 
 /**

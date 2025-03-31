@@ -1,4 +1,4 @@
-// src/app/hooks/api/useMatchList.ts
+// src/hooks/api/useMatchList.ts
 import { useState, useEffect } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { gql } from "graphql-tag";

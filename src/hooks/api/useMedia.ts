@@ -1,4 +1,4 @@
-// src/app/hooks/api/useMedia.ts
+// src/hooks/api/useMedia.ts
 import { useQuery } from "@tanstack/react-query";
 
 // mediaの取得API

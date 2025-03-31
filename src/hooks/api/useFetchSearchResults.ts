@@ -1,5 +1,5 @@
 "use client";
-// src/app/hooks/api/useFetchSearchResults.ts
+// src/hooks/api/useFetchSearchResults.ts
 import { useState, useEffect, useCallback } from "react";
 import { gql, useQuery } from "@apollo/client";
 

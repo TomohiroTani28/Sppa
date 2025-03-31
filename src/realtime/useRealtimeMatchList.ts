@@ -1,5 +1,5 @@
 "use client";
-// src/app/hooks/realtime/useRealtimeMatchList.ts
+// src/realtime/useRealtimeMatchList.ts
 import { Match } from "@/types/match";
 import { gql, useSubscription } from "@apollo/client";
 import { useEffect, useState } from "react";

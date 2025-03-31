@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchFilters.ts
+// src/hooks/api/useFetchFilters.ts
 import { useState, useEffect } from "react";
 
 export interface FilterOption {

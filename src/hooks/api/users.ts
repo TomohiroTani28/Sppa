@@ -1,5 +1,5 @@
 "use client";
-// src/app/hooks/api/users.ts
+// src/hooks/api/users.ts
 import { useState, useEffect } from "react";
 import { User } from "@/types/user";
 

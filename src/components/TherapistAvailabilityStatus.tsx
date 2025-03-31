@@ -1,5 +1,5 @@
 "use client";
-// src/app/components/TherapistAvailabilityStatus.tsx
+// src/components/TherapistAvailabilityStatus.tsx
 import { gql } from "@apollo/client";
 import { useWebSocketSubscription } from "@/hooks/useWebSocketSubscription";
 

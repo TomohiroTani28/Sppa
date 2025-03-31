@@ -1,4 +1,4 @@
-// src/app/lib/auth.server.ts
+// src/lib/auth.server.ts
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(

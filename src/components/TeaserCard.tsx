@@ -1,11 +1,11 @@
-// src/app/components/common/TeaserCard.tsx
+// src/components/TeaserCard.tsx
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TeaserCard: React.FC = () => {
   const { t } = useTranslation("common");
-  const pathname = usePathname(); // 現在のURLパスを取得
+  const pathname = usePathname();
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white shadow-md p-4 flex justify-between items-center z-10">

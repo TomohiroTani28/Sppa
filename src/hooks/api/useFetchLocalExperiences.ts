@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchLocalExperiences.ts
+// src/hooks/api/useFetchLocalExperiences.ts
 import { useState, useCallback } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { LocalExperience } from "@/types/local-experience";

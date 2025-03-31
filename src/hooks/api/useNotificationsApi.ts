@@ -1,7 +1,7 @@
-// src/app/hooks/api/useNotificationsApi.ts
+// src/hooks/api/useNotificationsApi.ts
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { request, gql } from "graphql-request";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 import { Notification } from "@/types/notification";
 
 const HASURA_ENDPOINT = process.env.NEXT_PUBLIC_HASURA_HTTPS_ENDPOINT;

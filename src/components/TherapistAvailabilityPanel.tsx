@@ -1,7 +1,7 @@
 "use client";
-// src/app/components/common/TherapistAvailabilityPanel.tsx
+// src/components/TherapistAvailabilityPanel.tsx
 import { useState, useEffect } from "react";
-import { useTherapistAvailabilityApi } from "@/app/hooks/realtime/useTherapistAvailability";
+import { useTherapistAvailabilityApi } from "@/realtime/useTherapistAvailability";
 import { FaUserFriends } from "react-icons/fa";
 
 // 表示用にセラピストと空き状況を組み合わせた型

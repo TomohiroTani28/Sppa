@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchEvents.ts
+// src/hooks/api/useFetchEvents.ts
 import { useQuery } from "@apollo/client";
 import { gql } from "graphql-tag";
 

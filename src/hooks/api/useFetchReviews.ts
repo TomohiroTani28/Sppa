@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchReviews.ts
+// src/hooks/api/useFetchReviews.ts
 import { useQuery, gql } from "@apollo/client";
 import { Review } from "@/types/review";
 

@@ -1,7 +1,7 @@
-// src/app/hooks/api/useFetchServices.ts
+// src/hooks/api/useFetchServices.ts
 import { useState, useEffect } from "react";
 import { useQuery, gql } from "@apollo/client";
-import { useRealtimeAvailability } from "@/app/hooks/realtime/useRealtimeAvailability";
+import { useRealtimeAvailability } from "@/realtime/useRealtimeAvailability";
 
 const FETCH_SERVICES = gql`
   query FetchServices {

@@ -1,4 +1,4 @@
-// src/app/hooks/api/useCreateBooking.ts
+// src/hooks/api/useCreateBooking.ts
 import { gql, useMutation } from "@apollo/client";
 import { useCallback } from "react";
 import { Booking } from "@/types/booking";

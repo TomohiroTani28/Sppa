@@ -1,4 +1,4 @@
-// src/app/hooks/api/availability.ts
+// src/hooks/api/availability.ts
 import { useState } from "react";
 import { updateAvailability as updateAvailabilityApi } from "@/backend/api/graphql/availability";
 import { TherapistAvailability } from "@/types/availability";

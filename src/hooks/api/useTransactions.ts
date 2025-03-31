@@ -1,4 +1,4 @@
-// src/app/hooks/api/useTransactions.ts
+// src/hooks/api/useTransactions.ts
 import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 

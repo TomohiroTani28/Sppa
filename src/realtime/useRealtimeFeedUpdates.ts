@@ -1,4 +1,4 @@
-// src/app/hooks/realtime/useRealtimeFeedUpdates.ts
+// src/realtime/useRealtimeFeedUpdates.ts
 import { useEffect } from "react";
 import { gql, useSubscription } from "@apollo/client";
 import { create } from "zustand";

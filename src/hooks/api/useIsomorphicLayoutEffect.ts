@@ -1,4 +1,4 @@
-// src/app/hooks/api/useIsomorphicLayoutEffect.ts
+// src/hooks/api/useIsomorphicLayoutEffect.ts
 import { useEffect, useLayoutEffect } from "react";
 
 const useIsomorphicLayoutEffect =

@@ -1,8 +1,8 @@
-// src/app/hooks/api/useTherapistData.tsx
+// src/hooks/api/useTherapistData.tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 
 // Define interfaces for the returned data types
 export interface TherapistData {

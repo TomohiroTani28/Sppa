@@ -1,4 +1,4 @@
-// src/app/hooks/realtime/useRealtimeReviews.ts
+// src/realtime/useRealtimeReviews.ts
 import { useSubscription, gql } from "@apollo/client";
 
 const LISTEN_FOR_NEW_REVIEWS = gql`

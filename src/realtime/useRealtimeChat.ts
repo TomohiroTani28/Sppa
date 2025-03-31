@@ -1,7 +1,7 @@
 "use client";
-// src/app/hooks/realtime/useRealtimeChat.ts
+// src/realtime/useRealtimeChat.ts
 import { useState, useEffect } from "react";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 
 export interface Message {
   id: string;

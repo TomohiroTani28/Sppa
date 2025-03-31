@@ -1,7 +1,7 @@
-// src/app/hooks/api/useCreateTransaction.ts
+// src/hooks/api/useCreateTransaction.ts
 import { useMutation } from "@tanstack/react-query";
 import { gql } from "@apollo/client";
-import graphqlClient from "@/app/lib/hasura-client";
+import graphqlClient from "@/lib/hasura-client";
 import { Transaction } from "@/types/transaction";
 
 const CREATE_TRANSACTION_MUTATION = gql`

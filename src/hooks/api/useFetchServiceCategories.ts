@@ -1,4 +1,4 @@
-// src/app/hooks/api/useFetchServiceCategories.ts
+// src/hooks/api/useFetchServiceCategories.ts
 import { useQuery, gql } from "@apollo/client";
 
 // カテゴリ取得用GraphQLクエリ

@@ -1,4 +1,4 @@
-// src/app/contexts/ChatContext.tsx
+// src/contexts/ChatContext.tsx
 "use client";
 
 import React, { createContext, useContext, useState } from "react";

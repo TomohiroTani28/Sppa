@@ -1,4 +1,4 @@
-// src/app/hooks/api/useActivityLogging.ts
+// src/hooks/api/useActivityLogging.ts
 import { useCallback } from "react";
 import { useMutation, gql } from "@apollo/client";
 import { useAuth } from "./useAuth";

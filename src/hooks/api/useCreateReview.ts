@@ -1,7 +1,7 @@
-// src/app/hooks/api/useCreateReview.ts
+// src/hooks/api/useCreateReview.ts
 import { useMutation } from "@tanstack/react-query";
 import { gql } from "@apollo/client";
-import hasuraClient from "@/app/lib/hasura-client";
+import hasuraClient from "@/lib/hasura-client";
 import { Review } from "@/types/review";
 
 // GraphQL Mutation
