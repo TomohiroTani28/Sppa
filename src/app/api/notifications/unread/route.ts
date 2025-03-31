@@ -1,7 +1,7 @@
 // src/api/notifications/unread/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/authOptions';
+import { authOptions } from '@/lib/authOptions';
 import { request, gql } from 'graphql-request';
 
 // Notification type definition
