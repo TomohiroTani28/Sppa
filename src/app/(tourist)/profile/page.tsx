@@ -4,14 +4,14 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/hooks/api/useAuth";
-import { useFetchUser } from "@/app/hooks/api/useFetchUser";
-import ProfileView from "@/app/tourist/profile/components/ProfileView";
-import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";
-import { Spinner } from "@/app/components/ui/Spinner";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
+import { useFetchUser } from "@/hooks/api/useFetchUser";
+import ProfileView from "@/app/(tourist)/profile/components/ProfileView";
+import ProfileEdit from "@/app/(tourist)/profile/components/ProfileEdit";
+import { Spinner } from "@/components/ui/Spinner";
+import BottomNavigation from "@/components/BottomNavigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { saveRedirectPath } from "@/app/lib/storage-utils";
+import { saveRedirectPath } from "@/lib/storage-utils";
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();

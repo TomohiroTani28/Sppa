@@ -1,14 +1,14 @@
 "use client";
-// src/app/therapist/reviews/page.tsx
+// src/app/(therapist)/reviews/page.tsx
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation"; // `useSearchParams` に変更
-import useRealtimeReviews from "@/app/hooks/realtime/useRealtimeReviews";
+import { useSearchParams } from "next/navigation";
+import useRealtimeReviews from "@/realtime/useRealtimeReviews";
 import ReviewList from "./components/ReviewList";
 import ReviewOverview from "./components/ReviewOverview";
-import TherapistLayout from "@/app/therapist/components/TherapistLayout";
+import TherapistLayout from "@/app/(common)/components/TouristLayout";
 
 const ReviewsPage = () => {
-  const searchParams = useSearchParams(); // 修正: `useRouter` を使わず `useSearchParams`
+  const searchParams = useSearchParams();
   const therapistId = searchParams.get("therapistId") as string;
 
   const { realtimeReviews, loading, error } = useRealtimeReviews(therapistId);

@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import TouristLayout from "../components/TouristLayout";
+import TouristLayout from "@/app/(common)/components/TouristLayout";
 import BookingList from "./components/BookingList";
 import BookingForm from "./components/BookingForm";
 import BookingCalendar from "./components/BookingCalendar";
@@ -16,9 +16,9 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/app/components/ui/Card";
-import { Button } from "@/app/components/ui/Button";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
+} from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import BottomNavigation from "@/components/BottomNavigation";
 
 const BookingsPage = () => {
   const { t } = useTranslation("bookings");
