@@ -1,6 +1,4 @@
 # docker-compose.dev.yml
-version: "3.8"
-
 services:
   # ▼ Next.js コンテナ（開発用）
   nextjs:
@@ -22,7 +20,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - .env.development
+      - ../.env.development
     environment:
       # Docker内の接続先は.env.developmentで指定された値を利用
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}

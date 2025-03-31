@@ -1,6 +1,4 @@
 # docker-compose.prod.yml
-version: "3.8"
-
 services:
   # ▼ Next.js コンテナ（本番用）
   nextjs:
@@ -8,7 +6,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env.production
+      - ../.env.production
     depends_on:
       hasura:
         condition: service_healthy
