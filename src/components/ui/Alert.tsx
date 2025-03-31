@@ -1,6 +1,6 @@
 "use client";
-// src/app/components/ui/Alert.tsx
-import { cn } from "@/app/lib/utils";
+// src/components/ui/Alert.tsx
+import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import React from "react";
 

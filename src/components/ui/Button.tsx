@@ -1,7 +1,7 @@
-// src/app/components/ui/Button.tsx
+// src/components/ui/Button.tsx
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 // ボタンのスタイルバリエーションを定義
 const buttonVariants = cva(

@@ -1,9 +1,9 @@
-// src/app/components/ui/Label.tsx
+// src/components/ui/Label.tsx
 import * as React from "react";
-import * as LabelPrimitive from "@radix-ui/react-label"; // 修正: 名前空間を適用
+import * as LabelPrimitive from "@radix-ui/react-label";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 // ラベルのスタイルバリエーションを定義
 const labelVariants = cva(

@@ -1,6 +1,6 @@
 "use client";
-// src/app/components/ui/Card.tsx
-import { cn } from "@/app/lib/utils";
+// src/components/ui/Card.tsx
+import { cn } from "@/lib/utils";
 import React from "react";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,7 +1,7 @@
 "use client";
-// src/app/components/ui/Switch.tsx
+// src/components/ui/Switch.tsx
 import React from "react";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 export interface SwitchProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

@@ -1,9 +1,9 @@
-// src/app/components/ui/Dialog.tsx
+// src/components/ui/Dialog.tsx
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 // Dialogのルートコンポーネント
 const Dialog = DialogPrimitive.Root;

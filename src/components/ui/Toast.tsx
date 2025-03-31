@@ -1,5 +1,5 @@
 "use client";
-// src/app/components/ui/Toast.tsx
+// src/components/ui/Toast.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/i18n/I18nProvider";

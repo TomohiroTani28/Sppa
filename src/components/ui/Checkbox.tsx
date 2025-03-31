@@ -1,8 +1,8 @@
 "use client";
-// src/app/components/ui/Checkbox.tsx
+// src/components/ui/Checkbox.tsx
 import * as React from "react";
 import { Check } from "lucide-react";
-import { cn } from "@/app//lib/utils";
+import { cn } from "@/lib/utils";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   checked?: boolean;

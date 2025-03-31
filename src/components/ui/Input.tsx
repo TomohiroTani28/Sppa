@@ -1,7 +1,7 @@
-// src/app/components/ui/Input.tsx
+// src/components/ui/Input.tsx
 import * as React from "react";
 
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 // 入力フィールドの props 型定義
 export interface InputProps

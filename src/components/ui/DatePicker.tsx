@@ -1,5 +1,5 @@
 "use client";
-// src/app/components/ui/DatePicker.tsx
+// src/components/ui/DatePicker.tsx
 import React from "react";
 
 export interface DatePickerProps {

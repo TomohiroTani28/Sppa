@@ -1,8 +1,8 @@
-// src/app/lib/auth.client.ts
+// src/lib/auth.client.ts
 import { User } from "@/types/user";
 import supabase from "@/lib/supabase-client";
 
-interface SppaUser extends Omit<User, "password_hash"> {
+export interface SppaUser extends Omit<User, "password_hash"> { // exportを追加
   password_hash?: string;
 }
 
@@ -35,7 +35,6 @@ export async function getUser(): Promise<SppaUser | null> {
   return sppaUser;
 }
 
-// getSessionRole をデフォルトエクスポートとして追加
 export default async function getSessionRole(): Promise<"tourist" | "therapist" | "common" | null> {
   const user = await getUser();
   return user ? user.role : null;

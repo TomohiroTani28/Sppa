@@ -1,19 +1,19 @@
 "use client";
-// src/app/components/ui/Navbar.tsx
+// src/components/ui/Navbar.tsx
 import { useState, useEffect } from "react";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 import Link from "next/link";
-import type { SppaUser } from "@/app/lib/auth"; // 修正: AuthUser → SppaUser
-import { getClientSideUser } from "@/app/lib/auth";
+import type { SppaUser } from "@/lib/auth.client";
+import { getUser } from "@/lib/auth.client";
 
 export default function Navbar() {
-  const [user, setUser] = useState<SppaUser>(null); // 修正: AuthUser → SppaUser
+  const [user, setUser] = useState<SppaUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function checkAuthStatus() {
       try {
-        const currentUser = await getClientSideUser();
+        const currentUser = await getUser();
         setUser(currentUser);
       } catch (error) {
         console.error("Error checking auth status:", error);

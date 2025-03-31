@@ -1,6 +1,6 @@
 "use client";
-// src/app/components/ui/Badge.tsx
-import { cn } from "@/app/lib/utils";
+// src/components/ui/Badge.tsx
+import { cn } from "@/lib/utils";
 import React from "react";
 
 const badgeVariants = {

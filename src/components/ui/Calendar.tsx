@@ -1,8 +1,8 @@
 "use client";
-// src/app/components/ui/Calendar.tsx
+// src/components/ui/Calendar.tsx
 import React, { useState } from "react";
 import { CalendarDate, getLocalTimeZone, today } from "@internationalized/date";
-import { cn } from "@/app/lib/utils"; // Utility for className merging (common in Shadcn/UI)
+import { cn } from "@/lib/utils"; // Utility for className merging (common in Shadcn/UI)
 import { Button } from "./Button"; // Assuming you have a Button component
 
 interface CalendarProps {

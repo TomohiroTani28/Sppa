@@ -1,7 +1,7 @@
 "use client";
-// src/app/components/ui/Text.tsx
+// src/components/ui/Text.tsx
 import React from "react";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 export interface TextProps {
   children: React.ReactNode;
