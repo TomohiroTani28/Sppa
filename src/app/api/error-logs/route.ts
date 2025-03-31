@@ -1,6 +1,6 @@
 // src/app/hooks/api/error-logs/route.ts
 import { NextResponse } from "next/server";
-import supabase from "@/app/lib/supabase-client";
+import supabase from "@/lib/supabase-client";
 import { ErrorLogCreateInput } from "@/types/error-log";
 
 export async function POST(request: Request) {

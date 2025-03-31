@@ -1,17 +1,17 @@
 // src/app/tourist/bookings/components/RealTimeAvailability.tsx
 "use client";
 import { useTranslation } from "react-i18next";
-import { useTherapistAvailabilityApi } from "@/app/hooks/api/useTherapistAvailabilityApi";
-import Badge from "@/app/components/ui/Badge";
+import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
+import Badge from "@/components/ui/Badge";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/app/components/ui/Card";
-import { formatTime } from "@/app/lib/date-utils";
+} from "@/components/ui/Card";
+import { formatTime } from "@/lib/date-utils";
 import { useState, useEffect } from "react";
-import { TherapistAvailabilitySlot } from "@/types/availability"; // 正しい型をインポート
+import { TherapistAvailabilitySlot } from "@/types/availability";
 
 interface RealTimeAvailabilityProps {
   therapistId: string;

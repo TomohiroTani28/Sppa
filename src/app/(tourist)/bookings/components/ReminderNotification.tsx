@@ -3,17 +3,17 @@
 
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import supabase from "@/app/lib/supabase-client";
-import { Switch } from "@/app/components/ui/Switch";
-import { Label } from "@/app/components/ui/Label";
+import supabase from "@/lib/supabase-client";
+import { Switch } from "@/components/ui/Switch";
+import { Label } from "@/components/ui/Label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/Select";
-import { useNotificationsApi } from "@/app/hooks/api/useNotificationsApi";
+} from "@/components/ui/Select";
+import { useNotificationsApi } from "@/hooks/api/useNotificationsApi";
 
 const ReminderNotification = () => {
   const { t } = useTranslation("bookings");

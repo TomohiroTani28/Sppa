@@ -1,5 +1,5 @@
-// src/app/realtime/likes-listener.ts
-import supabase from "@/app/lib/supabase-client";
+// src/realtime/likes-listener.ts
+import supabase from "@/lib/supabase-client";
 
 export const subscribeToLikes = (
   userId: string,

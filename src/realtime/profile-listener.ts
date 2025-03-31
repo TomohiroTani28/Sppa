@@ -1,5 +1,5 @@
-// src/app/realtime/profile-listener.ts
-import supabase from "@/app/lib/supabase-client";
+// src/realtime/profile-listener.ts
+import supabase from "@/lib/supabase-client";
 
 export const subscribeToProfile = (
   userId: string,

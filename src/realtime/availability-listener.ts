@@ -1,5 +1,5 @@
-// src/app/realtime/availability-listener.ts
-import supabase from "@/app/lib/supabase-client";
+// src/realtime/availability-listener.ts
+import supabase from "@/lib/supabase-client";
 
 export const subscribeToAvailability = (
   therapistId: string,

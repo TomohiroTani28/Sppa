@@ -1,4 +1,4 @@
-// src/app/hooks/realtime/useRealtimeAvailability.ts
+// src/realtime/useRealtimeAvailability.ts
 import { useState, useEffect } from "react";
 import { gql, useSubscription, useQuery } from "@apollo/client";
 

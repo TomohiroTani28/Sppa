@@ -1,4 +1,4 @@
-// src/app/hooks/realtime/index.ts
+// src/realtime/index.ts
 export * from "@/realtime/TherapistAvailabilityStatus";
 export * from "@/realtime/useNotifications";
 export * from "@/realtime/useRealtimeAvailability";

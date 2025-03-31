@@ -1,62 +1,40 @@
-"use client";
-// src/realtime/useTherapistAvailability.ts
-import { useCallback } from "react";
+// src/hooks/useTherapistAvailability.ts
+
+import { useState, useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
-import client from "@/lib/hasura-client";
-import { TherapistAvailabilitySlot } from "@/types/availability";
+import type { TherapistAvailability } from "@/types/availability";
 
 const GET_THERAPIST_AVAILABILITY = gql`
-  query GetTherapistAvailability($therapistId: String!) {
+  query GetTherapistAvailability($therapistId: UUID!) {
     therapist_availability(where: { therapist_id: { _eq: $therapistId } }) {
       id
-      therapist_id
       start_time
       end_time
       is_available
+      updated_at
     }
   }
 `;
 
-const AVAILABILITY_SUBSCRIPTION = gql`
-  subscription AvailabilitySubscription($therapistId: String!) {
-    therapist_availability(where: { therapist_id: { _eq: $therapistId } }) {
-      id
-      therapist_id
-      start_time
-      end_time
-      is_available
+export function useTherapistAvailability(therapistId: string) {
+  const [availability, setAvailability] = useState<TherapistAvailability[]>([]);
+
+  const { data, loading, error } = useQuery<{
+    therapist_availability: TherapistAvailability[];
+  }>(GET_THERAPIST_AVAILABILITY, {
+    variables: { therapistId },
+  });
+
+  useEffect(() => {
+    if (data?.therapist_availability) {
+      setAvailability(data.therapist_availability);
     }
-  }
-`;
+  }, [data]);
 
-export function useTherapistAvailabilityApi(therapistId?: string) {
-  const fetchAvailability = useCallback(async () => {
-    if (!therapistId) return { available_slots: [] };
-    const { data } = await client.query({
-      query: GET_THERAPIST_AVAILABILITY,
-      variables: { therapistId },
-      fetchPolicy: "network-only",
-    });
-
-    const slots: TherapistAvailabilitySlot[] = data?.therapist_availability ?? [];
-    return { available_slots: slots };
-  }, [therapistId]);
-
-  const subscribeToAvailability = (onUpdate: (slots: TherapistAvailabilitySlot[]) => void) => {
-    if (!therapistId) return () => {};
-    const observable = client.subscribe({
-      query: AVAILABILITY_SUBSCRIPTION,
-      variables: { therapistId },
-    });
-    const subscription = observable.subscribe({
-      next: (resp) => {
-        const newSlots = resp?.data?.therapist_availability || [];
-        onUpdate(newSlots);
-      },
-      error: (err) => console.error("Subscription error:", err),
-    });
-    return () => subscription.unsubscribe();
+  const updateAvailability = (newAvailability: TherapistAvailability[]) => {
+    setAvailability(newAvailability);
   };
 
-  return { fetchAvailability, subscribeToAvailability };
+  return { availability, updateAvailability, loading, error };
 }

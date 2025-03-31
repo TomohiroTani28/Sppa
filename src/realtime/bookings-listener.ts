@@ -1,5 +1,5 @@
-// src/app/realtime/bookings-listener.ts
-import supabase from "@/app/lib/supabase-client";
+// src/realtime/bookings-listener.ts
+import supabase from "@/lib/supabase-client";
 
 export const subscribeToBookings = (
   userId: string,

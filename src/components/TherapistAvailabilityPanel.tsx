@@ -1,10 +1,15 @@
 "use client";
 // src/components/TherapistAvailabilityPanel.tsx
 import { useState, useEffect } from "react";
-import { useTherapistAvailabilityApi } from "@/realtime/useTherapistAvailability";
+import { useTherapistAvailability } from '@/realtime/useTherapistAvailability';
 import { FaUserFriends } from "react-icons/fa";
 
-// 表示用にセラピストと空き状況を組み合わせた型
+// Temporary permissive type to debug
+interface TherapistAvailability {
+  [key: string]: any; // We'll refine this after logging the data
+}
+
+// Display type for therapist availability
 interface DisplayTherapistAvailability {
   id: string;
   name: string;
@@ -12,57 +17,39 @@ interface DisplayTherapistAvailability {
   next_available: string;
 }
 
-// TherapistAvailabilitySlot 型を仮定（実際の型定義に置き換える）
-interface TherapistAvailabilitySlot {
-  id: string;
-  therapist_id: string;
-  start_time: string;
-  end_time: string;
-  is_available: boolean;
-}
-
-export default function TherapistAvailabilityPanel() {
+export default function TherapistAvailabilityPanel({ therapistId }: Readonly<{ therapistId: string }>) {
   const [availability, setAvailability] = useState<DisplayTherapistAvailability[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { fetchAvailability, subscribeToAvailability } = useTherapistAvailabilityApi();
+  const { availability: therapistAvailability, loading: fetchLoading, error: fetchError } = useTherapistAvailability(therapistId);
 
   useEffect(() => {
-    const loadAvailability = async () => {
-      try {
-        const data = await fetchAvailability();
-        const slots: TherapistAvailabilitySlot[] = data.available_slots;
+    if (fetchLoading) {
+      setLoading(true);
+      return;
+    }
 
-        const mappedData: DisplayTherapistAvailability[] = slots.map((slot) => ({
-          id: slot.id,
-          name: `セラピスト ${slot.therapist_id}`,
-          status: slot.is_available ? "available" : "unavailable",
-          next_available: slot.start_time,
-        }));
+    if (fetchError) {
+      setError("データの取得に失敗しました。");
+      setLoading(false);
+      return;
+    }
 
-        setAvailability(mappedData);
-        setLoading(false);
-      } catch (err) {
-        setError("データの取得に失敗しました。");
-        setLoading(false);
-      }
-    };
+    // Log the raw data to inspect its structure
+    console.log("Therapist Availability Data:", therapistAvailability);
 
-    loadAvailability();
+    // Map the availability data to display format (adjust properties after logging)
+    const mappedData: DisplayTherapistAvailability[] = therapistAvailability.map((slot: any) => ({
+      id: slot.id || "unknown", // Fallback if id is missing
+      name: `セラピスト ${slot.therapist_id || "unknown"}`,
+      status: slot.is_available !== undefined ? (slot.is_available ? "available" : "unavailable") : "unknown",
+      next_available: slot.start_time || "unknown",
+    }));
 
-    const unsubscribe = subscribeToAvailability((slots: TherapistAvailabilitySlot[]) => {
-      const mappedData: DisplayTherapistAvailability[] = slots.map((slot) => ({
-        id: slot.id,
-        name: `セラピスト ${slot.therapist_id}`,
-        status: slot.is_available ? "available" : "unavailable",
-        next_available: slot.start_time,
-      }));
-      setAvailability(mappedData);
-    });
-
-    return () => unsubscribe();
-  }, [fetchAvailability, subscribeToAvailability]);
+    setAvailability(mappedData);
+    setLoading(false);
+  }, [therapistAvailability, fetchLoading, fetchError]);
 
   if (loading) return <p className="text-muted">読み込み中...</p>;
   if (error) return <p className="text-error">エラー: {error}</p>;

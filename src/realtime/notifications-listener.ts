@@ -1,5 +1,5 @@
 // src/realtime/notifications-listener.ts
-import supabase from '@/app/lib/supabase-client';
+import supabase from '@/lib/supabase-client';
 
 // リアルタイム変更イベントの型定義
 interface NotificationChange {

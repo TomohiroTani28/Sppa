@@ -1,5 +1,5 @@
 "use client";
-// src/app/realtime/notifications-push.tsx
+// src/realtime/notifications-push.tsx
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/Toast"; 
 import { RealtimeChannel } from "@supabase/supabase-js";

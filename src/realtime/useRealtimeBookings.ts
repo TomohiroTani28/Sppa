@@ -1,4 +1,4 @@
-// src/app/hooks/realtime/useRealtimeBookings.ts
+// src/realtime/useRealtimeBookings.ts
 import { gql, useSubscription } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { Booking } from "@/types/booking";

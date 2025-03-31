@@ -1,4 +1,4 @@
-// src/hooks/realtime/useTherapistAvailability.ts
+// src/realtime/useTherapistAvailability.ts
 import { useEffect, useState } from "react";
 import { gql, useSubscription } from "@apollo/client";
 import { TherapistStatus } from "@/types/therapist";
