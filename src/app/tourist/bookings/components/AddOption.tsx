@@ -3,15 +3,15 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox } from "@/app/components/ui/Checkbox";
-import { Label } from "@/app/components/ui/Label";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { Label } from "@/components/ui/Label";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/app/components/ui/Card";
-import Badge from "@/app/components/ui/Badge";
+} from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
 
 interface AdditionalOption {
   id: string;

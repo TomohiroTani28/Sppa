@@ -5,9 +5,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { useRealtimeBookings } from "@/app/hooks/realtime/useRealtimeBookings";
-import Badge from "@/app/components/ui/Badge";
-import { formatDate, formatTime } from "@/app/lib/date-utils";
+import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
+import Badge from "@/components/ui/Badge";
+import { formatDate, formatTime } from "@/lib/date-utils";
 
 // react-calendar の型定義に合わせるため、レンジ選択の場合は要素が Date | null となり得る
 type CalendarValue = Date | [Date | null, Date | null] | null;

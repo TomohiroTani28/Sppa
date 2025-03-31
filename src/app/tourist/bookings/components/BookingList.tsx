@@ -3,8 +3,8 @@
 
 import { useSubscription } from "@apollo/client";
 import { gql } from "@apollo/client";
-import { Card } from "@/app/components/ui/Card";
-import Badge from "@/app/components/ui/Badge";
+import { Card } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
 
 const BOOKING_SUBSCRIPTION = gql`
   subscription MyBookings($guestId: uuid!) {

@@ -3,9 +3,9 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox } from "@/app/components/ui/Checkbox";
-import { Label } from "@/app/components/ui/Label";
-import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/Alert";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { Label } from "@/components/ui/Label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import { AlertCircle } from "lucide-react";
 
 const CancelPolicy = () => {

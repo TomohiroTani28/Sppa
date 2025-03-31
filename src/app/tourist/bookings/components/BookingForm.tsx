@@ -6,25 +6,25 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { useCreateBooking } from "@/app/hooks/api/useCreateBooking";
-import { useFetchTherapists } from "@/app/hooks/api/useFetchTherapists";
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
+import { useCreateBooking } from "@/hooks/api/useCreateBooking";
+import { useFetchTherapists } from "@/hooks/api/useFetchTherapists";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/Select";
-import DatePicker from "@/app/components/ui/DatePicker";
+} from "@/components/ui/Select";
+import DatePicker from "@/components/ui/DatePicker";
 import {
   Form,
   FormControl,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/app/components/ui/Form";
+} from "@/components/ui/Form";
 
 // Validation schema
 const BookingFormSchema = z.object({

@@ -1,7 +1,7 @@
 // src/app/tourist/bookings/components/TransactionDetails.tsx
 import React, { useState, useEffect } from "react";
-import { useTransactions } from "@/app/hooks/api/useTransactions"; // Corrected path
-import { useRealtimeTransactions } from "@/app/hooks/realtime/useRealtimeTransactions"; // Corrected path
+import { useTransactions } from "@/hooks/api/useTransactions";
+import { useRealtimeTransactions } from "@/realtime/useRealtimeTransactions";
 
 interface TransactionDetailsProps {
   transactionId: string;
