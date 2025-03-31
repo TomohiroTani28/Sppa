@@ -1,11 +1,11 @@
 // src/app/tourist/profile/components/ProfileView.tsx
 import React from "react";
-import { useFetchUser } from "@/app/hooks/api/useFetchUser";
-import Avatar from "@/app/components/common/Avatar";
-import { Card, CardHeader, CardContent } from "@/app/components/ui/Card";
-import Text from "@/app/components/ui/Text";
-import { Spinner } from "@/app/components/ui/Spinner";
-import { Alert } from "@/app/components/ui/Alert";
+import { useFetchUser } from "@/hooks/api/useFetchUser";
+import Avatar from "@/components/Avatar";
+import { Card, CardHeader, CardContent } from "@/components/ui/Card";
+import Text from "@/components/ui/Text";
+import { Spinner } from "@/components/ui/Spinner";
+import { Alert } from "@/components/ui/Alert";
 
 interface ProfileViewProps {
   userId: string;
