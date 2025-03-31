@@ -1,7 +1,7 @@
 "use client";
-// src/app/therapist/profile/components/ProfileSettings.tsx
+// src/app/(therapist)/profile/components/ProfileSettings.tsx
 import React, { useState, useEffect } from "react";
-import { useUserProfile, useUpdateUserProfile } from "@/app/hooks/api/users";
+import { useUserProfile, useUpdateUserProfile } from "@/hooks/api/users";
 import { User } from "@/types/user";
 
 interface ProfileSettingsProps {

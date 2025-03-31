@@ -1,9 +1,9 @@
-// src/app/therapist/profile/components/ServiceForm.tsx
+// src/app/(therapist)/profile/components/ServiceForm.tsx
 import { useState } from "react";
-import { useServices } from "@/app/hooks/api/useServices";
-import supabase from "@/app/lib/supabase-client";
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
+import { useServices } from "@/hooks/api/useServices";
+import supabase from "@/lib/supabase-client";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 // Define a type for the service data based on therapist_services table
 interface ServiceData {

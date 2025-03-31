@@ -1,4 +1,4 @@
-// src/app/therapist/profile/components/AvailabilitySettings.tsx
+// src/app/(therapist)/profile/components/AvailabilitySettings.tsx
 import React, { useState } from "react";
 import { useUpdateAvailability } from "@/hooks/api/availability";
 import { TherapistAvailability, TherapistAvailabilitySlot } from "@/types/availability";

@@ -1,9 +1,9 @@
-// src/app/therapist/profile/components/ProfileForm.tsx
+// src/app/(therapist)/profile/components/ProfileForm.tsx
 import { useState, useEffect } from "react";
-import { useUser } from "@/app/hooks/api/useUser";
-import supabase from "@/app/lib/supabase-client";
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
+import { useUser } from "@/hooks/api/useUser";
+import supabase from "@/lib/supabase-client";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 // Define a type for the profile data to update (subset of TherapistProfile)
 interface ProfileUpdateData {

@@ -1,8 +1,8 @@
-// src/app/therapist/profile/components/MediaUploadForm.tsx
+// src/app/(therapist)/profile/components/MediaUploadForm.tsx
 import { useState } from "react";
-import supabase from "@/app/lib/supabase-client"; // Import default supabase client
-import { Button } from "@/app/components/ui/Button"; // Direct import from Button.tsx
-import { Input } from "@/app/components/ui/Input"; // Direct import from Input.tsx
+import supabase from "@/lib/supabase-client";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 const MediaUploadForm = () => {
   const [mediaFile, setMediaFile] = useState<File | null>(null);

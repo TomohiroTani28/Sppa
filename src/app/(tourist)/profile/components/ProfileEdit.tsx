@@ -1,12 +1,12 @@
-// src/app/tourist/profile/components/ProfileEdit.tsx
+// src/app/(tourist)/profile/components/ProfileEdit.tsx
 import React, { useState, useEffect } from "react";
-import { useFetchUser } from "@/app/hooks/api/useFetchUser";
-import { useUpdateUser } from "@/app/hooks/api/useUpdateUser";
-import Avatar from "@/app/components/common/Avatar";
-import { Input } from "@/app/components/ui/Input";
-import { Label } from "@/app/components/ui/Label";
-import { Button } from "@/app/components/ui/Button";
-import { Card } from "@/app/components/ui/Card";
+import { useFetchUser } from "@/hooks/api/useFetchUser";
+import { useUpdateUser } from "@/hooks/api/useUpdateUser";
+import Avatar from "@/components/Avatar";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
 interface ProfileEditProps {
   userId: string;
