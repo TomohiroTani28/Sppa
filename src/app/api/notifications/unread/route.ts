@@ -1,7 +1,7 @@
-// src/api/notifications/unread/route.ts
+// src/app/api/notifications/unread/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/authOptions';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { request, gql } from 'graphql-request';
 
 // Notification type definition
@@ -37,20 +37,31 @@ const GET_UNREAD_NOTIFICATIONS = gql`
   }
 `;
 
-/**
- * GETリクエストハンドラ
- * 認証されたユーザーの未読通知を取得します。
- * @param req Next.jsのリクエストオブジェクト
- * @returns 通知リストを含むJSONレスポンス、またはエラーレスポンス
- */
+// Extend NextAuth User type (you should move this to a types file)
+declare module 'next-auth' {
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string; // Add role to the User type
+  }
+
+  interface Session {
+    user: User;
+  }
+}
+
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
+
+  // Use optional chaining as suggested by SonarLint
+  if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const userId = session.user.id;
-  const role = session.user.role;
+  const role = session.user.role ?? 'user'; // Fallback to 'user' if role is undefined
 
   const headers = {
     'X-Hasura-Role': role,
