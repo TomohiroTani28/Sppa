@@ -214,7 +214,7 @@ Sppa
 │   │   │   └── treatment
 │   │   │       └── [id]
 │   │   │           └── page.tsx
-│   │   ├── (therapist)
+│   │   ├── therapist
 │   │   │   ├── bookings
 │   │   │   │   ├── components
 │   │   │   │   │   ├── BookingCalendar.tsx
@@ -266,7 +266,7 @@ Sppa
 │   │   │   │   └── page.tsx
 │   │   │   └── settings
 │   │   │       └── page.tsx
-│   │   ├── (tourist)
+│   │   ├── tourist
 │   │   │   ├── bookings
 │   │   │   │   ├── components
 │   │   │   │   │   ├── AddOption.tsx

@@ -1,5 +1,5 @@
 "use client";
-// src/app/(therapist)/bookings/components/BookingCalendar.tsx
+// src/app/therapist/bookings/components/BookingCalendar.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Calendar, CalendarProps } from "react-calendar";
 import "react-calendar/dist/Calendar.css";

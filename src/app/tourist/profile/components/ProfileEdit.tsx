@@ -1,4 +1,4 @@
-// src/app/(tourist)/profile/components/ProfileEdit.tsx
+// src/app/tourist/profile/components/ProfileEdit.tsx
 import React, { useState, useEffect } from "react";
 import { useFetchUser } from "@/hooks/api/useFetchUser";
 import { useUpdateUser } from "@/hooks/api/useUpdateUser";

@@ -1,6 +1,6 @@
 type UserSession = any;
 
-import { getSessionRole } from '@/app/lib/auth';
+import { getUserRole } from "@/utils/auth";
 
 // Table: users
 /**

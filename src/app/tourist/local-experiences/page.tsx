@@ -1,4 +1,4 @@
-// src/app/(tourist)/local-experiences/page.tsx
+// src/app/tourist/local-experiences/page.tsx
 "use client";
 
 import TouristLayout from "@/app/(common)/components/TouristLayout";
