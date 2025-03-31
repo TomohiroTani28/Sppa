@@ -1,4 +1,4 @@
-// src/app/tourist/home/components/RecommendedExperiences.tsx
+// src/components/RecommendedExperiences.tsx
 import React from "react";
 
 export interface RecommendedExperiencesProps {
