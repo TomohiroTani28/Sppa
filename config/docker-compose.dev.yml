@@ -1,4 +1,4 @@
-# docker-compose.dev.yml
+# config/docker-compose.dev.yml
 services:
   # ▼ Next.js コンテナ（開発用）
   nextjs:
@@ -69,7 +69,7 @@ services:
     ports:
       - "8000:5000"
     env_file:
-      - .env.development
+      - ../.env.development
     environment:
       LT_DEBUG: "true"
       LT_PORT: "5000"
