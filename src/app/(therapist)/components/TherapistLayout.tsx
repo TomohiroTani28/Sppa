@@ -9,7 +9,7 @@ interface TherapistLayoutProps {
 }
 
 const TherapistLayout: React.FC<TherapistLayoutProps> = ({ children }) => {
-  const pathname = usePathname(); // useRouter() を usePathname() に変更
+  const pathname = usePathname();
 
   // Handle active page route
   const isDashboard = pathname.includes("dashboard");

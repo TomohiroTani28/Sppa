@@ -1,9 +1,8 @@
-// src/app/therapist/settings/page.tsx
-import TherapistLayout from "@/app/therapist/components/TherapistLayout";
-import ProfileSettings from "@/app/therapist/profile/components/ProfileSettings";
-import { auth } from "@/app/lib/auth";
+// src/app/(therapist)/settings/page.tsx
+import TherapistLayout from "@/app/(therapist)/components/TherapistLayout";
+import ProfileSettings from "@/app/(therapist)/profile/components/ProfileSettings"; // Fixed path
+import { auth } from "@/lib/auth.server";
 import { redirect } from "next/navigation";
-import { AuthUser } from "@/types/auth";
 
 const TherapistSettingsPage = async () => {
   const user = await auth();
