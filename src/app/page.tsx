@@ -1,10 +1,9 @@
 // src/app/page.tsx
 import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth.server";
 
 export default async function HomePage() {
   const user = await auth();
-
   if (user) {
     if (user.role === "therapist") {
       redirect("/therapist/dashboard");
@@ -14,7 +13,6 @@ export default async function HomePage() {
   } else {
     redirect("/home");
   }
-
   return null;
 }
 
