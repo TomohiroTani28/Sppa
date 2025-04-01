@@ -9,6 +9,8 @@ services:
       - "3000:3000"
     env_file:
       - /Users/tanitomohiro/github/sppa/.env.development
+    volumes:
+      - ../jwt-secret.json:/jwt-secret.json:ro
     depends_on:
       hasura:
         condition: service_healthy
