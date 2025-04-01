@@ -3,15 +3,15 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "next-i18next";
-import { Label } from "@/app/components/ui/Label";
-import { Input } from "@/app/components/ui/Input";
-import { Button } from "@/app/components/ui/Button";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/app/components/ui/Dialog";
+} from "@/components/ui/Dialog";
 import {
   CreditCard,
   Wallet,
