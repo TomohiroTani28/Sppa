@@ -49,7 +49,7 @@ services:
     ports:
       - "8000:5000"
     env_file:
-      - .env.production
+      - ../.env.production
     environment:
       LT_DEBUG: "true"
       LT_PORT: "5000"
