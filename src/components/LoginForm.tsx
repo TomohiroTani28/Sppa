@@ -1,10 +1,10 @@
-// src/app/components/common/LoginForm.tsx
+// src/components/LoginForm.tsx
 import React, { useState } from "react";
-import { signInWithEmailPassword } from "@/app/lib/auth"; // named import に修正
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
-import { Label } from "@/app/components/ui/Label";
-import { Spinner } from "@/app/components/ui/Spinner";
+import { signInWithEmailPassword } from "@/utils/auth";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Spinner } from "@/components/ui/Spinner";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");

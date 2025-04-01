@@ -1,16 +1,21 @@
 // src/utils/auth.ts
 import { cookies } from 'next/headers';
-import { jwtDecode } from 'jwt-decode';
+
+// ★ ここだけ require を使って読み込む
+const jwt_decode = require('jwt-decode') as <T>(token: string) => T;
 
 // 認証トークンのキー
 const AUTH_TOKEN_KEY = 'sppa_auth_token';
 
+// ユーザーロールの型エイリアス
+type UserRole = 'therapist' | 'tourist' | 'admin';
+
 // トークンのデコード結果の型定義
 interface DecodedToken {
   id: string;  // ユーザーID
-  role: 'therapist' | 'tourist' | 'admin';  // ユーザーのロール
+  role: UserRole;
   'x-hasura-user-id': string;
-  'x-hasura-default-role': 'therapist' | 'tourist' | 'admin';
+  'x-hasura-default-role': UserRole;
   'x-hasura-allowed-roles': string[];
   exp: number;
 }
@@ -31,7 +36,7 @@ export const getAuthToken = async (): Promise<string | null> => {
     return localStorage.getItem(AUTH_TOKEN_KEY);
   } else {
     const cookieStore = await getCookies();
-    return cookieStore?.get(AUTH_TOKEN_KEY)?.value || null;
+    return cookieStore?.get(AUTH_TOKEN_KEY)?.value ?? null;
   }
 };
 
@@ -45,7 +50,7 @@ export const setAuthToken = async (token: string): Promise<void> => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7, // 1週間
+      maxAge: 60 * 60 * 24 * 7, // 7日間
     });
   }
 };
@@ -63,7 +68,8 @@ export const removeAuthToken = async (): Promise<void> => {
 // デコード関数（共通化）
 export const decodeToken = (token: string): DecodedToken | null => {
   try {
-    const decoded = jwtDecode<DecodedToken>(token);
+    // 'jwt_decode' は require で読み込んだ関数として呼び出せる
+    const decoded = jwt_decode<DecodedToken>(token);
     return {
       ...decoded,
       id: decoded['x-hasura-user-id'],
@@ -79,23 +85,20 @@ export const decodeToken = (token: string): DecodedToken | null => {
 export const isAuthenticated = async (): Promise<boolean> => {
   const token = await getAuthToken();
   if (!token) return false;
-
   const decoded = decodeToken(token);
   if (!decoded) return false;
-
   return decoded.exp > Math.floor(Date.now() / 1000);
 };
 
 // ユーザーロール取得
-export const getUserRole = async (): Promise<'therapist' | 'tourist' | 'admin' | null> => {
+export const getUserRole = async (): Promise<UserRole | null> => {
   const token = await getAuthToken();
   if (!token) return null;
-
-  return decodeToken(token)?.role || null;
+  return decodeToken(token)?.role ?? null;
 };
 
 // ロール制限
-export const requireRole = async (requiredRole: 'therapist' | 'tourist' | 'admin'): Promise<void> => {
+export const requireRole = async (requiredRole: UserRole): Promise<void> => {
   const role = await getUserRole();
   if (!role || role !== requiredRole) {
     throw new Error(`Access denied: ${requiredRole} role required`);
@@ -115,6 +118,19 @@ export const login = async (email: string, password: string): Promise<void> => {
   await setAuthToken(token);
 };
 
+// signInWithEmailPassword ラッパー関数
+export const signInWithEmailPassword = async (
+  email: string,
+  password: string
+): Promise<{ error?: Error }> => {
+  try {
+    await login(email, password);
+    return {};
+  } catch (error: any) {
+    return { error };
+  }
+};
+
 // ログアウト処理
 export const logout = async (): Promise<void> => {
   await removeAuthToken();
@@ -124,11 +140,9 @@ export const logout = async (): Promise<void> => {
 export const verifyToken = async (token: string): Promise<DecodedToken | null> => {
   const decoded = decodeToken(token);
   if (!decoded) return null;
-
   if (decoded.exp < Math.floor(Date.now() / 1000)) {
     console.error('Token has expired');
     return null;
   }
-
   return decoded;
 };
