@@ -3,7 +3,7 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
-import { getOptions } from "@/app/i18n/settings";
+import { getOptions } from "@/i18n/settings";
 
 // Initialize i18next for client side
 i18next
