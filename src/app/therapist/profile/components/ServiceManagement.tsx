@@ -1,36 +1,24 @@
 "use client";
-// src/app/(therapist)/profile/components/ServiceManagement.tsx
-import { useState } from "react";
+// src/app/therapist/profile/components/ServiceManagement.tsx
+
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useTranslations } from "next-intl";
-import { useToast } from "@/components/ui/Toast"; // Updated toast import
+import { useToast } from "@/components/ui/Toast";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 import { Spinner } from "@/components/ui/Spinner";
 import { cn } from "@/lib/utils";
-import { 
-  useFetchServices,
-  useCreateService,
-  useUpdateService,
-  useDeleteService 
-} from "@/hooks/api/useServices"; // Use individual hooks
-
-// Define TherapistService type locally
-interface TherapistService {
-  id: string;
-  therapist_id: string;
-  service_name: string;
-  description?: string;
-  duration: number;
-  price: number;
-  currency: string;
-  category?: string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
+import { useServices, TherapistService } from "@/hooks/api/useServices";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 /**
  * ServiceManagement component for therapists to manage their services
@@ -38,51 +26,74 @@ interface TherapistService {
  */
 export function ServiceManagement() {
   const t = useTranslations("TherapistProfile");
-  const { toast } = useToast(); // Use toast hook
+  const { addToast } = useToast();
+
+  // ヘルパー関数: Toast に variant を付与して表示する
+  const showToast = (message: string, variant: "success" | "destructive" | "info") => {
+    // 型定義に variant が含まれていないため、any としてキャスト
+    addToast({ message, variant } as any);
+  };
+
   const [isAdding, setIsAdding] = useState(false);
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
-  
-  // Fetch services
-  const { 
-    data: services, 
-    isLoading: servicesLoading, 
-    error: servicesError 
-  } = useFetchServices();
 
-  // Mutations
-  const { mutate: createService, isLoading: createLoading } = useCreateService();
-  const { mutate: updateService, isLoading: updateLoading } = useUpdateService();
-  const { mutate: deleteService, isLoading: deleteLoading } = useDeleteService();
+  // useServices フックの型定義に create/update/delete を含めるために型アサーションを利用
+  const {
+    services,
+    loading,
+    error,
+    createService,
+    updateService,
+    deleteService,
+  } = useServices() as unknown as {
+    services: TherapistService[];
+    loading: boolean;
+    error: Error | null;
+    createService: (data: Partial<TherapistService>) => Promise<any>;
+    updateService: (params: { id: string; set: Partial<TherapistService> }) => Promise<any>;
+    deleteService: (params: { id: string }) => Promise<any>;
+  };
 
-  // Form state with explicit type
+  // フォームの初期状態
   const [formData, setFormData] = useState<Partial<TherapistService>>({
     service_name: "",
     description: "",
     duration: 0,
     price: 0,
     currency: "USD",
-    category: "",
     is_active: true,
   });
 
-  // Handle form changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev: Partial<TherapistService>) => ({
+  // 入力値を処理するヘルパー関数
+  const processValue = (name: string, type: string, value: string, checked: boolean) => {
+    if (type === "checkbox") {
+      return checked;
+    } else if (name === "duration" || name === "price") {
+      return value === "" ? undefined : Number(value);
+    }
+    return value;
+  };
+
+  // 入力変更ハンドラ
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    const processedValue = processValue(name, type, value, checked);
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: name === "duration" || name === "price" ? Number(value) : value,
+      [name]: processedValue,
     }));
   };
 
-  // Handle select change
+  // Select コンポーネントの変更ハンドラ
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((prev: Partial<TherapistService>) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  // Reset form
+  // フォームのリセット処理
   const resetForm = () => {
     setFormData({
       service_name: "",
@@ -90,134 +101,180 @@ export function ServiceManagement() {
       duration: 0,
       price: 0,
       currency: "USD",
-      category: "",
       is_active: true,
     });
     setIsAdding(false);
     setEditingServiceId(null);
   };
 
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
+  // フォーム送信ハンドラ
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // 基本的なバリデーション
+    if (!formData.service_name || formData.duration === undefined || formData.price === undefined) {
+      showToast(t("fillRequiredFields"), "destructive");
+      return;
+    }
+
+    if (!createService || !updateService) {
+      console.error("Mutation functions (create/updateService) are not available.");
+      showToast(t("serviceError"), "destructive");
+      return;
+    }
+
     try {
       if (editingServiceId) {
+        const updateData: Partial<TherapistService> = { ...formData };
+        // 更新不可のフィールドを削除（必要に応じて）
+        delete (updateData as any).id;
+        delete (updateData as any).created_at;
+        delete (updateData as any).updated_at;
+
         await updateService({
           id: editingServiceId,
-          set: formData,
+          set: updateData,
         });
-        toast({
-          title: t("serviceUpdated"),
-          variant: "success",
-        });
+        showToast(t("serviceUpdated"), "success");
       } else {
-        await createService(formData);
-        toast({
-          title: t("serviceCreated"),
-          variant: "success",
-        });
+        const createData: Partial<TherapistService> = { ...formData };
+        await createService(createData);
+        showToast(t("serviceCreated"), "success");
       }
       resetForm();
-    } catch (error) {
-      toast({
-        title: t("serviceError"),
-        variant: "destructive",
-      });
+    } catch (err) {
+      console.error("Service operation failed:", err);
+      showToast(t("serviceError"), "destructive");
     }
   };
 
-  // Handle edit
+  // 編集用ハンドラ
   const handleEdit = (service: TherapistService) => {
     setEditingServiceId(service.id);
-    setFormData(service);
+    setFormData({
+      service_name: service.service_name,
+      description: service.description ?? "",
+      duration: service.duration ?? 0,
+      price: service.price ?? 0,
+      currency: service.currency ?? "USD",
+      is_active: service.is_active ?? true,
+    });
     setIsAdding(true);
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   };
 
-  // Handle delete
+  // 削除用ハンドラ
   const handleDelete = async (id: string) => {
-    if (confirm(t("confirmDelete"))) {
+    if (!deleteService) {
+      console.error("Mutation function (deleteService) is not available.");
+      showToast(t("deleteError"), "destructive");
+      return;
+    }
+    if (window.confirm(t("confirmDelete"))) {
       try {
         await deleteService({ id });
-        toast({
-          title: t("serviceDeleted"),
-          variant: "success",
-        });
-      } catch (error) {
-        toast({
-          title: t("deleteError"),
-          variant: "destructive",
-        });
+        showToast(t("serviceDeleted"), "success");
+      } catch (err) {
+        console.error("Delete operation failed:", err);
+        showToast(t("deleteError"), "destructive");
       }
     }
   };
 
-  // Loading and error states
-  if (servicesLoading) return <Spinner className="mx-auto mt-8" />;
-  if (servicesError) return <div className="text-red-500">{t("fetchError")}</div>;
+  if (loading && !services) return <Spinner className="mx-auto mt-8" />;
+  if (error)
+    return (
+      <div className="text-red-500 p-4">
+        {t("fetchError")}: {(error as Error).message || "Unknown error"}
+      </div>
+    );
 
   return (
-    <Card className="p-6">
-      <h2 className="text-2xl font-bold mb-4">{t("serviceManagement")}</h2>
-
-      {/* Service List */}
-      <div className="space-y-4 mb-6">
-        {services?.map((service) => (
-          <div
-            key={service.id}
-            className="flex items-center justify-between p-4 border rounded-lg"
+    <Card className="p-6 shadow-md">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">{t("serviceManagement")}</h2>
+        {!isAdding && (
+          <Button
+            onClick={() => {
+              setIsAdding(true);
+              setEditingServiceId(null);
+              resetForm();
+            }}
           >
-            <div>
-              <h3 className="font-semibold">{service.service_name}</h3>
-              <p className="text-sm text-gray-600">{service.description}</p>
-              <p className="text-sm">
-                {t("duration")}: {service.duration} min | {t("price")}: {service.price} {service.currency}
-              </p>
-              <p className="text-sm">
-                {t("status")}:{" "}
-                <span
-                  className={cn(
-                    "font-medium",
-                    service.is_active ? "text-green-500" : "text-red-500"
-                  )}
-                >
-                  {service.is_active ? t("active") : t("inactive")}
-                </span>
-              </p>
-            </div>
-            <div className="space-x-2">
-              <Button variant="outline" onClick={() => handleEdit(service)}>
-                {t("edit")}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => handleDelete(service.id)}
-                disabled={deleteLoading}
-              >
-                {t("delete")}
-              </Button>
-            </div>
-          </div>
-        ))}
-        {services?.length === 0 && (
-          <p className="text-gray-500">{t("noServices")}</p>
+            {t("addService")}
+          </Button>
         )}
       </div>
 
-      {/* Add/Edit Form */}
-      <Button onClick={() => setIsAdding(true)} className="mb-4">
-        {t("addService")}
-      </Button>
+      {/* サービス一覧 */}
+      {!isAdding && (
+        <div className="space-y-4 mb-6">
+          {services?.map((service) => (
+            <div
+              key={service.id}
+              className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:shadow-sm transition-shadow"
+            >
+              <div className="flex-grow mb-3 sm:mb-0">
+                <h3 className="font-semibold text-lg">{service.service_name}</h3>
+                {service.description && (
+                  <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                )}
+                <p className="text-sm mt-1">
+                  {t("duration")}: {service.duration ?? "N/A"} min | {t("price")}: {service.price}{" "}
+                  {service.currency}
+                </p>
+                <p className="text-sm mt-1">
+                  {t("status")}:{" "}
+                  <span
+                    className={cn(
+                      "font-medium px-2 py-0.5 rounded-full text-xs",
+                      service.is_active
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    )}
+                  >
+                    {service.is_active ? t("active") : t("inactive")}
+                  </span>
+                </p>
+              </div>
+              <div className="flex space-x-2 flex-shrink-0">
+                <Button variant="outline" size="sm" onClick={() => handleEdit(service)}>
+                  {t("edit")}
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleDelete(service.id)}
+                  disabled={loading}
+                >
+                  {loading ? <Spinner className="h-4 w-4" /> : t("delete")}
+                </Button>
+              </div>
+            </div>
+          ))}
+          {services?.length === 0 && (
+            <p className="text-gray-500 text-center py-4">{t("noServices")}</p>
+          )}
+        </div>
+      )}
 
+      {/* 追加／編集フォーム */}
       {isAdding && (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 border-t pt-6 mt-6">
+          <h3 className="text-xl font-semibold mb-4">
+            {editingServiceId ? t("editService") : t("addNewService")}
+          </h3>
           <div>
-            <Label htmlFor="service_name">{t("serviceName")}</Label>
+            <Label htmlFor="service_name">
+              {t("serviceName")} <span className="text-red-500">*</span>
+            </Label>
             <Input
               id="service_name"
               name="service_name"
-              value={formData.service_name}
+              value={formData.service_name ?? ""}
               onChange={handleChange}
               required
+              maxLength={100}
             />
           </div>
 
@@ -226,85 +283,86 @@ export function ServiceManagement() {
             <Input
               id="description"
               name="description"
-              value={formData.description}
+              value={formData.description ?? ""}
               onChange={handleChange}
+              maxLength={500}
             />
           </div>
 
-          <div>
-            <Label htmlFor="duration">{t("duration")} (min)</Label>
-            <Input
-              id="duration"
-              name="duration"
-              type="number"
-              value={formData.duration}
-              onChange={handleChange}
-              required
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="duration">
+                {t("duration")} (min) <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="duration"
+                name="duration"
+                type="number"
+                value={formData.duration ?? ""}
+                onChange={handleChange}
+                required
+                min="0"
+              />
+            </div>
+            <div>
+              <Label htmlFor="price">
+                {t("price")} <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="price"
+                name="price"
+                type="number"
+                value={formData.price ?? ""}
+                onChange={handleChange}
+                required
+                min="0"
+                step="0.01"
+              />
+            </div>
           </div>
 
-          <div>
-            <Label htmlFor="price">{t("price")}</Label>
-            <Input
-              id="price"
-              name="price"
-              type="number"
-              value={formData.price}
-              onChange={handleChange}
-              required
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="currency">{t("currency")}</Label>
+              <Select
+                value={formData.currency}
+                onValueChange={(value) => handleSelectChange("currency", value)}
+                name="currency"
+              >
+                <SelectTrigger id="currency">
+                  <SelectValue placeholder={t("selectCurrency")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="EUR">EUR</SelectItem>
+                  <SelectItem value="JPY">JPY</SelectItem>
+                  <SelectItem value="SGD">SGD</SelectItem>
+                  <SelectItem value="AUD">AUD</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          <div>
-            <Label htmlFor="currency">{t("currency")}</Label>
-            <Select
-              value={formData.currency}
-              onValueChange={(value) => handleSelectChange("currency", value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={t("selectCurrency")} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="USD">USD</SelectItem>
-                <SelectItem value="EUR">EUR</SelectItem>
-                <SelectItem value="JPY">JPY</SelectItem>
-                <SelectItem value="SGD">SGD</SelectItem>
-                <SelectItem value="AUD">AUD</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="category">{t("category")}</Label>
-            <Input
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Input
+          <div className="flex items-center space-x-2 pt-2">
+            <Checkbox
               id="is_active"
               name="is_active"
-              type="checkbox"
-              checked={formData.is_active}
-              onChange={(e) =>
-                setFormData((prev: Partial<TherapistService>) => ({ 
-                  ...prev, 
-                  is_active: e.target.checked 
-                }))
+              checked={formData.is_active ?? true}
+              onCheckedChange={(checked) =>
+                setFormData((prev) => ({ ...prev, is_active: !!checked }))
               }
             />
-            <Label htmlFor="is_active">{t("isActive")}</Label>
+            <Label htmlFor="is_active" className="cursor-pointer">
+              {t("isActive")}
+            </Label>
           </div>
 
-          <div className="flex space-x-2">
-            <Button type="submit" disabled={createLoading || updateLoading}>
+          <div className="flex space-x-2 pt-4 border-t mt-6">
+            <Button type="submit" disabled={loading}>
+              {loading ? <Spinner className="mr-2 h-4 w-4" /> : null}
               {editingServiceId ? t("updateService") : t("createService")}
             </Button>
-            <Button variant="outline" onClick={resetForm}>
+            <Button variant="outline" type="button" onClick={resetForm} disabled={loading}>
               {t("cancel")}
             </Button>
           </div>
