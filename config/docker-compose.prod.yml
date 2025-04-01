@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ../.env.production
+      - .env.production
     depends_on:
       hasura:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - ../.env.production
+      - .env.production
     environment:
       # Supabase Cloudの接続URLは.env.productionで指定
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
@@ -49,7 +49,7 @@ services:
     ports:
       - "8000:5000"
     env_file:
-      - ../.env.production
+      - .env.production
     environment:
       LT_DEBUG: "true"
       LT_PORT: "5000"

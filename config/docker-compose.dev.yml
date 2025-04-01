@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ../.env.development
+      - .env.development
     depends_on:
       hasura:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - ../.env.development
+      - .env.development
     environment:
       # Docker内の接続先は.env.developmentで指定された値を利用
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
@@ -70,7 +70,7 @@ services:
     ports:
       - "8000:5000"
     env_file:
-      - ../.env.development
+      - .env.development
     environment:
       LT_DEBUG: "true"
       LT_PORT: "5000"
