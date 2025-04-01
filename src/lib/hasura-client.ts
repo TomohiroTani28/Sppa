@@ -1,7 +1,6 @@
 // src/lib/hasura-client.ts
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
-// Hasuraクライアントを生成する関数
 export const createHasuraClient = (token: string, headers: Record<string, string>) => {
   return new ApolloClient({
     link: new HttpLink({
@@ -14,3 +13,7 @@ export const createHasuraClient = (token: string, headers: Record<string, string
     cache: new InMemoryCache(),
   });
 };
+
+// Create a default client instance (if appropriate)
+const defaultClient = createHasuraClient("default-token", {});
+export default defaultClient;

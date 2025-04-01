@@ -68,7 +68,7 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
   if (error) {
     return (
       <Alert variant="error">
-        <p>{t("filterPanel.error", { message: error.message })}</p>
+        <p>{t("filterPanel.error")}: {error.message}</p>
       </Alert>
     );
   }
