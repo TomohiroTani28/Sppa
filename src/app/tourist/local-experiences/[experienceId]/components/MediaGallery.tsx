@@ -1,9 +1,8 @@
 // src/app/tourist/local-experiences/[experienceId]/components/MediaGallery.tsx
 "use client";
-
 import React, { useState } from "react";
 import Image from "next/image";
-import { Button } from "@/app/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 
 interface MediaGalleryProps {
