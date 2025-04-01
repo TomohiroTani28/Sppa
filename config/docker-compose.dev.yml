@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ../.env.development
+      - /Users/tanitomohiro/github/sppa/.env.development
     depends_on:
       hasura:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - ../.env.development
+      - /Users/tanitomohiro/github/sppa/.env.development
     environment:
       # Docker内の接続先は.env.developmentで指定された値を利用
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
@@ -52,7 +52,7 @@ services:
     ports:
       - "54330:5432"
     env_file:
-      - ../.env.development
+      - /Users/tanitomohiro/github/sppa/.env.development
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: sppa
