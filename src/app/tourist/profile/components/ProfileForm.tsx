@@ -3,10 +3,10 @@
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useTranslation } from "next-i18next";
-import { Input } from "@/app/components/ui/Input";
-import { Label } from "@/app/components/ui/Label";
-import { Button } from "@/app/components/ui/Button";
-import { Spinner } from "@/app/components/ui/Spinner";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Button } from "@/components/ui/Button";
+import { Spinner } from "@/components/ui/Spinner";
 import { Upload } from "lucide-react";
 
 interface ProfileFormProps {

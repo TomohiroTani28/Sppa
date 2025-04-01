@@ -1,4 +1,4 @@
-// src/api/events.ts
+// src/backend/api/graphql/events.ts
 import { gql } from 'graphql-request';
 
 const createEvent = gql`

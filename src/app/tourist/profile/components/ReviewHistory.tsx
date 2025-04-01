@@ -3,12 +3,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { useAuth } from "@/app/hooks/api/useAuth";
-import { useFetchUser } from "@/app/hooks/api/useFetchUser";
+import { useAuth } from "@/hooks/api/useAuth";
+import { useFetchUser } from "@/hooks/api/useFetchUser";
 import ProfileView from "@/app/tourist/profile/components/ProfileView";
 import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";
-import { Spinner } from "@/app/components/ui/Spinner";
-import BottomNavigation from "@/app/components/common/BottomNavigation";
+import { Spinner } from "@/components/ui/Spinner";
+import BottomNavigation from "@/components/BottomNavigation";
 
 // ユーザーIDを決定し、エラーの場合に早期リターンするヘルパー関数
 const useEffectiveUserId = () => {

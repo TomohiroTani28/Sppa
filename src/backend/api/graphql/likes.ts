@@ -1,4 +1,4 @@
-// src/api/likes.ts
+// src/backend/api/graphql/likes.ts
 import { gql } from '@apollo/client';
 import hasuraClient from '@/lib/hasura-client';
 

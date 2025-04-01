@@ -1,3 +1,4 @@
+// src/backend/api/generated-api.ts
 type UserSession = any;
 
 import { getUserRole } from "@/utils/auth";

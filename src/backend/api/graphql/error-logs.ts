@@ -1,4 +1,4 @@
-// /backend/api/graphql/error-logs.ts
+// src/backend/api/graphql/error-logs.ts
 import { gql } from '@apollo/client';
 
 export const CREATE_ERROR_LOG_MUTATION = gql`

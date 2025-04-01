@@ -1,4 +1,4 @@
-// src/api/media.ts
+// src/backend/api/graphql/media.ts
 import { gql } from '@apollo/client';
 import hasuraClient from '@/lib/hasura-client';
 

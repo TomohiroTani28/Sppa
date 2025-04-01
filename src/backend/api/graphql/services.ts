@@ -1,4 +1,4 @@
-// src/api/services.ts
+// src/backend/api/graphql/services.ts
 import { gql } from '@apollo/client';
 import hasuraClient from '@/lib/hasura-client';
 
