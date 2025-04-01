@@ -14,15 +14,16 @@ const alertVariants = {
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: keyof typeof alertVariants;
   dismissible?: boolean;
+  children: React.ReactNode;
 }
 
-const Alert: React.FC<AlertProps> = ({
+const Alert = ({
   className,
   variant = "info",
   children,
   dismissible = false,
   ...props
-}) => {
+}: AlertProps) => {
   const [visible, setVisible] = React.useState(true);
 
   if (!visible) return null;
@@ -61,16 +62,14 @@ const AlertTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
 );
 
 // AlertDescription コンポーネント
-const AlertDescription: React.FC<
-  React.HTMLAttributes<HTMLParagraphElement>
-> = ({ className, children, ...props }) => (
-  <p
-    className={cn("text-sm text-gray-600 dark:text-gray-400", className)}
-    {...props}
-  >
+const AlertDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement>> = ({
+  className,
+  children,
+  ...props
+}) => (
+  <p className={cn("text-sm text-gray-600 dark:text-gray-400", className)} {...props}>
     {children}
   </p>
 );
 
-// **全てをエクスポート**
 export { Alert, AlertTitle, AlertDescription };

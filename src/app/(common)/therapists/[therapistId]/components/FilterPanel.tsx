@@ -39,7 +39,6 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
   const { results } = useTherapistSearch();
   const therapistData = results?.find((result) => result.id === therapistId);
 
-  // チェックボックス変更ハンドラをシンプル化
   const handleCheckboxChange = (
     key: keyof FilterState,
     value: string | boolean,
@@ -47,26 +46,32 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
   ): void => {
     setFilters((prev) => {
       const newFilters = { ...prev };
-      
       if (key === "isAvailable") {
         newFilters[key] = checked;
       } else {
-        const currentValues = newFilters[key] as string[];
+        const currentValues = newFilters[key];
         const stringValue = String(value);
-        newFilters[key] = checked
-          ? currentValues.includes(stringValue)
-            ? currentValues
-            : [...currentValues, stringValue]
-          : currentValues.filter((v) => v !== stringValue);
+        if (checked) {
+          if (!currentValues.includes(stringValue)) {
+            newFilters[key] = [...currentValues, stringValue];
+          }
+        } else {
+          newFilters[key] = currentValues.filter((v) => v !== stringValue);
+        }
       }
-
       onFilterChange(newFilters);
       return newFilters;
     });
   };
 
   if (loading) return <div className="flex justify-center p-4"><Spinner /></div>;
-  if (error) return <Alert variant="error"><p>{t("filterPanel.error", { message: error.message })}</p></Alert>;
+  if (error) {
+    return (
+      <Alert variant="error">
+        <p>{t("filterPanel.error", { message: error.message })}</p>
+      </Alert>
+    );
+  }
 
   return (
     <Card className="w-full max-w-xs">
@@ -74,7 +79,6 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
         <CardTitle>{t("filterPanel.title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Service Categories */}
         <div>
           <h3 className="text-sm font-medium">{t("filterPanel.services")}</h3>
           {serviceCategories?.map((category) => (
@@ -90,8 +94,6 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
             </div>
           ))}
         </div>
-
-        {/* Therapist Languages */}
         <div>
           <h3 className="text-sm font-medium">{t("filterPanel.languages")}</h3>
           {therapistData?.languages.map((lang) => (
@@ -107,8 +109,6 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
             </div>
           ))}
         </div>
-
-        {/* Availability */}
         <div className="flex items-center space-x-2">
           <Checkbox
             id="available"
@@ -119,8 +119,6 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
           />
           <Label htmlFor="available">{t("filterPanel.availableNow")}</Label>
         </div>
-
-        {/* Reset Button */}
         <Button
           variant="outline"
           className="w-full"
