@@ -1,9 +1,9 @@
 // src/app/api/trends/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
-import hasuraClient from "@/lib/hasura-client";
+import { createHasuraClient } from "@/lib/hasura-client";
 import { verifyToken } from "@/utils/auth";
 import { TherapistProfile } from "@/types/therapist";
+import { gql } from "@apollo/client";
 
 async function authenticateUser(token: string) {
   const user = await verifyToken(token);
@@ -11,7 +11,7 @@ async function authenticateUser(token: string) {
 }
 
 async function fetchTrends(client: any): Promise<TherapistProfile[]> {
-  const query = `
+  const query = gql`
     query GetTrendingTherapists {
       therapist_profiles(
         order_by: { bookings_aggregate: { count: desc } }
@@ -45,8 +45,8 @@ async function fetchTrends(client: any): Promise<TherapistProfile[]> {
       }
     }
   `;
-  const response = await client.request(query);
-  return response.therapist_profiles;
+  const response = await client.query({ query }); // Apollo Client の query メソッドを使用
+  return response.data.therapist_profiles;
 }
 
 function formatTrends(trends: TherapistProfile[]) {
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const client = await hasuraClient({
+    const client = createHasuraClient(token, {
       "x-hasura-role": user.role,
       "x-hasura-user-id": user.id,
     });
@@ -98,6 +98,4 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// 旧来の `export const config = { runtime: 'edge' }` は非推奨
-// 代わりにこちらでランタイムを指定してください:
 export const runtime = "edge";
