@@ -80,7 +80,7 @@ export async function GET(
       return NextResponse.json({ error: "Invalid session" }, { status: 401 });
     }
 
-    const client = createHasuraClient(sessionUserId);
+    const client = createHasuraClient(sessionUserId, {});
 
     // GraphQL クエリ実行
     const { data, errors } = await client.query({
