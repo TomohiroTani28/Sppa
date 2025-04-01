@@ -24,7 +24,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - ../.env.development
+      - /Users/tanitomohiro/github/sppa/.env.development
     environment:
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
@@ -56,7 +56,7 @@ services:
     ports:
       - "54330:5432"
     env_file:
-      - ../.env.development
+      - /Users/tanitomohiro/github/sppa/.env.development
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: sppa
@@ -74,7 +74,7 @@ services:
     ports:
       - "8000:5000"
     env_file:
-      - ../.env.development
+      - /Users/tanitomohiro/github/sppa/.env.development
     environment:
       LT_DEBUG: "true"
       LT_PORT: "5000"
