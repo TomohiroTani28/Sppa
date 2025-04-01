@@ -38,6 +38,28 @@ export const MARK_NOTIFICATION_AS_READ = gql`
   }
 `;
 
+/**
+ * ユーザーに新しい通知が届いたときのサブスクリプション
+ * 最新の通知を 1 件のみ取得したい場合は `limit: 1` を使っていますが、
+ * 必要に応じて削除して「すべての通知」を購読することも可能です。
+ */
+export const ON_NEW_NOTIFICATION = gql`
+  subscription OnNewNotification($userId: UUID!) {
+    notifications(
+      where: { user_id: { _eq: $userId } }
+      order_by: { created_at: desc }
+      limit: 1
+    ) {
+      id
+      type
+      message
+      details
+      is_read
+      created_at
+    }
+  }
+`;
+
 // 予約関連クエリ
 export const GET_MY_BOOKINGS = gql`
   query GetMyBookings($guestId: UUID!) {
@@ -60,7 +82,10 @@ export const GET_MY_BOOKINGS = gql`
 
 export const CANCEL_BOOKING = gql`
   mutation CancelBooking($id: UUID!) {
-    update_bookings_by_pk(pk_columns: { id: $id }, _set: { status: "canceled", canceled_at: "now()" }) {
+    update_bookings_by_pk(
+      pk_columns: { id: $id }
+      _set: { status: "canceled", canceled_at: "now()" }
+    ) {
       id
       status
       canceled_at

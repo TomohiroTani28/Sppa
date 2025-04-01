@@ -8,7 +8,7 @@ interface Notification {
   id: string;
   type: string;
   message: string;
-  details: any; // 必要に応じて詳細な型に変更可能
+  details: any;
   is_read: boolean;
   created_at: string;
 }
