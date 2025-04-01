@@ -1,4 +1,4 @@
-/*src/app/lib/string-utils.ts
+/*src/lib/string-utils.ts
 /**
  * 文字列を大文字に変換するユーティリティ関数
  * @param str 変換する文字列

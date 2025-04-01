@@ -1,4 +1,4 @@
-// src/app/lib/storage-utils.ts
+// src/lib/storage-utils.ts
 const REDIRECT_PATH_KEY = "redirectPath";
 
 export const saveRedirectPath = (path: string) => {

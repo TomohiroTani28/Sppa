@@ -1,8 +1,8 @@
-// src/app/lib/i18n.ts
+// src/lib/i18n.ts
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import en from "@/app/locales/en.json";
-import id from "@/app/locales/id.json";
+import en from "@/locales/en.json";
+import id from "@/locales/id.json";
 
 i18n.use(initReactI18next).init({
   resources: {
