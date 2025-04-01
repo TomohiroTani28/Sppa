@@ -1,5 +1,5 @@
 "use client";
-// src/app/i18n/I18nProvider.tsx
+// src/i18n/I18nProvider.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import i18next from "i18next";

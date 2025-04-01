@@ -1,4 +1,4 @@
-// src/app/i18n/settings.ts
+// src/i18n/settings.ts
 export const fallbackLng = "en";
 export const languages = ["en", "id"];
 export const defaultNS = "translation";

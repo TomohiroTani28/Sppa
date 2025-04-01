@@ -1,8 +1,8 @@
-// src/app/i18n/server.ts
+// src/i18n/server.ts
 import { createInstance } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next/initReactI18next";
-import { getOptions } from "@/app/i18n/settings";
+import { getOptions } from "@/i18n/settings";
 import { cookies, headers } from "next/headers";
 
 // This function gets the language from cookies or accept-language header
