@@ -1,4 +1,4 @@
-// src/app/hooks/useWebSocketSubscription.ts
+// src/hooks/useWebSocketSubscription.ts
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "graphql-ws";

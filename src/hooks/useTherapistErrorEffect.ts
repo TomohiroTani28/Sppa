@@ -1,4 +1,4 @@
-// src/app/(common)/home/hooks/useTherapistErrorEffect.ts
+// src/hooks/useTherapistErrorEffect.ts
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 

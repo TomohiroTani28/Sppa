@@ -1,4 +1,4 @@
-// src/app/tourist/hooks/useTherapistSearch.ts
+// src/hooks/useTherapistSearch.ts
 import { useState, useEffect } from "react";
 import { fetchTherapists } from "@/backend/api/graphql/therapists";
 

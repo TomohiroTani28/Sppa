@@ -1,4 +1,4 @@
-// src/app/(common)/chat/hooks/useSearchUsers.ts
+// src/hooks/useSearchUsers.ts
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 
