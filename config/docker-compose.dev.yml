@@ -1,4 +1,5 @@
 # config/docker-compose.dev.yml
+
 services:
   # ▼ Next.js コンテナ（開発用）
   nextjs:
@@ -23,7 +24,6 @@ services:
     env_file:
       - /Users/tanitomohiro/github/sppa/.env.development
     environment:
-      # Docker内の接続先は.env.developmentで指定された値を利用
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET}
@@ -70,7 +70,7 @@ services:
     ports:
       - "8000:5000"
     env_file:
-      - ../.env.development
+      - /Users/tanitomohiro/github/sppa/.env.development
     environment:
       LT_DEBUG: "true"
       LT_PORT: "5000"
