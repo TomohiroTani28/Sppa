@@ -1,8 +1,7 @@
 "use client";
 // src/app/realtime/RealtimeBookingList.tsx
 import React from "react";
-import { Booking } from "@/types/booking"; // Booking型定義をインポート (パスは適宜修正)
-
+import { Booking } from "@/types/booking";
 interface RealtimeBookingListProps {
   realtimeBookings: Booking[];
 }

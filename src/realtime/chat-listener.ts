@@ -1,6 +1,6 @@
 // src/realtime/chat-listener.ts
 import { gql } from "@apollo/client";
-import { graphqlClient } from "@/lib/hasura-client";
+import graphqlClient from "@/lib/hasura-client";
 import { Observable } from "rxjs";
 
 const CHAT_SUBSCRIPTION = gql`
