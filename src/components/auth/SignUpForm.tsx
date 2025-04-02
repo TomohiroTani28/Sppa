@@ -31,6 +31,7 @@ export default function SignUpForm() {
     }
 
     try {
+      // サインアップ処理
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -46,7 +47,18 @@ export default function SignUpForm() {
         throw signUpError;
       }
 
-      router.push("/login?message=Please check your email to confirm your account");
+      // サインアップ成功後、同じ資格情報でサインインを試みる
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        throw signInError;
+      }
+
+      // 自動ログインに成功したら、共有のサインイン画面（例：/(common)/feed）へ遷移
+      router.push("/(common)/feed");
     } catch (error: any) {
       setError(error.message);
     } finally {
