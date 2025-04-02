@@ -1,6 +1,6 @@
-// src/app/api/auth/[...nextauth]/route.ts
-import NextAuth, { NextAuthOptions } from "next-auth";
-import { SupabaseAdapter } from "@next-auth/supabase-adapter";
+import NextAuth, { AuthOptions, Session, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -8,41 +8,59 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 );
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
   providers: [
-    {
-      id: "supabase",
-      name: "Supabase",
-      type: "oauth",
-      clientId: process.env.SUPABASE_URL,
-      clientSecret: process.env.SUPABASE_ANON_KEY,
-      authorization: `${process.env.SUPABASE_URL}/auth/v1/authorize`,
-      token: `${process.env.SUPABASE_URL}/auth/v1/token`,
-      userinfo: `${process.env.SUPABASE_URL}/auth/v1/user`,
-      async profile(profile) {
+    CredentialsProvider({
+      name: "Supabase Login",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: credentials!.email,
+          password: credentials!.password,
+        });
+
+        if (error || !data.user) {
+          console.error("❌ Supabase auth failed:", error?.message);
+          return null;
+        }
+
         return {
-          id: profile.id,
-          email: profile.email,
-          name: profile.user_metadata?.full_name || profile.email,
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.name || data.user.email,
         };
       },
-    },
+    }),
   ],
-  adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  }),
+
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
   },
+
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({
+      token,
+      user,
+    }: {
+      token: JWT;
+      user?: User;
+    }): Promise<JWT> {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: JWT;
+    }): Promise<Session> {
       if (token?.id && session.user) {
         session.user.id = token.id as string;
       }
