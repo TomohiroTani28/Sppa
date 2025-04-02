@@ -1,4 +1,4 @@
-# config/docker-compose.prod.yml
+# docker-compose.prod.yml
 services:
   # ▼ Next.js コンテナ（本番用）
   nextjs:

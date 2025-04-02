@@ -1,16 +1,16 @@
-# config/docker-compose.dev.yml
+# docker-compose.dev.yml
 
 services:
   # ▼ Next.js コンテナ（開発用）
   nextjs:
     build:
-      context: ../
+      context: .
     ports:
       - "3000:3000"
     env_file:
-      - /Users/tanitomohiro/github/sppa/.env.development
+      - ./.env.development
     volumes:
-      - ../jwt-secret.json:/jwt-secret.json:ro
+      - ./jwt-secret.json:/jwt-secret.json:ro
     depends_on:
       hasura:
         condition: service_healthy
@@ -24,7 +24,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - /Users/tanitomohiro/github/sppa/.env.development
+      - ./.env.development
     environment:
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
@@ -47,7 +47,7 @@ services:
       sh -c "until nc -z supabase 5432; do echo 'Waiting for Supabase...'; sleep 2; done;
       graphql-engine serve"
     volumes:
-      - /Users/tanitomohiro/github/sppa/jwt-secret.json:/jwt-secret.json:ro
+      - ./jwt-secret.json:/jwt-secret.json:ro
 
   # ▼ ローカル開発用 Supabase (PostgreSQL + PostGIS)
   supabase:
@@ -56,7 +56,7 @@ services:
     ports:
       - "54330:5432"
     env_file:
-      - /Users/tanitomohiro/github/sppa/.env.development
+      - ./.env.development
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: sppa
@@ -74,7 +74,7 @@ services:
     ports:
       - "8000:5000"
     env_file:
-      - /Users/tanitomohiro/github/sppa/.env.development
+      - ./.env.development
     environment:
       LT_DEBUG: "true"
       LT_PORT: "5000"
