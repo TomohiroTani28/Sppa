@@ -1,12 +1,8 @@
 // src/app/page.tsx
-import dynamicImport from "next/dynamic";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth.server";
-
-// FeedPage はクライアントコンポーネントなので SSR 無効で読み込み
-const FeedPage = dynamicImport(() => import("@/app/(common)/feed/page"), {
-  ssr: false,
-});
+import dynamicImport from "next/dynamic";
+import FeedPageWrapper from "@/app/(common)/feed/components/FeedPageWrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -21,5 +17,5 @@ export default async function HomePage() {
     redirect("/therapist/dashboard");
   }
 
-  return <FeedPage />;
+  return <FeedPageWrapper />;
 }
