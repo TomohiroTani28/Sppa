@@ -3,13 +3,17 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // 環境変数を明示的に設定
+  // 環境変数を明示的に設定（サーバー側用も含む！）
   env: {
+    // クライアント用
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT,
     NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT,
     NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET,
+
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   },
 
   async rewrites() {
@@ -39,13 +43,10 @@ const nextConfig = {
   webpack(config) {
     config.resolve.modules.push(__dirname + "/src");
 
-    // 開発環境で環境変数のログ出力を追加
     if (process.env.NODE_ENV === "development") {
       console.log("✅ NEXT_PUBLIC_SUPABASE_URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-      console.log("✅ NEXT_PUBLIC_SUPABASE_ANON_KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "✔ Loaded" : "❌ Not Loaded");
-      console.log("✅ NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT:", process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT);
-      console.log("✅ NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT:", process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT);
-      console.log("✅ NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET:", process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET ? "✔ Loaded" : "❌ Not Loaded");
+      console.log("✅ SUPABASE_URL (server):", process.env.SUPABASE_URL);
+      console.log("✅ SUPABASE_ANON_KEY (server):", process.env.SUPABASE_ANON_KEY ? "✔ Loaded" : "❌ Not Loaded");
     }
 
     return config;
