@@ -1,21 +1,18 @@
-// src/lib/auth.server.ts
-
 import { createClient } from '@supabase/supabase-js';
 import { User } from "@/types/user";
 
-// サーバー側の環境変数から Supabase URL / Key を取得
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+// 環境変数の読み込み
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
+  console.error("❌ supabaseUrl:", supabaseUrl);
+  console.error("❌ supabaseKey:", supabaseKey);
   throw new Error("Supabase URL and/or Key is missing");
 }
 
-// Supabaseクライアントを初期化（v2形式）
 const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    persistSession: false,
-  },
+  auth: { persistSession: false },
 });
 
 interface SppaUser extends Omit<User, "password_hash"> {
