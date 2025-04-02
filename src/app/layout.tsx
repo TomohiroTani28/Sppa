@@ -1,15 +1,22 @@
 // src/app/layout.tsx
-import "../styles/globals.css";
-import { ApolloWrapper } from "@/app/ApolloWrapper";
-import { Providers } from "@/app/providers";
+"use client";
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useState } from 'react';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+interface RootLayoutProps {
+  readonly children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+
   return (
     <html lang="ja">
-      <body className="bg-background text-foreground">
-        <Providers>
-          <ApolloWrapper>{children}</ApolloWrapper>
-        </Providers>
+      <body>
+        <SessionContextProvider supabaseClient={supabaseClient}>
+          {children}
+        </SessionContextProvider>
       </body>
     </html>
   );
