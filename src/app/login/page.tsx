@@ -31,7 +31,8 @@ export default function LoginPage() {
       return;
     }
 
-    const redirectTo = getRedirectPath() ?? "/tourist/home";
+    // リダイレクト先を共通の feed ページ（/feed）に変更
+    const redirectTo = getRedirectPath() ?? "/feed";
     clearRedirectPath();
     router.replace(redirectTo);
   };

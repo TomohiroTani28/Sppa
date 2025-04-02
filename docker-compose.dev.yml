@@ -1,4 +1,5 @@
 # docker-compose.dev.yml
+version: "3.8"
 
 services:
   # ▼ Next.js コンテナ（開発用）
