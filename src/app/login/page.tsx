@@ -4,12 +4,13 @@ import LoginForm from "@/components/auth/LoginForm";
 import { getUser } from "@/lib/auth.client";
 import { clearRedirectPath, getRedirectPath, saveRedirectPath } from "@/lib/storage-utils";
 import supabase from "@/lib/supabase-client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,6 +23,8 @@ export default function LoginPage() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (pathname !== "/login") return; // 👈 ログインページでのみ実行
+
     const checkUser = async () => {
       const user = await getUser();
       if (user) {
@@ -34,7 +37,7 @@ export default function LoginPage() {
       }
     };
     checkUser();
-  }, [router]);
+  }, [router, pathname]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
