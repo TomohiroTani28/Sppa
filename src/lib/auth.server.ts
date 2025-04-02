@@ -3,11 +3,20 @@
 import { createClient } from '@supabase/supabase-js';
 import { User } from "@/types/user";
 
-// サーバー側の環境変数を使用してSupabaseクライアントを作成
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+// サーバー側の環境変数から Supabase URL / Key を取得
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error("Supabase URL and/or Key is missing");
+}
+
+// Supabaseクライアントを初期化（v2形式）
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false,
+  },
+});
 
 interface SppaUser extends Omit<User, "password_hash"> {
   password_hash?: string;
@@ -41,9 +50,7 @@ export async function verifyIdToken(token: string) {
   return data.user;
 }
 
-// 認証関数（仮のトークン取得方法）
 export async function auth(): Promise<SppaUser | null> {
-  // 本番ではヘッダーやCookieから取得すること
   const token = process.env.SUPABASE_TEMP_TOKEN || "";
   if (!token) {
     console.error("No token provided for authentication");
