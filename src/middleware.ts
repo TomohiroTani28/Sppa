@@ -11,22 +11,22 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const isAuth = !!session;
+  const isAuthenticated = !!session;
   const { pathname } = req.nextUrl;
 
   const isAuthPage = ["/login", "/signup"].includes(pathname);
   const isProtectedPage = pathname.startsWith("/tourist");
 
-  // 🔐 認証が必要なページに未ログインでアクセス → ログイン画面へ
-  if (!isAuth && isProtectedPage) {
+  // 👤 未ログインかつ保護ルートへアクセス → login にリダイレクト
+  if (!isAuthenticated && isProtectedPage) {
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/login";
     redirectUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(redirectUrl);
   }
 
-  // 👋 ログイン中にログイン or サインアップ画面へアクセス → ホームへリダイレクト
-  if (isAuth && isAuthPage) {
+  // ✅ ログイン中に /login or /signup に来たら /tourist/home にリダイレクト
+  if (isAuthenticated && isAuthPage) {
     return NextResponse.redirect(new URL("/tourist/home", req.url));
   }
 
@@ -34,9 +34,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/login",
-    "/signup",
-    "/tourist/:path*",
-  ],
+  matcher: ["/tourist/:path*", "/login", "/signup"],
 };
