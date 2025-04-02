@@ -1,7 +1,9 @@
 // src/lib/auth.server.ts
+
 import { createClient } from '@supabase/supabase-js';
 import { User } from "@/types/user";
 
+// サーバー側の環境変数を使用してSupabaseクライアントを作成
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_ANON_KEY!
@@ -29,19 +31,19 @@ const mapSupabaseUserToSppaUser = (user: any): SppaUser => {
 
 export async function verifyIdToken(token: string) {
   if (!token) return null;
-  
+
   const { data, error } = await supabase.auth.getUser(token);
   if (error) {
     console.error("Error verifying token:", error.message);
     return null;
   }
-  
+
   return data.user;
 }
 
-// auth関数を追加
+// 認証関数（仮のトークン取得方法）
 export async function auth(): Promise<SppaUser | null> {
-  // 仮にトークンを環境変数から取得（実際はリクエストヘッダーやクッキーから取得する）
+  // 本番ではヘッダーやCookieから取得すること
   const token = process.env.SUPABASE_TEMP_TOKEN || "";
   if (!token) {
     console.error("No token provided for authentication");
