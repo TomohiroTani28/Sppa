@@ -1,8 +1,10 @@
 "use client";
 // src/app/providers.tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode, useState } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { I18nProvider } from "@/i18n/I18nProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
+import { ReactNode, useState } from "react";
 import { ApolloWrapper } from "./ApolloWrapper";
 
 interface ProvidersProps {
@@ -26,8 +28,16 @@ export function Providers({ children, lng = "en" }: ProvidersProps) {
   );
 
   return (
-    <I18nProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </I18nProvider>
+    <SessionProvider>
+      <AuthProvider>
+        <ApolloWrapper>
+          <I18nProvider>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </I18nProvider>
+        </ApolloWrapper>
+      </AuthProvider>
+    </SessionProvider>
   );
 }

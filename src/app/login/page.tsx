@@ -1,10 +1,17 @@
 "use client";
 // src/app/login/page.tsx
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import supabase from "@/lib/supabase-client";
-import { saveRedirectPath, getRedirectPath, clearRedirectPath } from "@/lib/storage-utils";
+import LoginForm from "@/components/auth/LoginForm";
 import { getUser } from "@/lib/auth.client";
+import { clearRedirectPath, getRedirectPath, saveRedirectPath } from "@/lib/storage-utils";
+import supabase from "@/lib/supabase-client";
+import { Metadata } from "next";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+export const metadata: Metadata = {
+  title: "Login | Sppa",
+  description: "Login to your Sppa account",
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -57,68 +64,15 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background">
-      <div className="max-w-md w-full p-8 space-y-6 bg-white rounded-xl shadow-md">
-        <h2 className="text-center text-3xl font-bold text-primary">Sppa ログイン</h2>
-        {errorMessage && <p className="text-red-500 text-sm text-center">{errorMessage}</p>}
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              メールアドレス
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              パスワード
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 transition-colors"
-          >
-            ログイン
-          </button>
-        </form>
-        <div className="flex items-center justify-center space-x-4">
-          <button
-            onClick={() => handleOAuthLogin("google")}
-            className="flex items-center justify-center w-1/2 py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 transition-colors"
-          >
-            Googleでログイン
-          </button>
-          <button
-            onClick={() => handleOAuthLogin("facebook")}
-            className="flex items-center justify-center w-1/2 py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 transition-colors"
-          >
-            Facebookでログイン
-          </button>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
         </div>
-        <div className="text-center">
-          <p className="text-sm">
-            アカウントをお持ちでない方は{" "}
-            <a href="/signup" className="font-medium text-primary hover:underline">
-              こちら
-            </a>{" "}
-            から登録してください。
-          </p>
-        </div>
+        <LoginForm />
       </div>
-    </main>
+    </div>
   );
 }
