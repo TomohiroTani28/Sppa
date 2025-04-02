@@ -1,3 +1,4 @@
+// src/components/auth/SignUpForm.tsx
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
