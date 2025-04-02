@@ -39,11 +39,14 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
+
     if (error) {
       setErrorMessage(error.message);
       return;
     }
+
     const redirectTo = getRedirectPath() ?? "/tourist/home";
     clearRedirectPath();
     router.replace(redirectTo);
@@ -66,6 +69,11 @@ export default function LoginPage() {
           </h2>
         </div>
         <LoginForm />
+        {errorMessage && (
+          <div className="text-center text-sm text-red-500">
+            {errorMessage}
+          </div>
+        )}
       </div>
     </div>
   );

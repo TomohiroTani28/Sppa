@@ -2,7 +2,7 @@
 import { User } from "@/types/user";
 import supabase from "@/lib/supabase-client";
 
-export interface SppaUser extends Omit<User, "password_hash"> { // exportを追加
+export interface SppaUser extends Omit<User, "password_hash"> {
   password_hash?: string;
 }
 
@@ -23,7 +23,16 @@ const mapSupabaseUserToSppaUser = (user: any): SppaUser => {
 };
 
 export async function getUser(): Promise<SppaUser | null> {
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error?.message === "Auth session missing!") {
+    // ユーザー未ログイン時は警告ではなく情報として扱う
+    console.info("No active session found (user not logged in).");
+    return null;
+  }
 
   if (error || !user) {
     console.error("Error fetching user from Supabase:", error?.message);
@@ -31,7 +40,7 @@ export async function getUser(): Promise<SppaUser | null> {
   }
 
   const sppaUser = mapSupabaseUserToSppaUser(user);
-  console.log("User fetched successfully:", sppaUser.email);
+  console.log("✅ User fetched successfully:", sppaUser.email);
   return sppaUser;
 }
 
