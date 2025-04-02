@@ -1,3 +1,4 @@
+"use client";
 // src/components/auth/SignUpForm.tsx
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
@@ -169,4 +170,4 @@ export default function SignUpForm() {
       </div>
     </form>
   );
-} 
+}
