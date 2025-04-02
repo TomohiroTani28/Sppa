@@ -4,14 +4,8 @@ import LoginForm from "@/components/auth/LoginForm";
 import { getUser } from "@/lib/auth.client";
 import { clearRedirectPath, getRedirectPath, saveRedirectPath } from "@/lib/storage-utils";
 import supabase from "@/lib/supabase-client";
-import { Metadata } from "next";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-export const metadata: Metadata = {
-  title: "Login | Sppa",
-  description: "Login to your Sppa account",
-};
 
 export default function LoginPage() {
   const router = useRouter();

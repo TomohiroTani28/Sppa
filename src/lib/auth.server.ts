@@ -9,7 +9,8 @@ import { User } from "@/types/user";
 type PublicUser = Omit<User, "password_hash">;
 
 export async function auth(): Promise<PublicUser | null> {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createServerComponentClient<Database>({ cookies }); // ✅ cookies を関数として渡す
+
   const {
     data: { user },
     error,
