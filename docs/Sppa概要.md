@@ -103,6 +103,7 @@ Sppa
 │   └── seeds
 │       └── default
 │           └── 1741574725086_initial_data.sql
+├── jwt-secret.json
 ├── middleware.ts
 ├── next-env.d.ts
 ├── next-i18next.config.js
@@ -159,6 +160,7 @@ Sppa
 │   │   │   ├── feed
 │   │   │   │   ├── components
 │   │   │   │   │   ├── FeedList.tsx
+│   │   │   │   │   ├── FeedPageWrapper.tsx
 │   │   │   │   │   ├── MasonryFeed.tsx
 │   │   │   │   │   ├── MultiLanguageSupport.tsx
 │   │   │   │   │   ├── OfferCarousel.tsx
@@ -214,6 +216,47 @@ Sppa
 │   │   │   └── treatment
 │   │   │       └── [id]
 │   │   │           └── page.tsx
+│   │   ├── ApolloWrapper.tsx
+│   │   ├── api
+│   │   │   ├── activity-logs
+│   │   │   │   └── route.ts
+│   │   │   ├── auth
+│   │   │   │   └── [...nextauth]
+│   │   │   │       └── route.ts
+│   │   │   ├── error-logs
+│   │   │   │   └── route.ts
+│   │   │   ├── events
+│   │   │   │   └── route.ts
+│   │   │   ├── experiences
+│   │   │   │   └── route.ts
+│   │   │   ├── graphql
+│   │   │   │   └── route.ts
+│   │   │   ├── graphql-fallback
+│   │   │   │   └── route.ts
+│   │   │   ├── notifications
+│   │   │   │   └── unread
+│   │   │   │       └── route.ts
+│   │   │   ├── therapists
+│   │   │   │   ├── [therapistId]
+│   │   │   │   │   ├── availability
+│   │   │   │   │   │   └── route.ts
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   ├── translate
+│   │   │   │   └── route.ts
+│   │   │   ├── trends
+│   │   │   │   └── route.ts
+│   │   │   └── users
+│   │   │       └── [userId]
+│   │   │           └── route.ts
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   ├── providers.tsx
+│   │   ├── signup
+│   │   │   └── page.tsx
 │   │   ├── therapist
 │   │   │   ├── bookings
 │   │   │   │   ├── components
@@ -266,84 +309,44 @@ Sppa
 │   │   │   │   └── page.tsx
 │   │   │   └── settings
 │   │   │       └── page.tsx
-│   │   ├── tourist
-│   │   │   ├── bookings
-│   │   │   │   ├── components
-│   │   │   │   │   ├── AddOption.tsx
-│   │   │   │   │   ├── BookingCalendar.tsx
-│   │   │   │   │   ├── BookingCard.tsx
-│   │   │   │   │   ├── BookingDetailModal.tsx
-│   │   │   │   │   ├── BookingForm.tsx
-│   │   │   │   │   ├── BookingList.tsx
-│   │   │   │   │   ├── CancelPolicy.tsx
-│   │   │   │   │   ├── MyBookingsList.tsx
-│   │   │   │   │   ├── RealTimeAvailability.tsx
-│   │   │   │   │   ├── ReminderNotification.tsx
-│   │   │   │   │   └── TransactionDetails.tsx
-│   │   │   │   └── page.tsx
-│   │   │   ├── local-experiences
-│   │   │   │   ├── [experienceId]
-│   │   │   │   │   ├── components
-│   │   │   │   │   │   └── MediaGallery.tsx
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── components
-│   │   │   │   │   ├── ExperienceCard.tsx
-│   │   │   │   │   └── ExperienceList.tsx
-│   │   │   │   └── page.tsx
-│   │   │   ├── preferences
-│   │   │   │   ├── components
-│   │   │   │   │   └── PreferenceForm.tsx
-│   │   │   │   └── page.tsx
-│   │   │   └── profile
-│   │   │       ├── components
-│   │   │       │   ├── DarkModeToggle.tsx
-│   │   │       │   ├── PaymentMethod.tsx
-│   │   │       │   ├── PreferencesForm.tsx
-│   │   │       │   ├── ProfileEdit.tsx
-│   │   │       │   ├── ProfileForm.tsx
-│   │   │       │   ├── ProfileView.tsx
-│   │   │       │   └── ReviewHistory.tsx
-│   │   │       └── page.tsx
-│   │   ├── ApolloWrapper.tsx
-│   │   ├── api
-│   │   │   ├── activity-logs
-│   │   │   │   └── route.ts
-│   │   │   ├── auth
-│   │   │   │   └── [...nextauth]
-│   │   │   │       └── route.ts
-│   │   │   ├── error-logs
-│   │   │   │   └── route.ts
-│   │   │   ├── events
-│   │   │   │   └── route.ts
-│   │   │   ├── experiences
-│   │   │   │   └── route.ts
-│   │   │   ├── graphql
-│   │   │   │   └── route.ts
-│   │   │   ├── graphql-fallback
-│   │   │   │   └── route.ts
-│   │   │   ├── notifications
-│   │   │   │   └── unread
-│   │   │   │       └── route.ts
-│   │   │   ├── therapists
-│   │   │   │   ├── [therapistId]
-│   │   │   │   │   ├── availability
-│   │   │   │   │   │   └── route.ts
-│   │   │   │   │   └── route.ts
-│   │   │   │   └── route.ts
-│   │   │   ├── translate
-│   │   │   │   └── route.ts
-│   │   │   ├── trends
-│   │   │   │   └── route.ts
-│   │   │   └── users
-│   │   │       └── [userId]
-│   │   │           └── route.ts
-│   │   ├── layout.tsx
-│   │   ├── login
-│   │   │   └── page.tsx
-│   │   ├── page.tsx
-│   │   ├── providers.tsx
-│   │   └── signup
-│   │       └── page.tsx
+│   │   └── tourist
+│   │       ├── bookings
+│   │       │   ├── components
+│   │       │   │   ├── AddOption.tsx
+│   │       │   │   ├── BookingCalendar.tsx
+│   │       │   │   ├── BookingCard.tsx
+│   │       │   │   ├── BookingDetailModal.tsx
+│   │       │   │   ├── BookingForm.tsx
+│   │       │   │   ├── BookingList.tsx
+│   │       │   │   ├── CancelPolicy.tsx
+│   │       │   │   ├── MyBookingsList.tsx
+│   │       │   │   ├── RealTimeAvailability.tsx
+│   │       │   │   ├── ReminderNotification.tsx
+│   │       │   │   └── TransactionDetails.tsx
+│   │       │   └── page.tsx
+│   │       ├── local-experiences
+│   │       │   ├── [experienceId]
+│   │       │   │   ├── components
+│   │       │   │   │   └── MediaGallery.tsx
+│   │       │   │   └── page.tsx
+│   │       │   ├── components
+│   │       │   │   ├── ExperienceCard.tsx
+│   │       │   │   └── ExperienceList.tsx
+│   │       │   └── page.tsx
+│   │       ├── preferences
+│   │       │   ├── components
+│   │       │   │   └── PreferenceForm.tsx
+│   │       │   └── page.tsx
+│   │       └── profile
+│   │           ├── components
+│   │           │   ├── DarkModeToggle.tsx
+│   │           │   ├── PaymentMethod.tsx
+│   │           │   ├── PreferencesForm.tsx
+│   │           │   ├── ProfileEdit.tsx
+│   │           │   ├── ProfileForm.tsx
+│   │           │   ├── ProfileView.tsx
+│   │           │   └── ReviewHistory.tsx
+│   │           └── page.tsx
 │   ├── backend
 │   │   └── api
 │   │       ├── generated-api.ts
@@ -390,6 +393,9 @@ Sppa
 │   │   ├── TherapistAvailabilityPanel.tsx
 │   │   ├── TherapistAvailabilityStatus.tsx
 │   │   ├── UserCard.tsx
+│   │   ├── auth
+│   │   │   ├── LoginForm.tsx
+│   │   │   └── SignUpForm.tsx
 │   │   └── ui
 │   │       ├── Alert.tsx
 │   │       ├── Badge.tsx
@@ -410,6 +416,7 @@ Sppa
 │   │       ├── Text.tsx
 │   │       └── Toast.tsx
 │   ├── contexts
+│   │   ├── AuthContext.tsx
 │   │   └── ChatContext.tsx
 │   ├── graphql
 │   │   ├── queries.ts
@@ -487,6 +494,7 @@ Sppa
 │   ├── i18n
 │   │   ├── I18nProvider.tsx
 │   │   ├── client.ts
+│   │   ├── messages.json
 │   │   ├── server.ts
 │   │   └── settings.ts
 │   ├── lib
@@ -512,11 +520,11 @@ Sppa
 │   ├── locales
 │   │   ├── en.json
 │   │   └── id.json
+│   ├── middleware.ts
 │   ├── realtime
 │   │   ├── RealtimeBookingList.tsx
 │   │   ├── RealtimeEventList.tsx
 │   │   ├── RealtimeMatchList.tsx
-│   │   ├── TherapistAvailabilityPanel.tsx
 │   │   ├── TherapistAvailabilityStatus.tsx
 │   │   ├── availability-listener.ts
 │   │   ├── bookings-listener.ts
@@ -563,6 +571,7 @@ Sppa
 │   │   ├── review.ts
 │   │   ├── service.ts
 │   │   ├── shadcn__ui.d.ts
+│   │   ├── supabase.ts
 │   │   ├── therapist.ts
 │   │   ├── tourist.ts
 │   │   ├── transaction.ts
