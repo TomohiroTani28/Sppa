@@ -26,10 +26,11 @@ services:
     env_file:
       - ./.env.development
     environment:
-      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
+      # ホスト環境変数に依存せず、直接値を記述しています
+      HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:postgres@supabase:5432/sppa"
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET}
-      HASURA_GRAPHQL_JWT_SECRET_FILE: ${HASURA_GRAPHQL_JWT_SECRET_FILE}
+      HASURA_GRAPHQL_ADMIN_SECRET: "3lKK6v5dGIe6EqmrA2UXWxuSCO4prhgasehH0spIJOJojxYdDGW0sVg5hCU4EoBf"
+      HASURA_GRAPHQL_JWT_SECRET_FILE: "/jwt-secret.json"
       HASURA_GRAPHQL_SERVER_PORT: "8081"
       HASURA_GRAPHQL_SERVER_HOST: "0.0.0.0"
       HASURA_GRAPHQL_ENABLED_APIS: "metadata,graphql,pgdump,config"
@@ -58,8 +59,8 @@ services:
     env_file:
       - ./.env.development
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: sppa
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "sppa"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d sppa"]
       interval: 5s
