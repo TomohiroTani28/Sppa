@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHasuraClient } from "@/lib/hasura-client";
 import { gql } from "@apollo/client";
-import { verifyIdToken } from "@/lib/auth.server";
+import { verifyIdToken } from "@/lib/token";
 
 // GraphQL query to fetch user data
 const GET_USER = gql`
