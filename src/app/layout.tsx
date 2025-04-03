@@ -1,9 +1,11 @@
 // src/app/layout.tsx
 "use client";
+
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
 import "@/i18n/i18n";
+import ApolloWrapper from "@/app/ApolloWrapper"; // 追加
 
 interface RootLayoutProps {
   readonly children: React.ReactNode;
@@ -16,7 +18,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="ja">
       <body>
         <SessionContextProvider supabaseClient={supabaseClient}>
-          {children}
+          <ApolloWrapper>
+            {children}
+          </ApolloWrapper>
         </SessionContextProvider>
       </body>
     </html>
