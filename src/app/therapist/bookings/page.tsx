@@ -1,5 +1,7 @@
 "use client";
 // src/app/(therapist)/bookings/page.tsx
+export const dynamic = "force-dynamic";
+
 import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
 import BookingCalendar from "@/app/therapist/bookings/components/BookingCalendar";
 import BookingList from "@/app/therapist/bookings/components/BookingList";
