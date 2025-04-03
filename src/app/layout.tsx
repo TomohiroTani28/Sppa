@@ -3,6 +3,7 @@
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
+import "@/i18n/i18n";
 
 interface RootLayoutProps {
   readonly children: React.ReactNode;
