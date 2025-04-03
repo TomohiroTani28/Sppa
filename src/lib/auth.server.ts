@@ -1,5 +1,7 @@
 "use server";
+
 // src/lib/auth.server.ts
+
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
@@ -20,10 +22,17 @@ export async function auth(): Promise<PublicUser | null> {
     error,
   } = await supabase.auth.getUser();
 
+  // ログ出力で状態確認（デバッグ用）
   if (error || !user) {
-    console.error("❌ Supabase auth error:", error?.message);
+    console.error("❌ Supabase auth error:", error?.message || "No user found");
     return null;
   }
+
+  console.log("✅ Supabase auth success:", {
+    id: user.id,
+    email: user.email,
+    role: user.user_metadata?.role,
+  });
 
   return {
     id: user.id,
