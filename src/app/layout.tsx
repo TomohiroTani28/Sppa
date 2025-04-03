@@ -5,7 +5,8 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
 import "@/i18n/i18n";
-import ApolloWrapper from "@/app/ApolloWrapper"; // 追加
+import ApolloWrapper from "@/app/ApolloWrapper";
+import "@/styles/globals.css";
 
 interface RootLayoutProps {
   readonly children: React.ReactNode;
