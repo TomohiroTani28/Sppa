@@ -2,8 +2,7 @@
 "use client";
 
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
-import { useState } from 'react';
+import supabase from "@/lib/supabase-client"; // ← ここを統一
 import "@/i18n/i18n";
 import ApolloWrapper from "@/app/ApolloWrapper";
 import "@/styles/globals.css";
@@ -13,12 +12,10 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const [supabaseClient] = useState(() => createPagesBrowserClient());
-
   return (
     <html lang="ja">
       <body>
-        <SessionContextProvider supabaseClient={supabaseClient}>
+        <SessionContextProvider supabaseClient={supabase}>
           <ApolloWrapper>
             {children}
           </ApolloWrapper>
