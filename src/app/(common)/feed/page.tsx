@@ -1,7 +1,9 @@
-"use client";
 // src/app/(common)/feed/page.tsx
+"use client";
+export const dynamic = "force-dynamic";
+
 import { Suspense, useState, useMemo } from "react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import HomeHeader from "@/components/HomeHeader";
 import BottomNavigation from "@/components/BottomNavigation";
@@ -20,7 +22,7 @@ interface Notification {
   is_read: boolean;
 }
 
-// ErrorDisplay コンポーネント
+// エラー表示用コンポーネント
 interface ErrorDisplayProps {
   error: string | null;
   t: (key: string) => string;
@@ -38,7 +40,7 @@ const ErrorDisplay = ({ error, t }: ErrorDisplayProps) => {
   );
 };
 
-// HomeMainContent コンポーネント
+// メイン表示コンテンツ
 interface HomeMainContentProps {
   userData: any;
   selectedTab: "tourist" | "therapist";
@@ -65,7 +67,7 @@ const HomeMainContent = ({
   );
 };
 
-// getUserData 関数
+// ユーザーデータ整形
 const getUserData = (user: any) =>
   user
     ? {
@@ -76,30 +78,30 @@ const getUserData = (user: any) =>
       }
     : null;
 
+// ページコンポーネント
 export default function SppaHomePage() {
   const { t } = useTranslation("common");
   const { user, role, loading: authLoading } = useAuth();
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
   const userId = user?.id;
 
-  // Move hooks to top level to ensure they're always called
+  // フック呼び出し
   const { notifications, error: notificationsError } = useNotifications(userId);
-  const { therapistData, loading: therapistLoading, error: therapistError } = useTherapistData(userId, authLoading, role);
+  const {
+    therapistData,
+    loading: therapistLoading,
+    error: therapistError,
+  } = useTherapistData(userId, authLoading, role);
 
-  // Calculate all derived state here, before any conditional returns
   const userData = getUserData(user);
-  
-  // 未読通知数の計算
+
   const unreadCount = useMemo(() => {
     return notifications?.filter((n: Notification) => !n.is_read)?.length || 0;
   }, [notifications]);
 
-  // エラーメッセージの処理
   const notificationErrorMessage = notificationsError ? notificationsError.message : null;
   const therapistErrorMessage = therapistError ? therapistError.message : null;
 
-  // All hooks are called before any conditional returns
-  // Now we can safely have early returns
   if (authLoading) {
     return <LoadingSpinner />;
   }
@@ -111,7 +113,12 @@ export default function SppaHomePage() {
   return (
     <Text tag="div" className="min-h-screen bg-background">
       {userData && (
-        <HomeHeader user={userData} unreadCount={unreadCount} t={t} aria-label={t("header.ariaLabel")} />
+        <HomeHeader
+          user={userData}
+          unreadCount={unreadCount}
+          t={t}
+          aria-label={t("header.ariaLabel")}
+        />
       )}
       <TabSelector selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       <HomeMainContent
