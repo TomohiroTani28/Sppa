@@ -1,6 +1,6 @@
 // src/components/LoginForm.tsx
 import React, { useState } from "react";
-import { signInWithEmailPassword } from "@/utils/auth";
+import { login } from "@/utils/auth";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
@@ -18,8 +18,7 @@ const LoginForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const { error } = await signInWithEmailPassword(email, password);
-      if (error) throw error;
+      await login(email, password);
     } catch (err: any) {
       setError(err.message || "ログインに失敗しました");
     } finally {
