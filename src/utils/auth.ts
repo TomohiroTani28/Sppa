@@ -1,6 +1,6 @@
 // src/utils/auth.ts
 import { cookies } from 'next/headers';
-import { jwtDecode } from 'jwt-decode'; // ✅ 正しいインポート方式（TypeScript対応）
+import { jwtDecode } from 'jwt-decode';
 
 // クライアント用に localStorage キー定義
 const AUTH_TOKEN_KEY = 'sppa_auth_token';
