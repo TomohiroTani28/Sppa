@@ -2,7 +2,6 @@
 version: "3.8"
 
 services:
-  # ▼ Next.js コンテナ（開発用）
   nextjs:
     build:
       context: .
@@ -10,6 +9,9 @@ services:
       - "3000:3000"
     env_file:
       - ./.env.development
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=http://supabase:5432
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRla3l3Z3Z5cnJ5ZWR1dHFhY2liIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAwNTY8MTUsImV4cCI6MjA1NTYzMjgxNX0.SDUwAwZhsxKbqz6FOYXbIDEpG8LkNhSUMt9_G-w9N5Q
     volumes:
       - ./jwt-secret.json:/jwt-secret.json:ro
     depends_on:

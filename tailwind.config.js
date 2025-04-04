@@ -11,11 +11,11 @@ module.exports = {
     extend: {
       colors: {
         // 非推奨の色名を削除し、新しい名前に置き換え
-        slate: colors.slate,     // blueGrayの代わり
-        gray: colors.gray,       // coolGrayの代わり
-        neutral: colors.neutral, // trueGrayの代わり
-        stone: colors.stone,     // warmGrayの代わり
-        sky: colors.sky,         // lightBlueの代わり
+        slate: colors.slate,
+        gray: colors.gray,
+        neutral: colors.neutral,
+        stone: colors.stone,
+        sky: colors.sky,
         
         // カスタムカラー
         primary: '#2b6cb0',
