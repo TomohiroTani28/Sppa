@@ -15,7 +15,7 @@ interface FilterOptions {
   availableNow?: boolean;
 }
 
-interface TherapistSearchResult extends TherapistProfile {
+export interface TherapistSearchResult extends TherapistProfile {
   user: {
     id: string;
     name: string;
@@ -113,6 +113,8 @@ export function useTherapistSearch() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filters, setFilters] = useState<FilterOptions>({});
   const [clientInstance, setClientInstance] = useState<ApolloClient<any> | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
   // Initialize Apollo Client instance
   useEffect(() => {
@@ -123,5 +125,37 @@ export function useTherapistSearch() {
     fetchClient();
   }, []);
 
-  // Rest of your hook implementation...
+  const searchTherapists = useCallback(async () => {
+    if (!clientInstance) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const filterVariables = buildFilterVariables(filters);
+      const { data } = await clientInstance.query({
+        query: SEARCH_THERAPISTS_QUERY,
+        variables: { searchTerm: `%${searchTerm}%`, filters: filterVariables },
+      });
+
+      setResults(data.therapist_profiles);
+    } catch (err: any) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [clientInstance, searchTerm, filters]);
+
+  useEffect(() => {
+    searchTherapists();
+  }, [searchTherapists]);
+
+  return {
+    results,
+    searchTerm,
+    setSearchTerm,
+    filters,
+    setFilters,
+    loading,
+    error,
+  };
 }

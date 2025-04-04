@@ -2,7 +2,8 @@
 // src/app/(common)/therapists/[therapistId]/components/FilterPanel.tsx
 import React, { FC, useState } from "react";
 import { useFetchServiceCategories } from "@/hooks/api/useFetchServiceCategories";
-import { useTherapistSearch } from "@/hooks/api/useTherapistSearch";
+// --- FIX: Import hook and type from their correct sources ---
+import { useTherapistSearch, TherapistSearchResult } from "@/hooks/api/useTherapistSearch"; // Import hook and type from hook file
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Label } from "@/components/ui/Label";
@@ -27,6 +28,8 @@ export interface FilterPanelProps {
   onFilterChange: (filters: FilterState) => void;
 }
 
+// --- NOTE on CodeScene warnings (Complex & Large Method): ---
+// --- Consider refactoring in the future for better maintainability. ---
 const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
   const { t } = useTranslation("common");
   const [filters, setFilters] = useState<FilterState>({
@@ -35,23 +38,34 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
     isAvailable: false,
   });
 
-  const { categories: serviceCategories, loading, error } = useFetchServiceCategories();
-  const { results } = useTherapistSearch();
-  const therapistData = results?.find((result) => result.id === therapistId);
+  // Fetch service categories
+  const { categories: serviceCategories, loading: categoriesLoading, error: categoriesError } = useFetchServiceCategories();
+
+  // Fetch therapist search results
+  // --- NOTE: This hook call will only work correctly AFTER useTherapistSearch ---
+  // --- is fixed to RETURN an object like { results, loading, error, ... } ---
+  // --- and the TherapistSearchResult type issue is resolved in the hook file. ---
+  const { results, loading: therapistLoading, error: therapistError } = useTherapistSearch();
+
+  // Find the specific therapist's data using the correctly imported type
+  const therapistData = results?.find((result: TherapistSearchResult) => result.id === therapistId);
 
   const handleCheckboxChange = (
     key: keyof FilterState,
     value: string | boolean,
-    checked: boolean
+    checked: boolean | 'indeterminate'
   ): void => {
+    const isChecked = typeof checked === 'boolean' ? checked : false;
+
     setFilters((prev) => {
       const newFilters = { ...prev };
       if (key === "isAvailable") {
-        newFilters[key] = checked;
+        newFilters[key] = isChecked;
       } else {
-        const currentValues = newFilters[key];
+        const currentValues = newFilters[key]; // string[]
         const stringValue = String(value);
-        if (checked) {
+
+        if (isChecked) {
           if (!currentValues.includes(stringValue)) {
             newFilters[key] = [...currentValues, stringValue];
           }
@@ -64,11 +78,16 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
     });
   };
 
-  if (loading) return <div className="flex justify-center p-4"><Spinner /></div>;
-  if (error) {
+  // Handle loading state for categories
+  if (categoriesLoading || therapistLoading) {
+    return <div className="flex justify-center p-4"><Spinner /></div>;
+  }
+
+  // Handle error state for categories
+  if (categoriesError || therapistError) {
     return (
       <Alert variant="error">
-        <p>{t("filterPanel.error")}: {error.message}</p>
+        <p>{t("filterPanel.error")}: {categoriesError?.message || therapistError?.message}</p>
       </Alert>
     );
   }
@@ -79,49 +98,63 @@ const FilterPanel: FC<FilterPanelProps> = ({ therapistId, onFilterChange }) => {
         <CardTitle>{t("filterPanel.title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Service Categories Section */}
         <div>
-          <h3 className="text-sm font-medium">{t("filterPanel.services")}</h3>
-          {serviceCategories?.map((category) => (
-            <div key={category.id} className="flex items-center space-x-2 mt-2">
-              <Checkbox
-                id={`service-${category.id}`}
-                checked={filters.serviceCategories.includes(category.id)}
-                onCheckedChange={(checked) =>
-                  handleCheckboxChange("serviceCategories", category.id, !!checked)
-                }
-              />
-              <Label htmlFor={`service-${category.id}`}>{category.name}</Label>
-            </div>
-          ))}
+          <h3 className="text-sm font-medium mb-2">{t("filterPanel.services")}</h3>
+          {serviceCategories?.length === 0 ? (
+             <p className="text-xs text-muted-foreground">{t("filterPanel.noServices")}</p>
+          ) : (
+            serviceCategories?.map((category) => (
+              <div key={category.id} className="flex items-center space-x-2 mt-1">
+                <Checkbox
+                  id={`service-${category.id}`}
+                  checked={filters.serviceCategories.includes(category.id)}
+                  onCheckedChange={(checked) =>
+                    handleCheckboxChange("serviceCategories", category.id, checked)
+                  }
+                />
+                <Label htmlFor={`service-${category.id}`} className="text-sm font-normal">{category.name}</Label>
+              </div>
+            ))
+          )}
         </div>
-        <div>
-          <h3 className="text-sm font-medium">{t("filterPanel.languages")}</h3>
-          {therapistData?.languages.map((lang) => (
-            <div key={lang} className="flex items-center space-x-2 mt-2">
-              <Checkbox
-                id={`lang-${lang}`}
-                checked={filters.languages.includes(lang)}
-                onCheckedChange={(checked) =>
-                  handleCheckboxChange("languages", lang, !!checked)
-                }
-              />
-              <Label htmlFor={`lang-${lang}`}>{lang}</Label>
-            </div>
-          ))}
-        </div>
-        <div className="flex items-center space-x-2">
+
+        {/* Languages Section */}
+        {therapistData?.languages && therapistData.languages.length > 0 && (
+          <div>
+            <h3 className="text-sm font-medium mb-2">{t("filterPanel.languages")}</h3>
+            {therapistData.languages.map((lang: string) => (
+              <div key={lang} className="flex items-center space-x-2 mt-1">
+                <Checkbox
+                  id={`lang-${lang}`}
+                  checked={filters.languages.includes(lang)}
+                  onCheckedChange={(checked) =>
+                    handleCheckboxChange("languages", lang, checked)
+                  }
+                />
+                <Label htmlFor={`lang-${lang}`} className="text-sm font-normal">{lang}</Label>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Availability Section */}
+        <div className="flex items-center space-x-2 pt-2">
           <Checkbox
             id="available"
             checked={filters.isAvailable}
             onCheckedChange={(checked) =>
-              handleCheckboxChange("isAvailable", true, !!checked)
+              handleCheckboxChange("isAvailable", true, checked)
             }
           />
-          <Label htmlFor="available">{t("filterPanel.availableNow")}</Label>
+          <Label htmlFor="available" className="text-sm font-normal">{t("filterPanel.availableNow")}</Label>
         </div>
+
+        {/* Reset Button */}
         <Button
           variant="outline"
-          className="w-full"
+          size="sm"
+          className="w-full mt-4"
           onClick={() => {
             const resetFilters: FilterState = {
               serviceCategories: [],
