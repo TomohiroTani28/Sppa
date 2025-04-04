@@ -1,4 +1,4 @@
-// src/app/tourist/notifications/page.tsx
+// src/app/(common)/notifications/page.tsx
 "use client";
 import dynamic from "next/dynamic";
 

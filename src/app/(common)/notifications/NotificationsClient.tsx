@@ -1,18 +1,15 @@
-// src/app/tourist/notifications/NotificationsClient.tsx
+// src/app/(common)/notifications/NotificationsClient.tsx
 "use client";
-import React from "react";
-import { useNotifications, Notification } from "@/realtime/useNotifications";
-import { useAuth } from "@/hooks/api/useAuth";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Spinner } from "@/components/ui/Spinner";
+import { useAuth } from "@/hooks/api/useAuth";
+import { Notification, useNotifications } from "@/realtime/useNotifications";
+import { gql, useMutation } from "@apollo/client";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { useMutation, gql } from "@apollo/client";
 
-/**
- * GraphQL mutation to mark a notification as read
- */
 const MARK_NOTIFICATION_READ = gql`
   mutation MarkNotificationRead($id: uuid!) {
     update_notifications_by_pk(pk_columns: { id: $id }, _set: { is_read: true }) {
@@ -22,9 +19,6 @@ const MARK_NOTIFICATION_READ = gql`
   }
 `;
 
-/**
- * NotificationItem component to display individual notifications
- */
 const NotificationItem: React.FC<{
   notification: Notification;
   t: (key: string, options?: any) => string;
@@ -60,20 +54,12 @@ const NotificationItem: React.FC<{
   </Card>
 );
 
-/**
- * Notifications client component for tourists
- * Displays a real-time list of notifications with options to mark them as read
- */
 const NotificationsClient: React.FC = () => {
   const { t } = useTranslation("notifications");
   const { user } = useAuth();
   const { notifications, isLoading, error } = useNotifications(user?.id);
   const [markNotificationRead, { loading: mutationLoading }] = useMutation(MARK_NOTIFICATION_READ);
 
-  /**
-   * Handle marking a notification as read
-   * @param notificationId The ID of the notification to mark as read
-   */
   const handleMarkAsRead = async (notificationId: string) => {
     try {
       await markNotificationRead({
@@ -91,7 +77,6 @@ const NotificationsClient: React.FC = () => {
     }
   };
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -100,7 +85,6 @@ const NotificationsClient: React.FC = () => {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="p-4 text-red-500">
