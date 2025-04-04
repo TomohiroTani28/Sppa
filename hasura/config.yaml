@@ -1,11 +1,12 @@
 # hasura/config.yaml
 version: 3
 endpoint: http://localhost:8081
+admin_secret:
+  from_env: HASURA_GRAPHQL_ADMIN_SECRET
 metadata_directory: metadata
 actions:
   kind: synchronous
   handler_webhook_baseurl: http://localhost:3000
-
 databases:
   - name: sppa
     url:
