@@ -11,7 +11,6 @@ interface FeedState {
   updateFeed: (newPosts: FeedState["posts"]) => void;
 }
 
-// Zustand ストアの作成
 export const useFeedStore = create<FeedState>((set) => ({
   posts: [],
   updateFeed: (newPosts) => {
@@ -21,7 +20,6 @@ export const useFeedStore = create<FeedState>((set) => ({
   },
 }));
 
-// GraphQL サブスクリプションクエリ
 const FEED_SUBSCRIPTION = gql`
   subscription FeedUpdates($role: String!) {
     posts(
@@ -50,29 +48,22 @@ const FEED_SUBSCRIPTION = gql`
   }
 `;
 
-/**
- * リアルタイムフィード更新用のカスタムフック
- * @param selectedTab "tourist" | "therapist"
- * @returns { feedData, loading, error }
- */
 export const useRealtimeFeedUpdates = (selectedTab: "tourist" | "therapist" = "tourist") => {
   const updateFeed = useFeedStore((state) => state.updateFeed);
   const posts = useFeedStore((state) => state.posts);
   const role = selectedTab || "tourist";
 
-  // デバッグ用ログ
   console.log("useRealtimeFeedUpdates - サブスクリプション開始:", {
     selectedTab,
     role,
     timestamp: new Date().toISOString(),
   });
 
-  // Apollo Client のサブスクリプションを使用してデータを取得
   const { data, error, loading } = useSubscription(FEED_SUBSCRIPTION, {
     variables: { role },
     skip: !role,
     onError: (err) => {
-      console.error("サブスクリプションエラー:", {
+      console.error("サブスクリプションエラー詳細:", {
         message: err.message,
         graphQLErrors: err.graphQLErrors?.map((e) => ({
           message: e.message,
@@ -86,17 +77,16 @@ export const useRealtimeFeedUpdates = (selectedTab: "tourist" | "therapist" = "t
       });
     },
     onData: ({ data }) => {
-      console.log("リアルタイムサブスクリプションデータ受信:", {
+      console.log("リアルタイムデータ受信:", {
         posts: data?.data?.posts || [],
         timestamp: new Date().toISOString(),
       });
     },
   });
 
-  // データが更新されたときにフィードを更新
   useEffect(() => {
     if (data?.posts) {
-      console.log("フィードを更新:", {
+      console.log("フィード更新:", {
         newPosts: data.posts,
         timestamp: new Date().toISOString(),
       });

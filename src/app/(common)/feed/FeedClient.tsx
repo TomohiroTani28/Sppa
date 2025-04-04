@@ -13,8 +13,8 @@ import { TabSelector } from "@/app/(common)/feed/components/TabSelector";
 import { useAuth } from "@/hooks/api/useAuth";
 import { useNotifications } from "@/realtime/useNotifications";
 import useTherapistData from "@/hooks/api/useTherapistData";
+import Link from "next/link";
 
-// Type definitions
 interface Notification {
   id: string;
   message?: string | null;
@@ -61,6 +61,12 @@ const HomeMainContent = ({
       <Suspense fallback={<LoadingSpinner />}>
         <MasonryFeed userId={safeUserId} selectedTab={selectedTab} />
       </Suspense>
+      {/* 通知ページへのリンクを明示的に追加 */}
+      <Link href="/notifications" prefetch={false}>
+        <Text tag="span" className="text-primary underline">
+          {t("viewNotifications")}
+        </Text>
+      </Link>
     </Text>
   );
 };

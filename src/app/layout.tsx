@@ -22,6 +22,10 @@ function Providers({ children }: { children: React.ReactNode }) {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ja">
+      <head>
+        {/* プリロード設定を最適化 */}
+        <link rel="stylesheet" href="/globals.css" />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>

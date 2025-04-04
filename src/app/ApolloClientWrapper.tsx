@@ -16,7 +16,6 @@ import { setContext } from "@apollo/client/link/context";
 import { useAuth } from "@/hooks/api/useAuth";
 import { createWsClient } from "@/lib/create-ws-client";
 
-// Define endpoints from environment variables with defaults
 const httpEndpoint =
   process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql";
 const wsEndpoint =
