@@ -9,6 +9,7 @@ interface RootLayoutProps {
   readonly children: React.ReactNode;
 }
 
+"use client";
 function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
