@@ -5,7 +5,7 @@ import { I18nProvider } from "@/i18n/I18nProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode, useState } from "react";
-import { ApolloWrapper } from "./ApolloWrapper";
+import ApolloWrapper from "./ApolloWrapper";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -13,7 +13,6 @@ interface ProvidersProps {
 }
 
 export function Providers({ children, lng = "en" }: ProvidersProps) {
-  // QueryClientを作成（Reactのステートとして保持）
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -21,7 +20,7 @@ export function Providers({ children, lng = "en" }: ProvidersProps) {
           queries: {
             retry: 1,
             refetchOnWindowFocus: false,
-            staleTime: 5 * 60 * 1000, // 5分
+            staleTime: 5 * 60 * 1000,
           },
         },
       }),
