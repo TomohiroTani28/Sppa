@@ -46,7 +46,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
     );
 
   const commonNav = [
-    { href: "/feed", icon: <Home className="w-6 h-6" />, key: "home" },
+    { href: "/feed", icon: <Home className="w-6 h-6" />, key: "feed" },
     { href: "/search", icon: <Search className="w-6 h-6" />, key: "search" },
     { href: "/activity", icon: <Calendar className="w-6 h-6" />, key: "activity" },
     { href: "/chat", icon: <MessageSquare className="w-6 h-6" />, key: "chat" },
@@ -54,7 +54,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
   ];
 
   const touristNav = [
-    { href: "/feed", icon: <Home className="w-6 h-6" />, key: "home" },
+    { href: "/feed", icon: <Home className="w-6 h-6" />, key: "feed" },
     { href: "/search", icon: <Search className="w-6 h-6" />, key: "search" },
     { href: "/tourist/bookings", icon: <Calendar className="w-6 h-6" />, key: "bookings" },
     { href: "/chat", icon: <MessageSquare className="w-6 h-6" />, key: "chat" },
