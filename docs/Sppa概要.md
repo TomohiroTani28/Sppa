@@ -137,6 +137,7 @@ Sppa
 │   ├── app
 │   │   ├── (common)
 │   │   │   ├── chat
+│   │   │   │   ├── ChatClient.tsx
 │   │   │   │   ├── [userId]
 │   │   │   │   │   └── page.tsx
 │   │   │   │   ├── components
@@ -158,6 +159,7 @@ Sppa
 │   │   │   │   ├── LocationService.ts
 │   │   │   │   └── TouristLayout.tsx
 │   │   │   ├── feed
+│   │   │   │   ├── FeedClient.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── FeedList.tsx
 │   │   │   │   │   ├── FeedPageWrapper.tsx
@@ -178,12 +180,14 @@ Sppa
 │   │   │   │       ├── LikeButton.tsx
 │   │   │   │       └── MatchList.tsx
 │   │   │   ├── notifications
+│   │   │   │   ├── NotificationsClient.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── NotificationList.tsx
 │   │   │   │   │   └── components
 │   │   │   │   │       └── NotificationListStatic.tsx
 │   │   │   │   └── page.tsx
 │   │   │   ├── search
+│   │   │   │   ├── SearchClient.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── FilterModal.tsx
 │   │   │   │   │   ├── FilterPanel.tsx
@@ -217,7 +221,9 @@ Sppa
 │   │   │   └── treatment
 │   │   │       └── [id]
 │   │   │           └── page.tsx
+│   │   ├── ApolloClientWrapper.tsx
 │   │   ├── ApolloWrapper.tsx
+│   │   ├── _not-found.tsx
 │   │   ├── api
 │   │   │   ├── activity-logs
 │   │   │   │   └── route.ts
@@ -260,6 +266,7 @@ Sppa
 │   │   │   └── page.tsx
 │   │   ├── therapist
 │   │   │   ├── bookings
+│   │   │   │   ├── BookingsClient.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── BookingCalendar.tsx
 │   │   │   │   │   ├── BookingDetailModal.tsx
@@ -291,6 +298,7 @@ Sppa
 │   │   │   │   └── useReviewData.ts
 │   │   │   ├── page.tsx
 │   │   │   ├── profile
+│   │   │   │   ├── ProfileClient.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── AvailabilitySettings.tsx
 │   │   │   │   │   ├── EventForm.tsx
@@ -304,6 +312,7 @@ Sppa
 │   │   │   │   │       └── useRealTimeProfileUpdates.ts
 │   │   │   │   └── page.tsx
 │   │   │   ├── reviews
+│   │   │   │   ├── ReviewsClient.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── ReviewDetailModal.tsx
 │   │   │   │   │   ├── ReviewList.tsx
