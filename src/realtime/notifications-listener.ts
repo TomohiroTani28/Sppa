@@ -4,7 +4,7 @@ import supabase from '@/lib/supabase-client';
 // リアルタイム変更イベントの型定義
 interface NotificationChange {
   event: 'INSERT' | 'UPDATE' | 'DELETE';
-  data: any; // 必要に応じて具体的な型に置き換え可能
+  data: any;
 }
 
 /**
@@ -23,10 +23,10 @@ export const subscribeToNotifications = (
     .on(
       'postgres_changes',
       {
-        event: '*', // 挿入、更新、削除のすべてのイベントをリッスン
+        event: '*',
         schema: 'public',
         table: 'notifications',
-        filter: `user_id=eq.${userId}`, // 指定したユーザーIDにフィルタリング
+        filter: `user_id=eq.${userId}`,
       },
       (payload) => {
         // イベントタイプに応じてコールバックに適切なデータを渡す
