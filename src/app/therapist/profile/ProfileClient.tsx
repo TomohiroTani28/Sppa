@@ -61,7 +61,7 @@ const ProfileClient: React.FC = () => {
     return (
       <div className="flex flex-col justify-center items-center h-screen space-y-4">
         <p className="text-red-500">{errorMessage}</p>
-        <button onClick={() => router.push("/tourist/home")} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+        <button onClick={() => router.push("/feed")} className="px-4 py-2 bg-blue-500 text-white rounded-md">
           ホームに戻る
         </button>
       </div>
@@ -81,7 +81,7 @@ const ProfileClient: React.FC = () => {
     return (
       <div className="flex flex-col justify-center items-center h-screen space-y-4">
         <p className="text-red-500">エラー: ユーザー情報が利用できません</p>
-        <button onClick={() => router.push("/tourist/home")} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+        <button onClick={() => router.push("/feed")} className="px-4 py-2 bg-blue-500 text-white rounded-md">
           ホームに戻る
         </button>
       </div>

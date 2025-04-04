@@ -19,7 +19,7 @@ export default function HomeHeader({ user, unreadCount, t }: HomeHeaderProps) {
           <Link href="/tourist/preferences" className="text-blue-500">
             <span>設定</span>
           </Link>
-          <Link href="/tourist/notifications" className="relative">
+          <Link href="/notifications" className="relative">
             <span>
               <svg /* アイコンコード省略 */></svg>
               {unreadCount > 0 && (
