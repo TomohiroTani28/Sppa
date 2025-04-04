@@ -1,4 +1,5 @@
 // src/contexts/AuthContext.tsx
+"use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -48,4 +49,4 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}; 
+};
