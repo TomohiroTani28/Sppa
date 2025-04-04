@@ -16,6 +16,7 @@ import { setContext } from "@apollo/client/link/context";
 import { useAuth } from "@/hooks/api/useAuth";
 import { createWsClient } from "@/lib/create-ws-client";
 
+// Define endpoints from environment variables with defaults
 const httpEndpoint =
   process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql";
 const wsEndpoint =
@@ -40,7 +41,7 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
       });
       return;
     }
-  
+
     const effectiveRole = role ?? "tourist";
     const effectiveToken = token;
     console.log("Authentication complete:", {
@@ -48,7 +49,7 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
       token: effectiveToken.substring(0, 20) + "...",
       authLoading: false,
     });
-  
+
     const newClient = createApolloClient(
       effectiveToken,
       effectiveRole,
