@@ -1,4 +1,4 @@
-// src/app/(common)/therapists/[therapistId]/components/useRealTimeReviews.ts
+// src/hooks/useRealTimeReviews.ts
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';

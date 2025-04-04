@@ -1,5 +1,5 @@
 "use client";
-// src/app/(common)/chat/hooks/useRealtimeChat.ts
+// src/hooks/useRealtimeChat.ts
 /**
  * Custom hook to fetch and subscribe to real-time chat messages.
  * Uses Hasura GraphQL subscriptions for updates.

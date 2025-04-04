@@ -1,4 +1,4 @@
-// src/app/(common)/chat/hooks/useOnlineUsers.ts
+// src/hooks/useOnlineUsers.ts
 import { useSubscription } from "@apollo/client";
 import gql from "graphql-tag";
 

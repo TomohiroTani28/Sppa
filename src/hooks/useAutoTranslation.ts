@@ -1,5 +1,5 @@
 "use client";
-// src/app/(common)/chat/hooks/useAutoTranslation.ts
+// src/hooks/useAutoTranslation.ts
 import { useState, useCallback } from "react";
 import { useTranslation } from "next-i18next";
 

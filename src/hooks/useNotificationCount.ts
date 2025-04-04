@@ -1,4 +1,4 @@
-// src/app/tourist/home/hooks/useNotificationCount.ts
+// src/hooks/useNotificationCount.ts
 import { useQuery, useSubscription } from '@apollo/client';
 import { gql } from '@apollo/client';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-// src/app/tourist/home/hooks/useHomeData.ts
+// src/hooks/useHomeData.ts
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { useUserPreferences } from "@/hooks/useUserPreferences";

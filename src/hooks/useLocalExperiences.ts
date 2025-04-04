@@ -1,4 +1,4 @@
-// src/app/tourist/hooks/useLocalExperiences.ts
+// src/hooks/useLocalExperiences.ts
 import { useState, useEffect } from "react";
 import { getLocalExperiencesAPI } from "@/backend/api/graphql/local-experiences"; // Adjust path if moved
 

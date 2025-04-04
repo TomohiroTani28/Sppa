@@ -1,4 +1,4 @@
-// src/app/tourist/notifications/components/components/NotificationListStatic.tsx
+// src/app/(common)/notifications/components/components/NotificationListStatic.tsx
 "use client";
 
 import React from "react";
@@ -10,7 +10,7 @@ interface Notification {
   type: string;
   message?: string;
   isRead: boolean;
-  createdAt: string; // Adjust type based on actual data (e.g., Date, string)
+  createdAt: string;
 }
 
 export default function NotificationListStatic() {

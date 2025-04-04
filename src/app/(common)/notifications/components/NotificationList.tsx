@@ -1,4 +1,4 @@
-// src/app/tourist/notifications/components/NotificationList.tsx
+// src/app/(common)/notifications/components/NotificationList.tsx
 "use client";
 
 import { useSubscription } from "@apollo/client";

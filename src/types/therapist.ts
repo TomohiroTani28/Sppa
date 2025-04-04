@@ -70,7 +70,7 @@ export interface Therapist {
   experience_years?: number;
   location?: TherapistLocation;
   languages: string[];
-  certifications?: Record<string, any>; // 柔軟性を保つためにRecordを使用
+  certifications?: Record<string, any>;
   working_hours?: TherapistWorkingHours;
   status: TherapistStatus;
   last_online_at?: string;
@@ -116,7 +116,7 @@ export interface TherapistProfile {
       count: number;
     };
   };
-  workingHours: WorkingHour[]; // 追加: GraphQLの working_hours にマッピング
+  workingHours: WorkingHour[];
 }
 
 // セラピスト検索結果を表す型

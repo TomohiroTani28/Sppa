@@ -1,7 +1,7 @@
 "use client";
 // src/components/TherapistAvailabilityPanel.tsx
 import { useState, useEffect } from "react";
-import { useTherapistAvailability } from '@/realtime/useTherapistAvailability';
+import { useTherapistAvailability } from '@/hooks/useTherapistAvailability';
 import { FaUserFriends } from "react-icons/fa";
 
 // Temporary permissive type to debug

@@ -1,4 +1,4 @@
-// src/app/(common)/home/hooks/useFeedData.ts
+// src/hooks/useFeedData.ts
 import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { User } from "@/types/user";

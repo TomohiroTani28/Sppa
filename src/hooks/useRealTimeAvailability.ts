@@ -1,4 +1,4 @@
-// src/app/(common)/search/hooks/useRealTimeAvailability.ts
+// src/hooks/useRealTimeAvailability.ts
 import { ApolloClient, InMemoryCache, HttpLink, split } from "@apollo/client";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";

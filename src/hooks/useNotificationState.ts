@@ -1,4 +1,4 @@
-// src/app/(common)/home/hooks/useNotificationState.ts
+// src/hooks/useNotificationState.ts
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 

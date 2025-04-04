@@ -1,4 +1,4 @@
-// src/app/tourist/bookings/hooks/useBookingNotifications.ts
+// src/hooks/useBookingNotifications.ts
 import { useQuery, useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 import { GET_NOTIFICATIONS, MARK_NOTIFICATION_AS_READ, ON_NEW_NOTIFICATION } from '@/graphql/queries';

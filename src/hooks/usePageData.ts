@@ -1,4 +1,4 @@
-// src/app/tourist/home/hooks/usePageData.ts
+// src/hooks/usePageData.ts
 import { useAuth } from "@/hooks/api/useAuth";
 import { useHomeData } from "./useHomeData";
 import useMultiLanguage from "@/components/MultiLanguageSupport";

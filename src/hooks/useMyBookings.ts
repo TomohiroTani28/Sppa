@@ -1,4 +1,4 @@
-// src/app/tourist/bookings/hooks/useMyBookings.ts
+// src/hooks/useMyBookings.ts
 import { useQuery, useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 import { GET_MY_BOOKINGS, CANCEL_BOOKING, ON_BOOKING_UPDATE } from '@/graphql/queries';

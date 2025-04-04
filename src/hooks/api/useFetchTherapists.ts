@@ -133,7 +133,6 @@ export const useFetchTherapists = (
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
 
-          // オフセットが 0 の場合は置き換え、それ以外は追加
           return offset === 0
             ? fetchMoreResult
             : {
@@ -162,7 +161,7 @@ export const useFetchTherapists = (
 export const useFetchTherapistDetails = (therapistId: string): FetchTherapistDetailsHook => {
   const { data, loading, error, refetch } = useQuery(GET_THERAPIST_BY_ID, {
     variables: { id: therapistId },
-    skip: !therapistId, // therapistIdがない場合はクエリをスキップ
+    skip: !therapistId,
     fetchPolicy: "cache-and-network",
   });
 

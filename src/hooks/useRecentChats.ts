@@ -1,4 +1,4 @@
-// src/app/(common)/chat/hooks/useRecentChats.ts
+// src/hooks/useRecentChats.ts
 import { useSubscription } from "@apollo/client";
 import gql from "graphql-tag";
 
