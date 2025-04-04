@@ -1,6 +1,7 @@
 // src/app/api/users/[userId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { createHasuraClient } from "@/lib/hasura-client";
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { gql } from "@apollo/client";
 import { verifyIdToken } from "@/lib/token";
 
@@ -44,7 +45,7 @@ const GET_USER = gql`
   }
 `;
 
-// 機微な情報を隠すかどうかを判断する関数
+// Helper function to determine if sensitive data should be hidden
 function shouldHideSensitiveData(
   currentUserRole: string | undefined,
   targetUserRole: string | undefined,
@@ -67,22 +68,37 @@ export async function GET(
       return NextResponse.json({ error: "User ID is missing" }, { status: 400 });
     }
 
-    // Authorization ヘッダーからトークンを取得
+    // Extract token from Authorization header
     const token = req.headers.get("Authorization")?.split("Bearer ")[1] ?? "";
     const session = await verifyIdToken(token);
-    if (!session) {
+    if (!session || !session.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // session.id を一旦変数に代入し、存在チェックする
     const sessionUserId = session.id;
-    if (!sessionUserId) {
-      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
-    }
 
-    const client = createHasuraClient(sessionUserId, {});
+    // Set up Apollo Client
+    const httpLink = createHttpLink({
+      uri: "YOUR_HASURA_ENDPOINT", // Replace with your Hasura GraphQL endpoint
+    });
 
-    // GraphQL クエリ実行
+    const authLink = setContext((_, { headers }) => {
+      return {
+        headers: {
+          ...headers,
+          authorization: `Bearer ${token}`,
+          "x-hasura-role": session.role,
+          "x-hasura-user-id": sessionUserId,
+        },
+      };
+    });
+
+    const client = new ApolloClient({
+      link: authLink.concat(httpLink),
+      cache: new InMemoryCache(),
+    });
+
+    // Execute GraphQL query
     const { data, errors } = await client.query({
       query: GET_USER,
       variables: { userId },
@@ -90,25 +106,29 @@ export async function GET(
 
     if (errors) {
       console.error("GraphQL Errors:", errors);
-      return NextResponse.json({ error: "Failed to fetch user data" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to fetch user data" },
+        { status: 500 }
+      );
     }
 
     if (!data.users_by_pk) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // 役割に応じた機微な情報のフィルタリング
+    // Filter sensitive data based on roles
     const user = data.users_by_pk;
-    const currentUserRole = session.role;
     const isOwnProfile = sessionUserId === userId;
-
-    if (shouldHideSensitiveData(currentUserRole, user.role, isOwnProfile)) {
+    if (shouldHideSensitiveData(session.role, user.role, isOwnProfile)) {
       delete user.email;
     }
 
     return NextResponse.json(user);
   } catch (error) {
     console.error("Error fetching user:", error);
-    return NextResponse.json({ error: "Error processing request" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error processing request" },
+      { status: 500 }
+    );
   }
 }

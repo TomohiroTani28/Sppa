@@ -35,7 +35,8 @@ const UPDATE_BOOKING_STATUS = gql`
 
 // 予約を作成する関数
 export const createBooking = async (guestId: string, therapistId: string, startTime: string, endTime: string) => {
-  const result = await hasuraClient.mutate({
+  const client = await hasuraClient(); // ApolloClient インスタンスを取得
+  const result = await client.mutate({
     mutation: CREATE_BOOKING,
     variables: { guestId, therapistId, startTime, endTime },
   });
@@ -44,7 +45,8 @@ export const createBooking = async (guestId: string, therapistId: string, startT
 
 // 予約のステータスを更新する関数
 export const updateBookingStatus = async (bookingId: string, status: string) => {
-  const result = await hasuraClient.mutate({
+  const client = await hasuraClient(); // ApolloClient インスタンスを取得
+  const result = await client.mutate({
     mutation: UPDATE_BOOKING_STATUS,
     variables: { bookingId, status },
   });

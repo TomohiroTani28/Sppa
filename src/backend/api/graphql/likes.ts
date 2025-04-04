@@ -25,7 +25,8 @@ const CHECK_MATCH = gql`
 
 // セラピストを「いいね」する
 export const likeTherapist = async (guestId: string, therapistId: string) => {
-  const result = await hasuraClient.mutate({
+  const client = await hasuraClient();
+  const result = await client.mutate({
     mutation: LIKE_THERAPIST,
     variables: { guestId, therapistId },
   });
@@ -34,7 +35,8 @@ export const likeTherapist = async (guestId: string, therapistId: string) => {
 
 // マッチしているかを確認
 export const checkMatch = async (guestId: string, therapistId: string) => {
-  const result = await hasuraClient.query({
+  const client = await hasuraClient();
+  const result = await client.query({
     query: CHECK_MATCH,
     variables: { guestId, therapistId },
   });

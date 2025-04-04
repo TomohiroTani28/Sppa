@@ -1,6 +1,7 @@
 // src/app/api/trends/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { createHasuraClient } from "@/lib/hasura-client";
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { verifyToken } from "@/utils/auth";
 import { TherapistProfile } from "@/types/therapist";
 import { gql } from "@apollo/client";
@@ -45,7 +46,7 @@ async function fetchTrends(client: any): Promise<TherapistProfile[]> {
       }
     }
   `;
-  const response = await client.query({ query }); // Apollo Client の query メソッドを使用
+  const response = await client.query({ query });
   return response.data.therapist_profiles;
 }
 
@@ -80,9 +81,24 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    const client = createHasuraClient(token, {
-      "x-hasura-role": user.role,
-      "x-hasura-user-id": user.id,
+    const httpLink = createHttpLink({
+      uri: "YOUR_HASURA_ENDPOINT", // Hasuraのエンドポイントを指定
+    });
+
+    const authLink = setContext((_, { headers }) => {
+      return {
+        headers: {
+          ...headers,
+          authorization: `Bearer ${token}`,
+          "x-hasura-role": user.role,
+          "x-hasura-user-id": user.id,
+        },
+      };
+    });
+
+    const client = new ApolloClient({
+      link: authLink.concat(httpLink),
+      cache: new InMemoryCache(),
     });
 
     const trends = await fetchTrends(client);

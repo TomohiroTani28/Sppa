@@ -42,7 +42,8 @@ export const createService = async (
     }
   `;
 
-  const result = await hasuraClient.mutate({
+  const client = await hasuraClient();
+  const result = await client.mutate({
     mutation: CREATE_SERVICE,
     variables: { therapistId, serviceName, description, duration, price, currency },
   });
@@ -65,7 +66,8 @@ export const getServices = async (therapistId: string) => {
     }
   `;
 
-  const result = await hasuraClient.query({
+  const client = await hasuraClient();
+  const result = await client.query({
     query: GET_SERVICES,
     variables: { therapistId },
   });

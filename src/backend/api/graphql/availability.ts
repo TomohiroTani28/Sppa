@@ -1,6 +1,6 @@
 // src/backend/api/graphql/availability.ts
 import { gql } from "@apollo/client";
-import graphqlClient from "@/lib/hasura-client";
+import getGraphqlClient from "@/lib/hasura-client"; // Renamed to reflect it's a function
 import type { TherapistAvailability } from "@/types/availability";
 
 // Update therapist availability
@@ -21,7 +21,9 @@ export const updateAvailability = async (therapistId: string, workingHours: any)
 
   const variables = { therapistId, workingHours };
 
-  const result = await graphqlClient.mutate({
+  // Call the function to get the ApolloClient instance
+  const client = await getGraphqlClient();
+  const result = await client.mutate({
     mutation: query,
     variables,
   });
@@ -42,7 +44,9 @@ export const getAvailability = async (therapistId: string): Promise<TherapistAva
 
   const variables = { therapistId };
 
-  const result = await graphqlClient.query({
+  // Call the function to get the ApolloClient instance
+  const client = await getGraphqlClient();
+  const result = await client.query({
     query,
     variables,
   });

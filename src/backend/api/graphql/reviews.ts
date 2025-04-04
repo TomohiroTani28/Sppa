@@ -16,7 +16,8 @@ export const GET_REVIEWS = gql`
 
 // セラピストのレビューを取得する関数
 export const fetchReviews = async (therapistId: string) => {
-  const result = await hasuraClient.query({
+  const client = await hasuraClient();
+  const result = await client.query({
     query: GET_REVIEWS,
     variables: { therapistId },
   });

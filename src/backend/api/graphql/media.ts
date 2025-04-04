@@ -35,7 +35,8 @@ export const uploadMedia = async (
     }
   `;
 
-  const result = await hasuraClient.mutate({
+  const client = await hasuraClient();
+  const result = await client.mutate({
     mutation: UPLOAD_MEDIA,
     variables: { therapistId, mediaType, url, caption },
   });
@@ -57,7 +58,8 @@ export const getMediaList = async (therapistId: string) => {
     }
   `;
 
-  const result = await hasuraClient.query({
+  const client = await hasuraClient();
+  const result = await client.query({
     query: GET_MEDIA_LIST,
     variables: { therapistId },
   });

@@ -77,21 +77,7 @@ const THERAPISTS_QUERY = gql`
   }
 `;
 
-const transformTherapistData = (profile: TherapistProfile) => ({
-  id: profile.user.id,
-  name: profile.user.name,
-  profile_picture: profile.user.profile_picture,
-  bio: profile.user.therapistProfile?.bio || '',
-  experience_years: profile.user.therapistProfile?.experience_years || 0,
-  location: profile.user.therapistProfile?.location || '',
-  languages: profile.user.therapistProfile?.languages || [],
-  working_hours: profile.user.therapistProfile?.working_hours,
-  average_rating: profile.user.average_rating || 0,
-  hourly_rate: profile.user.hourly_rate || 0,
-  services: profile.user.services || [],
-  reviewCount: profile.user.reviews.length,
-});
-
+// Prepares query variables with wildcards for partial matching
 const prepareVariables = (variables: TherapistsQueryVariables): TherapistsQueryVariables => ({
   location: variables.location ? `%${variables.location}%` : '%%',
   service: variables.service ? `%${variables.service}%` : '%%',
@@ -99,9 +85,11 @@ const prepareVariables = (variables: TherapistsQueryVariables): TherapistsQueryV
   category: variables.category || '',
 });
 
-export const fetchTherapists = async (variables: TherapistsQueryVariables) => {
+// Fetches raw therapist data from Hasura
+const fetchTherapistsData = async (variables: TherapistsQueryVariables) => {
+  const client = await hasuraClient(); // Get ApolloClient instance
   const preparedVars = prepareVariables(variables);
-  const { data } = await hasuraClient.query<TherapistsQuery, TherapistsQueryVariables>({
+  const { data } = await client.query<TherapistsQuery, TherapistsQueryVariables>({
     query: THERAPISTS_QUERY,
     variables: preparedVars,
   });
@@ -110,5 +98,27 @@ export const fetchTherapists = async (variables: TherapistsQueryVariables) => {
     throw new Error('No therapist profiles found');
   }
 
-  return data.therapist_profiles.map(transformTherapistData);
+  return data.therapist_profiles;
+};
+
+// Transforms raw data into the desired format
+const transformTherapistData = (profile: TherapistProfile) => ({
+  id: profile.user.id,
+  name: profile.user.name,
+  profile_picture: profile.user.profile_picture ?? '',
+  bio: profile.user.therapistProfile?.bio ?? '',
+  experience_years: profile.user.therapistProfile?.experience_years ?? 0,
+  location: profile.user.therapistProfile?.location ?? '',
+  languages: profile.user.therapistProfile?.languages ?? [],
+  working_hours: profile.user.therapistProfile?.working_hours,
+  average_rating: profile.user.average_rating ?? 0,
+  hourly_rate: profile.user.hourly_rate ?? 0,
+  services: profile.user.services ?? [],
+  reviewCount: profile.user.reviews.length,
+});
+
+// Main function to fetch and transform therapist data
+export const fetchTherapists = async (variables: TherapistsQueryVariables) => {
+  const profiles = await fetchTherapistsData(variables);
+  return profiles.map(transformTherapistData);
 };

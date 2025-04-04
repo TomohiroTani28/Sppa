@@ -1,8 +1,8 @@
 // src/app/api/notifications/unread/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { request, gql } from 'graphql-request';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { request, gql } from "graphql-request";
 
 // Notification type definition
 interface Notification {
@@ -19,7 +19,7 @@ interface UnreadNotificationsResponse {
 }
 
 // Hasura GraphQLエンドポイント（環境変数から取得）
-const HASURA_URL = process.env.HASURA_URL ?? 'http://localhost:8080/v1/graphql';
+const HASURA_URL = process.env.HASURA_URL ?? "http://localhost:8081/v1/graphql";
 
 // 未読通知を取得するGraphQLクエリ
 const GET_UNREAD_NOTIFICATIONS = gql`
@@ -42,15 +42,15 @@ export async function GET(req: NextRequest) {
 
   // セッションが存在しない場合のチェック
   if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const userId = session.user.id;
-  const role = session.user.role ?? 'user'; // role が undefined の場合、デフォルトで 'user'
+  const role = session.user.role ?? "user";
 
   const headers = {
-    'X-Hasura-Role': role,
-    'X-Hasura-User-Id': userId,
+    "X-Hasura-Role": role,
+    "X-Hasura-User-Id": userId,
   };
 
   try {
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
     );
     return NextResponse.json(data.notifications);
   } catch (error) {
-    console.error('Error fetching unread notifications:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Error fetching unread notifications:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

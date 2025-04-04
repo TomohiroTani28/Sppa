@@ -1,3 +1,4 @@
+// src/components/auth/LoginForm.tsx
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";

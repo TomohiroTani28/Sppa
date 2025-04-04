@@ -5,10 +5,10 @@ import { getSession } from "next-auth/react";
 
 export const createHasuraClient = async (headers: Record<string, string> = {}) => {
   const session = await getSession();
-  const token = session?.access_token || "";
+  const token = session?.access_token ?? "";
 
   const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT || "http://localhost:8081/v1/graphql",
+    uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql",
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
       ...headers,
@@ -16,7 +16,7 @@ export const createHasuraClient = async (headers: Record<string, string> = {}) =
   });
 
   const wsLink = new WebSocketLink({
-    uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT || "ws://localhost:8081/v1/graphql",
+    uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ?? "ws://localhost:8081/v1/graphql",
     options: {
       reconnect: true,
       connectionParams: {
@@ -31,7 +31,7 @@ export const createHasuraClient = async (headers: Record<string, string> = {}) =
   });
 
   return new ApolloClient({
-    link: typeof window === "undefined" ? httpLink : wsLink, // サーバーサイドではHTTP、クライアントサイドではWebSocket
+    link: typeof window === "undefined" ? httpLink : wsLink,
     cache: new InMemoryCache(),
   });
 };
