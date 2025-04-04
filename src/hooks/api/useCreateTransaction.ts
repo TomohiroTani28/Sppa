@@ -48,7 +48,10 @@ export const useCreateTransaction = () => {
       };
 
       try {
-        const response = await graphqlClient.mutate({
+        // graphqlClient を呼び出して Apollo Client インスタンスを取得
+        const client = await graphqlClient();
+        // 取得したインスタンスで mutate を実行
+        const response = await client.mutate({
           mutation: CREATE_TRANSACTION_MUTATION,
           variables,
         });

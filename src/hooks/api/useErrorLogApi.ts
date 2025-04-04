@@ -48,14 +48,16 @@ export const useErrorLogApi = (): {
   const createErrorLog = async (
     errorLog: ErrorLogCreateInput
   ): Promise<ErrorLog> => {
-    const response = await graphqlClient.mutate({
+    // graphqlClient を呼び出して Apollo Client インスタンスを取得
+    const client = await graphqlClient();
+    const response = await client.mutate({
       mutation: CREATE_ERROR_LOG_MUTATION,
       variables: {
         errorType: errorLog.error_type,
         message: errorLog.message,
-        stackTrace: errorLog.stack_trace || null,
-        userId: errorLog.user_id || null,
-        requestDetails: errorLog.request_details || null,
+        stackTrace: errorLog.stack_trace ?? null,
+        userId: errorLog.user_id ?? null,
+        requestDetails: errorLog.request_details ?? null,
       },
     });
     return response.data.insert_error_logs_one;

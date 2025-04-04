@@ -39,7 +39,10 @@ const CREATE_REVIEW_MUTATION = gql`
 export const useCreateReview = () => {
   const mutation = useMutation({
     mutationFn: async (review: Review) => {
-      const { data } = await hasuraClient.mutate({
+      // Call hasuraClient() to get the Apollo Client instance
+      const client = await hasuraClient();
+      // Use the client instance to perform the mutation
+      const { data } = await client.mutate({
         mutation: CREATE_REVIEW_MUTATION,
         variables: {
           bookingId: review.booking_id,

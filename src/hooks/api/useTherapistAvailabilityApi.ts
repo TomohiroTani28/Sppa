@@ -1,13 +1,18 @@
 "use client";
 // src/hooks/api/useTherapistAvailabilityApi.ts
 import { useCallback } from "react";
-import { gql } from "@apollo/client";
 import client from "@/lib/hasura-client";
 import {
   GET_THERAPIST_AVAILABILITY,
   AVAILABILITY_SUBSCRIPTION,
 } from "@/lib/queries/therapistAvailability";
 import { TherapistAvailabilitySlot } from "@/types/availability";
+import { FetchResult } from "@apollo/client";
+
+// サブスクリプションのレスポンス型を定義
+type TherapistAvailabilitySubscription = {
+  therapist_availability: TherapistAvailabilitySlot[];
+};
 
 /**
  * テーブル: therapist_availability
@@ -20,7 +25,8 @@ export function useTherapistAvailabilityApi(therapistId?: string) {
    */
   const fetchAvailability = useCallback(async () => {
     if (!therapistId) return { available_slots: [] };
-    const { data } = await client.query({
+    const apolloClient = await client();
+    const { data } = await apolloClient.query({
       query: GET_THERAPIST_AVAILABILITY,
       variables: { therapistId },
       fetchPolicy: "network-only",
@@ -42,21 +48,30 @@ export function useTherapistAvailabilityApi(therapistId?: string) {
     if (!therapistId) {
       return () => {};
     }
-    const observable = client.subscribe({
-      query: AVAILABILITY_SUBSCRIPTION,
-      variables: { therapistId },
-    });
-    const subscription = observable.subscribe({
-      next: (resp) => {
-        const newSlots = resp?.data?.therapist_availability || [];
-        onUpdate(newSlots);
-      },
-      error: (err) => {
-        console.error("Subscription error:", err);
-      },
-    });
-    // 戻り値として購読停止関数を返す
-    return () => subscription.unsubscribe();
+    client()
+      .then((apolloClient) => {
+        const observable = apolloClient.subscribe<TherapistAvailabilitySubscription>({
+          query: AVAILABILITY_SUBSCRIPTION,
+          variables: { therapistId },
+        });
+        const subscription = observable.subscribe({
+          next: (resp: FetchResult<TherapistAvailabilitySubscription>) => {
+            const newSlots = resp?.data?.therapist_availability || [];
+            onUpdate(newSlots);
+          },
+          error: (err: Error) => {
+            console.error("Subscription error:", err);
+          },
+        });
+        // 戻り値として購読停止関数を返す
+        return () => subscription.unsubscribe();
+      })
+      .catch((error) => {
+        console.error("Failed to get Apollo Client:", error);
+      });
+
+    // 即座に購読停止関数を返す（必要に応じて）
+    return () => {};
   };
 
   return {
