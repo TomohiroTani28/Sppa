@@ -261,38 +261,40 @@ pnpm dev
 ## .env テンプレート
 
 ```text
-------------- Supabase 設定 -------------
-# Client-side（ブラウザ側で使用）
-NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+# Client-side variables
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=
+NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT=
+NEXT_PUBLIC_HASURA_GRAPHQL_ADMIN_SECRET=
+NEXT_PUBLIC_APP_URL=
+NEXT_PUBLIC_APP_NAME=
 
-# Server-side（サーバー側で使用）
-SUPABASE_URL=https://your-supabase-url.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+# Server-side variables
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+HASURA_GRAPHQL_DATABASE_URL=
+HASURA_GRAPHQL_ADMIN_SECRET=
+HASURA_GRAPHQL_JWT_SECRET_FILE=
+HASURA_GRAPHQL_ENABLE_CONSOLE=
+HASURA_GRAPHQL_SERVER_PORT=
+HASURA_GRAPHQL_SERVER_HOST=
+HASURA_GRAPHQL_ENABLED_APIS=
+HASURA_GRAPHQL_CORS_DOMAIN=
 
-# ------------- NextAuth 設定 -------------
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-nextauth-secret
+# NextAuth関連
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 
-# ------------- Google OAuth 設定 -------------
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
+# LibreTranslate関連
+LT_DEBUG=
+LT_PORT=
 
-# ------------- Hasura 設定 -------------
-# Client-side 用（GraphQLエンドポイント）
-NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=http://localhost:8081/v1/graphql
-NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT=ws://localhost:8081/v1/graphql
-HASURA_GRAPHQL_ADMIN_SECRET=your-hasura-admin-secret
-
-# Server-side 用（Hasura 接続情報）
-HASURA_GRAPHQL_DATABASE_URL=your-hasura-database-url
-HASURA_GRAPHQL_JWT_SECRET='{"type":"HS256","key":"your-hasura-jwt-secret-key"}'
-
-# =============================================
-# ※ 上記各項目を、各自の環境に合わせた値に変更してください。
-# ※ このファイルを.env.development や .env.production として利用することで、
-#    環境毎の設定管理が可能です。
-# =============================================
+# Supabase関連
+POSTGRES_PASSWORD=
+POSTGRES_DB=
 ```
 
 ---
