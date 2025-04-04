@@ -1,8 +1,10 @@
 // src/app/(common)/chat/page.tsx
 "use client";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 
-const ChatClient = dynamic(() => import("./ChatClient"), { ssr: false });
+export const dynamic = "force-dynamic";
+
+const ChatClient = dynamicImport(() => import("./ChatClient"), { ssr: false });
 
 export default function ChatPage() {
   return <ChatClient />;

@@ -1,6 +1,8 @@
 // src/app/(common)/chat/[userId]/page.tsx
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useTranslation } from "next-i18next";
