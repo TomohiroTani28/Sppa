@@ -1,4 +1,3 @@
-"use client";
 // src/app/layout.tsx
 import { SessionProvider } from "next-auth/react";
 import ApolloWrapper from "@/app/ApolloWrapper";
