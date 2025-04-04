@@ -61,7 +61,6 @@ const HomeMainContent = ({
       <Suspense fallback={<LoadingSpinner />}>
         <MasonryFeed userId={safeUserId} selectedTab={selectedTab} />
       </Suspense>
-      {/* 通知ページへのリンクを明示的に追加 */}
       <Link href="/notifications" prefetch={false}>
         <Text tag="span" className="text-primary underline">
           {t("viewNotifications")}
