@@ -1,3 +1,4 @@
+// src/lib/currency-utils.ts
 /**
  * 通貨のフォーマットを行うユーティリティ関数
  * @param amount 数値または文字列の金額

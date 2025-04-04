@@ -3,7 +3,6 @@
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import LoginForm from "@/components/auth/LoginForm";
 import { clearRedirectPath, getRedirectPath, saveRedirectPath } from "@/lib/storage-utils";
 
 export default function LoginPage() {
@@ -35,7 +34,7 @@ export default function LoginPage() {
       return;
     }
 
-    const redirectTo = getRedirectPath() ?? "/feed";
+    const redirectTo = getRedirectPath() || "/feed"; // /feed にリダイレクト
     clearRedirectPath();
     router.replace(redirectTo);
   };
@@ -53,6 +52,7 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             required
+            className="mb-4 p-2 border rounded w-full"
           />
           <input
             type="password"
@@ -60,8 +60,11 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
+            className="mb-4 p-2 border rounded w-full"
           />
-          <button type="submit">Login</button>
+          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
+            Login
+          </button>
         </form>
         {errorMessage && (
           <div className="text-center text-sm text-red-500">{errorMessage}</div>

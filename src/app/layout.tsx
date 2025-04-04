@@ -1,8 +1,7 @@
 // src/app/layout.tsx
 "use client";
 
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
-import type { Session } from "@supabase/auth-helpers-nextjs";
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase-client";
 import ApolloWrapper from "@/app/ApolloWrapper";
@@ -14,37 +13,39 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const [session, setSession] = useState<Session | null>(null);
+  const { data: session, status } = useSession();
+  const [supabaseSession, setSupabaseSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getSession = async () => {
+    const fetchSession = async () => {
       const { data } = await supabase.auth.getSession();
-      setSession(data.session);
+      setSupabaseSession(data.session);
       setLoading(false);
+      console.log("Supabase initial session:", data.session);
     };
-    getSession();
+    fetchSession();
 
-    // セッションの変化も監視
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Supabase auth event:", event, session);
+      setSupabaseSession(session);
     });
 
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  if (loading) {
+  useEffect(() => {
+    console.log("NextAuth session:", session, "Status:", status);
+  }, [session, status]);
+
+  if (loading || status === "loading") {
     return <div>セッションを確認中...</div>;
   }
 
   return (
     <html lang="ja">
       <body>
-        <SessionContextProvider supabaseClient={supabase} initialSession={session}>
-          <ApolloWrapper>{children}</ApolloWrapper>
-        </SessionContextProvider>
+        <ApolloWrapper>{children}</ApolloWrapper>
       </body>
     </html>
   );

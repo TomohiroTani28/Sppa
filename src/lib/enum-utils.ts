@@ -1,5 +1,5 @@
 /**
- * src/app/lib/enum-utils.ts
+ * src/lib/enum-utils.ts
  *
  * Sppa プロジェクトで利用する ENUM 定義およびユーティリティ関数。
  *

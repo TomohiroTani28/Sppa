@@ -1,4 +1,4 @@
-// src/app/lib/geoUtils.ts
+// src/lib/geoUtils.ts
 
 /**
  * ハバーサイン公式を使用して2点間の距離を計算する

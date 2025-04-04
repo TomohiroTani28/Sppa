@@ -1,4 +1,4 @@
-// src/app/lib/date-utils.ts
+// src/lib/date-utils.ts
 // 日付ユーティリティ関数
 
 import { format, addDays } from "date-fns";

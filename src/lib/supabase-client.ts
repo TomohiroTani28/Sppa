@@ -3,7 +3,6 @@
 import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-// 環境変数を直接使用（デフォルト値は必要に応じて設定）
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
