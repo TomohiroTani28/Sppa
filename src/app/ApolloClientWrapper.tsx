@@ -32,23 +32,23 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
   const clientInitialized = useRef(false);
 
   useEffect(() => {
-    if (authLoading) {
+    if (authLoading || !token) {
       console.log("Waiting for authentication:", {
         role: role ?? "tourist",
         token: token ?? "undefined",
-        authLoading: true,
+        authLoading,
       });
       return;
     }
-
+  
     const effectiveRole = role ?? "tourist";
-    const effectiveToken = token ?? "";
+    const effectiveToken = token;
     console.log("Authentication complete:", {
       role: effectiveRole,
-      token: effectiveToken ? `${effectiveToken.substring(0, 20)}...` : "undefined",
+      token: effectiveToken.substring(0, 20) + "...",
       authLoading: false,
     });
-
+  
     const newClient = createApolloClient(
       effectiveToken,
       effectiveRole,
