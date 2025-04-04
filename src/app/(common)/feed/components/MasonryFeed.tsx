@@ -1,5 +1,5 @@
-// src/app/(common)/feed/components/MasonryFeed.tsx
 "use client";
+// src/app/(common)/feed/components/MasonryFeed.tsx
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";

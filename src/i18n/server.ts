@@ -5,9 +5,8 @@ import { initReactI18next } from "react-i18next/initReactI18next";
 import { getOptions } from "@/i18n/settings";
 import { cookies, headers } from "next/headers";
 
-// This function gets the language from cookies or accept-language header
+// Get language from cookies or accept-language header
 export async function getLangFromHeaders() {
-  // First check cookie
   const cookieStore = await cookies();
   const langCookie = cookieStore.get("NEXT_LOCALE");
 
@@ -15,7 +14,6 @@ export async function getLangFromHeaders() {
     return langCookie.value;
   }
 
-  // Then check accept-language header
   const headersList = await headers();
   const acceptLanguage = headersList.get("accept-language");
 
@@ -26,7 +24,6 @@ export async function getLangFromHeaders() {
     }
   }
 
-  // Default fallback
   return "en";
 }
 
@@ -54,7 +51,7 @@ export async function initI18next(lng: string, ns: string = "translation") {
   return i18nInstance;
 }
 
-// Helper function to use in server components
+// Helper function for server components
 export async function getTranslation(lng: string, ns: string = "translation") {
   const currentLng = lng || (await getLangFromHeaders());
   const i18nextInstance = await initI18next(currentLng, ns);

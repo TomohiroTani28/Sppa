@@ -2,7 +2,7 @@
 // Theme configuration for the application
 export const theme = {
   colors: {
-    primary: '#2b6cb0',
+    primary: '#007aff',
     secondary: '#38b2ac',
     background: '#f8f8f8',
     text: '#333333',
@@ -17,8 +17,8 @@ export const theme = {
     heading: {
       fontFamily: 'Inter, sans-serif',
       fontWeight: 700,
-      fontSize: '2rem',
-      lineHeight: '2.5rem',
+      fontSize: '2.5rem',
+      lineHeight: '3rem',
     },
     body: {
       fontFamily: 'Inter, sans-serif',

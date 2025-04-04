@@ -5,6 +5,7 @@ import { useTranslation } from "next-i18next";
 import { Post } from "@/types/post";
 import { Button } from "@/components/ui/Button";
 import { TranslationToggle } from "./TranslationToggle";
+import InstantBookingButton from "./InstantBookingButton"; // 追加
 
 // Event 型を仮定（必要に応じて実際の型をインポート）
 interface Event {
@@ -110,15 +111,11 @@ export function PostCard({ post, event, currentUserId, isAvailable }: PostCardPr
           <button className="text-gray-500 hover:text-blue-500" aria-label={t("share")}>
             {t("share")}
           </button>
-          {role === "therapist" && (
-            <Button
-              variant="outline"
-              onClick={() => {
-                window.location.href = `/therapists/${post?.user.id || event?.therapist_id}/booking`;
-              }}
-            >
-              {t(isAvailable ? "bookNow" : "unavailable")}
-            </Button>
+          {role === "therapist" && post && (
+            <InstantBookingButton
+              therapistId={post.user.id}
+              isAvailable={!!isAvailable}
+            />
           )}
           {content && (
             <TranslationToggle

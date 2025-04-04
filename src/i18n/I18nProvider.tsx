@@ -6,7 +6,7 @@ import i18next from "i18next";
 import { initReactI18next, useTranslation as useI18nextTranslation } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
-// 翻訳データ
+// Updated translation data including keys for treatment, chat, booking, profile
 const enTranslations = {
   common: {
     error_loading_feed: "Error loading feed. Please try again.",
@@ -24,6 +24,27 @@ const enTranslations = {
     bookings: "Bookings",
     chat: "Chat",
     profile: "Profile",
+  },
+  treatment: {
+    title: "Treatment Details",
+    instant_booking: "Instant Booking",
+    description: "Service Description & Features",
+  },
+  chat: {
+    title: "Chat",
+    type_message: "Type your message...",
+    translate: "Translate",
+  },
+  booking: {
+    title: "Booking Management",
+    upcoming: "Upcoming Bookings",
+    past: "Past Bookings",
+    cancel: "Cancel Booking",
+  },
+  profile: {
+    title: "Profile",
+    edit_profile: "Edit Profile",
+    settings: "Settings",
   },
 };
 
@@ -45,9 +66,30 @@ const idTranslations = {
     chat: "Obrolan",
     profile: "Profil",
   },
+  treatment: {
+    title: "Detail Perawatan",
+    instant_booking: "Pesan Sekarang",
+    description: "Deskripsi Layanan & Fitur",
+  },
+  chat: {
+    title: "Obrolan",
+    type_message: "Ketik pesan Anda...",
+    translate: "Terjemahkan",
+  },
+  booking: {
+    title: "Manajemen Reservasi",
+    upcoming: "Reservasi Mendatang",
+    past: "Reservasi Lama",
+    cancel: "Batalkan Reservasi",
+  },
+  profile: {
+    title: "Profil",
+    edit_profile: "Edit Profil",
+    settings: "Pengaturan",
+  },
 };
 
-// i18next 初期化
+// i18next initialization for client-side
 if (!i18next.isInitialized) {
   i18next
     .use(LanguageDetector)
@@ -64,7 +106,7 @@ if (!i18next.isInitialized) {
     .catch((error) => console.error("i18next initialization failed", error));
 }
 
-// Context 作成
+// Create I18n context
 interface I18nContextType {
   locale: string;
   setLocale: (locale: string) => void;
@@ -73,7 +115,7 @@ interface I18nContextType {
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-// Provider コンポーネント
+// I18n Provider component
 interface I18nProviderProps {
   children: ReactNode;
 }
@@ -101,7 +143,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
   );
 }
 
-// カスタムフック
+// Custom hook for accessing i18n context
 export function useI18n() {
   const context = useContext(I18nContext);
   if (!context) throw new Error("useI18n must be used within an I18nProvider");
