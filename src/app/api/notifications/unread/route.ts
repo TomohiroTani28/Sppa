@@ -37,31 +37,16 @@ const GET_UNREAD_NOTIFICATIONS = gql`
   }
 `;
 
-// Extend NextAuth User type (you should move this to a types file)
-declare module 'next-auth' {
-  interface User {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string; // Add role to the User type
-  }
-
-  interface Session {
-    user: User;
-  }
-}
-
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
-  // Use optional chaining as suggested by SonarLint
+  // セッションが存在しない場合のチェック
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const userId = session.user.id;
-  const role = session.user.role ?? 'user'; // Fallback to 'user' if role is undefined
+  const role = session.user.role ?? 'user'; // role が undefined の場合、デフォルトで 'user'
 
   const headers = {
     'X-Hasura-Role': role,
