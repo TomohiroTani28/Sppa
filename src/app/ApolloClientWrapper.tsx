@@ -33,15 +33,12 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
   const clientInitialized = useRef(false);
 
   useEffect(() => {
-    if (authLoading || !token || !user || clientInitialized.current) {
-      return;
-    }
+    if (authLoading || !token || !user) return;
   
     const effectiveRole = user.role || "tourist";
     const newClient = createApolloClient(token, effectiveRole, user.id);
     setClient(newClient);
-    clientInitialized.current = true;
-  }, [user, token, authLoading]); 
+  }, [user?.id, token, authLoading]);
 
   if (authLoading || !client) {
     return <div>Loading authentication and Apollo Client...</div>;
