@@ -44,7 +44,7 @@ export async function getUser(): Promise<SppaUser | null> {
   return sppaUser;
 }
 
-export default async function getSessionRole(): Promise<"tourist" | "therapist" | "common" | null> {
+export default async function getSessionRole(): Promise<"tourist" | "therapist" | null> {
   const user = await getUser();
-  return user ? user.role : null;
+  return user ? (user.role as "tourist" | "therapist") : null;
 }

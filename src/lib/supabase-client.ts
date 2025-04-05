@@ -19,7 +19,7 @@ const supabase: SupabaseClient = createPagesBrowserClient({
     name: "sb",
     path: "/",
     sameSite: "Lax",
-    secure: false,
+    secure: process.env.NODE_ENV === 'production', // 本番環境では true
     domain: undefined,
   },
 });
