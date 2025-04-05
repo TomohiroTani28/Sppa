@@ -14,13 +14,6 @@ import { useAuth } from "@/hooks/api/useAuth";
 import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
 import Link from "next/link";
 
-interface Notification {
-  id: string;
-  message?: string | null;
-  type: string;
-  is_read: boolean;
-}
-
 interface ErrorDisplayProps {
   error: string | null;
   t: (key: string) => string;
@@ -66,8 +59,9 @@ const HomeMainContent = ({
         ) : (
           <MasonryFeed
             userId={safeUserId}
-            selectedTab={selectedTab}
-            posts={feedData}
+            posts={feedData} // selectedTab を削除
+            loading={loading}   // オプションで渡す
+            error={error?.message || null} // オプションで渡す
           />
         )}
       </Suspense>
