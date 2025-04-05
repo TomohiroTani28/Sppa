@@ -5,6 +5,9 @@ export function createWsClient(token?: string, role: string = "tourist") {
   if (typeof window === "undefined") return null;
 
   const wsEndpoint = process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT;
+  console.log("WebSocket Endpoint:", wsEndpoint);
+  console.log("Admin Secret:", process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET);
+
   if (!wsEndpoint) {
     console.error("WebSocket Endpoint is not defined:", {
       wsEndpoint: wsEndpoint || "undefined",
