@@ -10,16 +10,17 @@ import { PostCard } from "./PostCard";
 interface MasonryFeedProps {
   readonly userId?: string;
   readonly selectedTab: "tourist" | "therapist";
+  readonly posts: Post[]; // postsプロパティを追加
 }
 
-export function MasonryFeed({ userId, selectedTab }: MasonryFeedProps) {
+export function MasonryFeed({ userId, selectedTab, posts }: MasonryFeedProps) {
   const { t } = useTranslation("common");
   const { feedData, loading, error } = useRealtimeFeedUpdates(selectedTab);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [mappedPosts, setMappedPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     if (feedData.length > 0) {
-      const mappedPosts: Post[] = feedData.map((item) => ({
+      const newPosts: Post[] = feedData.map((item) => ({
         id: item.id,
         userId: item.user_id,
         content: item.content,
@@ -39,7 +40,7 @@ export function MasonryFeed({ userId, selectedTab }: MasonryFeedProps) {
           role: item.user.role as "therapist" | "tourist",
         },
       }));
-      setPosts(mappedPosts);
+      setMappedPosts(newPosts);
     }
   }, [feedData]);
 

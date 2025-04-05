@@ -2,7 +2,7 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import { Suspense, useState, useMemo } from "react";
+import { Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import HomeHeader from "@/components/HomeHeader";
@@ -11,8 +11,7 @@ import { MasonryFeed } from "@/app/(common)/feed/components/MasonryFeed";
 import Text from "@/components/ui/Text";
 import { TabSelector } from "@/app/(common)/feed/components/TabSelector";
 import { useAuth } from "@/hooks/api/useAuth";
-import { useNotifications } from "@/realtime/useNotifications"; // このフック内部で useRealtimeContext を使っている可能性があります
-import useTherapistData from "@/hooks/api/useTherapistData";
+import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
 import Link from "next/link";
 
 interface Notification {
@@ -32,7 +31,10 @@ const ErrorDisplay = ({ error, t }: ErrorDisplayProps) => {
   return (
     <Text tag="div" className="px-4 py-2 text-error text-center">
       {error}
-      <button className="ml-2 text-primary underline" onClick={() => window.location.reload()}>
+      <button
+        className="ml-2 text-primary underline"
+        onClick={() => window.location.reload()}
+      >
         {t("retry")}
       </button>
     </Text>
@@ -40,26 +42,30 @@ const ErrorDisplay = ({ error, t }: ErrorDisplayProps) => {
 };
 
 interface HomeMainContentProps {
-  userData: any;
+  userData: { id: string; name: string; profilePicture: string; email: string } | null;
   selectedTab: "tourist" | "therapist";
   t: (key: string) => string;
-  notificationError: string | null;
-  therapistError: string | null;
+  feedError: string | null;
 }
 
 const HomeMainContent = ({
   userData,
   selectedTab,
   t,
-  notificationError,
-  therapistError,
+  feedError,
 }: HomeMainContentProps) => {
   const safeUserId: string = userData?.id ?? "";
+  const { feedData, loading, error } = useRealtimeFeedUpdates(selectedTab);
+
   return (
     <Text tag="main" className="py-4">
-      <ErrorDisplay error={notificationError ?? therapistError} t={t} />
+      <ErrorDisplay error={feedError ?? error?.message ?? null} t={t} />
       <Suspense fallback={<LoadingSpinner />}>
-        <MasonryFeed userId={safeUserId} selectedTab={selectedTab} />
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <MasonryFeed userId={safeUserId} selectedTab={selectedTab} posts={feedData} />
+        )}
       </Suspense>
       <Link href="/notifications" prefetch={false}>
         <Text tag="span" className="text-primary underline">
@@ -82,31 +88,12 @@ const getUserData = (user: any) =>
 
 export default function FeedClient() {
   const { t } = useTranslation("common");
-  const { user, role, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
-  const userId = user?.id;
-
-  const { notifications, error: notificationsError } = useNotifications(userId);
-  const {
-    therapistData,
-    loading: therapistLoading,
-    error: therapistError,
-  } = useTherapistData(userId, authLoading, role);
 
   const userData = getUserData(user);
 
-  const unreadCount = useMemo(() => {
-    return notifications?.filter((n: Notification) => !n.is_read)?.length || 0;
-  }, [notifications]);
-
-  const notificationErrorMessage = notificationsError ? notificationsError.message : null;
-  const therapistErrorMessage = therapistError ? therapistError.message : null;
-
   if (authLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (role === "therapist" && therapistLoading) {
     return <LoadingSpinner />;
   }
 
@@ -115,7 +102,7 @@ export default function FeedClient() {
       {userData && (
         <HomeHeader
           user={userData}
-          unreadCount={unreadCount}
+          unreadCount={0}
           t={t}
           aria-label={t("header.ariaLabel")}
         />
@@ -125,8 +112,7 @@ export default function FeedClient() {
         userData={userData}
         selectedTab={selectedTab}
         t={t}
-        notificationError={notificationErrorMessage}
-        therapistError={therapistErrorMessage}
+        feedError={null}
       />
       <BottomNavigation />
     </Text>
