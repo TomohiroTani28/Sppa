@@ -1,5 +1,5 @@
 // src/lib/auth.client.ts
-"use client"; // クライアントコンポーネントであることを明示
+"use client";
 import { useSession } from "next-auth/react";
 
 export type SppaUser = {
@@ -39,8 +39,10 @@ export function useAuthClient(): { user: SppaUser | null; loading: boolean } {
   return { user, loading };
 }
 
-// getSessionRoleはフックとして使用
-export function useSessionRole(): "tourist" | "therapist" | "common" | null {
+// getSessionRole 関数を追加
+const getSessionRole = async (): Promise<"tourist" | "therapist" | "common" | null> => {
   const { user } = useAuthClient();
   return user ? (user.role as "tourist" | "therapist" | "common") : null;
-}
+};
+
+export default getSessionRole;

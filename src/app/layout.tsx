@@ -11,10 +11,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ja">
       <head>
-        {/* 必要に応じてメタタグやタイトルを追加 */}
+        <title>My App</title>
+        {/* 必要に応じてメタタグやその他のヘッド要素を追加 */}
       </head>
       <body>
-        {/* Providers で全体をラップすることで、各コンテキストが利用可能 */}
+        {/* Providers で全体をラップすることで、各種コンテキストが利用可能になります */}
         <Providers>{children}</Providers>
       </body>
     </html>
