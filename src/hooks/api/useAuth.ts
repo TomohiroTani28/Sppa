@@ -19,54 +19,40 @@ export const useAuth = (): AuthState => {
 
   useEffect(() => {
     const fetchJwt = async () => {
+      console.log("[useAuth] fetchJwt started. Status:", status, "JWT Token:", jwtToken);
       if (status === "authenticated" && !jwtToken) {
         setIsLoadingToken(true);
         try {
-          // APIルートを呼び出してサーバーサイドで生成されたJWTを取得
-          const response = await fetch('/api/auth/get-jwt'); 
+          console.log("[useAuth] Attempting to fetch JWT from /api/auth/get-jwt");
+          const response = await fetch('/api/auth/get-jwt');
+          console.log("[useAuth] Response received:", response);
           if (response.ok) {
             const data = await response.json();
-            // APIルートが { token: "..." } のような形式で返すことを想定
             setJwtToken(data.token || null);
-             console.log("✅ Successfully fetched JWT token from API route.");
+            console.log("[useAuth] ✅ Successfully fetched JWT token from API route.");
           } else {
-            console.error("❌ Failed to fetch JWT token:", response.statusText);
+            console.error("[useAuth] ❌ Failed to fetch JWT token:", response.status, response.statusText); // ステータスコードもログ出力
             setJwtToken(null);
           }
         } catch (error) {
-          console.error("❌ Error fetching JWT token:", error);
+          console.error("[useAuth] ❌ Error fetching JWT token:", error);
           setJwtToken(null);
         } finally {
           setIsLoadingToken(false);
+          console.log("[useAuth] fetchJwt finished. JWT Token:", jwtToken, "Loading:", isLoadingToken); // ログを追加
         }
       } else if (status === "unauthenticated") {
-        setJwtToken(null); // 未認証ならトークンをクリア
+        setJwtToken(null);
+        console.log("[useAuth] User unauthenticated, JWT token cleared.");
       }
     };
 
     fetchJwt();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, jwtToken]); // jwtTokenを追加して再取得を防ぐ
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, jwtToken]);
 
-  // user や role は session オブジェクトから取得可能
-  // 注意: session.user.role が存在するかは next-auth.d.ts と session コールバック次第
   const userRole = (session?.user as any)?.role || null;
-
-  // 全体のローディング状態は、セッションのロードとJWTのロードの両方を考慮
   const isLoading = status === "loading" || isLoadingToken;
-
-  // デバッグ用ログ
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     console.log("useAuth state:", {
-  //       user: session?.user || null,
-  //       token: jwtToken,
-  //       role: userRole,
-  //       loading: isLoading,
-  //     });
-  //   }
-  // }, [isLoading, session, jwtToken, userRole]);
-
 
   return {
     user: session?.user || null,
