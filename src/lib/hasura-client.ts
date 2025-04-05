@@ -22,7 +22,6 @@ export const createHasuraClient = async (headers: Record<string, string> = {}) =
       connectionParams: {
         headers: {
           "Content-Type": "application/json",
-          "x-hasura-role": "tourist",
           Authorization: token ? `Bearer ${token}` : "",
           ...headers,
         },
