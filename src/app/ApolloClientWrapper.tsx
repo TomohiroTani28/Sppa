@@ -117,15 +117,9 @@ function createApolloClient(
   const authLink = setContext((_, { headers = {} }) => {
     const authHeaders = {
       ...headers,
-      "x-hasura-role": role,
-      ...(userId && { "x-hasura-user-id": userId }),
       ...(token && { Authorization: `Bearer ${token}` }),
     };
-    console.log("Request Headers:", {
-      "x-hasura-role": authHeaders["x-hasura-role"],
-      Authorization: authHeaders.Authorization ? "exists" : "none",
-      "x-hasura-user-id": authHeaders["x-hasura-user-id"] ?? "none",
-    });
+    // ...
     return { headers: authHeaders };
   });
 
@@ -134,7 +128,7 @@ function createApolloClient(
 
   if (typeof window !== "undefined") {
     try {
-      const wsClient = createWsClient(token, role);
+      const wsClient = createWsClient(token);
       if (wsClient) {
         wsLink = new GraphQLWsLink(wsClient);
       } else {
