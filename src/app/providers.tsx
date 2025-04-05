@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode, useState } from "react";
 import ApolloWrapper from "./ApolloWrapper";
+import { RealtimeProvider } from "@/contexts/RealtimeContext"; // 追加
 
 interface ProvidersProps {
   children: ReactNode;
@@ -32,7 +33,9 @@ export function Providers({ children, lng = "en" }: ProvidersProps) {
         <ApolloWrapper>
           <I18nProvider>
             <QueryClientProvider client={queryClient}>
-              {children}
+              <RealtimeProvider>
+                {children}
+              </RealtimeProvider>
             </QueryClientProvider>
           </I18nProvider>
         </ApolloWrapper>

@@ -14,7 +14,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {/* 必要に応じてメタタグやタイトルを追加 */}
       </head>
       <body>
-        {/* Providers でラップすることで、SessionProvider や AuthProvider などのコンテキストが利用可能になります */}
+        {/* Providers で全体をラップすることで、SessionProvider、AuthProvider、ApolloWrapper、I18nProvider、
+            QueryClientProvider、RealtimeProvider の各コンテキストが利用可能になります */}
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -11,7 +11,7 @@ import { MasonryFeed } from "@/app/(common)/feed/components/MasonryFeed";
 import Text from "@/components/ui/Text";
 import { TabSelector } from "@/app/(common)/feed/components/TabSelector";
 import { useAuth } from "@/hooks/api/useAuth";
-import { useNotifications } from "@/realtime/useNotifications";
+import { useNotifications } from "@/realtime/useNotifications"; // このフック内部で useRealtimeContext を使っている可能性があります
 import useTherapistData from "@/hooks/api/useTherapistData";
 import Link from "next/link";
 
