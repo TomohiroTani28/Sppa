@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
     }
 
     const httpLink = createHttpLink({
-      uri: "YOUR_HASURA_ENDPOINT", // Hasuraのエンドポイントを指定
+      uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql", // 修正
     });
 
     const authLink = setContext((_, { headers }) => {

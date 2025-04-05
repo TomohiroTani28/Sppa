@@ -23,13 +23,9 @@ export default function createSubscriptionClient(token?: string) {
       connectionParams: {
         headers: {
           "Content-Type": "application/json",
-          ...(token
-            ? { Authorization: `Bearer ${token}` }
-            : {
-                "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
-              }),
-          // ロールは一貫性を保つため、未認証時は "tourist" とする
-          "x-hasura-role": token ? "therapist" : "tourist",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          // "x-hasura-role": token ? "therapist" : "tourist", // 削除
+          // ...(token ? {} : { "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET }), // 削除
         },
       },
       // 必要に応じてその他のオプションも追加可能
