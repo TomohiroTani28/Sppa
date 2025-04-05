@@ -64,7 +64,11 @@ const HomeMainContent = ({
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <MasonryFeed userId={safeUserId} selectedTab={selectedTab} posts={feedData} />
+          <MasonryFeed
+            userId={safeUserId}
+            selectedTab={selectedTab}
+            posts={feedData}
+          />
         )}
       </Suspense>
       <Link href="/notifications" prefetch={false}>
@@ -102,7 +106,7 @@ export default function FeedClient() {
       {userData && (
         <HomeHeader
           user={userData}
-          unreadCount={0}
+          unreadCount={0} // Placeholder until notifications are implemented
           t={t}
           aria-label={t("header.ariaLabel")}
         />
