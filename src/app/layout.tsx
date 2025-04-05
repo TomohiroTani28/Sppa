@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 import "@/styles/globals.css";
 import "@/i18n/i18n";
-import ClientProviders from "@/components/ClientProviders";
+import { Providers } from "@/app/providers";
 
 interface RootLayoutProps {
   readonly children: React.ReactNode;
@@ -14,7 +14,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {/* 必要に応じてメタタグやタイトルを追加 */}
       </head>
       <body>
-        <ClientProviders>{children}</ClientProviders>
+        {/* Providers コンポーネントで全体をラップすることで、SessionProvider や AuthProvider などのコンテキストが利用可能になります */}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
