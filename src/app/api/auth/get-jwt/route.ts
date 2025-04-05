@@ -10,27 +10,20 @@ export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
   console.log("[/api/auth/get-jwt] getServerSession result:", session);
 
-  if (!session?.user) {
-    console.log("[/api/auth/get-jwt] Unauthorized: No user object in session");
-    return NextResponse.json({ error: "Unauthorized - No user" }, { status: 401 });
+  if (!session || !session.user) {
+    console.log("[/api/auth/get-jwt] Unauthorized: No session or user");
+    return NextResponse.json({ error: "Unauthorized - No session or user" }, { status: 401 });
   }
 
-  if (!session?.user?.email) {
-    console.log("[/api/auth/get-jwt] Unauthorized: No user email in session");
-    return NextResponse.json({ error: "Unauthorized - No email" }, { status: 401 });
-  }
-
-  console.log("[/api/auth/get-jwt] User email found in session:", session.user.email);
+  const userRole = (session.user as any)?.role || "user";
+  console.log("[/api/auth/get-jwt] User role:", userRole);
 
   try {
     const jwtSecret = process.env.NEXTAUTH_SECRET;
     if (!jwtSecret) {
-      console.error("[/api/auth/get-jwt] Error: NEXTAUTH_SECRET environment variable is not defined.");
+      console.error("[/api/auth/get-jwt] Error: NEXTAUTH_SECRET is not defined.");
       return NextResponse.json({ error: "Internal Server Error - No secret" }, { status: 500 });
     }
-
-    const userRole = (session.user as any)?.role || "user";
-    console.log("[/api/auth/get-jwt] User role from session:", userRole);
 
     const hasuraClaims = {
       "https://hasura.io/jwt/claims": {
@@ -39,14 +32,12 @@ export async function GET(request: NextRequest) {
         "x-hasura-user-id": session.user.id,
       },
     };
-    console.log("[/api/auth/get-jwt] Generated Hasura claims:", hasuraClaims);
-
     const token = jwt.sign(hasuraClaims, jwtSecret, { algorithm: "HS256" });
-    console.log("[/api/auth/get-jwt] Successfully generated JWT:", token);
+    console.log("[/api/auth/get-jwt] Successfully generated JWT.");
 
     return NextResponse.json({ token });
   } catch (error: any) {
     console.error("[/api/auth/get-jwt] Error generating JWT:", error.message);
-    return NextResponse.json({ error: "Internal Server Error - JWT error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error - JWT generation failed" }, { status: 500 });
   }
 }

@@ -15,6 +15,7 @@ export async function middleware(req: NextRequest) {
   if (!session && req.nextUrl.pathname.startsWith("/tourist")) {
     const redirectUrl = new URL("/login", req.url);
     redirectUrl.searchParams.set("redirect", req.nextUrl.pathname);
+    console.log("[middleware] No session, redirecting to login:", redirectUrl.toString());
     return NextResponse.redirect(redirectUrl);
   }
 

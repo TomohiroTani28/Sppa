@@ -35,7 +35,7 @@ export default function LoginPage() {
       return;
     }
 
-    const redirectTo = getRedirectPath() || "/feed"; // デフォルトで /feed にリダイレクト
+    const redirectTo = getRedirectPath() || "/feed";
     clearRedirectPath();
     router.replace(redirectTo);
   };

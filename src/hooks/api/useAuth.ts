@@ -20,27 +20,22 @@ export const useAuth = (): AuthState => {
 
   useEffect(() => {
     const fetchJwt = async () => {
-      console.log("[useAuth] fetchJwt started. Status:", status, "JWT Token:", jwtToken);
-      if (status === "authenticated" && !jwtToken) {
+      if (status === "authenticated" && !jwtToken && !isLoadingToken) {
         setIsLoadingToken(true);
         try {
-          console.log("[useAuth] Attempting to fetch JWT from /api/auth/get-jwt");
           const response = await fetch('/api/auth/get-jwt');
-          console.log("[useAuth] Response received:", response);
           if (response.ok) {
             const data = await response.json();
             setJwtToken(data.token || null);
-            console.log("[useAuth] ✅ Successfully fetched JWT token from API route.");
+            console.log("[useAuth] ✅ Successfully fetched JWT token.");
           } else {
-            console.error("[useAuth] ❌ Failed to fetch JWT token:", response.status, response.statusText);
-            setJwtToken(null);
+            throw new Error(`Fetch failed: ${response.status}`);
           }
         } catch (error) {
-          console.error("[useAuth] ❌ Error fetching JWT token:", error);
+          console.error("[useAuth] ❌ Failed to fetch JWT token:", error);
           setJwtToken(null);
         } finally {
           setIsLoadingToken(false);
-          console.log("[useAuth] fetchJwt finished. JWT Token:", jwtToken, "Loading:", isLoadingToken);
         }
       } else if (status === "unauthenticated") {
         setJwtToken(null);
@@ -49,7 +44,7 @@ export const useAuth = (): AuthState => {
     };
 
     fetchJwt();
-  }, [status, jwtToken]);
+  }, [status]);
 
   const userRole = (session?.user as any)?.role || null;
   const isLoading = status === "loading" || isLoadingToken;

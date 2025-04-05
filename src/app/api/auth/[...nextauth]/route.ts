@@ -1,20 +1,17 @@
 // src/app/api/auth/[...nextauth]/route.ts
-import NextAuth, { AuthOptions, User as NextAuthUser, Session } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import NextAuth, { AuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { createClient } from "@supabase/supabase-js";
 
-// Supabase クライアントの初期化
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("❌ Missing Supabase URL or Anon Key in environment variables.");
+  console.error("❌ Missing Supabase URL or Anon Key.");
   throw new Error("Supabase configuration is missing.");
 }
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// ヘルパー関数
 const validateCredentials = (credentials: Record<string, string> | undefined) => {
   if (!credentials?.email || !credentials?.password) {
     console.log("❌ Invalid or missing credentials");
@@ -42,18 +39,18 @@ interface AppUser extends NextAuthUser {
 }
 
 const buildUser = (supabaseData: { user: any; session: any } | null): AppUser | null => {
-  if (!supabaseData?.user || !supabaseData?.session) return null;
+  if (!supabaseData?.user) return null;
 
   const user = supabaseData.user;
-  const role = user.user_metadata?.role ?? "user";
-  const userName = user.user_metadata?.name ?? user.email;
+  const role = user.user_metadata?.role ?? "tourist";
+  const userName = user.user_metadata?.name ?? user.email ?? "Unknown";
 
   console.log(`Building user object: id=${user.id}, email=${user.email}, role=${role}, name=${userName}`);
 
   return {
     id: user.id,
     email: user.email ?? null,
-    name: userName ?? null,
+    name: userName,
     role: role,
   };
 };
@@ -68,7 +65,6 @@ const authorizeUser = async (credentials: Record<string, string> | undefined): P
   return buildUser(supabaseData);
 };
 
-// NextAuth 設定
 export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
@@ -101,8 +97,6 @@ export const authOptions: AuthOptions = {
           "x-hasura-user-id": appUser.id,
         };
         token["https://hasura.io/jwt/claims"] = hasuraClaims;
-
-        console.log("Generated Hasura claims:", hasuraClaims);
       }
       return token;
     },

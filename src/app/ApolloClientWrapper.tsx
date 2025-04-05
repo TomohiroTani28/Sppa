@@ -26,11 +26,10 @@ interface ApolloClientWrapperProps {
 }
 
 export default function ApolloClientWrapper({ children }: ApolloClientWrapperProps) {
-  const { user, loading: authLoading } = useAuth(); // 'session' を 'user' に変更
+  const { user, token, loading: authLoading } = useAuth();
   const [client, setClient] = useState<ApolloClient<any> | null>(null);
   const [wsConnectionFailed, setWsConnectionFailed] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-  const [tokenLoading, setTokenLoading] = useState(false);
+  const [tokenError, setTokenError] = useState<string | null>(null);
   const clientInitialized = useRef(false);
 
   useEffect(() => {
@@ -39,38 +38,7 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
       return;
     }
 
-    if (user && !token && !tokenLoading) {
-      setTokenLoading(true);
-      console.log("Fetching JWT token...");
-      fetch('/api/auth/get-jwt')
-        .then(response => {
-          if (!response.ok) {
-            console.error("Failed to fetch JWT token:", response.status);
-            setToken(null);
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data?.token) {
-            setToken(data.token);
-            console.log("JWT token fetched successfully.");
-          } else {
-            console.error("JWT token not found in response:", data);
-            setToken(null);
-          }
-        })
-        .catch(error => {
-          console.error("Error fetching JWT token:", error);
-          setToken(null);
-        })
-        .finally(() => {
-          setTokenLoading(false);
-        });
-    }
-  }, [user, authLoading, token, tokenLoading]);
-
-  useEffect(() => {
-    if (token && user && !clientInitialized.current) {
+    if (user && token && !clientInitialized.current) {
       const effectiveRole = (user as any)?.role ?? "tourist";
       const newClient = createApolloClient(
         token,
@@ -78,12 +46,14 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
         user.id,
         setWsConnectionFailed
       );
-      updateClient(newClient, setClient);
+      setClient(newClient);
       clientInitialized.current = true;
+    } else if (!token) {
+      setTokenError("Failed to fetch JWT token.");
     }
-  }, [token, user, setClient, setWsConnectionFailed, clientInitialized]);
+  }, [user, token, authLoading]);
 
-  if (authLoading || tokenLoading || !client) {
+  if (authLoading || !client) {
     return <div>Loading authentication and Apollo Client...</div>;
   }
 
@@ -98,20 +68,18 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
           <p>Real-time updates are unavailable. Please ensure the GraphQL server is running.</p>
         </div>
       )}
+      {tokenError && (
+        <div
+          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4"
+          role="alert"
+        >
+          <p className="font-bold">Authentication Error</p>
+          <p>{tokenError}</p>
+        </div>
+      )}
       {children}
     </ApolloProvider>
   );
-}
-
-function updateClient(
-  newClient: ApolloClient<any>,
-  setClient: React.Dispatch<React.SetStateAction<ApolloClient<any> | null>>
-) {
-  setClient((prevClient) => {
-    if (!prevClient) return newClient;
-    prevClient.setLink(newClient.link);
-    return prevClient;
-  });
 }
 
 function createApolloClient(
