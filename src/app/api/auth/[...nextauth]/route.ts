@@ -23,11 +23,11 @@ const validateCredentials = (credentials: Record<string, string> | undefined) =>
 const signInWithSupabase = async (email: string, password: string) => {
   console.log(`Attempting Supabase sign in for: ${email}`);
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  console.log("Supabase auth response:", { data, error });
   if (error) {
     console.error("❌ Supabase auth failed:", error.message);
     return null;
   }
-  console.log(`✅ Supabase sign in successful for: ${email}`);
   return data;
 };
 

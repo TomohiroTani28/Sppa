@@ -33,25 +33,13 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
   const clientInitialized = useRef(false);
 
   useEffect(() => {
-    if (authLoading) {
-      console.log("Waiting for authentication...");
-      return;
-    }
-
-    if (user && token && !clientInitialized.current) {
-      const effectiveRole = (user as any)?.role ?? "tourist";
-      const newClient = createApolloClient(
-        token,
-        effectiveRole,
-        user.id,
-        setWsConnectionFailed
-      );
+    if (!clientInitialized.current && !authLoading) {
+      const effectiveRole = user?.role || "tourist";
+      const newClient = createApolloClient(token || "", effectiveRole, user?.id);
       setClient(newClient);
       clientInitialized.current = true;
-    } else if (!token) {
-      setTokenError("Failed to fetch JWT token.");
     }
-  }, [user, token, authLoading]);
+  }, [user, token, authLoading]);  
 
   if (authLoading || !client) {
     return <div>Loading authentication and Apollo Client...</div>;
