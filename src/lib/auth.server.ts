@@ -1,5 +1,5 @@
-"use server";
 // src/lib/auth.server.ts
+"use server";
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
@@ -33,8 +33,9 @@ function createPublicUser(user: any): PublicUser {
 }
 
 export async function auth(): Promise<PublicUser | null> {
-  const cookieStore: ReadonlyRequestCookies = await cookies(); // await を追加
-  const authToken = cookieStore.get("sb-dekywgvyrryedutqacib-auth-token");
+  const cookieStore: ReadonlyRequestCookies = await cookies();
+  // クライアント側の設定に合わせて、クッキー名を "sb" に変更
+  const authToken = cookieStore.get("sb");
 
   if (!authToken) {
     console.error("❌ No auth token found in cookies");
