@@ -1,5 +1,5 @@
 "use client";
-// src/app/(therapist)/dashboard/page.tsx
+// src/app/therapist/dashboard/page.tsx
 import DashboardSummary from "./components/DashboardSummary";
 import BookingSummary from "./components/BookingSummary";
 import RevenueChart from "./components/RevenueChart";

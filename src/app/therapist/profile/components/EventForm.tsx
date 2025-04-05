@@ -1,4 +1,4 @@
-// src/app/(therapist)/profile/components/EventForm.tsx
+// src/app/therapist/profile/components/EventForm.tsx
 import React, { useState } from "react";
 import { useCreateEvent } from "@/hooks/api/useCreateEvent";
 import { Event } from "@/types/event";
