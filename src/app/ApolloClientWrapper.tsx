@@ -1,6 +1,7 @@
 // src/app/ApolloClientWrapper.tsx
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+
+import React, { useState, useEffect } from "react";
 import {
   ApolloClient,
   ApolloLink,
@@ -17,26 +18,33 @@ import { useAuth } from "@/hooks/api/useAuth";
 import { createWsClient } from "@/lib/create-ws-client";
 
 const httpEndpoint =
-  process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql";
+  process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ??
+  "http://localhost:8081/v1/graphql";
 const wsEndpoint =
-  process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ?? "ws://localhost:8081/v1/graphql";
+  process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ??
+  "ws://localhost:8081/v1/graphql";
 
 interface ApolloClientWrapperProps {
   readonly children: React.ReactNode;
 }
 
-export default function ApolloClientWrapper({ children }: ApolloClientWrapperProps) {
+export default function ApolloClientWrapper({
+  children,
+}: ApolloClientWrapperProps) {
   const { user, token, loading: authLoading } = useAuth();
   const [client, setClient] = useState<ApolloClient<any> | null>(null);
   const [wsConnectionFailed, setWsConnectionFailed] = useState(false);
-  const [tokenError, setTokenError] = useState<string | null>(null);
-  const clientInitialized = useRef(false);
 
   useEffect(() => {
-    if (authLoading || !token || !user) return;
-  
+    if (authLoading) return;
+
+    if (!token || !user) {
+      setClient(null);
+      return;
+    }
+
     const effectiveRole = user.role || "tourist";
-    const newClient = createApolloClient(token, effectiveRole, user.id);
+    const newClient = createApolloClient(token, effectiveRole);
     setClient(newClient);
   }, [user?.id, token, authLoading]);
 
@@ -52,16 +60,10 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
           role="alert"
         >
           <p className="font-bold">WebSocket Connection Failed</p>
-          <p>Real-time updates are unavailable. Please ensure the GraphQL server is running.</p>
-        </div>
-      )}
-      {tokenError && (
-        <div
-          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4"
-          role="alert"
-        >
-          <p className="font-bold">Authentication Error</p>
-          <p>{tokenError}</p>
+          <p>
+            Real-time updates are unavailable. Please ensure the GraphQL server
+            is running.
+          </p>
         </div>
       )}
       {children}
@@ -69,14 +71,7 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
   );
 }
 
-function createApolloClient(
-  token: string,
-  role: string,
-  userId?: string,
-  setWsConnectionFailed?: React.Dispatch<React.SetStateAction<boolean>>
-): ApolloClient<any> {
-  console.log("GraphQL Endpoints:", { http: httpEndpoint, ws: wsEndpoint });
-
+function createApolloClient(token: string, role: string): ApolloClient<any> {
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       console.error(
@@ -93,31 +88,23 @@ function createApolloClient(
     }
   });
 
-  const authLink = setContext((_, { headers = {} }) => {
-    const authHeaders = {
+  const authLink = setContext((_, { headers }) => ({
+    headers: {
       ...headers,
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-    return { headers: authHeaders };
-  });
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  }));
 
   const httpLink = new HttpLink({ uri: httpEndpoint });
-  let wsLink: GraphQLWsLink | null = null;
 
-  if (typeof window !== "undefined") {
+  let wsLink: ApolloLink | null = null;
+
+  if (typeof window !== "undefined" && token) {
     try {
       const wsClient = createWsClient(token);
-      if (wsClient) {
-        wsLink = new GraphQLWsLink(wsClient);
-      } else {
-        throw new Error("Failed to create WebSocket client");
-      }
-    } catch (e) {
-      console.error("Failed to create WebSocket client:", {
-        error: e instanceof Error ? e.message : String(e),
-        timestamp: new Date().toISOString(),
-      });
-      if (setWsConnectionFailed) setWsConnectionFailed(true);
+      wsLink = wsClient ? new GraphQLWsLink(wsClient) : null;
+    } catch (error) {
+      console.error("WebSocket setup failed:", error);
       wsLink = null;
     }
   }
@@ -136,10 +123,8 @@ function createApolloClient(
       )
     : authLink.concat(httpLink);
 
-  const enhancedLink = ApolloLink.from([errorLink, splitLink]);
-
   return new ApolloClient({
-    link: enhancedLink,
+    link: ApolloLink.from([errorLink, splitLink]),
     cache: new InMemoryCache(),
     defaultOptions: {
       query: { fetchPolicy: "network-only", errorPolicy: "all" },
