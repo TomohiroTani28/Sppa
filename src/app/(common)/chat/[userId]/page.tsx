@@ -10,13 +10,14 @@ import ChatHeader from "@/components/ChatHeader";
 import BottomNavigation from "@/components/BottomNavigation";
 import ChatWindow from "@/app/(common)/chat/components/ChatWindow";
 import AutoTranslateToggle from "@/app/(common)/chat/components/AutoTranslateToggle";
-import { useAuth } from "@/hooks/api/useAuth";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
+// エイリアスを使用してインポートを明確化
+import { useAuth as useAuthHook } from "@/hooks/api/useAuth";
 
 export default function ChatPage() {
   const { t } = useTranslation("common");
   const { userId } = useParams();
-  const { user } = useAuth();
+  // エイリアスを使用
+  const { user } = useAuthHook();
 
   useEffect(() => {
     console.log(`ChatPage mounted for userId: ${userId}`);

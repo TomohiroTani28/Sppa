@@ -22,11 +22,11 @@ const wsEndpoint =
   process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ?? "ws://localhost:8081/v1/graphql";
 
 interface ApolloClientWrapperProps {
-  children: React.ReactNode;
+  readonly children: React.ReactNode; // SonarLint の警告に対応
 }
 
 export default function ApolloClientWrapper({ children }: ApolloClientWrapperProps) {
-  const { session, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth(); // 'session' を 'user' に変更
   const [client, setClient] = useState<ApolloClient<any> | null>(null);
   const [wsConnectionFailed, setWsConnectionFailed] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -39,7 +39,7 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
       return;
     }
 
-    if (session?.user && !token && !tokenLoading) {
+    if (user && !token && !tokenLoading) { // 'session?.user' を 'user' に変更
       setTokenLoading(true);
       console.log("Fetching JWT token...");
       fetch('/api/auth/get-jwt')
@@ -67,21 +67,21 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
           setTokenLoading(false);
         });
     }
-  }, [session, authLoading, token, tokenLoading]);
+  }, [user, authLoading, token, tokenLoading]); // 'session' を 'user' に変更
 
   useEffect(() => {
-    if (token && session?.user && !clientInitialized.current) {
-      const effectiveRole = (session.user as any)?.role ?? "tourist";
+    if (token && user && !clientInitialized.current) { // 'session?.user' を 'user' に変更
+      const effectiveRole = (user as any)?.role ?? "tourist"; // 'session.user' を 'user' に変更
       const newClient = createApolloClient(
         token,
         effectiveRole,
-        session.user.id,
+        user.id, // 'session.user.id' を 'user.id' に変更
         setWsConnectionFailed
       );
       updateClient(newClient, setClient);
       clientInitialized.current = true;
     }
-  }, [token, session?.user, setClient, setWsConnectionFailed, clientInitialized]);
+  }, [token, user, setClient, setWsConnectionFailed, clientInitialized]); // 'session?.user' を 'user' に変更
 
   if (authLoading || tokenLoading || !client) {
     return <div>Loading authentication and Apollo Client...</div>;
@@ -143,7 +143,6 @@ function createApolloClient(
       ...headers,
       ...(token && { Authorization: `Bearer ${token}` }),
     };
-    // ...
     return { headers: authHeaders };
   });
 
