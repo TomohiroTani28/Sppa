@@ -228,7 +228,9 @@ Sppa
 │   │   │   ├── activity-logs
 │   │   │   │   └── route.ts
 │   │   │   ├── auth
-│   │   │   │   └── [...nextauth]
+│   │   │   │   ├── [...nextauth]
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── get-jwt
 │   │   │   │       └── route.ts
 │   │   │   ├── error-logs
 │   │   │   │   └── route.ts
@@ -381,6 +383,7 @@ Sppa
 │   │   ├── BookingButton.tsx
 │   │   ├── BottomNavigation.tsx
 │   │   ├── ChatHeader.tsx
+│   │   ├── ClientProviders.tsx
 │   │   ├── ErrorBoundary.tsx
 │   │   ├── FeedFilters.tsx
 │   │   ├── HomeContent.tsx
@@ -554,8 +557,7 @@ Sppa
 │   │   ├── useRealtimeFeedUpdates.ts
 │   │   ├── useRealtimeMatchList.ts
 │   │   ├── useRealtimeReviews.ts
-│   │   ├── useRealtimeTransactions.ts
-│   │   └── useTherapistAvailability.ts
+│   │   └── useRealtimeTransactions.ts
 │   ├── styles
 │   │   ├── globals.css
 │   │   └── theme.ts
