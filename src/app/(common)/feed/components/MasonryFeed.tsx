@@ -8,10 +8,25 @@ import { Post } from "@/types/post";
 interface MasonryFeedProps {
   readonly userId?: string;
   readonly posts: Post[];
+  readonly loading?: boolean;
+  readonly error?: string | null;
 }
 
-export function MasonryFeed({ userId, posts }: MasonryFeedProps) {
+export function MasonryFeed({
+  userId,
+  posts,
+  loading = false,
+  error = null,
+}: MasonryFeedProps) {
   const { t } = useTranslation("common");
+
+  if (loading) {
+    return <LoadingSpinner aria-label={t("loadingFeed")} />;
+  }
+
+  if (error) {
+    return <div className="text-red-500 text-center py-4">{t("errors.feed_fetch_failed")}</div>;
+  }
 
   if (!posts.length) {
     return <div className="text-center py-4">{t("noPostsAvailable")}</div>;
