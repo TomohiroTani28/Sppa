@@ -48,8 +48,12 @@ export default function ApolloClientWrapper({
     setClient(newClient);
   }, [user?.id, token, authLoading]);
 
-  if (authLoading || !client) {
-    return <div>Loading authentication and Apollo Client...</div>;
+  if (authLoading) {
+    return <div>Loading authentication...</div>;
+  }
+
+  if (!client) {
+    return <>{children}</>; // 未認証時もchildrenを表示
   }
 
   return (
