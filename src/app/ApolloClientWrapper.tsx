@@ -22,7 +22,7 @@ const wsEndpoint =
   process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ?? "ws://localhost:8081/v1/graphql";
 
 interface ApolloClientWrapperProps {
-  readonly children: React.ReactNode; // SonarLint の警告に対応
+  readonly children: React.ReactNode;
 }
 
 export default function ApolloClientWrapper({ children }: ApolloClientWrapperProps) {
@@ -39,7 +39,7 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
       return;
     }
 
-    if (user && !token && !tokenLoading) { // 'session?.user' を 'user' に変更
+    if (user && !token && !tokenLoading) {
       setTokenLoading(true);
       console.log("Fetching JWT token...");
       fetch('/api/auth/get-jwt')
@@ -67,21 +67,21 @@ export default function ApolloClientWrapper({ children }: ApolloClientWrapperPro
           setTokenLoading(false);
         });
     }
-  }, [user, authLoading, token, tokenLoading]); // 'session' を 'user' に変更
+  }, [user, authLoading, token, tokenLoading]);
 
   useEffect(() => {
-    if (token && user && !clientInitialized.current) { // 'session?.user' を 'user' に変更
-      const effectiveRole = (user as any)?.role ?? "tourist"; // 'session.user' を 'user' に変更
+    if (token && user && !clientInitialized.current) {
+      const effectiveRole = (user as any)?.role ?? "tourist";
       const newClient = createApolloClient(
         token,
         effectiveRole,
-        user.id, // 'session.user.id' を 'user.id' に変更
+        user.id,
         setWsConnectionFailed
       );
       updateClient(newClient, setClient);
       clientInitialized.current = true;
     }
-  }, [token, user, setClient, setWsConnectionFailed, clientInitialized]); // 'session?.user' を 'user' に変更
+  }, [token, user, setClient, setWsConnectionFailed, clientInitialized]);
 
   if (authLoading || tokenLoading || !client) {
     return <div>Loading authentication and Apollo Client...</div>;
