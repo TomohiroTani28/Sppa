@@ -1,50 +1,42 @@
 // src/lib/auth.client.ts
-import { User } from "@/types/user";
-import supabase from "@/lib/supabase-client";
+"use client";
+import { useSession } from "next-auth/react";
 
-export interface SppaUser extends Omit<User, "password_hash"> {
-  password_hash?: string;
-}
-
-const mapSupabaseUserToSppaUser = (user: any): SppaUser => {
-  return {
-    id: user.id,
-    name: user.user_metadata?.name || null,
-    email: user.email || "",
-    role: (user.user_metadata?.role as "tourist" | "therapist") || "tourist",
-    profile_picture: user.user_metadata?.profile_picture || null,
-    phone_number: user.user_metadata?.phone_number,
-    verified_at: user.email_confirmed_at,
-    last_login_at: user.last_sign_in_at,
-    created_at: user.created_at,
-    updated_at: user.updated_at || user.created_at,
-    password_hash: undefined,
-  };
+// SppaUser 型は NextAuth のセッション情報から構築するユーザー情報です
+export type SppaUser = {
+  id: string;
+  name?: string;
+  email: string;
+  role: "tourist" | "therapist" | string;
+  profile_picture?: string;
+  phone_number?: string;
+  verified_at?: string;
+  last_login_at?: string;
+  created_at: string;
+  updated_at: string;
 };
 
-export async function getUser(): Promise<SppaUser | null> {
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+export function useAuthClient(): { user: SppaUser | null; loading: boolean } {
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
 
-  if (error?.message === "Auth session missing!") {
-    // ユーザー未ログイン時は警告ではなく情報として扱う
-    console.info("No active session found (user not logged in).");
-    return null;
+  if (loading || !session || !session.user) {
+    return { user: null, loading };
   }
 
-  if (error || !user) {
-    console.error("Error fetching user from Supabase:", error?.message);
-    return null;
-  }
+  const user: SppaUser = {
+    id: session.user.id,
+    name: session.user.name ?? undefined,
+    email: session.user.email ?? "",
+    role: (session.user as any).role ?? "tourist",
+    profile_picture: session.user.image ?? undefined,
+    // 必要に応じてこれらの値を設定してください
+    phone_number: undefined,
+    verified_at: undefined,
+    last_login_at: undefined,
+    created_at: "",
+    updated_at: "",
+  };
 
-  const sppaUser = mapSupabaseUserToSppaUser(user);
-  console.log("✅ User fetched successfully:", sppaUser.email);
-  return sppaUser;
-}
-
-export default async function getSessionRole(): Promise<"tourist" | "therapist" | null> {
-  const user = await getUser();
-  return user ? (user.role as "tourist" | "therapist") : null;
+  return { user, loading };
 }
