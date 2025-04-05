@@ -9,10 +9,14 @@ export const createHasuraClient = async (headers: Record<string, string> = {}) =
   const session = await getSession();
   const nextAuthToken = session?.access_token ?? "";
 
+  // Hasura が管理者用の認証ヘッダーを要求する場合、環境変数からシークレットを取得
+  const adminSecret = process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET ?? "";
+
   const httpLink = new HttpLink({
     uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql",
     headers: {
       Authorization: nextAuthToken ? `Bearer ${nextAuthToken}` : "",
+      "x-hasura-admin-secret": adminSecret,
       ...headers,
     },
   });
@@ -28,6 +32,7 @@ export const createHasuraClient = async (headers: Record<string, string> = {}) =
         headers: {
           "Content-Type": "application/json",
           Authorization: hasuraToken ? `Bearer ${hasuraToken}` : "",
+          "x-hasura-admin-secret": adminSecret,
           ...headers,
         },
       };
