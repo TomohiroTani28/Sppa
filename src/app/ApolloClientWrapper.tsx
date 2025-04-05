@@ -13,7 +13,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { onError } from "@apollo/client/link/error";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { setContext } from "@apollo/client/link/context";
-import { useAuth } from "@/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth"; // <--------------------- ここを修正しました
 import { createWsClient } from "@/lib/create-ws-client";
 
 const httpEndpoint =
