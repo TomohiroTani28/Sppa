@@ -79,7 +79,7 @@ export async function GET(
 
     // Set up Apollo Client
     const httpLink = createHttpLink({
-      uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql", // 修正
+      uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql",
     });
 
     const authLink = setContext((_, { headers }) => {
