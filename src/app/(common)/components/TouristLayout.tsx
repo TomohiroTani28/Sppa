@@ -3,6 +3,7 @@ import React from "react";
 import Navbar from "@/components/ui/Navbar";
 import NotificationList from "@/app/(common)/notifications/components/NotificationList";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useAuth } from "@/hooks/api/useAuth"; // 👈 追加
 
 // TouristLayoutのプロパティ
 type TouristLayoutProps = {
@@ -10,12 +11,13 @@ type TouristLayoutProps = {
 };
 
 const TouristLayout: React.FC<TouristLayoutProps> = ({ children }) => {
-  const { preferences, isLoading, error } = useUserPreferences();
+  const { preferences, isLoading: preferencesLoading, error: preferencesError } = useUserPreferences();
+  const { user } = useAuth(); // 👈 追加
 
-  if (isLoading) return <div>Loading preferences...</div>;
+  if (preferencesLoading) return <div>Loading preferences...</div>;
 
   // errorが文字列またはnullであることを前提に処理
-  if (error) return <div>Error loading preferences: {error}</div>;
+  if (preferencesError) return <div>Error loading preferences: {preferencesError}</div>;
 
   // preferencesがnullの場合は、フォールバックのUIを表示するか早期リターンする
   if (!preferences) {
@@ -29,7 +31,7 @@ const TouristLayout: React.FC<TouristLayoutProps> = ({ children }) => {
       </div>
       <div className="flex-1 p-10 bg-white overflow-y-auto">{children}</div>
       <div className="w-96 p-4 bg-gray-100">
-        <NotificationList preferences={preferences} />
+        {user?.id && <NotificationList preferences={preferences} userId={user.id} />} {/* 👈 userId を props として渡す */}
       </div>
     </div>
   );

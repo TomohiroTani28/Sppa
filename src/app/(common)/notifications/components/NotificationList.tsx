@@ -23,14 +23,16 @@ const NOTIFICATION_SUBSCRIPTION = gql`
 `;
 
 interface NotificationListProps {
-  preferences: UserPreferences; // プロパティ型を変更
+  preferences: UserPreferences;
+  userId?: string; // 👈 userId を受け取るように変更
 }
 
 export default function NotificationList({
   preferences,
+  userId, // 👈 userId を受け取る
 }: NotificationListProps) {
   // preferencesからuserIdを取得する場合を想定（仮実装）
-  const userId = "some-user-id"; // 実際にはpreferencesや別の方法で取得
+  // const userId = "some-user-id"; // 実際にはpreferencesや別の方法で取得
 
   const { data, loading } = useSubscription(NOTIFICATION_SUBSCRIPTION, {
     variables: { userId },

@@ -32,11 +32,14 @@ export interface Notification {
  */
 export function useNotifications(userId: string | undefined) {
   const skipSubscription = !userId;
+  console.log('useNotifications userId:', userId);
+  console.log('useNotifications skipSubscription:', skipSubscription);
 
   const { data, loading, error } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
     variables: { userId },
     skip: skipSubscription,
   });
+  console.log('useNotifications variables:', { userId });
 
   const notifications: Notification[] = useMemo(() => {
     if (loading || error || !data) return [];

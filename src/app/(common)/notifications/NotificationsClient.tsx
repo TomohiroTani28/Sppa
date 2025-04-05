@@ -57,6 +57,7 @@ const NotificationItem: React.FC<{
 const NotificationsClient: React.FC = () => {
   const { t } = useTranslation("notifications");
   const { user } = useAuth();
+  console.log('NotificationsClient userId:', user?.id);
   const { notifications, isLoading, error } = useNotifications(user?.id);
   const [markNotificationRead, { loading: mutationLoading }] = useMutation(MARK_NOTIFICATION_READ);
 
