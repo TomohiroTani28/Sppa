@@ -1,20 +1,32 @@
 // src/app/page.tsx
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth.server";
+"use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import FeedPageWrapper from "@/app/(common)/feed/components/FeedPageWrapper";
 
-export const dynamic = "force-dynamic";
+export default function HomePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-export default async function HomePage() {
-  const user = await auth();
+  // 認証状態に基づいてリダイレクト
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    } else if (session?.user?.role === "therapist") {
+      router.push("/therapist/dashboard");
+    }
+  }, [status, session, router]);
 
-  if (!user) {
-    redirect("/login");
+  // ローディング中の表示
+  if (status === "loading") {
+    return <div>Loading...</div>;
   }
 
-  if (user.role === "therapist") {
-    redirect("/therapist/dashboard");
+  // 認証済みでtherapistでない場合にFeedPageWrapperを表示
+  if (status === "authenticated" && session?.user?.role !== "therapist") {
+    return <FeedPageWrapper />;
   }
 
-  return <FeedPageWrapper />;
+  return null;
 }
