@@ -2,7 +2,6 @@
 "use client";
 import { useSession } from "next-auth/react";
 
-// SppaUser 型は NextAuth のセッション情報から構築するユーザー情報です
 export type SppaUser = {
   id: string;
   name?: string;
@@ -30,7 +29,6 @@ export function useAuthClient(): { user: SppaUser | null; loading: boolean } {
     email: session.user.email ?? "",
     role: (session.user as any).role ?? "tourist",
     profile_picture: session.user.image ?? undefined,
-    // 必要に応じてこれらの値を設定してください
     phone_number: undefined,
     verified_at: undefined,
     last_login_at: undefined,
@@ -40,3 +38,12 @@ export function useAuthClient(): { user: SppaUser | null; loading: boolean } {
 
   return { user, loading };
 }
+
+// getSessionRole 関数を追加
+const getSessionRole = async (): Promise<"tourist" | "therapist" | "common" | null> => {
+  const { user } = useAuthClient();
+  return user ? (user.role as "tourist" | "therapist" | "common") : null;
+};
+
+// デフォルトエクスポートとして定義
+export default getSessionRole;
