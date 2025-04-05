@@ -9,7 +9,7 @@ const FeedPage = dynamic(() => import("@/app/(common)/feed/page"), {
 });
 
 export default function FeedPageWrapper() {
-  // もし何かクライアントサイドの副作用あればここで使える
+  // クライアントサイドの副作用
   useEffect(() => {
     console.log("Client-only FeedPageWrapper mounted");
   }, []);

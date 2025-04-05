@@ -1,11 +1,10 @@
 "use client";
 // src/hooks/api/useAuth.ts
 import { useSession } from "next-auth/react";
-import { Session } from "next-auth";
 import { useState, useEffect } from "react";
 
 interface AuthState {
-  user: Session["user"] | null;
+  user: any;
   token?: string | null;
   role?: string | null;
   profile_picture?: string | null;
