@@ -1,7 +1,7 @@
 // src/hooks/api/useActivityLogging.ts
 import { useCallback } from "react";
 import { useMutation, gql } from "@apollo/client";
-import { useAuth } from "./useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 import { useErrorLogApi } from "./useErrorLogApi";
 import { validate as uuidValidate } from "uuid";
 

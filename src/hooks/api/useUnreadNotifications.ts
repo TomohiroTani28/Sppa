@@ -1,7 +1,7 @@
 // src/hooks/api/useUnreadNotifications.ts
 import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client';
-import { useAuth } from './useAuth';
+import useAuth from "@/hooks/api/useAuth";
 import { Notification } from '@/types/notification';
 
 // GraphQL query to fetch unread notifications
