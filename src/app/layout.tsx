@@ -13,8 +13,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ja">
       <head>
-        {/* プリロード設定を最適化 */}
-        <link rel="stylesheet" href="/globals.css" />
+        {/* No <link> tag needed here */}
       </head>
       <body>
         <ClientProviders>{children}</ClientProviders>
