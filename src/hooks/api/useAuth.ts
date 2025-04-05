@@ -14,6 +14,7 @@ interface AuthState {
 
 export const useAuth = (): AuthState => {
   const { data: session, status } = useSession();
+  console.log("[useAuth] Session status:", status);
   const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [isLoadingToken, setIsLoadingToken] = useState(false);
 

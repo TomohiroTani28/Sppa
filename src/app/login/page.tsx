@@ -28,6 +28,7 @@ export default function LoginPage() {
       password,
       redirect: false,
     });
+    console.log("[Login] signIn result:", result);
 
     if (result?.error) {
       setErrorMessage(result.error);
