@@ -26,40 +26,64 @@ interface ApolloClientWrapperProps {
 }
 
 export default function ApolloClientWrapper({ children }: ApolloClientWrapperProps) {
-  const { role, token, user, loading: authLoading } = useAuth();
+  const { session, loading: authLoading } = useAuth();
   const [client, setClient] = useState<ApolloClient<any> | null>(null);
   const [wsConnectionFailed, setWsConnectionFailed] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [tokenLoading, setTokenLoading] = useState(false);
   const clientInitialized = useRef(false);
 
   useEffect(() => {
-    if (authLoading || !token) {
-      console.log("Waiting for authentication:", {
-        role: role ?? "tourist",
-        token: token ?? "undefined",
-        authLoading,
-      });
+    if (authLoading) {
+      console.log("Waiting for authentication...");
       return;
     }
 
-    const effectiveRole = role ?? "tourist";
-    const effectiveToken = token;
-    console.log("Authentication complete:", {
-      role: effectiveRole,
-      token: effectiveToken.substring(0, 20) + "...",
-      authLoading: false,
-    });
+    if (session?.user && !token && !tokenLoading) {
+      setTokenLoading(true);
+      console.log("Fetching JWT token...");
+      fetch('/api/auth/get-jwt')
+        .then(response => {
+          if (!response.ok) {
+            console.error("Failed to fetch JWT token:", response.status);
+            setToken(null);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data?.token) {
+            setToken(data.token);
+            console.log("JWT token fetched successfully.");
+          } else {
+            console.error("JWT token not found in response:", data);
+            setToken(null);
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching JWT token:", error);
+          setToken(null);
+        })
+        .finally(() => {
+          setTokenLoading(false);
+        });
+    }
+  }, [session, authLoading, token, tokenLoading]);
 
-    const newClient = createApolloClient(
-      effectiveToken,
-      effectiveRole,
-      user?.id,
-      setWsConnectionFailed
-    );
-    updateClient(newClient, setClient);
-    clientInitialized.current = true;
-  }, [role, token, user, authLoading]);
+  useEffect(() => {
+    if (token && session?.user && !clientInitialized.current) {
+      const effectiveRole = (session.user as any)?.role ?? "tourist";
+      const newClient = createApolloClient(
+        token,
+        effectiveRole,
+        session.user.id,
+        setWsConnectionFailed
+      );
+      updateClient(newClient, setClient);
+      clientInitialized.current = true;
+    }
+  }, [token, session?.user, setClient, setWsConnectionFailed, clientInitialized]);
 
-  if (authLoading || !client) {
+  if (authLoading || tokenLoading || !client) {
     return <div>Loading authentication and Apollo Client...</div>;
   }
 
