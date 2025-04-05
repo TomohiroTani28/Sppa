@@ -721,7 +721,7 @@ export function Button({ className, variant = 'default', ...props }: ButtonProps
 
 
 
--- hasura/migrations/sppa/20250226120000_create_tables.sql
+-- migrations/default/20250226120000_create_tables.sql
 -- ============================================
 -- Sppa Database Schema (Fully Optimized, Final)
 -- ============================================
