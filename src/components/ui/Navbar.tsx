@@ -1,39 +1,24 @@
 "use client";
 // src/components/ui/Navbar.tsx
-import { useState, useEffect } from "react";
-import supabase from "@/lib/supabase-client";
+import { useAuthClient } from "@/lib/auth.client";
 import Link from "next/link";
-import type { SppaUser } from "@/lib/auth.client";
-import { getUser } from "@/lib/auth.client";
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
-  const [user, setUser] = useState<SppaUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  // useAuthClient フックを使用してユーザー情報とローディング状態を取得
+  const { user, loading } = useAuthClient();
 
-  useEffect(() => {
-    async function checkAuthStatus() {
-      try {
-        const currentUser = await getUser();
-        setUser(currentUser);
-      } catch (error) {
-        console.error("Error checking auth status:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    checkAuthStatus();
-  }, []);
-
+  // ログアウト処理
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
-      setUser(null);
+      await signOut();
+      // 必要に応じてリダイレクトや状態更新を追加
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
 
+  // 表示内容を条件分岐で決定
   let content;
   if (loading) {
     content = <span>読み込み中...</span>;
@@ -53,6 +38,7 @@ export default function Navbar() {
     );
   }
 
+  // ナビゲーションバーのレンダリング
   return (
     <nav className="bg-primary text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
