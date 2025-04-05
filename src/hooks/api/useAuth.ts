@@ -1,5 +1,5 @@
-// src/hooks/api/useAuth.ts
 "use client";
+// src/hooks/api/useAuth.ts
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { useState, useEffect } from "react";
@@ -23,7 +23,7 @@ export const useAuth = (): AuthState => {
       if (status === "authenticated" && !jwtToken && !isLoadingToken) {
         setIsLoadingToken(true);
         try {
-          const response = await fetch('/api/auth/get-jwt');
+          const response = await fetch("/api/auth/get-jwt");
           if (response.ok) {
             const data = await response.json();
             setJwtToken(data.token || null);

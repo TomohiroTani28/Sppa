@@ -23,7 +23,7 @@ export function Providers({ children, lng = "en" }: ProvidersProps) {
             staleTime: 5 * 60 * 1000,
           },
         },
-      }),
+      })
   );
 
   return (

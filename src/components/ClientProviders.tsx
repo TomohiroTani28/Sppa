@@ -1,16 +1,12 @@
-// src/components/ClientProviders.tsx
 "use client";
-import { SessionProvider } from "next-auth/react";
-import { AuthProvider } from "@/contexts/AuthContext";
-import ApolloWrapper from "@/app/ApolloWrapper";
-import { ReactNode } from "react";
+// src/components/ClientProviders.tsx
+import React from "react";
+import { Providers } from "@/app/providers";
 
-export default function ClientProviders({ children }: { children: ReactNode }) {
-  return (
-    <SessionProvider>
-      <AuthProvider>
-        <ApolloWrapper>{children}</ApolloWrapper>
-      </AuthProvider>
-    </SessionProvider>
-  );
+interface ClientProvidersProps {
+  children: React.ReactNode;
+}
+
+export default function ClientProviders({ children }: ClientProvidersProps) {
+  return <Providers>{children}</Providers>;
 }
