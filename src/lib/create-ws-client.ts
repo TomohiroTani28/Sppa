@@ -14,6 +14,7 @@ export function createWsClient(token?: string, role: string = "tourist") {
 
   const headers = {
     "x-hasura-role": role,
+    "x-hasura-admin-secret": process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET || "your-admin-secret-here",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
   console.log("WebSocket Connection Headers:", headers);
