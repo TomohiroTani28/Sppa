@@ -1,9 +1,10 @@
 // src/app/ClientLayout.tsx
 "use client";
 
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import ApolloClientWrapper from "./ApolloClientWrapper";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface ClientLayoutProps {
   session: any; // Replace with proper session type from next-auth
