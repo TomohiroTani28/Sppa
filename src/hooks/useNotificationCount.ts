@@ -37,23 +37,46 @@ const SUBSCRIBE_UNREAD_NOTIFICATIONS_COUNT = gql`
  */
 export const useNotificationCount = () => {
   const { t } = useTranslation('common'); // i18n integration
-  const { user } = useAuth(); // Get authenticated user from auth hook
+  const { getAuthState } = useAuth(); // Access the getAuthState function
+  const [userId, setUserId] = useState<string | null>(null); // Store user ID
+  const [authLoading, setAuthLoading] = useState(true); // Track auth loading state
   const [unreadCount, setUnreadCount] = useState<number>(0);
 
+  // Fetch auth state and set user ID when the component mounts
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      try {
+        const authState = await getAuthState();
+        setUserId(authState.user?.id || null); // Set user ID or null if not authenticated
+      } catch (err) {
+        console.error('Failed to fetch auth state:', err);
+        setUserId(null);
+      } finally {
+        setAuthLoading(false); // Auth state is resolved
+      }
+    };
+
+    fetchAuthState();
+  }, [getAuthState]);
+
   // Initial fetch of unread notification count
-  const { data: initialData, loading: initialLoading, error: initialError } =
-    useQuery(GET_UNREAD_NOTIFICATIONS_COUNT, {
-      variables: { userId: user?.id },
-      skip: !user?.id, // Skip query if user is not authenticated
+  const { data: initialData, loading: initialLoading, error: initialError } = useQuery(
+    GET_UNREAD_NOTIFICATIONS_COUNT,
+    {
+      variables: { userId },
+      skip: !userId, // Skip query if userId is not available
       fetchPolicy: 'network-only',
-    });
+    }
+  );
 
   // Real-time subscription to unread notification count
-  const { data: subscriptionData, loading: subscriptionLoading } =
-    useSubscription(SUBSCRIBE_UNREAD_NOTIFICATIONS_COUNT, {
-      variables: { userId: user?.id },
-      skip: !user?.id, // Skip subscription if user is not authenticated
-    });
+  const { data: subscriptionData, loading: subscriptionLoading } = useSubscription(
+    SUBSCRIBE_UNREAD_NOTIFICATIONS_COUNT,
+    {
+      variables: { userId },
+      skip: !userId, // Skip subscription if userId is not available
+    }
+  );
 
   // Update unread count when initial data is fetched
   useEffect(() => {
@@ -64,9 +87,7 @@ export const useNotificationCount = () => {
 
   // Update unread count when subscription data changes
   useEffect(() => {
-    if (
-      subscriptionData?.notifications_aggregate?.aggregate?.count !== undefined
-    ) {
+    if (subscriptionData?.notifications_aggregate?.aggregate?.count !== undefined) {
       setUnreadCount(subscriptionData.notifications_aggregate.aggregate.count);
     }
   }, [subscriptionData]);
@@ -76,8 +97,8 @@ export const useNotificationCount = () => {
     ? new Error(t('notifications.error.fetch_failed'))
     : null;
 
-  // Combined loading state
-  const loading = initialLoading || subscriptionLoading;
+  // Combined loading state (auth + query/subscription)
+  const loading = authLoading || initialLoading || subscriptionLoading;
 
   return {
     unreadCount,
