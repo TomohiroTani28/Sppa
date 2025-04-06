@@ -12,6 +12,21 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { saveRedirectPath } from "@/lib/storage-utils";
 
+// 認証状態の型を定義
+interface AuthState {
+  user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string;
+  } | null;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
+
 const ProfilePage: React.FC = () => {
   const router = useRouter();
   const params = useParams();
@@ -20,7 +35,26 @@ const ProfilePage: React.FC = () => {
     return Array.isArray(params.userId) ? params.userId[0] : params.userId;
   }, [params.userId]);
 
-  const { user: authUser, loading: authLoading } = useAuth();
+  const { getAuthState } = useAuth(); // getAuthState を使用
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+
+  // 認証状態を非同期で取得
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      try {
+        const state = await getAuthState();
+        setAuthState(state);
+      } catch (error) {
+        console.error("Failed to fetch auth state:", error);
+        setAuthState(null);
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+    fetchAuthState();
+  }, [getAuthState]);
+
   const {
     user: profileUser,
     loading: profileLoading,
@@ -29,22 +63,21 @@ const ProfilePage: React.FC = () => {
 
   // 認証が完了していなければリダイレクトパスを保存しログインへ
   useEffect(() => {
-    if (!authUser && !authLoading) {
+    if (!authState?.user && !isLoadingAuth) {
       saveRedirectPath(window.location.pathname);
       router.push("/login");
     }
-  }, [authUser, authLoading, router]);
+  }, [authState, isLoadingAuth, router]);
 
-  const isLoading = authLoading || (profileUserId ? profileLoading : false);
+  const isLoading = isLoadingAuth || (profileUserId ? profileLoading : false);
   const [hasShownToast, setHasShownToast] = useState(false);
 
   // エラー処理とプロファイルの有無のチェック
   useEffect(() => {
     if (!isLoading) {
       if (profileError) {
-        // エラーメッセージは表示用コンポーネントで処理
         console.error("Profile error:", profileError);
-      } else if (authUser && !profileUser && !hasShownToast) {
+      } else if (authState?.user && !profileUser && !hasShownToast) {
         setHasShownToast(true);
         toast.error("ユーザーが見つかりませんでした。3秒後にログイン画面に遷移します。", {
           position: "top-center",
@@ -53,13 +86,13 @@ const ProfilePage: React.FC = () => {
         });
       }
     }
-  }, [isLoading, authUser, profileUser, profileError, hasShownToast, router]);
+  }, [isLoading, authState, profileUser, profileError, hasShownToast, router]);
 
   // 編集モードの判定（※自身のプロファイルの場合は編集可能）
   const isEditing = useMemo(() => {
-    if (!authUser) return false;
-    return profileUserId ? authUser.id === profileUserId : true;
-  }, [authUser, profileUserId]);
+    if (!authState?.user) return false;
+    return profileUserId ? authState.user.id === profileUserId : true;
+  }, [authState, profileUserId]);
 
   if (isLoading) {
     return (
@@ -85,7 +118,7 @@ const ProfilePage: React.FC = () => {
   }
 
   // 有効なユーザーIDがない場合のフォールバック
-  const effectiveUserId = (profileUserId || authUser?.id) as string;
+  const effectiveUserId = (profileUserId || authState?.user?.id) as string;
   if (!effectiveUserId) {
     return (
       <div className="flex flex-col justify-center items-center h-screen space-y-4">
