@@ -1,5 +1,5 @@
 "use client";
-// src/app/(therapist)/dashboard/components/DashboardSummary.tsx
+// src/app/therapist/dashboard/components/DashboardSummary.tsx
 import React, { useEffect, useState } from "react";
 import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
 import { useUser } from "@/hooks/api/useUser";
