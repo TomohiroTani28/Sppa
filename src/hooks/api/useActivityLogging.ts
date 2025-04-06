@@ -1,9 +1,23 @@
 // src/hooks/api/useActivityLogging.ts
 import { useCallback } from "react";
 import { useMutation, gql } from "@apollo/client";
-import { useAuth } from "@/hooks/api/useAuth";
 import { useErrorLogApi } from "./useErrorLogApi";
 import { validate as uuidValidate } from "uuid";
+
+// 認証状態の型を定義
+interface AuthState {
+  user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string;
+  } | null;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
 
 const INSERT_ACTIVITY_LOG = gql`
   mutation InsertActivityLog(
@@ -32,8 +46,7 @@ interface LogActivityParams {
   requestDetails?: Record<string, any>;
 }
 
-export const useActivityLogging = () => {
-  const { user } = useAuth();
+export const useActivityLogging = (authState: AuthState | null) => {
   const { createErrorLog } = useErrorLogApi();
 
   const [insertActivityLog, { loading }] = useMutation(INSERT_ACTIVITY_LOG, {
@@ -53,7 +66,7 @@ export const useActivityLogging = () => {
 
   const logActivity = useCallback(
     async ({ activityType, description, requestDetails }: LogActivityParams) => {
-      if (!user?.id || !uuidValidate(user.id)) {
+      if (!authState?.user?.id || !uuidValidate(authState.user.id)) {
         console.warn("Invalid or missing user ID for logging activity");
         await createErrorLog({
           error_type: "MISSING_USER_ID",
@@ -65,7 +78,7 @@ export const useActivityLogging = () => {
       try {
         await insertActivityLog({
           variables: {
-            user_id: user.id,
+            user_id: authState.user.id,
             activity_type: activityType,
             description: description || null,
             request_details: requestDetails || null,
@@ -75,7 +88,7 @@ export const useActivityLogging = () => {
         // Errors are handled by onError handler
       }
     },
-    [user, insertActivityLog, createErrorLog]
+    [authState, insertActivityLog, createErrorLog]
   );
 
   const logPageView = useCallback(
