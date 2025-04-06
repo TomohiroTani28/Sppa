@@ -1,7 +1,6 @@
-// src/app/(common)/feed/FeedClient.tsx
 "use client";
-
-import { Suspense, useState } from "react";
+// src/app/(common)/feed/FeedClient.tsx
+import { Suspense, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import HomeHeader from "@/components/HomeHeader";
@@ -12,6 +11,15 @@ import { TabSelector } from "@/app/(common)/feed/components/TabSelector";
 import { useAuth } from "@/hooks/api/useAuth";
 import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
 import Link from "next/link";
+
+// 認証状態の型を定義
+interface AuthState {
+  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
 
 interface ErrorDisplayProps {
   error: string | null;
@@ -85,12 +93,31 @@ const getUserData = (user: any) =>
 
 export default function FeedClient() {
   const { t } = useTranslation("common");
-  const { user, loading: authLoading } = useAuth();
+  const { getAuthState } = useAuth(); // getAuthState を使用
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
 
-  const userData = getUserData(user);
+  // 認証状態を非同期で取得
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      try {
+        const state = await getAuthState();
+        setAuthState(state);
+      } catch (error) {
+        console.error("Failed to fetch auth state:", error);
+        setAuthState(null);
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+    fetchAuthState();
+  }, [getAuthState]);
 
-  if (authLoading) {
+  const userData = getUserData(authState?.user); // authState.user を使用
+
+  // 認証状態のローディング中
+  if (isLoadingAuth) {
     return <LoadingSpinner />;
   }
 
@@ -99,7 +126,7 @@ export default function FeedClient() {
       {userData && (
         <HomeHeader
           user={userData}
-          unreadCount={0} // Placeholder until notifications are implemented
+          unreadCount={0}
           t={t}
           aria-label={t("header.ariaLabel")}
         />
