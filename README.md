@@ -501,6 +501,7 @@ Sppa
 │   │   │           └── page.tsx
 │   │   ├── ApolloClientWrapper.tsx
 │   │   ├── ApolloWrapper.tsx
+│   │   ├── ClientLayout.tsx
 │   │   ├── _not-found.tsx
 │   │   ├── api
 │   │   │   ├── activity-logs
@@ -566,6 +567,7 @@ Sppa
 │   │   │   │   └── page.tsx
 │   │   │   ├── events
 │   │   │   │   ├── EventsPageClient.tsx
+│   │   │   │   ├── EventsPageWrapper.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── EventCard.tsx
 │   │   │   │   │   ├── EventForm.tsx
@@ -681,6 +683,7 @@ Sppa
 │   │   ├── ReviewCard.tsx
 │   │   ├── ServiceBadge.tsx
 │   │   ├── ServiceDetails.tsx
+│   │   ├── SessionProviderWrapper.tsx
 │   │   ├── TeaserCard.tsx
 │   │   ├── TherapistAvailabilityPanel.tsx
 │   │   ├── TherapistAvailabilityStatus.tsx
@@ -709,7 +712,8 @@ Sppa
 │   │       └── Toast.tsx
 │   ├── contexts
 │   │   ├── AuthContext.tsx
-│   │   └── ChatContext.tsx
+│   │   ├── ChatContext.tsx
+│   │   └── RealtimeContext.tsx
 │   ├── graphql
 │   │   ├── queries.ts
 │   │   └── subscriptions.ts
