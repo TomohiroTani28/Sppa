@@ -1,6 +1,5 @@
 // src/app/(common)/feed/FeedClient.tsx
 "use client";
-export const dynamic = "force-dynamic";
 
 import { Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -59,9 +58,9 @@ const HomeMainContent = ({
         ) : (
           <MasonryFeed
             userId={safeUserId}
-            posts={feedData} // selectedTab を削除
-            loading={loading}   // オプションで渡す
-            error={error?.message || null} // オプションで渡す
+            posts={feedData}
+            loading={loading}
+            error={error?.message || null}
           />
         )}
       </Suspense>
