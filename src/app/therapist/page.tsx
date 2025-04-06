@@ -5,6 +5,8 @@ import { ActivityLog } from "@/app/therapist/dashboard/components/ActivityLog";
 import { auth } from "@/lib/auth.server";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 const TherapistDashboardPage = async () => {
   const user = await auth();
 

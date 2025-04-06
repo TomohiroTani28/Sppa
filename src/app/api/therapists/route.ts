@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+
 export interface TherapistProfile {
   id: string;
   user_id: string;
