@@ -17,6 +17,15 @@ import { setContext } from "@apollo/client/link/context";
 import { useAuth } from "@/hooks/api/useAuth";
 import { createWsClient } from "@/lib/create-ws-client";
 
+// 認証状態の型を定義
+interface AuthState {
+  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
+
 const httpEndpoint =
   process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ??
   "http://localhost:8081/v1/graphql";
@@ -31,13 +40,33 @@ interface ApolloClientWrapperProps {
 export default function ApolloClientWrapper({
   children,
 }: ApolloClientWrapperProps) {
-  const { user, token, loading: authLoading } = useAuth();
+  const { getAuthState } = useAuth(); // getAuthState を使用
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [client, setClient] = useState<ApolloClient<any> | null>(null);
   const [wsConnectionFailed, setWsConnectionFailed] = useState(false);
 
+  // 認証状態を非同期で取得
   useEffect(() => {
-    if (authLoading) return;
+    const fetchAuthState = async () => {
+      try {
+        const state = await getAuthState();
+        setAuthState(state);
+      } catch (error) {
+        console.error("Failed to fetch auth state:", error);
+        setAuthState(null);
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+    fetchAuthState();
+  }, [getAuthState]);
 
+  useEffect(() => {
+    if (isLoadingAuth || !authState) return;
+
+    const token = authState.token;
+    const user = authState.user;
     if (!token || !user) {
       setClient(null);
       return;
@@ -46,14 +75,16 @@ export default function ApolloClientWrapper({
     const effectiveRole = user.role || "tourist";
     const newClient = createApolloClient(token, effectiveRole);
     setClient(newClient);
-  }, [user?.id, token, authLoading]);
+  }, [authState, isLoadingAuth]);
 
-  if (authLoading) {
+  // 認証状態のローディング中
+  if (isLoadingAuth) {
     return <div>Loading authentication...</div>;
   }
 
+  // 未認証時もchildrenを表示
   if (!client) {
-    return <>{children}</>; // 未認証時もchildrenを表示
+    return <>{children}</>;
   }
 
   return (
