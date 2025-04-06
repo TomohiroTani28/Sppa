@@ -39,10 +39,7 @@ export function useAuthClient(): { user: SppaUser | null; loading: boolean } {
   return { user, loading };
 }
 
-// getSessionRole 関数を追加
-const getSessionRole = async (): Promise<"tourist" | "therapist" | "common" | null> => {
+export default function useSessionRole(): "tourist" | "therapist" | "common" | null {
   const { user } = useAuthClient();
   return user ? (user.role as "tourist" | "therapist" | "common") : null;
-};
-
-export default getSessionRole;
+}

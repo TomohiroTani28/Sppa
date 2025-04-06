@@ -2,9 +2,19 @@
 "use server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { User } from "@/types/user";
 
-export type PublicUser = Omit<User, "password_hash">;
+export type PublicUser = {
+  id: string;
+  name: string | null;
+  email: string;
+  role: "tourist" | "therapist" | string;
+  profile_picture: string | null;
+  phone_number?: string;
+  verified_at?: string;
+  last_login_at?: string;
+  created_at: string;
+  updated_at: string;
+};
 
 export async function auth(): Promise<PublicUser | null> {
   const session = await getServerSession(authOptions);
@@ -19,12 +29,9 @@ export async function auth(): Promise<PublicUser | null> {
     email: session.user.email ?? "",
     role: (session.user as any).role ?? "tourist",
     profile_picture: session.user.image ?? null,
-
-    // nullをundefinedに修正
     phone_number: undefined,
     verified_at: undefined,
     last_login_at: undefined,
-
     created_at: "",
     updated_at: "",
   };
