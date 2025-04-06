@@ -2,6 +2,9 @@
 import SignUpForm from "@/components/auth/SignUpForm";
 import { Metadata } from "next";
 
+// 動的レンダリングを強制する設定
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Sign Up | Sppa",
   description: "Create your Sppa account",
