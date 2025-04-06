@@ -1,25 +1,16 @@
 "use client";
 // src/app/(common)/feed/FeedClient.tsx
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSession } from "next-auth/react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import HomeHeader from "@/components/HomeHeader";
 import BottomNavigation from "@/components/BottomNavigation";
 import { MasonryFeed } from "@/app/(common)/feed/components/MasonryFeed";
 import Text from "@/components/ui/Text";
 import { TabSelector } from "@/app/(common)/feed/components/TabSelector";
-import { useAuth } from "@/hooks/api/useAuth";
 import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
 import Link from "next/link";
-
-// 認証状態の型を定義
-interface AuthState {
-  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
 
 interface ErrorDisplayProps {
   error: string | null;
@@ -81,45 +72,23 @@ const HomeMainContent = ({
   );
 };
 
-const getUserData = (user: any) =>
-  user
-    ? {
-        id: user.id,
-        name: user.user_metadata?.name ?? "Unknown User",
-        profilePicture: user.user_metadata?.profile_picture ?? "/default-avatar.png",
-        email: user.email ?? "",
-      }
-    : null;
-
 export default function FeedClient() {
+  const { data: session, status } = useSession();
   const { t } = useTranslation("common");
-  const { getAuthState } = useAuth(); // getAuthState を使用
-  const [authState, setAuthState] = useState<AuthState | null>(null);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
 
-  // 認証状態を非同期で取得
-  useEffect(() => {
-    const fetchAuthState = async () => {
-      try {
-        const state = await getAuthState();
-        setAuthState(state);
-      } catch (error) {
-        console.error("Failed to fetch auth state:", error);
-        setAuthState(null);
-      } finally {
-        setIsLoadingAuth(false);
-      }
-    };
-    fetchAuthState();
-  }, [getAuthState]);
-
-  const userData = getUserData(authState?.user); // authState.user を使用
-
-  // 認証状態のローディング中
-  if (isLoadingAuth) {
+  if (status === "loading") {
     return <LoadingSpinner />;
   }
+
+  const userData = session?.user
+    ? {
+        id: session.user.id,
+        name: session.user.name ?? "Unknown User",
+        profilePicture: session.user.image ?? "/default-avatar.png",
+        email: session.user.email ?? "",
+      }
+    : null;
 
   return (
     <Text tag="div" className="min-h-screen bg-background">
