@@ -7,8 +7,16 @@ import { Spinner } from "@/components/ui/Spinner";
 import { useAuth } from "@/hooks/api/useAuth";
 import { Notification, useNotifications } from "@/realtime/useNotifications";
 import { gql, useMutation } from "@apollo/client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+interface AuthState {
+  user: any;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
 
 const MARK_NOTIFICATION_READ = gql`
   mutation MarkNotificationRead($id: uuid!) {
@@ -56,9 +64,18 @@ const NotificationItem: React.FC<{
 
 const NotificationsClient: React.FC = () => {
   const { t } = useTranslation("notifications");
-  const { user } = useAuth();
-  console.log('NotificationsClient userId:', user?.id);
-  const { notifications, isLoading, error } = useNotifications(user?.id);
+  const { getAuthState } = useAuth(); // getAuthState を使用
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      const state = await getAuthState();
+      setAuthState(state);
+    };
+    fetchAuthState();
+  }, [getAuthState]);
+
+  const { notifications, isLoading, error } = useNotifications(authState?.user?.id);
   const [markNotificationRead, { loading: mutationLoading }] = useMutation(MARK_NOTIFICATION_READ);
 
   const handleMarkAsRead = async (notificationId: string) => {
@@ -78,7 +95,7 @@ const NotificationsClient: React.FC = () => {
     }
   };
 
-  if (isLoading) {
+  if (!authState || authState.loading || isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Spinner />
