@@ -1,5 +1,5 @@
-// src/app/(common)/chat/ChatClient.tsx
 "use client";
+// src/app/(common)/chat/ChatClient.tsx
 export const dynamic = "force-dynamic";
 
 import SearchBar from "@/app/(common)/search/components/SearchBar";
