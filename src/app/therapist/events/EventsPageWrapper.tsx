@@ -1,5 +1,6 @@
-'use client';
 // src/app/therapist/events/EventsPageWrapper.tsx
+'use client';
+
 import dynamic from 'next/dynamic';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
