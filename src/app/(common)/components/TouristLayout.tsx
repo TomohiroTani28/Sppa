@@ -1,9 +1,19 @@
+"use client"; // クライアントサイドでの動作を明示
 // src/app/(common)/components/TouristLayout.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/ui/Navbar";
 import NotificationList from "@/app/(common)/notifications/components/NotificationList";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
-import { useAuth } from "@/hooks/api/useAuth"; // 👈 追加
+import { useAuth } from "@/hooks/api/useAuth";
+
+// 認証状態の型を定義
+interface AuthState {
+  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
 
 // TouristLayoutのプロパティ
 type TouristLayoutProps = {
@@ -12,14 +22,33 @@ type TouristLayoutProps = {
 
 const TouristLayout: React.FC<TouristLayoutProps> = ({ children }) => {
   const { preferences, isLoading: preferencesLoading, error: preferencesError } = useUserPreferences();
-  const { user } = useAuth(); // 👈 追加
+  const { getAuthState } = useAuth(); // getAuthState を使用
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
-  if (preferencesLoading) return <div>Loading preferences...</div>;
+  // 認証状態を非同期で取得
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      try {
+        const state = await getAuthState();
+        setAuthState(state);
+      } catch (error) {
+        console.error("Failed to fetch auth state:", error);
+        setAuthState(null);
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+    fetchAuthState();
+  }, [getAuthState]);
 
-  // errorが文字列またはnullであることを前提に処理
+  // 認証またはプリファレンスのローディング中
+  if (isLoadingAuth || preferencesLoading) return <div>Loading preferences and authentication...</div>;
+
+  // プリファレンスのエラー処理
   if (preferencesError) return <div>Error loading preferences: {preferencesError}</div>;
 
-  // preferencesがnullの場合は、フォールバックのUIを表示するか早期リターンする
+  // プリファレンスがない場合
   if (!preferences) {
     return <div>No preferences available.</div>;
   }
@@ -31,7 +60,9 @@ const TouristLayout: React.FC<TouristLayoutProps> = ({ children }) => {
       </div>
       <div className="flex-1 p-10 bg-white overflow-y-auto">{children}</div>
       <div className="w-96 p-4 bg-gray-100">
-        {user?.id && <NotificationList preferences={preferences} userId={user.id} />} {/* 👈 userId を props として渡す */}
+        {authState?.user?.id && (
+          <NotificationList preferences={preferences} userId={authState.user.id} /> // authState.user を使用
+        )}
       </div>
     </div>
   );
