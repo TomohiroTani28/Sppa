@@ -1,4 +1,5 @@
 "use client";
+// src/app/(common)/feed/page.tsx
 import dynamicImport from "next/dynamic"; // エイリアスを使用して名前衝突を回避
 
 // Next.js の動的レンダリング設定
