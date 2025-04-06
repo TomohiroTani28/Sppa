@@ -1,7 +1,7 @@
 // src/hooks/api/useCreateEvent.ts
 import { useState } from "react";
 import supabase from "@/lib/supabase-client";
-import useAuth from "@/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 
 interface EventData {
   title: string;
@@ -12,21 +12,26 @@ interface EventData {
 }
 
 export const useCreateEvent = () => {
-  const { user } = useAuth();
+  const auth = useAuth(); // Changed from destructuring { user }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const createEvent = async (eventData: EventData) => {
-    if (!user) {
-      setError(new Error("ユーザーが認証されていません"));
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
     try {
-      const { data, error } = await supabase.from("events").insert([
+      // Get the auth state asynchronously
+      const authState = await auth.getAuthState();
+      const user = authState.user;
+
+      // Check if user exists
+      if (!user) {
+        throw new Error("ユーザーが認証されていません");
+      }
+
+      // Insert event into Supabase, only destructuring error since data isn't used
+      const { error } = await supabase.from("events").insert([
         {
           therapist_id: user.id,
           title: eventData.title,
@@ -38,7 +43,7 @@ export const useCreateEvent = () => {
       ]);
 
       if (error) throw error;
-      // リアルタイムでイベントリストを更新する処理をここに追加可能
+      // Add real-time event list update here if needed
     } catch (err) {
       setError(err as Error);
     } finally {
