@@ -8,6 +8,16 @@ import { useTranslation } from 'next-i18next';
 import { useRealtimeChat } from '../../../../hooks/useRealtimeChat';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
+import { useEffect, useState } from 'react';
+
+// 認証状態の型を定義
+interface AuthState {
+  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
 
 interface ChatWindowProps {
   receiverId: string;
@@ -15,12 +25,35 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ receiverId }: ChatWindowProps) {
   const { t } = useTranslation('common');
-  const { user } = useAuth();
-  // ここでは chatRoomId として receiverId を利用（必要に応じて適宜修正）
+  const { getAuthState } = useAuth(); // getAuthState を使用
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const { messages, loading, error } = useRealtimeChat(receiverId);
 
-  if (loading) return <LoadingSpinner />;
+  // 認証状態を非同期で取得
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      try {
+        const state = await getAuthState();
+        setAuthState(state);
+      } catch (error) {
+        console.error("Failed to fetch auth state:", error);
+        setAuthState(null);
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+    fetchAuthState();
+  }, [getAuthState]);
+
+  // ローディング中
+  if (isLoadingAuth || loading) return <LoadingSpinner />;
+
+  // エラー時
   if (error) return <p className="text-red-500 text-center">{t('chat.error')}</p>;
+
+  // ユーザーが未認証の場合
+  if (!authState?.user) return <p className="text-gray-500 text-center">{t('auth.required')}</p>;
 
   // RealtimeMessage を ChatMessage に整形
   const formattedMessages: ChatMessage[] = messages.map((msg) => ({
@@ -42,7 +75,7 @@ export default function ChatWindow({ receiverId }: ChatWindowProps) {
             <MessageBubble
               key={message.id}
               message={message}
-              isOwnMessage={message.senderId === user?.id}
+              isOwnMessage={message.senderId === authState.user?.id} // authState.user を使用
             />
           ))
         )}
