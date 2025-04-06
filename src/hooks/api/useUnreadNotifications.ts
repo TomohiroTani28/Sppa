@@ -1,7 +1,7 @@
 // src/hooks/api/useUnreadNotifications.ts
 import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client';
-import useAuth from "@/hooks/api/useAuth";
+import { useAuth } from "@/hooks/api/useAuth";
 import { Notification } from '@/types/notification';
 
 // GraphQL query to fetch unread notifications
@@ -61,21 +61,32 @@ const mapApiNotificationToModel = (apiNotification: any): Notification => ({
 });
 
 export function useUnreadNotifications(notificationsData?: Notification[]) {
-  const { user } = useAuth();
+  const auth = useAuth(); // Get the auth object instead of destructuring
+  const [user, setUser] = useState<{ id: string } | null>(null); // State for user
   const [unreadNotifications, setUnreadNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
+
+  // Fetch user data on mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      const authState = await auth.getAuthState();
+      setUser(authState.user);
+    };
+    fetchUser();
+  }, [auth]);
+
   const userId = user?.id;
-  
+
   // Query to fetch initial unread notifications
   const { data, loading, error, refetch } = useQuery(GET_UNREAD_NOTIFICATIONS, {
     variables: { userId },
     skip: !userId,
     fetchPolicy: 'network-only',
   });
-  
+
   // Mutation to mark notifications as read
   const [markAsRead] = useMutation(MARK_NOTIFICATIONS_READ);
-  
+
   // Subscribe to new notifications
   const { data: subscriptionData } = useSubscription(SUBSCRIBE_TO_NOTIFICATIONS, {
     variables: { userId },
@@ -103,15 +114,12 @@ export function useUnreadNotifications(notificationsData?: Notification[]) {
   // Process and update new notifications from subscription
   const processNewSubscriptionData = useCallback(() => {
     if (!subscriptionData?.notifications) return;
-    
-    // Map API response to our model
+
     const newNotificationsFromApi = subscriptionData.notifications.map(mapApiNotificationToModel);
-    
-    // Check for duplicates
     const uniqueNewNotifications = newNotificationsFromApi.filter(
       (newNotif: Notification) => !unreadNotifications.some(existing => existing.id === newNotif.id)
     );
-    
+
     if (uniqueNewNotifications.length > 0) {
       setUnreadNotifications(prev => [...uniqueNewNotifications, ...prev]);
       setUnreadCount(prev => prev + uniqueNewNotifications.length);
@@ -126,42 +134,34 @@ export function useUnreadNotifications(notificationsData?: Notification[]) {
   // Function to mark specific notifications as read
   const markNotificationsAsRead = useCallback(async (notificationIds: string[]) => {
     if (!notificationIds.length || !userId) return;
-    
+
     try {
       await markAsRead({
-        variables: {
-          ids: notificationIds,
-        },
+        variables: { ids: notificationIds },
       });
-      
-      // Update local state
-      setUnreadNotifications(prev => 
+      setUnreadNotifications(prev =>
         prev.filter(notification => !notificationIds.includes(notification.id))
       );
       setUnreadCount(prev => Math.max(0, prev - notificationIds.length));
-    } catch (error) {
-      console.error('Error marking notifications as read:', error);
+    } catch (err) {
+      console.error('Error marking notifications as read:', err);
     }
   }, [markAsRead, userId]);
 
   // Function to mark all notifications as read
   const markAllAsRead = useCallback(async () => {
     if (!unreadNotifications.length || !userId) return;
-    
+
     const notificationIds = unreadNotifications.map(notification => notification.id);
-    
+
     try {
       await markAsRead({
-        variables: {
-          ids: notificationIds,
-        },
+        variables: { ids: notificationIds },
       });
-      
-      // Update local state
       setUnreadNotifications([]);
       setUnreadCount(0);
-    } catch (error) {
-      console.error('Error marking all notifications as read:', error);
+    } catch (err) {
+      console.error('Error marking all notifications as read:', err);
     }
   }, [markAsRead, unreadNotifications, userId]);
 

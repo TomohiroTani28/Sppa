@@ -1,14 +1,14 @@
 // src/hooks/api/useTrends.ts
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/api/useAuth';
 import { useErrorLogApi } from '@/hooks/api/useErrorLogApi';
 import { useActivityLogging } from '@/hooks/api/useActivityLogging';
-import { useNotification } from '@/hooks/api/useNotification'; // Fixed import path
+import { useNotification } from '@/hooks/api/useNotification';
 
 /**
- * GraphQLクエリ: トレンドデータを取得
+ * GraphQL Queries, Subscriptions, and Mutations
  */
 export const GET_TRENDS = gql`
   query GetTrends($limit: Int, $offset: Int, $filters: jsonb) {
@@ -36,9 +36,6 @@ export const GET_TRENDS = gql`
   }
 `;
 
-/**
- * GraphQLサブスクリプション: トレンドデータのリアルタイム更新を購読
- */
 export const SUBSCRIBE_TREND_UPDATES = gql`
   subscription SubscribeTrends($filters: jsonb) {
     trends: posts(
@@ -59,9 +56,6 @@ export const SUBSCRIBE_TREND_UPDATES = gql`
   }
 `;
 
-/**
- * GraphQLミューテーション: 新しいトレンドを作成/更新/削除
- */
 export const CREATE_TREND = gql`
   mutation CreateTrend($input: posts_insert_input!) {
     createTrend: insert_posts_one(object: $input) {
@@ -118,16 +112,41 @@ export interface TrendInput {
   post_type?: 'trend';
 }
 
+export type NotificationType = 'success' | 'error' | 'info';
+
+export interface AuthState {
+  user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string;
+  } | null;
+  token: string | null;
+  role: any;
+  profile_picture: string | null;
+  loading: boolean;
+}
+
+export interface AuthHook {
+  getAuthState: () => Promise<AuthState>;
+}
+
 /**
- * Helper function to handle errors
+ * Helper function to handle errors with reduced arguments
  */
+type ErrorHandlerUtils = {
+  createErrorLog: (log: any) => void;
+  notify: (message: string, type: NotificationType) => void;
+  t: (key: string) => string;
+};
+
 const handleError = (
   error: Error,
-  createErrorLog: (log: any) => void,
-  notify: (message: string, type: 'success' | 'error' | 'info') => void,
-  t: (key: string) => string,
+  utils: ErrorHandlerUtils,
   errorType: string
 ) => {
+  const { createErrorLog, notify, t } = utils;
   createErrorLog({
     error_type: errorType,
     message: error.message,
@@ -137,113 +156,166 @@ const handleError = (
 };
 
 /**
- * Custom hook for managing trends
+ * Data fetching logic
  */
-export const useTrends = () => {
-  const { t } = useTranslation();
-  const { user } = useAuth();
-  const { createErrorLog } = useErrorLogApi();
-  const { logActivity } = useActivityLogging();
-  const { notify } = useNotification();
-
-  // Fetch trends
+const useTrendData = (auth: AuthHook) => {
   const { data, loading, error } = useQuery(GET_TRENDS, {
     variables: { limit: 10, offset: 0, filters: {} },
-    skip: !user,
+    skip: !auth,
   });
 
-  // Subscribe to trend updates
   const { data: subscriptionData } = useSubscription(SUBSCRIBE_TREND_UPDATES, {
     variables: { filters: {} },
-    skip: !user,
+    skip: !auth,
   });
 
-  // Mutations
-  const [createTrend] = useMutation(CREATE_TREND, {
+  const trends = useMemo(
+    (): Trend[] => subscriptionData?.trends || data?.trends?.nodes || [],
+    [data, subscriptionData]
+  );
+  const totalCount = useMemo(() => data?.trends?.aggregate?.count || 0, [data]);
+
+  return { trends, totalCount, loading, error };
+};
+
+/**
+ * Mutation logic with explicit types
+ */
+const useTrendMutations = (
+  notify: (message: string, type: NotificationType) => void,
+  createErrorLog: (log: any) => void,
+  t: (key: string) => string
+) => {
+  const [createTrend] = useMutation<{ createTrend: Trend }, { input: TrendInput }>(CREATE_TREND, {
     onCompleted: () => notify(t('trends.created'), 'success'),
-    onError: (err) => handleError(err, createErrorLog, notify, t, 'TrendCreationError'),
+    onError: (err) => handleError(err, { createErrorLog, notify, t }, 'TrendCreationError'),
   });
 
-  const [updateTrend] = useMutation(UPDATE_TREND, {
+  const [updateTrend] = useMutation<{ updateTrend: Trend }, { id: string; input: TrendInput }>(UPDATE_TREND, {
     onCompleted: () => notify(t('trends.updated'), 'success'),
-    onError: (err) => handleError(err, createErrorLog, notify, t, 'TrendUpdateError'),
+    onError: (err) => handleError(err, { createErrorLog, notify, t }, 'TrendUpdateError'),
   });
 
-  const [deleteTrend] = useMutation(DELETE_TREND, {
+  const [deleteTrend] = useMutation<{ deleteTrend: { id: string } }, { id: string }>(DELETE_TREND, {
     onCompleted: () => notify(t('trends.deleted'), 'success'),
-    onError: (err) => handleError(err, createErrorLog, notify, t, 'TrendDeletionError'),
+    onError: (err) => handleError(err, { createErrorLog, notify, t }, 'TrendDeletionError'),
   });
 
-  // Memoized data
-  const trends = useMemo((): Trend[] => {
-    return subscriptionData?.trends || data?.trends?.nodes || [];
-  }, [data, subscriptionData]);
+  return { createTrend, updateTrend, deleteTrend };
+};
 
-  const totalCount = useMemo(() => {
-    return data?.trends?.aggregate?.count || 0;
-  }, [data]);
+/**
+ * Handler logic using authState
+ */
+const useTrendHandlers = (
+  authState: AuthState | null,
+  mutations: {
+    createTrend: (options?: any) => Promise<any>;
+    updateTrend: (options?: any) => Promise<any>;
+    deleteTrend: (options?: any) => Promise<any>;
+  },
+  utils: {
+    logActivity: (activity: any) => void;
+    createErrorLog: (log: any) => void;
+    notify: (message: string, type: NotificationType) => void;
+    t: (key: string) => string;
+  }
+) => {
+  const { createTrend, updateTrend, deleteTrend } = mutations;
+  const { logActivity, createErrorLog, notify, t } = utils;
 
-  // Handlers
   const handleCreateTrend = useCallback(
     async (input: TrendInput) => {
-      if (!user) {
-        notify(t('auth.required'), 'error');
-        return;
-      }
       try {
-        const trendInput = { ...input, user_id: user.id, post_type: 'trend' };
+        if (!authState || !authState.user) {
+          notify(t('auth.required'), 'error');
+          return;
+        }
+        const trendInput = { ...input, user_id: authState.user.id, post_type: 'trend' };
         await createTrend({ variables: { input: trendInput } });
         logActivity({
           activityType: 'trend_created',
-          description: `User ${user.id} created a trend`,
-          requestDetails: { input: trendInput }, // Fixed: object instead of string
+          description: `User ${authState.user.id} created a trend`,
+          requestDetails: { input: trendInput },
         });
       } catch (err) {
-        handleError(err as Error, createErrorLog, notify, t, 'TrendCreationHandlerError');
+        handleError(err as Error, { createErrorLog, notify, t }, 'TrendCreationHandlerError');
       }
     },
-    [createTrend, user, logActivity, createErrorLog, notify, t]
+    [authState, createTrend, logActivity, createErrorLog, notify, t]
   );
 
   const handleUpdateTrend = useCallback(
     async (id: string, input: TrendInput) => {
-      if (!user) {
-        notify(t('auth.required'), 'error');
-        return;
-      }
       try {
+        if (!authState || !authState.user) {
+          notify(t('auth.required'), 'error');
+          return;
+        }
         await updateTrend({ variables: { id, input } });
         logActivity({
           activityType: 'trend_updated',
-          description: `User ${user.id} updated trend ${id}`,
-          requestDetails: { input }, // Fixed: object instead of string
+          description: `User ${authState.user.id} updated trend ${id}`,
+          requestDetails: { input },
         });
       } catch (err) {
-        handleError(err as Error, createErrorLog, notify, t, 'TrendUpdateHandlerError');
+        handleError(err as Error, { createErrorLog, notify, t }, 'TrendUpdateHandlerError');
       }
     },
-    [updateTrend, user, logActivity, createErrorLog, notify, t]
+    [authState, updateTrend, logActivity, createErrorLog, notify, t]
   );
 
   const handleDeleteTrend = useCallback(
     async (id: string) => {
-      if (!user) {
-        notify(t('auth.required'), 'error');
-        return;
-      }
       try {
+        if (!authState || !authState.user) {
+          notify(t('auth.required'), 'error');
+          return;
+        }
         await deleteTrend({ variables: { id } });
         logActivity({
           activityType: 'trend_deleted',
-          description: `User ${user.id} deleted trend ${id}`,
-          requestDetails: { id }, // Added for consistency
+          description: `User ${authState.user.id} deleted trend ${id}`,
+          requestDetails: { id },
         });
       } catch (err) {
-        handleError(err as Error, createErrorLog, notify, t, 'TrendDeletionHandlerError');
+        handleError(err as Error, { createErrorLog, notify, t }, 'TrendDeletionHandlerError');
       }
     },
-    [deleteTrend, user, logActivity, createErrorLog, notify, t]
+    [authState, deleteTrend, logActivity, createErrorLog, notify, t]
   );
+
+  return { handleCreateTrend, handleUpdateTrend, handleDeleteTrend };
+};
+
+/**
+ * Custom hook for managing trends
+ */
+export const useTrends = () => {
+  const { t } = useTranslation();
+  const auth = useAuth();
+  const { createErrorLog } = useErrorLogApi();
+  const { notify } = useNotification();
+
+  // State to hold the fetched AuthState
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+
+  // Fetch AuthState when auth changes
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      const state = await auth.getAuthState();
+      setAuthState(state);
+    };
+    fetchAuthState();
+  }, [auth]);
+
+  // Pass authState to useActivityLogging
+  const { logActivity } = useActivityLogging(authState);
+
+  const { trends, totalCount, loading, error } = useTrendData(auth);
+  const mutations = useTrendMutations(notify, createErrorLog, t);
+  const utils = { logActivity, createErrorLog, notify, t };
+  const { handleCreateTrend, handleUpdateTrend, handleDeleteTrend } = useTrendHandlers(authState, mutations, utils);
 
   return {
     trends,
