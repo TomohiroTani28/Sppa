@@ -7,7 +7,6 @@ import BottomNavigation from "@/components/BottomNavigation";
 import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
 import { useAuth } from "@/hooks/api/useAuth";
 import PushNotification from "@/components/PushNotification";
-import { Booking } from "@/types/booking";
 import { useState, useEffect } from "react";
 
 // 認証状態の型を定義
@@ -26,12 +25,11 @@ interface AuthState {
 }
 
 export default function DashboardPage() {
-  const { getAuthState } = useAuth(); // getAuthState を使用
+  const { getAuthState } = useAuth();
   const [authState, setAuthState] = useState<AuthState | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const { realtimeBookings: bookings } = useRealtimeBookings();
 
-  // 認証状態を非同期で取得
   useEffect(() => {
     const fetchAuthState = async () => {
       try {
@@ -47,22 +45,13 @@ export default function DashboardPage() {
     fetchAuthState();
   }, [getAuthState]);
 
-  // 認証状態のローディング中
-  if (isLoadingAuth) {
-    return <div>Loading authentication...</div>;
-  }
-
-  // ユーザーが未認証の場合
-  if (!authState?.user) {
-    return <div>ログインしてください。</div>;
-  }
+  if (isLoadingAuth) return <div>Loading authentication...</div>;
+  if (!authState?.user) return <div>ログインしてください。</div>;
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <main className="flex-1 p-4 pb-16">
-        <h1 className="text-2xl font-bold mb-4 text-gray-800">
-          Therapist Dashboard
-        </h1>
+        <h1 className="text-2xl font-bold mb-4 text-gray-800">Therapist Dashboard</h1>
         <DashboardSummary therapistId={authState.user.id} bookings={bookings} />
         <BookingSummary bookings={bookings} />
         <RevenueChart therapistId={authState.user.id} />
