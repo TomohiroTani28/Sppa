@@ -10,34 +10,66 @@ import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";
 import { Spinner } from "@/components/ui/Spinner";
 import BottomNavigation from "@/components/BottomNavigation";
 
+// 認証状態の型を定義
+interface AuthState {
+  user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string;
+  } | null;
+  token?: string | null;
+  role?: string | null;
+  profile_picture?: string | null;
+  loading: boolean;
+}
+
 // ユーザーIDを決定し、エラーの場合に早期リターンするヘルパー関数
 const useEffectiveUserId = () => {
   const router = useRouter();
   const params = useParams();
-  const { user: authUser, loading: authLoading } = useAuth();
+  const { getAuthState } = useAuth();
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+
+  // 認証状態を非同期で取得
+  useEffect(() => {
+    const fetchAuthState = async () => {
+      try {
+        const state = await getAuthState();
+        setAuthState(state);
+      } catch (error) {
+        console.error("Failed to fetch auth state:", error);
+        setAuthState(null);
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+    fetchAuthState();
+  }, [getAuthState]);
 
   // URLパラメーターから userId を取得
   const profileUserId = Array.isArray(params.userId) ? params.userId[0] : params.userId;
-  const effectiveUserId = profileUserId ?? authUser?.id ?? "";
+  const effectiveUserId = profileUserId ?? authState?.user?.id ?? "";
 
-  // ユーザー情報が無い場合は早期リターン用のエラーメッセージを返す
-  if (!effectiveUserId && !authLoading) {
+  // ユーザー情報が無い場合は早期リターン
+  if (!effectiveUserId && !isLoadingAuth) {
     router.push("/feed");
   }
-  return { effectiveUserId, authLoading };
+  return { effectiveUserId, authState, isLoadingAuth };
 };
 
 const ReviewHistory: React.FC = () => {
   const router = useRouter();
-  const { effectiveUserId, authLoading } = useEffectiveUserId();
-  const { user: authUser } = useAuth();
+  const { effectiveUserId, authState, isLoadingAuth } = useEffectiveUserId();
   const { loading: profileLoading, error: profileError } = useFetchUser(effectiveUserId);
   
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
-  const overallLoading = authLoading || profileLoading;
-  const currentUserId = authUser?.id ?? "";
+  const overallLoading = isLoadingAuth || profileLoading;
+  const currentUserId = authState?.user?.id ?? "";
 
   useEffect(() => {
     setIsLoading(overallLoading);
@@ -45,10 +77,10 @@ const ReviewHistory: React.FC = () => {
   }, [overallLoading, profileError]);
 
   useEffect(() => {
-    if (!authLoading && !authUser) {
+    if (!isLoadingAuth && !authState?.user) {
       router.push("/login");
     }
-  }, [authUser, authLoading, router]);
+  }, [authState, isLoadingAuth, router]);
 
   if (isLoading) {
     return (
