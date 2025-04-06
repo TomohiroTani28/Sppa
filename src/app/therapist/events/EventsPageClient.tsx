@@ -7,12 +7,15 @@ import EventForm from '@/app/therapist/events/components/EventForm';
 import { useEventData } from '@/app/therapist/hooks/useEventData';
 import { RealtimeEventList } from '@/realtime/RealtimeEventList';
 import { Event } from '@/types/event';
-import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
-const EventsPageClient: React.FC = () => {
-  const { status, data: session } = useSession();
+// Define props interface
+interface EventsPageClientProps {
+  session: any; // Replace 'any' with a proper session type if available
+}
+
+const EventsPageClient: React.FC<EventsPageClientProps> = ({ session }) => {
   const [showEventForm, setShowEventForm] = useState<boolean>(false);
 
   const therapistId = session?.user?.id ?? '';
@@ -30,11 +33,8 @@ const EventsPageClient: React.FC = () => {
     setShowEventForm((prev) => !prev);
   };
 
-  if (status === 'loading') {
-    return <LoadingSpinner />;
-  }
-
-  if (status === 'unauthenticated' || shouldSkip) {
+  // Handle unauthenticated state
+  if (!session) {
     return <div className="p-4 text-center">ログインしてください。</div>;
   }
 
