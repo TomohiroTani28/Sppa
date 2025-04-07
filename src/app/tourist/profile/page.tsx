@@ -1,13 +1,14 @@
-"use client";
 // src/app/tourist/profile/page.tsx
-import dynamic from "next/dynamic";
+import { Suspense } from "react";
+import ClientWrapper from "@/app/tourist/profile/ClientWrapper";
 
-// dynamic 変数名の代わりに別の変数名を使用
-export const fetchCache = "force-no-store";
+// サーバーコンポーネントでのrevalidate設定
 export const revalidate = 0;
 
-const ProfileClient = dynamic(() => import("@/app/tourist/profile/ProfileClient"), { ssr: false });
-
 export default function ProfilePage() {
-  return <ProfileClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ClientWrapper />
+    </Suspense>
+  );
 }
