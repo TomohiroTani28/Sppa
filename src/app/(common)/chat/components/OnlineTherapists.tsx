@@ -4,14 +4,6 @@ import { useEffect, useState } from "react";
 import supabase from "@/lib/supabase-client";
 import { useAuth } from "@/hooks/api/useAuth";
 
-interface AuthState {
-  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
-
 interface OnlineTherapistsProps {
   readonly therapists: any[];
   readonly onSelect: (chatRoomId: string) => void;
@@ -21,25 +13,8 @@ export default function OnlineTherapists({
   therapists,
   onSelect,
 }: OnlineTherapistsProps) {
-  const { getAuthState } = useAuth();
-  const [authState, setAuthState] = useState<AuthState | null>(null);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const authState = useAuth();
   const [users, setUsers] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchAuthState = async () => {
-      try {
-        const state = await getAuthState();
-        setAuthState(state);
-      } catch (error) {
-        console.error("Failed to fetch auth state:", error);
-        setAuthState(null);
-      } finally {
-        setIsLoadingAuth(false);
-      }
-    };
-    fetchAuthState();
-  }, [getAuthState]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -57,7 +32,7 @@ export default function OnlineTherapists({
   }, [therapists]);
 
   const createChatRoom = async (therapistId: string) => {
-    if (!authState?.user) {
+    if (!authState.user) {
       console.error("ユーザーが存在しません");
       return;
     }
@@ -73,11 +48,11 @@ export default function OnlineTherapists({
     }
   };
 
-  if (isLoadingAuth) {
+  if (authState.loading) {
     return <div>Loading authentication...</div>;
   }
 
-  if (!authState?.user) {
+  if (!authState.user) {
     return <div>Please log in to view therapists.</div>;
   }
 
