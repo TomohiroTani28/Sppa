@@ -1,5 +1,4 @@
 // src/app/layout.tsx
-"use client";
 import { Suspense, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSession, SessionProvider } from "next-auth/react";
