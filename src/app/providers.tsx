@@ -1,13 +1,15 @@
 // src/app/providers.tsx
 "use client";
-import { SessionProvider } from "next-auth/react";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { RealtimeProvider } from "@/contexts/RealtimeContext";
-import { I18nProvider } from "@/i18n/I18nProvider";
+
 import { ReactNode } from "react";
 import dynamic from "next/dynamic";
+import { SessionProvider } from "next-auth/react";
 
-// ApolloClientWrapperを動的インポートして認証済みユーザーにのみ提供
+import { I18nProvider } from "@/i18n/I18nProvider";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { RealtimeProvider } from "@/contexts/RealtimeContext";
+
+// ApolloClientWrapper は認証が確定してからクライアント側で読み込む
 const ApolloWithAuth = dynamic(() => import("./ApolloClientWrapper"), {
   ssr: false,
 });
@@ -21,11 +23,12 @@ export function Providers({ children }: ProvidersProps) {
     <SessionProvider>
       <I18nProvider>
         <AuthProvider>
-          <ApolloWithAuth>
-            <RealtimeProvider>
+          {/* 先に RealtimeProvider を配置してツリーの再マウントを防ぐ */}
+          <RealtimeProvider>
+            <ApolloWithAuth>
               {children}
-            </RealtimeProvider>
-          </ApolloWithAuth>
+            </ApolloWithAuth>
+          </RealtimeProvider>
         </AuthProvider>
       </I18nProvider>
     </SessionProvider>

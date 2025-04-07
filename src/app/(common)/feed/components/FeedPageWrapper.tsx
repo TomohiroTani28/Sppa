@@ -1,16 +1,18 @@
 "use client";
 // src/app/(common)/feed/components/FeedPageWrapper.tsx
-import dynamic from "next/dynamic";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 
-const FeedPage = dynamic(() => import("@/app/(common)/feed/page"), {
-  ssr: false,
-});
+// FeedClient は純粋なクライアントコンポーネント
+const FeedClient = dynamic(
+  () => import("@/app/(common)/feed/FeedClient"),
+  { ssr: false }
+);
 
 export default function FeedPageWrapper() {
   useEffect(() => {
     console.log("Client-only FeedPageWrapper mounted");
   }, []);
 
-  return <FeedPage />;
+  return <FeedClient />;
 }
