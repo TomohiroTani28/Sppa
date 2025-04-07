@@ -1,10 +1,11 @@
 // src/app/(common)/notifications/page.tsx
 "use client";
-import dynamicImport from "next/dynamic"; // エイリアスを使用して名前衝突を回避
+import dynamic from "next/dynamic";
 
-export const dynamic = "force-dynamic"; // 静的生成を無効化し、動的レンダリングに
+// Force dynamic rendering to avoid SSG issues with client-side hooks
+export const forceDynamic = "force-dynamic";
 
-const NotificationsClient = dynamicImport(() => import("./NotificationsClient"), { ssr: false });
+const NotificationsClient = dynamic(() => import("./NotificationsClient"), { ssr: false });
 
 export default function NotificationsPage() {
   return <NotificationsClient />;

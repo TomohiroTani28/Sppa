@@ -10,14 +10,6 @@ import { gql, useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-interface AuthState {
-  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
-
 const MARK_NOTIFICATION_READ = gql`
   mutation MarkNotificationRead($id: uuid!) {
     update_notifications_by_pk(pk_columns: { id: $id }, _set: { is_read: true }) {
@@ -64,16 +56,10 @@ const NotificationItem: React.FC<{
 
 const NotificationsClient: React.FC = () => {
   const { t } = useTranslation("notifications");
-  const { user, loading: authLoading } = useAuth(); // 直接プロパティを取得
-  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const { user, loading: authLoading } = useAuth();
 
-  useEffect(() => {
-    if (!authLoading) {
-      setAuthState({ user, loading: authLoading });
-    }
-  }, [user, authLoading]);
+  const { notifications, isLoading, error } = useNotifications(user?.id);
 
-  const { notifications, isLoading, error } = useNotifications(authState?.user?.id);
   const [markNotificationRead, { loading: mutationLoading }] = useMutation(MARK_NOTIFICATION_READ);
 
   const handleMarkAsRead = async (notificationId: string) => {
@@ -93,7 +79,7 @@ const NotificationsClient: React.FC = () => {
     }
   };
 
-  if (!authState || authState.loading || isLoading) {
+  if (authLoading || isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Spinner />

@@ -3,5 +3,5 @@ export default function NotFound() {
   return <h1>404 - Page Not Found</h1>;
 }
 
-// Optional: Explicitly disable client-side rendering (not needed, but for clarity)
+// Explicitly force static generation (optional, as it’s the default for server components)
 export const dynamic = "force-static";
