@@ -4,14 +4,6 @@ import { useEffect, useState } from "react";
 import supabase from "@/lib/supabase-client";
 import { useAuth } from "@/hooks/api/useAuth";
 
-interface AuthState {
-  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
-
 interface RecentConversationsProps {
   readonly chatRooms: any[];
   readonly onSelect: (chatRoomId: string) => void;
@@ -21,25 +13,8 @@ export default function RecentConversations({
   chatRooms,
   onSelect,
 }: RecentConversationsProps) {
-  const { getAuthState } = useAuth();
-  const [authState, setAuthState] = useState<AuthState | null>(null);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const authState = useAuth(); // useAuthから直接状態を取得
   const [users, setUsers] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchAuthState = async () => {
-      try {
-        const state = await getAuthState();
-        setAuthState(state);
-      } catch (error) {
-        console.error("Failed to fetch auth state:", error);
-        setAuthState(null);
-      } finally {
-        setIsLoadingAuth(false);
-      }
-    };
-    fetchAuthState();
-  }, [getAuthState]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -55,11 +30,13 @@ export default function RecentConversations({
     fetchUsers();
   }, []);
 
-  if (isLoadingAuth) {
+  // 認証状態が読み込み中の場合
+  if (authState.loading) {
     return <div>Loading authentication...</div>;
   }
 
-  if (!authState?.user) {
+  // ユーザーがログインしていない場合
+  if (!authState.user) {
     return <div>Please log in to view recent conversations.</div>;
   }
 
