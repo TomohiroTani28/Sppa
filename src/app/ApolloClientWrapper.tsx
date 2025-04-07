@@ -1,13 +1,14 @@
 // src/app/ApolloClientWrapper.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   ApolloClient,
   ApolloLink,
   HttpLink,
   InMemoryCache,
   split,
+  NormalizedCacheObject
 } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 import { getMainDefinition } from "@apollo/client/utilities";
@@ -26,25 +27,32 @@ interface AuthState {
   loading: boolean;
 }
 
+// ApolloClientインスタンスの型を定義
+interface ApolloClientInstance {
+  client: ApolloClient<NormalizedCacheObject>;
+  token: string;
+}
+
+// 環境変数を一度だけ読み込む
 const httpEndpoint =
   process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ??
   "http://localhost:8081/v1/graphql";
-const wsEndpoint =
-  process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ??
-  "ws://localhost:8081/v1/graphql";
 
 interface ApolloClientWrapperProps {
   readonly children: React.ReactNode;
 }
 
+// ApolloClientインスタンスをグローバルに保持（型を明示）
+let globalApolloClient: ApolloClientInstance | null = null;
+
 export default function ApolloClientWrapper({
   children,
 }: ApolloClientWrapperProps) {
-  const { getAuthState } = useAuth(); // getAuthState を使用
+  const { getAuthState } = useAuth();
   const [authState, setAuthState] = useState<AuthState | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [client, setClient] = useState<ApolloClient<any> | null>(null);
-  const [wsConnectionFailed, setWsConnectionFailed] = useState(false);
+  // 使用しない状態は、コメントアウトするか削除します
+  // const [wsConnectionFailed, setWsConnectionFailed] = useState(false);
 
   // 認証状態を非同期で取得
   useEffect(() => {
@@ -62,19 +70,31 @@ export default function ApolloClientWrapper({
     fetchAuthState();
   }, [getAuthState]);
 
-  useEffect(() => {
-    if (isLoadingAuth || !authState) return;
+  // Apolloクライアントをメモ化して不要な再生成を防ぐ
+  const client = useMemo(() => {
+    if (isLoadingAuth || !authState) return null;
 
     const token = authState.token;
     const user = authState.user;
-    if (!token || !user) {
-      setClient(null);
-      return;
-    }
+    if (!token || !user) return null;
 
-    const effectiveRole = user.role || "tourist";
+    const effectiveRole = user.role ?? "tourist"; // || から ?? に変更
+    
+    // 既存のクライアントがあれば再利用（トークンが同じ場合）
+    if (globalApolloClient && globalApolloClient.token === token) {
+      return globalApolloClient.client;
+    }
+    
+    // 新しいクライアントを作成
     const newClient = createApolloClient(token, effectiveRole);
-    setClient(newClient);
+    
+    // グローバル変数に保存
+    globalApolloClient = {
+      client: newClient,
+      token
+    };
+    
+    return newClient;
   }, [authState, isLoadingAuth]);
 
   // 認証状態のローディング中
@@ -89,6 +109,7 @@ export default function ApolloClientWrapper({
 
   return (
     <ApolloProvider client={client}>
+      {/* wsConnectionFailedは使用していないため、この部分も削除またはコメントアウト
       {wsConnectionFailed && (
         <div
           className="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 mb-4"
@@ -101,12 +122,14 @@ export default function ApolloClientWrapper({
           </p>
         </div>
       )}
+      */}
       {children}
     </ApolloProvider>
   );
 }
 
-function createApolloClient(token: string, role: string): ApolloClient<any> {
+// この関数はコンポーネントの外側に配置し、不要な再生成を避ける
+function createApolloClient(token: string, role: string): ApolloClient<NormalizedCacheObject> {
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       console.error(
@@ -136,10 +159,11 @@ function createApolloClient(token: string, role: string): ApolloClient<any> {
 
   if (typeof window !== "undefined" && token) {
     try {
+      // 修正したcreateWsClient関数を使用
       const wsClient = createWsClient(token);
       wsLink = wsClient ? new GraphQLWsLink(wsClient) : null;
     } catch (error) {
-      console.error("WebSocket setup failed:", error);
+      console.error("WebSocket setup failed");
       wsLink = null;
     }
   }
@@ -166,6 +190,6 @@ function createApolloClient(token: string, role: string): ApolloClient<any> {
       mutate: { fetchPolicy: "network-only", errorPolicy: "all" },
       watchQuery: { fetchPolicy: "network-only", errorPolicy: "all" },
     },
-    connectToDevTools: true,
+    connectToDevTools: process.env.NODE_ENV === 'development',
   });
 }
