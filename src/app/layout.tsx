@@ -2,7 +2,7 @@
 "use client";
 import { Suspense, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useSession } from "next-auth/react";
+import { useSession, SessionProvider } from "next-auth/react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import HomeHeader from "@/components/HomeHeader";
 import BottomNavigation from "@/components/BottomNavigation";
@@ -74,20 +74,17 @@ const HomeMainContent = ({
   );
 };
 
-// Main FeedClient component with fixes
 export default function FeedClient() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation(); // Fixed: Uses default "translation" namespace
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
   const [userData, setUserData] = useState<{ id: string; name: string; profilePicture: string; email: string } | null>(null);
   const [isClient, setIsClient] = useState(false);
   const { data: session, status } = useSession();
 
-  // Ensure this runs only on the client side
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Update userData based on session, but only on the client
   useEffect(() => {
     if (session?.user) {
       setUserData({
@@ -101,34 +98,34 @@ export default function FeedClient() {
     }
   }, [session]);
 
-  // Prevent rendering on the server
   if (!isClient) {
-    return null; // Return nothing during server-side rendering
+    return null;
   }
 
-  // Show loading state while session is being fetched
   if (status === "loading") {
     return <LoadingSpinner />;
   }
 
   return (
-    <Text tag="div" className="min-h-screen bg-background">
-      {userData && (
-        <HomeHeader
-          user={userData}
-          unreadCount={0}
+    <SessionProvider>
+      <Text tag="div" className="min-h-screen bg-background">
+        {userData && (
+          <HomeHeader
+            user={userData}
+            unreadCount={0}
+            t={t}
+            aria-label={t("header.ariaLabel")}
+          />
+        )}
+        <TabSelector selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        <HomeMainContent
+          userData={userData}
+          selectedTab={selectedTab}
           t={t}
-          aria-label={t("header.ariaLabel")}
+          feedError={null}
         />
-      )}
-      <TabSelector selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      <HomeMainContent
-        userData={userData}
-        selectedTab={selectedTab}
-        t={t}
-        feedError={null}
-      />
-      <BottomNavigation />
-    </Text>
+        <BottomNavigation />
+      </Text>
+    </SessionProvider>
   );
 }
