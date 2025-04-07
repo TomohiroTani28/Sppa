@@ -1,14 +1,20 @@
 // src/app/tourist/local-experiences/page.tsx
-"use client";
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
-// 完全に異なる名前を使用
-export const fetchCache = "force-no-store";
+// サーバーコンポーネントでのrevalidate設定
 export const revalidate = 0;
 
-// 動的インポート
-const LocalExperiencesClient = dynamic(() => import("@/app/tourist/local-experiences/LocalExperiencesClient"), { ssr: false });
+// クライアントコンポーネントの動的インポート
+const LocalExperiencesClient = dynamic(() => import("./LocalExperiencesClient"), {
+  ssr: false,
+  loading: () => <div>Loading...</div>
+});
 
 export default function LocalExperiencesPage() {
-  return <LocalExperiencesClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LocalExperiencesClient />
+    </Suspense>
+  );
 }
