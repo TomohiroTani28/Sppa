@@ -326,6 +326,7 @@ Sppa
 │   │   │       └── page.tsx
 │   │   └── tourist
 │   │       ├── bookings
+│   │       │   ├── BookingsClient.tsx
 │   │       │   ├── components
 │   │       │   │   ├── AddOption.tsx
 │   │       │   │   ├── BookingCalendar.tsx
@@ -340,6 +341,8 @@ Sppa
 │   │       │   │   └── TransactionDetails.tsx
 │   │       │   └── page.tsx
 │   │       ├── local-experiences
+│   │       │   ├── ClientWrapper.tsx
+│   │       │   ├── LocalExperiencesClient.tsx
 │   │       │   ├── [experienceId]
 │   │       │   │   ├── components
 │   │       │   │   │   └── MediaGallery.tsx
@@ -349,10 +352,14 @@ Sppa
 │   │       │   │   └── ExperienceList.tsx
 │   │       │   └── page.tsx
 │   │       ├── preferences
+│   │       │   ├── ClientWrapper.tsx
+│   │       │   ├── PreferencesClient.tsx
 │   │       │   ├── components
 │   │       │   │   └── PreferenceForm.tsx
 │   │       │   └── page.tsx
 │   │       └── profile
+│   │           ├── ClientWrapper.tsx
+│   │           ├── ProfileClient.tsx
 │   │           ├── components
 │   │           │   ├── DarkModeToggle.tsx
 │   │           │   ├── PaymentMethod.tsx
