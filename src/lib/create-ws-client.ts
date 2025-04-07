@@ -1,5 +1,6 @@
 // src/lib/create-ws-client.ts
-import { createClient, Client } from "graphql-ws";
+import { createClient } from "graphql-ws";
+import type { Client } from "graphql-ws";
 
 // インスタンスの型を定義
 interface WsClientInstance {

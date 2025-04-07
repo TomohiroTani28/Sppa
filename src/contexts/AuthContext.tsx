@@ -2,12 +2,14 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
+import { Session } from "next-auth";
 
 interface AuthContextType {
-  user: any;
+  user: Session['user'] | null;
   loading: boolean;
   error: string | null;
+  accessToken?: string;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -18,16 +20,15 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<Session['user'] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     if (status === "loading") {
       setLoading(true);
     } else if (status === "authenticated") {
-      setUser(session.user);
+      setUser(session?.user ?? null);
       setLoading(false);
     } else if (status === "unauthenticated") {
       setUser(null);
@@ -36,8 +37,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [status, session, router]);
 
+  const contextValue = useMemo(() => ({
+    user,
+    loading,
+    error: null,
+    accessToken: session?.access_token
+  }), [user, loading, session?.access_token]);
+
   return (
-    <AuthContext.Provider value={{ user, loading, error }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
