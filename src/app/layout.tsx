@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 "use client";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -12,6 +12,7 @@ import { TabSelector } from "@/app/(common)/feed/components/TabSelector";
 import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
 import Link from "next/link";
 
+// ErrorDisplay component (unchanged)
 interface ErrorDisplayProps {
   error: string | null;
   t: (key: string) => string;
@@ -32,6 +33,7 @@ const ErrorDisplay = ({ error, t }: ErrorDisplayProps) => {
   );
 };
 
+// HomeMainContent component (unchanged)
 interface HomeMainContentProps {
   userData: { id: string; name: string; profilePicture: string; email: string } | null;
   selectedTab: "tourist" | "therapist";
@@ -72,23 +74,42 @@ const HomeMainContent = ({
   );
 };
 
+// Main FeedClient component with fixes
 export default function FeedClient() {
-  const { data: session, status } = useSession();
   const { t } = useTranslation("common");
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
+  const [userData, setUserData] = useState<{ id: string; name: string; profilePicture: string; email: string } | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const { data: session, status } = useSession();
 
-  if (status === "loading") {
-    return <LoadingSpinner />;
-  }
+  // Ensure this runs only on the client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  const userData = session?.user
-    ? {
+  // Update userData based on session, but only on the client
+  useEffect(() => {
+    if (session?.user) {
+      setUserData({
         id: session.user.id,
         name: session.user.name ?? "Unknown User",
         profilePicture: session.user.image ?? "/default-avatar.png",
         email: session.user.email ?? "",
-      }
-    : null;
+      });
+    } else {
+      setUserData(null);
+    }
+  }, [session]);
+
+  // Prevent rendering on the server
+  if (!isClient) {
+    return null; // Return nothing during server-side rendering
+  }
+
+  // Show loading state while session is being fetched
+  if (status === "loading") {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Text tag="div" className="min-h-screen bg-background">

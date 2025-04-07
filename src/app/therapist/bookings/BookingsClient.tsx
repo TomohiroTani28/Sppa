@@ -11,7 +11,6 @@ import { gql, useQuery } from "@apollo/client";
 import React, { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/hooks/api/useAuth";
 
-// 認証状態の型を定義
 interface AuthState {
   user: {
     id: string;
@@ -26,7 +25,6 @@ interface AuthState {
   loading: boolean;
 }
 
-// GraphQL query to fetch bookings with dynamic therapistId
 const FETCH_BOOKINGS_QUERY = gql`
   query FetchTherapistBookings($therapistId: uuid!) {
     bookings(where: { therapist_id: { _eq: $therapistId } }) {
@@ -52,13 +50,13 @@ const FETCH_BOOKINGS_QUERY = gql`
 `;
 
 const BookingsClient: React.FC = () => {
-  const { getAuthState } = useAuth(); // getAuthState を取得
+  const { getAuthState } = useAuth();
   const [authState, setAuthState] = useState<AuthState | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const { realtimeBookings } = useRealtimeBookings();
 
-  // 認証状態を非同期で取得
+  // Fetch auth state only on the client side
   useEffect(() => {
     const fetchAuthState = async () => {
       try {
@@ -84,7 +82,7 @@ const BookingsClient: React.FC = () => {
   } = useQuery<{ bookings: Booking[] }, { therapistId: string }>(
     FETCH_BOOKINGS_QUERY,
     {
-      skip: !therapistId,
+      skip: !therapistId, // Skip query until therapistId is available
       variables: { therapistId: therapistId ?? "" },
     }
   );
@@ -104,12 +102,15 @@ const BookingsClient: React.FC = () => {
     updateBookings();
   }, [refetch, updateBookings]);
 
-  // 認証状態のローディング中
+  // Render nothing until the component is mounted on the client
+  if (typeof window === "undefined") {
+    return null; // Prevent server-side rendering
+  }
+
   if (isLoadingAuth) {
     return <div>Loading authentication...</div>;
   }
 
-  // ユーザーが未認証の場合
   if (!authState?.user) {
     return <div>Please log in to view bookings.</div>;
   }
