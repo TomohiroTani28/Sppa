@@ -24,25 +24,17 @@ interface AuthState {
 export default function ChatPage() {
   const { t } = useTranslation("common");
   const { userId } = useParams();
-  const { getAuthState } = useAuthHook(); // getAuthState を使用
-  const [authState, setAuthState] = useState<AuthState | null>(null);
+  const authState = useAuthHook(); // 直接 authState を取得
   const [isLoading, setIsLoading] = useState(true);
 
-  // 認証状態を非同期で取得
+  // ローディング状態を監視
   useEffect(() => {
-    const fetchAuthState = async () => {
-      try {
-        const state = await getAuthState();
-        setAuthState(state);
-      } catch (error) {
-        console.error("Failed to fetch auth state:", error);
-        setAuthState(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchAuthState();
-  }, [getAuthState]);
+    if (authState.loading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [authState.loading]);
 
   useEffect(() => {
     console.log(`ChatPage mounted for userId: ${userId}`);
@@ -55,7 +47,7 @@ export default function ChatPage() {
 
   // userId または user が存在しない場合
   if (!userId) return <p className="text-gray-500 text-center">{t("chat.noChatRoom")}</p>;
-  if (!authState?.user) return <p className="text-gray-500 text-center">{t("auth.required")}</p>;
+  if (!authState.user) return <p className="text-gray-500 text-center">{t("auth.required")}</p>;
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-gray-300">
