@@ -162,7 +162,6 @@ Sppa
 │   │   │   │   ├── FeedClient.tsx
 │   │   │   │   ├── components
 │   │   │   │   │   ├── FeedList.tsx
-│   │   │   │   │   ├── FeedPageWrapper.tsx
 │   │   │   │   │   ├── InstantBookingButton.tsx
 │   │   │   │   │   ├── MasonryFeed.tsx
 │   │   │   │   │   ├── MultiLanguageSupport.tsx
