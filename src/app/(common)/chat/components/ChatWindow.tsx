@@ -19,32 +19,21 @@ interface AuthState {
   loading: boolean;
 }
 
+// props を readonly に
 interface ChatWindowProps {
-  receiverId: string;
+  readonly receiverId: string;
 }
 
 export default function ChatWindow({ receiverId }: ChatWindowProps) {
   const { t } = useTranslation('common');
-  const { getAuthState } = useAuth(); // getAuthState を使用
-  const [authState, setAuthState] = useState<AuthState | null>(null);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const authState = useAuth(); // useAuth から直接認証状態を取得
   const { messages, loading, error } = useRealtimeChat(receiverId);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
-  // 認証状態を非同期で取得
+  // 認証のローディング状態を監視
   useEffect(() => {
-    const fetchAuthState = async () => {
-      try {
-        const state = await getAuthState();
-        setAuthState(state);
-      } catch (error) {
-        console.error("Failed to fetch auth state:", error);
-        setAuthState(null);
-      } finally {
-        setIsLoadingAuth(false);
-      }
-    };
-    fetchAuthState();
-  }, [getAuthState]);
+    setIsLoadingAuth(authState.loading);
+  }, [authState.loading]);
 
   // ローディング中
   if (isLoadingAuth || loading) return <LoadingSpinner />;
@@ -53,15 +42,15 @@ export default function ChatWindow({ receiverId }: ChatWindowProps) {
   if (error) return <p className="text-red-500 text-center">{t('chat.error')}</p>;
 
   // ユーザーが未認証の場合
-  if (!authState?.user) return <p className="text-gray-500 text-center">{t('auth.required')}</p>;
+  if (!authState.user) return <p className="text-gray-500 text-center">{t('auth.required')}</p>;
 
   // RealtimeMessage を ChatMessage に整形
   const formattedMessages: ChatMessage[] = messages.map((msg) => ({
     id: msg.id,
     senderId: msg.sender_id,
-    receiverId: msg.receiver_id || '',
-    message: msg.content || '',
-    timestamp: msg.read_at || msg.sent_at || '',
+    receiverId: msg.receiver_id ?? '',
+    message: msg.content ?? '',
+    timestamp: msg.read_at ?? msg.sent_at ?? '',
     status: 'sent',
   }));
 
@@ -75,12 +64,11 @@ export default function ChatWindow({ receiverId }: ChatWindowProps) {
             <MessageBubble
               key={message.id}
               message={message}
-              isOwnMessage={message.senderId === authState.user?.id} // authState.user を使用
+              isOwnMessage={message.senderId === authState.user?.id}
             />
           ))
         )}
       </div>
-      {/* receiverId を MessageInput に渡す */}
       <MessageInput receiverId={receiverId} />
     </div>
   );
