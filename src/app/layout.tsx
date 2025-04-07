@@ -3,6 +3,7 @@
 import React from "react";
 import { SessionProvider } from "next-auth/react";
 import { Providers } from "./providers";
+import "src/styles/globals.css";
 
 export default function RootLayout({
   children,
