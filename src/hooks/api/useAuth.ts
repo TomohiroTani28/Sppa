@@ -1,17 +1,25 @@
 // src/hooks/api/useAuth.ts
 import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // NextAuth の設定をインポート
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { useState, useEffect } from "react";
+
+// 認証状態の型を定義
+interface AuthState {
+  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
+  token: string | null;
+  role: string | null;
+  profile_picture: string | null;
+  loading: boolean;
+  error: string | null;
+}
 
 // クライアントサイドで使用する認証フック
 export const useAuth = () => {
-  // NextAuth のセッションを取得（クライアントサイド）
   const { data: session, status } = useSession();
   const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [isLoadingToken, setIsLoadingToken] = useState(false);
 
-  // ユーザーが認証済みの場合に JWT トークンを取得
   useEffect(() => {
     if (status === "authenticated") {
       const fetchJwt = async () => {
@@ -33,12 +41,12 @@ export const useAuth = () => {
       };
       fetchJwt();
     } else if (status === "unauthenticated") {
-      setJwtToken(null); // 未認証の場合はトークンをクリア
+      setJwtToken(null);
     }
   }, [status]);
 
-  // 認証状態を直接返す
-  return {
+  // 認証状態を構築
+  const authState: AuthState = {
     user: session?.user || null,
     token: jwtToken,
     role: (session?.user as any)?.role || null,
@@ -46,14 +54,21 @@ export const useAuth = () => {
     loading: status === "loading" || isLoadingToken,
     error: status === "unauthenticated" ? "User is not authenticated" : null,
   };
+
+  // getAuthState 関数を追加
+  const getAuthState = async () => {
+    return authState;
+  };
+
+  return { ...authState, getAuthState };
 };
 
-// サーバーコンポーネントまたは API ルートで使用する認証関数
+// サーバーサイド用の認証関数
 export const getAuthServerSide = async () => {
   const session = await getServerSession(authOptions);
   return {
     user: session?.user || null,
-    token: null, // サーバーサイドでは JWT を取得しない（必要に応じて追加可能）
+    token: null,
     role: (session?.user as any)?.role || null,
     profile_picture: session?.user?.image || null,
     loading: false,

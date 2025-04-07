@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface AuthState {
-  user: any;
+  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
   token?: string | null;
   role?: string | null;
   profile_picture?: string | null;
@@ -64,16 +64,14 @@ const NotificationItem: React.FC<{
 
 const NotificationsClient: React.FC = () => {
   const { t } = useTranslation("notifications");
-  const { getAuthState } = useAuth(); // getAuthState を使用
+  const { user, loading: authLoading } = useAuth(); // 直接プロパティを取得
   const [authState, setAuthState] = useState<AuthState | null>(null);
 
   useEffect(() => {
-    const fetchAuthState = async () => {
-      const state = await getAuthState();
-      setAuthState(state);
-    };
-    fetchAuthState();
-  }, [getAuthState]);
+    if (!authLoading) {
+      setAuthState({ user, loading: authLoading });
+    }
+  }, [user, authLoading]);
 
   const { notifications, isLoading, error } = useNotifications(authState?.user?.id);
   const [markNotificationRead, { loading: mutationLoading }] = useMutation(MARK_NOTIFICATION_READ);
