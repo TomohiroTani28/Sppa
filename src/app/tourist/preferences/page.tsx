@@ -1,14 +1,14 @@
-// src/app/(common)/preferences/page.tsx
-"use client";
-import dynamic from "next/dynamic";
+// src/app/tourist/preferences/page.tsx
+import { Suspense } from "react";
+import ClientWrapper from "@/app/tourist/preferences/ClientWrapper";
 
-// 別の名前を使用
-export const fetchCache = "force-no-store";
+// サーバーコンポーネントでのrevalidate設定
 export const revalidate = 0;
 
-// 動的インポート
-const PreferencesClient = dynamic(() => import("@/app/tourist/preferences/PreferencesClient"), { ssr: false });
-
 export default function PreferencesPage() {
-  return <PreferencesClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ClientWrapper />
+    </Suspense>
+  );
 }
