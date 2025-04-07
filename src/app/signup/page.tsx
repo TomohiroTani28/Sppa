@@ -1,6 +1,6 @@
 // src/app/signup/page.tsx
 import SignUpForm from "@/components/auth/SignUpForm";
-import { Metadata } from "next";
+import type { Metadata } from 'next';
 
 // 動的レンダリングを強制する設定
 export const dynamic = "force-dynamic";

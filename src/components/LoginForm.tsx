@@ -1,58 +1,58 @@
 // src/components/LoginForm.tsx
-import React, { useState } from "react";
-import { login } from "@/utils/auth";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+import { FormField } from "@/components/ui/FormField";
 import { Spinner } from "@/components/ui/Spinner";
+import { emailSchema, passwordSchema } from "@/lib/validations/form";
+import { login } from "@/utils/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const loginFormSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
+
+type LoginFormData = z.infer<typeof loginFormSchema>;
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginFormSchema),
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(email, password);
-    } catch (err: any) {
-      setError(err.message || "ログインに失敗しました");
-    } finally {
-      setLoading(false);
+      await login(data.email, data.password);
+    } catch (error) {
+      console.error("Login failed:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="email">メールアドレス</Label>
-        <Input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Label htmlFor="password">パスワード</Label>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full"
-        />
-      </div>
-      {error && <p className="text-red-500">{error}</p>}
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? <Spinner /> : "ログイン"}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <FormField
+        id="email"
+        label="メールアドレス"
+        type="email"
+        error={errors.email?.message}
+        {...register("email")}
+      />
+
+      <FormField
+        id="password"
+        label="パスワード"
+        type="password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
+
+      <Button type="submit" disabled={isSubmitting} className="w-full">
+        {isSubmitting ? <Spinner /> : "ログイン"}
       </Button>
     </form>
   );

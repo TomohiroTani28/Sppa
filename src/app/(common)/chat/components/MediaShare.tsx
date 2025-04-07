@@ -1,10 +1,10 @@
 // src/app/(common)/chat/components/MediaShare.tsx
 "use client";
 
-import React, { useCallback, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { useTranslation } from "next-i18next";
 import supabaseClient from "@/lib/supabase-client";
+import { useTranslation } from "next-i18next";
+import React, { useCallback, useState } from "react";
 
 interface MediaShareProps {
   onUploadComplete: (url: string) => void;
@@ -68,7 +68,7 @@ const MediaShare: React.FC<MediaShareProps> = ({
       // Generate a unique filename
       const fileExt = selectedFile.name.split(".").pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
-      const filePath = `chat_media/${fileName}`;
+      const filePath = `uploads/${fileName}`;
 
       // Upload to Supabase Storage
       const { data, error } = await supabaseClient.storage
@@ -110,29 +110,11 @@ const MediaShare: React.FC<MediaShareProps> = ({
   }, [isUploading, simulateProgress, uploadProgress]);
 
   return (
-    <div className="p-3 bg-white rounded-lg shadow-md">
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="text-lg font-medium">{t("Share Media")}</h3>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </div>
+    <div className="p-4 bg-white rounded-lg shadow-md">
+      <h3 className="text-lg font-medium mb-4">{t("Share Media")}</h3>
 
       {error && (
-        <div className="mb-3 p-2 text-sm bg-red-100 text-red-700 rounded">
+        <div className="mb-3 p-2 bg-red-100 text-red-700 rounded">
           {error}
         </div>
       )}

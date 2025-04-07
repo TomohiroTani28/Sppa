@@ -1,62 +1,51 @@
 // src/hooks/api/useRealtimeAvailability.ts
-import { useState, useEffect } from "react";
 import { gql, useSubscription } from "@apollo/client";
+import { useEffect, useState } from "react";
 
-const THERAPIST_STATUS_SUBSCRIPTION = gql`
-  subscription TherapistStatusSubscription($therapistId: ID!) {
-    therapistStatus(therapistId: $therapistId) {
-      id
-      status
-      lastOnlineAt
+const AVAILABILITY_SUBSCRIPTION = gql`
+  subscription OnTherapistAvailabilityChange($therapistId: ID!) {
+    therapistAvailabilityChange(therapistId: $therapistId) {
+      therapistId
+      isAvailable
     }
   }
 `;
 
-const GET_THERAPIST_STATUS = gql`
-  query GetTherapistStatus($therapistId: ID!) {
-    therapistProfile(therapistId: $therapistId) {
-      id
-      status
-      lastOnlineAt
-    }
-  }
-`;
-
-export const useRealtimeAvailability = () => {
+export const useRealtimeAvailability = (therapistIds: string[]) => {
   const [availabilityMap, setAvailabilityMap] = useState<Record<string, boolean>>({});
-  const [lastOnlineMap, setLastOnlineMap] = useState<Record<string, string | null>>({});
-  const [subscribedTherapists, setSubscribedTherapists] = useState<Set<string>>(new Set());
 
-  const subscribeToAvailability = (therapistId: string) => {
-    if (!subscribedTherapists.has(therapistId)) {
-      setSubscribedTherapists((prev) => new Set(prev).add(therapistId));
-    }
-  };
-
-  // 各セラピストごとにサブスクリプションを設定
-  subscribedTherapists.forEach((therapistId) => {
-    useSubscription(THERAPIST_STATUS_SUBSCRIPTION, {
-      variables: { therapistId },
-      skip: !therapistId,
-      onData: ({ data }) => {
-        const therapistStatus = data?.data?.therapistStatus;
-        if (therapistStatus) {
-          setAvailabilityMap((prev) => ({
-            ...prev,
-            [therapistId]: therapistStatus.status === "online",
-          }));
-          setLastOnlineMap((prev) => ({
-            ...prev,
-            [therapistId]: therapistStatus.lastOnlineAt,
-          }));
-        }
-      },
+  useEffect(() => {
+    const subscriptions = therapistIds.map((therapistId) => {
+      const { data } = useSubscription(AVAILABILITY_SUBSCRIPTION, {
+        variables: { therapistId },
+        onData: ({ data }) => {
+          if (data?.data?.therapistAvailabilityChange) {
+            const { therapistId, isAvailable } = data.data.therapistAvailabilityChange;
+            setAvailabilityMap((prev) => ({
+              ...prev,
+              [therapistId]: isAvailable,
+            }));
+          }
+        },
+      });
+      return data;
     });
-  });
+
+    return () => {
+      // Apollo Client automatically handles subscription cleanup
+      // when the component unmounts or the effect cleanup runs
+    };
+  }, [therapistIds]);
 
   return {
     availabilityMap,
-    lastOnlineMap,
-    subscribeToAvailability,
+    subscribeToAvailability: (therapistId: string) => {
+      if (!therapistIds.includes(therapistId)) {
+        setAvailabilityMap((prev) => ({
+          ...prev,
+          [therapistId]: false,
+        }));
+      }
+    },
   };
 };

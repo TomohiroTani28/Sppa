@@ -1,17 +1,40 @@
 // src/types/user.ts
-export interface User {
-  id: string;
-  name: string | null;
-  email: string;
-  password_hash: string;
-  role: 'therapist' | 'tourist';
-  profile_picture: string | null;
-  phone_number?: string;
-  verified_at?: string;
-  last_login_at?: string;
-  created_at: string;
-  updated_at: string;
+import { BaseUser } from './base';
+
+export interface User extends BaseUser {
+  image: string | null;
+  preferences?: {
+    language: string;
+    timezone: string;
+    notifications: boolean;
+  };
+  lastLoginAt?: string;
 }
+
+export interface Tourist extends User {
+  role: "tourist";
+  bookingHistory?: string[];
+  favoriteTherapists?: string[];
+}
+
+export interface Therapist extends User {
+  role: "therapist";
+  specialties: string[];
+  availability: {
+    status: "online" | "offline" | "busy";
+    schedule: Array<{
+      day: string;
+      startTime: string;
+      endTime: string;
+    }>;
+  };
+  rating: number;
+  reviewCount: number;
+  services: string[];
+  languages: string[];
+}
+
+export type UserProfile = Tourist | Therapist;
 
 export interface TouristProfile {
   id: string;

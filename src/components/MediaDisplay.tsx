@@ -1,114 +1,138 @@
 // src/components/common/MediaDisplay.tsx
-import React, { useState } from "react";
+import type { BaseMedia } from '@/types/base';
+import type { Media } from '@/types/media';
 import Image from "next/image";
+import React, { useState } from "react";
 
 interface MediaDisplayProps {
   src: string;
-  caption?: string;
+  type: 'audio' | 'video' | 'document' | 'photo';
+  caption?: string | null;
   aspectRatio?: "square" | "16:9" | "4:3";
   onClick?: () => void;
+  media: BaseMedia | Media;
 }
 
-export const MediaDisplay: React.FC<MediaDisplayProps> = ({
+const MediaDisplay: React.FC<MediaDisplayProps> = ({
   src,
+  type,
   caption,
   aspectRatio = "square",
   onClick,
+  media
 }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  // メディアの種類を判定（拡張子をチェック）
-  const isVideo = src.match(/\.(mp4|webm|ogg)$/i);
-
-  // アスペクト比に応じたクラスを設定
-  const containerClasses = {
-    square: "aspect-square",
-    "16:9": "aspect-video",
-    "4:3": "aspect-[4/3]",
-  };
-
-  const handleLoad = () => {
+  
+  // mediaオブジェクトから情報を取得
+  const mediaType = media ? 
+    ('media_type' in media ? media.media_type : media.type) : 
+    type;
+  
+  const mediaCaption = media && 'caption' in media ? media.caption : caption;
+  
+  const handleImageLoad = () => {
     setIsLoading(false);
   };
 
-  const handleError = () => {
-    setIsLoading(false);
-    setError(true);
+  const getAspectRatioClass = () => {
+    switch (aspectRatio) {
+      case "16:9":
+        return "aspect-video";
+      case "4:3":
+        return "aspect-[4/3]";
+      default:
+        return "aspect-square";
+    }
   };
 
   return (
-    <div className="overflow-hidden rounded-lg group">
-      <div
-        className={`relative ${containerClasses[aspectRatio]} bg-gray-100 overflow-hidden cursor-pointer`}
-        onClick={onClick}
-      >
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="animate-pulse w-full h-full bg-gray-200"></div>
-          </div>
-        )}
-
-        {error ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400">
-            <span>Unable to load media</span>
-          </div>
-        ) : isVideo ? (
-          <video
-            src={src}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            controls={false}
-            muted
-            loop
-            playsInline
-            onLoadedData={handleLoad}
-            onError={handleError}
-          />
-        ) : (
+    <div 
+      className={`relative overflow-hidden rounded-lg ${getAspectRatioClass()}`}
+      onClick={onClick}
+    >
+      {mediaType === 'photo' ? (
+        <>
           <Image
             src={src}
-            alt={caption || "Media content"}
+            alt={mediaCaption || "Media"}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            onLoad={handleLoad}
-            onError={handleError}
+            className={`object-cover transition-opacity duration-300 ${
+              isLoading ? "opacity-0" : "opacity-100"
+            }`}
+            onLoad={handleImageLoad}
           />
-        )}
-
-        {/* ビデオのオーバーレイアイコン */}
-        {isVideo && (
-          <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="rounded-full bg-white bg-opacity-75 p-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-gray-800"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-          </div>
-        )}
-      </div>
-
-      {caption && (
-        <div className="mt-1 px-1 text-sm text-gray-600 truncate">
-          {caption}
+          )}
+        </>
+      ) : mediaType === 'video' ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+      ) : mediaType === 'audio' ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+            />
+          </svg>
+        </div>
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
+      )}
+      
+      {mediaCaption && (
+        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+          {mediaCaption}
         </div>
       )}
     </div>
   );
 };
+
+export default MediaDisplay;

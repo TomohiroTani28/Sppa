@@ -14,6 +14,10 @@ services:
         condition: service_healthy
       libretranslate:
         condition: service_started
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+      - NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=http://localhost:8081/v1/graphql
 
   # ▼ Hasura コンテナ（ローカルSupabaseに接続）
   hasura:
@@ -37,21 +41,31 @@ services:
       graphql-engine serve"
     volumes:
       - ./jwt-secret.json:/jwt-secret.json:ro
+    environment:
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres@supabase:5432/sppa
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+      - HASURA_GRAPHQL_DEV_MODE=true
 
   # ▼ ローカル開発用 Supabase (PostgreSQL + PostGIS)
   supabase:
     image: imresamu/postgis-arm64:16-3.4
     platform: linux/arm64
     ports:
-      - "54330:5432"
+      - "54322:5432"
     env_file:
       - ./.env.development
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=sppa
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d sppa"]
       interval: 5s
       timeout: 5s
       retries: 5
       start_period: 15s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   # ▼ LibreTranslate（翻訳API）
   libretranslate:
@@ -61,4 +75,10 @@ services:
       - "8000:5000"
     env_file:
       - ./.env.development
+    environment:
+      - LT_DEBUG=true
+      - LT_PORT=5000
     command: ["--load-only", "en,id,ja,fr,de,zh"]
+
+volumes:
+  postgres_data:

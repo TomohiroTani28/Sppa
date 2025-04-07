@@ -1,31 +1,52 @@
 "use client";
 // src/components/ErrorBoundary.tsx
-import { Button } from "@/components/ui/Button";
-import React from "react";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
+import { Button } from '@/components/ui/Button';
+import { AppError, createAppError } from '@/utils/error-handling';
+import { RefreshCw } from 'lucide-react';
+import React from 'react';
 
-interface Props {
-  children: React.ReactNode;
-  fallback?: React.ReactNode;
-}
-
-interface State {
+interface ErrorBoundaryState {
+  error: AppError | null;
   hasError: boolean;
-  error?: Error;
 }
 
-export class ErrorBoundary extends React.Component<Props, State> {
-  constructor(props: Props) {
+interface ErrorBoundaryProps {
+  fallback?: React.ReactNode;
+  children: React.ReactNode;
+  onReset?: () => void;
+}
+
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false };
+    this.state = {
+      error: null,
+      hasError: false,
+    };
   }
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  static getDerivedStateFromError(error: unknown): ErrorBoundaryState {
+    return {
+      error: createAppError(error),
+      hasError: true,
+    };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
+    console.error('Error caught by boundary:', {
+      error,
+      errorInfo,
+    });
   }
+
+  handleReset = () => {
+    this.props.onReset?.();
+    this.setState({
+      error: null,
+      hasError: false,
+    });
+  };
 
   render() {
     if (this.state.hasError) {
@@ -34,22 +55,21 @@ export class ErrorBoundary extends React.Component<Props, State> {
       }
 
       return (
-        <div className="flex flex-col items-center justify-center min-h-[200px] p-4">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            Something went wrong
-          </h2>
-          <p className="text-gray-600 mb-4">
-            {this.state.error?.message || "An unexpected error occurred"}
-          </p>
-          <Button
-            onClick={() => {
-              this.setState({ hasError: false });
-              window.location.reload();
-            }}
-          >
-            Try again
-          </Button>
-        </div>
+        <Alert variant="error" className="m-4">
+          <AlertTitle>エラーが発生しました</AlertTitle>
+          <AlertDescription className="mt-2">
+            <p className="mb-4">{this.state.error?.message}</p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={this.handleReset}
+              className="mt-2"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              再試行
+            </Button>
+          </AlertDescription>
+        </Alert>
       );
     }
 

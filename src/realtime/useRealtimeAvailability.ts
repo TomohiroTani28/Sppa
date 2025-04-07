@@ -1,6 +1,6 @@
 // src/realtime/useRealtimeAvailability.ts
-import { useState, useEffect } from "react";
-import { gql, useSubscription, useQuery } from "@apollo/client";
+import { gql, useSubscription } from "@apollo/client";
+import { useState } from "react";
 
 // セラピストのステータスをリアルタイム監視するサブスクリプション
 const THERAPIST_STATUS_SUBSCRIPTION = gql`
@@ -13,65 +13,48 @@ const THERAPIST_STATUS_SUBSCRIPTION = gql`
   }
 `;
 
-// 初期データ取得用クエリ
-const GET_THERAPIST_STATUS = gql`
-  query GetTherapistStatus($therapistId: ID!) {
-    therapistProfile(therapistId: $therapistId) {
-      id
-      status
-      lastOnlineAt
-    }
-  }
-`;
-
 /**
  * セラピストのリアルタイムアベイラビリティを取得するカスタムフック
+ * @param therapistIds 監視するセラピストIDの配列
  */
-export const useRealtimeAvailability = (therapistId: string) => {
-  const [status, setStatus] = useState<string>("offline");
-  const [lastOnlineAt, setLastOnlineAt] = useState<string | null>(null);
+export const useRealtimeAvailability = (therapistIds: string[]) => {
+  const [availabilityMap, setAvailabilityMap] = useState<Record<string, boolean>>({});
+  const [lastOnlineMap, setLastOnlineMap] = useState<Record<string, string | null>>({});
 
-  // 初期データ取得
-  const {
-    data: initialData,
-    loading: queryLoading,
-    error: queryError,
-  } = useQuery(GET_THERAPIST_STATUS, {
-    variables: { therapistId },
-    skip: !therapistId,
-    fetchPolicy: "cache-first", // 一度だけ読み込み、キャッシュがある場合はそれを使用
+  // 各セラピストIDに対してサブスクリプションを設定
+  therapistIds.forEach((therapistId) => {
+    const { data } = useSubscription(THERAPIST_STATUS_SUBSCRIPTION, {
+      variables: { therapistId },
+      skip: !therapistId,
+      onData: ({ data }) => {
+        if (data?.data?.therapistStatus) {
+          const { id, status, lastOnlineAt } = data.data.therapistStatus;
+          setAvailabilityMap((prev) => ({
+            ...prev,
+            [id]: status === "online",
+          }));
+          setLastOnlineMap((prev) => ({
+            ...prev,
+            [id]: lastOnlineAt,
+          }));
+        }
+      },
+    });
   });
 
-  // リアルタイムサブスクリプション
-  const {
-    data: subscriptionData,
-    loading: subscriptionLoading,
-    error: subscriptionError,
-  } = useSubscription(THERAPIST_STATUS_SUBSCRIPTION, {
-    variables: { therapistId },
-    skip: !therapistId,
-  });
-
-  // 初期データが取得できたときにステータスを更新
-  useEffect(() => {
-    if (initialData?.therapistProfile) {
-      setStatus(initialData.therapistProfile.status);
-      setLastOnlineAt(initialData.therapistProfile.lastOnlineAt);
+  // 新しいセラピストIDを追加する関数
+  const subscribeToAvailability = (therapistId: string) => {
+    if (!therapistIds.includes(therapistId)) {
+      setAvailabilityMap((prev) => ({
+        ...prev,
+        [therapistId]: false,
+      }));
     }
-  }, [initialData]);
-
-  // リアルタイムデータが更新されたときにステータスを更新
-  useEffect(() => {
-    if (subscriptionData?.therapistStatus) {
-      setStatus(subscriptionData.therapistStatus.status);
-      setLastOnlineAt(subscriptionData.therapistStatus.lastOnlineAt);
-    }
-  }, [subscriptionData]);
+  };
 
   return {
-    status,
-    lastOnlineAt,
-    isLoading: queryLoading || subscriptionLoading,
-    error: queryError || subscriptionError,
+    availabilityMap,
+    lastOnlineMap,
+    subscribeToAvailability,
   };
 };

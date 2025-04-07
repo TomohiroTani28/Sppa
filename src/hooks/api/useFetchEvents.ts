@@ -1,4 +1,5 @@
 // src/hooks/api/useFetchEvents.ts
+import { Event } from "@/types/event";
 import { useQuery } from "@apollo/client";
 import { gql } from "graphql-tag";
 
@@ -6,19 +7,40 @@ const FETCH_EVENTS = gql`
   query FetchEvents {
     api_events {
       id
+      therapistId
       title
       description
-      start_date
-      end_date
-      discount_percentage
+      startDate
+      endDate
+      imageUrl
+      discountPercentage
+      location
+      createdAt
+      updatedAt
     }
   }
 `;
 
 export function useFetchEvents() {
   const { data, loading, error } = useQuery(FETCH_EVENTS);
+  
+  // データをEvent型に変換
+  const events: Event[] = data?.api_events?.map((event: any) => ({
+    id: event.id,
+    therapistId: event.therapistId,
+    title: event.title,
+    description: event.description,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    imageUrl: event.imageUrl,
+    discountPercentage: event.discountPercentage,
+    location: event.location,
+    createdAt: event.createdAt,
+    updatedAt: event.updatedAt,
+  })) || [];
+  
   return {
-    events: data ? data.api_events : [],
+    events,
     loading,
     error,
   };

@@ -1,6 +1,6 @@
 // src/realtime/useRealtimeEvents.ts
-import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase-client";
+import { useEffect, useState } from "react";
 
 export const useRealtimeEvents = () => {
   const [events, setEvents] = useState<any[]>([]);

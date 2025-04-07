@@ -4,25 +4,54 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { Post } from "@/types/post";
+import type { Event } from "@/types/event";
+import type { Post } from "@/types/post";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useMemo, useState } from "react";
 
-// Event type definition
-interface Event {
-  id: string;
-  therapist_id: string;
-  title: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  discount_percentage?: number;
-  created_at: string;
-  updated_at: string;
-}
+// Media content component
+const MediaContent = ({ 
+  media, 
+  isLoading, 
+  onLoad, 
+  onError, 
+  t 
+}: { 
+  media: NonNullable<Post['media']>; 
+  isLoading: boolean; 
+  onLoad: () => void; 
+  onError: () => void; 
+  t: (key: string) => string;
+}) => {
+  if (media.mediaType === "video") {
+    return (
+      <video
+        src={media.url}
+        controls
+        className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
+        aria-label={t("videoContent")}
+        onLoadedData={onLoad}
+        onError={onError}
+      >
+        <track kind="captions" src="/captions.vtt" label="English" default />
+      </video>
+    );
+  }
+
+  return (
+    <img
+      src={media.url}
+      alt={t("imageContent")}
+      className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
+      loading="lazy"
+      onLoad={onLoad}
+      onError={onError}
+    />
+  );
+};
 
 // New component for media
 const PostMedia = ({ post, t }: { post: Post; t: (key: string) => string }) => {
@@ -34,46 +63,32 @@ const PostMedia = ({ post, t }: { post: Post; t: (key: string) => string }) => {
     setIsLoading(false);
   };
 
+  if (!post.media) return null;
+
   return (
-    post.media && (
-      <div className="relative aspect-square">
-        {isLoading && (
-          <Skeleton className="absolute inset-0 w-full h-full" />
-        )}
-        {error ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-            <p className="text-red-500 text-sm">{error}</p>
-          </div>
-        ) : (
-          post.media.mediaType === "video" ? (
-            <video
-              src={post.media.url}
-              controls
-              className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
-              aria-label={post.content ?? t("videoContent")}
-              onLoadedData={() => setIsLoading(false)}
-              onError={handleError}
-            >
-              <track kind="captions" src="/captions.vtt" label="English" default />
-            </video>
-          ) : (
-            <img
-              src={post.media.url}
-              alt={post.content ?? t("imageContent")}
-              className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
-              loading="lazy"
-              onLoad={() => setIsLoading(false)}
-              onError={handleError}
-            />
-          )
-        )}
-        {post.user.role === "therapist" && (
-          <Badge className="absolute top-2 right-2 bg-blue-500 text-white">
-            {t("therapistBadge")}
-          </Badge>
-        )}
-      </div>
-    )
+    <div className="relative aspect-square">
+      {isLoading && (
+        <Skeleton className="absolute inset-0 w-full h-full" />
+      )}
+      {error ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+          <p className="text-red-500 text-sm">{error}</p>
+        </div>
+      ) : (
+        <MediaContent
+          media={post.media}
+          isLoading={isLoading}
+          onLoad={() => setIsLoading(false)}
+          onError={handleError}
+          t={t}
+        />
+      )}
+      {post.user.role === "therapist" && (
+        <Badge className="absolute top-2 right-2 bg-blue-500 text-white">
+          {t("therapistBadge")}
+        </Badge>
+      )}
+    </div>
   );
 };
 
@@ -81,7 +96,7 @@ const PostMedia = ({ post, t }: { post: Post; t: (key: string) => string }) => {
 const EventCard = ({ event, isAvailable, t }: { event: Event; isAvailable: boolean; t: (key: string) => string }) => {
   const formattedDate = useMemo(() => {
     try {
-      return formatDistanceToNow(new Date(event.start_date), {
+      return formatDistanceToNow(new Date(event.startDate), {
         addSuffix: true,
         locale: ja,
       });
@@ -89,7 +104,7 @@ const EventCard = ({ event, isAvailable, t }: { event: Event; isAvailable: boole
       console.error("Date formatting error:", error);
       return t("dateFormatError");
     }
-  }, [event.start_date, t]);
+  }, [event.startDate, t]);
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -102,6 +117,17 @@ const EventCard = ({ event, isAvailable, t }: { event: Event; isAvailable: boole
         </div>
         <p className="text-sm text-gray-500 mt-1">{formattedDate}</p>
       </div>
+
+      {event.imageUrl && (
+        <div className="relative aspect-square">
+          <img
+            src={event.imageUrl}
+            alt={event.title}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      )}
 
       <div className="p-4">
         <p className="text-gray-800 whitespace-pre-wrap">{event.description}</p>
@@ -141,17 +167,8 @@ interface PostCardProps {
 export const PostCard = ({ post, currentUserId, event, isAvailable = false }: PostCardProps) => {
   const { t } = useTranslation("common");
 
-  // If event is provided, render EventCard instead of PostCard
-  if (event) {
-    return <EventCard event={event} isAvailable={isAvailable} t={t} />;
-  }
-
-  // If no post is provided, return null
-  if (!post) {
-    return null;
-  }
-
   const formattedDate = useMemo(() => {
+    if (!post?.createdAt) return "";
     try {
       return formatDistanceToNow(new Date(post.createdAt), {
         addSuffix: true,
@@ -161,12 +178,22 @@ export const PostCard = ({ post, currentUserId, event, isAvailable = false }: Po
       console.error("Date formatting error:", error);
       return t("dateFormatError");
     }
-  }, [post.createdAt, t]);
+  }, [post?.createdAt, t]);
 
   const isLiked = useMemo(() => {
-    if (!currentUserId || !post.likes) return false;
+    if (!currentUserId || !post?.likes) return false;
     return post.likes.some((like) => like.userId === currentUserId);
-  }, [post.likes, currentUserId]);
+  }, [post?.likes, currentUserId]);
+
+  // If event is provided, render EventCard instead of PostCard
+  if (event) {
+    return <EventCard event={event} isAvailable={isAvailable} t={t} />;
+  }
+
+  // If no post is provided, return null
+  if (!post) {
+    return null;
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">

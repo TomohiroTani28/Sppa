@@ -21,23 +21,32 @@ interface ErrorDisplayProps {
   onRetry: () => void;
 }
 
-const ErrorDisplay = ({ error, t, onRetry }: ErrorDisplayProps) => {
+const ErrorDisplay: React.FC<ErrorDisplayProps> = React.memo(({ error, t, onRetry }) => {
   if (!error) return null;
+  
   return (
-    <Text tag="div" className="px-4 py-2 text-error text-center">
-      {error}
-      <button
-        className="ml-2 text-primary underline"
-        onClick={onRetry}
-      >
-        {t("retry")}
-      </button>
-    </Text>
+    <Alert variant="error" className="mb-4">
+      <AlertTitle>{t("errors.title")}</AlertTitle>
+      <AlertDescription className="flex items-center justify-between">
+        <span>{error}</span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onRetry}
+          className="ml-4"
+        >
+          <RefreshCw className="w-4 h-4 mr-2" />
+          {t("retry")}
+        </Button>
+      </AlertDescription>
+    </Alert>
   );
-};
+});
+
+ErrorDisplay.displayName = "ErrorDisplay";
 
 interface HomeMainContentProps {
-  userData: { id: string; name: string; profilePicture: string; email: string; role?: string } | null;
+  userData: { id: string; name: string; profilePicture: string; email: string; role?: string | undefined } | null;
   selectedTab: "tourist" | "therapist";
   t: (key: string) => string;
   feedError: string | null;
@@ -62,14 +71,18 @@ const HomeMainContent = React.memo(({
     window.location.reload();
   }, []);
 
+  const handleLoadMore = useCallback(() => {
+    // Implement load more functionality if needed
+  }, []);
+
   const memoizedFeed = useMemo(() => (
     <MasonryFeed
-      userId={safeUserId}
       posts={feedData}
-      loading={loading}
-      error={error ?? null}
+      hasMore={false}
+      isLoading={loading}
+      onLoadMore={handleLoadMore}
     />
-  ), [safeUserId, feedData, loading, error]);
+  ), [feedData, loading, handleLoadMore]);
 
   return (
     <Text tag="main" className="py-4">
@@ -91,7 +104,7 @@ const HomeMainContent = React.memo(({
         <FeedFilters
           selectedTab={selectedTab}
           onTabChange={onTabChange}
-          userRole={userData?.role}
+          userRole={userData?.role ?? ""}
         />
       </div>
       <Link href="/notifications" prefetch={false} className="block text-center mt-4">
@@ -109,38 +122,31 @@ export const FeedClient: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
-  const { feedData, loading, error } = useRealtimeFeedUpdates(selectedTab);
+  const { error } = useRealtimeFeedUpdates(selectedTab);
 
-  const handleTabChange = (tab: "tourist" | "therapist") => {
+  const handleTabChange = useCallback((tab: "tourist" | "therapist") => {
     setSelectedTab(tab);
-  };
+  }, []);
 
-  const handleRetry = () => {
+  const handleRetry = useCallback(() => {
     window.location.reload();
-  };
+  }, []);
 
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] p-4">
-        <Alert variant="error" className="max-w-md mb-4">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-        <Button onClick={handleRetry} variant="outline">
-          <RefreshCw className="w-4 h-4 mr-2" />
-          {t("common.retry")}
-        </Button>
-      </div>
-    );
-  }
-
-  const userData = user ? {
+  const userData = useMemo(() => user ? {
     id: user.id,
     name: user.name ?? "Unknown User",
     profilePicture: user.image ?? "/default-avatar.png",
     email: user.email ?? "",
     role: user.role,
-  } : null;
+  } : null, [user]);
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] p-4">
+        <ErrorDisplay error={error} t={t} onRetry={handleRetry} />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

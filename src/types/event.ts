@@ -1,16 +1,16 @@
 // src/types/event.ts
-export interface Event {
-  id: string;
+import { BaseEvent, BaseMedia } from './base';
+
+export interface Event extends BaseEvent {
   therapistId: string;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
   imageUrl: string;
   discountPercentage?: number;
   location?: string;
-  createdAt: string;
-  updatedAt: string;
+  capacity: number;
+  currentParticipants: number;
+  status: "upcoming" | "ongoing" | "completed" | "cancelled";
+  media?: BaseMedia[];
+  tags?: string[];
 }
 
 export interface EventInput {
@@ -19,8 +19,11 @@ export interface EventInput {
   description: string;
   startDate: string;
   endDate: string;
-  discountPercentage?: number;
   imageUrl: string;
+  discountPercentage?: number;
+  location?: string;
+  capacity: number;
+  tags?: string[];
 }
 
 export interface EventResponse {
