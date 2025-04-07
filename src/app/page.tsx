@@ -11,10 +11,18 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
+    // 認証状態が確定した時点での処理
     if (status === "unauthenticated") {
+      console.log("未ログインユーザー: ログインページへリダイレクト");
       router.push("/login");
-    } else if (session?.user?.role === "therapist") {
-      router.push("/therapist/dashboard");
+    } else if (status === "authenticated") {
+      if (session?.user?.role === "therapist") {
+        console.log("セラピストユーザー: ダッシュボードへリダイレクト");
+        router.push("/therapist/dashboard");
+      } else {
+        console.log("一般ユーザー: フィードページを表示");
+        // フィードを表示（リダイレクトなし）
+      }
     }
   }, [status, session, router]);
 
@@ -26,5 +34,6 @@ export default function HomePage() {
     return <FeedPageWrapper />;
   }
 
-  return null;
+  // ローディング中か、リダイレクト処理中の場合は空のコンテンツを表示
+  return <div></div>;
 }

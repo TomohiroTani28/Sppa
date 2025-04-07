@@ -22,22 +22,28 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
-
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-    console.log("[Login] signIn result:", result);
-
-    if (result?.error) {
-      setErrorMessage(result.error);
-      return;
+  
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      console.log("[Login] signIn result:", result);
+  
+      if (result?.error) {
+        setErrorMessage(result.error);
+        return;
+      }
+  
+      const redirectTo = getRedirectPath() || "/feed";
+      console.log("[Login] リダイレクト先:", redirectTo);
+      clearRedirectPath();
+      router.replace(redirectTo);
+    } catch (error) {
+      console.error("[Login] エラー:", error);
+      setErrorMessage("ログイン処理中にエラーが発生しました");
     }
-
-    const redirectTo = getRedirectPath() || "/feed";
-    clearRedirectPath();
-    router.replace(redirectTo);
   };
 
   return (

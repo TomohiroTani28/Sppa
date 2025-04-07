@@ -1,21 +1,25 @@
 // src/lib/storage-utils.ts
-const REDIRECT_PATH_KEY = "redirectPath";
+const REDIRECT_PATH_KEY = 'redirect_path';
 
-export const saveRedirectPath = (path: string) => {
-  if (typeof window !== "undefined") {
+export function saveRedirectPath(path: string): void {
+  if (typeof window !== 'undefined') {
     localStorage.setItem(REDIRECT_PATH_KEY, path);
+    console.log('Saved redirect path:', path);
   }
-};
+}
 
-export const getRedirectPath = (): string | null => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem(REDIRECT_PATH_KEY);
+export function getRedirectPath(): string | null {
+  if (typeof window !== 'undefined') {
+    const path = localStorage.getItem(REDIRECT_PATH_KEY);
+    console.log('Retrieved redirect path:', path);
+    return path;
   }
   return null;
-};
+}
 
-export const clearRedirectPath = () => {
-  if (typeof window !== "undefined") {
+export function clearRedirectPath(): void {
+  if (typeof window !== 'undefined') {
     localStorage.removeItem(REDIRECT_PATH_KEY);
+    console.log('Cleared redirect path');
   }
-};
+}
