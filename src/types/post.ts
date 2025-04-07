@@ -1,19 +1,31 @@
 // src/types/post.ts
 export interface Post {
   id: string;
-  userId: string;
-  content?: string;
-  postType: 'service' | 'review' | 'question' | 'general';
-  location?: string;
+  content: string;
   createdAt: string;
-  media?: {
-    url: string;
-    mediaType: 'photo' | 'video';
-  };
+  updatedAt: string;
+  userId: string;
   user: {
     id: string;
     name: string;
-    profilePicture?: string;
-    role: 'therapist' | 'tourist';
+    profilePicture: string;
+    role: "tourist" | "therapist";
   };
+  media?: {
+    url: string;
+    mediaType: "image" | "video";
+  };
+  likes: Array<{
+    id: string;
+    userId: string;
+    postId: string;
+    createdAt: string;
+  }>;
+  comments: Array<{
+    id: string;
+    content: string;
+    userId: string;
+    postId: string;
+    createdAt: string;
+  }>;
 }

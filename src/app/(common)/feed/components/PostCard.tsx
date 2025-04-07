@@ -1,13 +1,17 @@
 // src/app/(common)/feed/components/PostCard.tsx
 "use client";
-import { useState } from "react";
-import { useTranslation } from "next-i18next";
-import { Post } from "@/types/post";
+import { Avatar } from "@/components/ui/Avatar";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { TranslationToggle } from "./TranslationToggle";
-import InstantBookingButton from "./InstantBookingButton"; // 追加
+import { Skeleton } from "@/components/ui/Skeleton";
+import { Post } from "@/types/post";
+import { formatDistanceToNow } from "date-fns";
+import { ja } from "date-fns/locale";
+import { Heart, MessageCircle, Share2 } from "lucide-react";
+import { useTranslation } from "next-i18next";
+import { useMemo, useState } from "react";
 
-// Event 型を仮定（必要に応じて実際の型をインポート）
+// Event type definition
 interface Event {
   id: string;
   therapist_id: string;
@@ -21,110 +25,200 @@ interface Event {
 }
 
 // New component for media
-const PostMedia = ({ post, t }: { post: Post; t: (key: string) => string }) => (
-  post.media && (
-    <div className="relative">
-      {post.media.mediaType === "video" ? (
-        <video
-          src={post.media.url}
-          controls
-          className="w-full object-cover"
-          aria-label={post.content || t("videoContent")}
-        >
-          <track kind="captions" src="/captions.vtt" label="English" default />
-        </video>
-      ) : (
-        <img
-          src={post.media.url}
-          alt={post.content || t("imageContent")}
-          className="w-full object-cover"
-          loading="lazy"
-        />
-      )}
-      {post.user.role === "therapist" && (
-        <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
-          {t("therapistBadge")}
-        </span>
-      )}
-    </div>
-  )
-);
+const PostMedia = ({ post, t }: { post: Post; t: (key: string) => string }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-// Main component
-interface PostCardProps {
-  readonly post?: Post;  // オプションに変更
-  readonly event?: Event;  // event を追加
-  readonly currentUserId?: string;
-  readonly isAvailable?: boolean;  // isAvailable を追加
-}
-
-export function PostCard({ post, event, currentUserId, isAvailable }: PostCardProps) {
-  const { t } = useTranslation("common");
-  const [isTranslated, setIsTranslated] = useState(false);
-  const [translatedContent, setTranslatedContent] = useState(post?.content || event?.description || "");
-
-  const handleTranslate = async () => {
-    const textToTranslate = post?.content || event?.description || "";
-    if (!isTranslated) {
-      const response = await fetch("/api/translate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: textToTranslate, targetLang: "en" }),
-      });
-      const data = await response.json();
-      setTranslatedContent(data.translatedText);
-      setIsTranslated(true);
-    } else {
-      setTranslatedContent(textToTranslate);
-      setIsTranslated(false);
-    }
+  const handleError = () => {
+    setError(t("mediaLoadError"));
+    setIsLoading(false);
   };
 
-  const content = post ? post.content : event?.description;
-  const user = post?.user;
-  const role = user?.role || "therapist"; // event の場合は therapist を仮定
+  return (
+    post.media && (
+      <div className="relative aspect-square">
+        {isLoading && (
+          <Skeleton className="absolute inset-0 w-full h-full" />
+        )}
+        {error ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <p className="text-red-500 text-sm">{error}</p>
+          </div>
+        ) : (
+          post.media.mediaType === "video" ? (
+            <video
+              src={post.media.url}
+              controls
+              className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
+              aria-label={post.content ?? t("videoContent")}
+              onLoadedData={() => setIsLoading(false)}
+              onError={handleError}
+            >
+              <track kind="captions" src="/captions.vtt" label="English" default />
+            </video>
+          ) : (
+            <img
+              src={post.media.url}
+              alt={post.content ?? t("imageContent")}
+              className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
+              loading="lazy"
+              onLoad={() => setIsLoading(false)}
+              onError={handleError}
+            />
+          )
+        )}
+        {post.user.role === "therapist" && (
+          <Badge className="absolute top-2 right-2 bg-blue-500 text-white">
+            {t("therapistBadge")}
+          </Badge>
+        )}
+      </div>
+    )
+  );
+};
+
+// Event card component
+const EventCard = ({ event, isAvailable, t }: { event: Event; isAvailable: boolean; t: (key: string) => string }) => {
+  const formattedDate = useMemo(() => {
+    try {
+      return formatDistanceToNow(new Date(event.start_date), {
+        addSuffix: true,
+        locale: ja,
+      });
+    } catch (error) {
+      console.error("Date formatting error:", error);
+      return t("dateFormatError");
+    }
+  }, [event.start_date, t]);
 
   return (
-    <div className="rounded-lg bg-white shadow-md overflow-hidden">
-      {post && <PostMedia post={post} t={t} />}
-      <div className="p-2">
-        <div className="flex items-center mb-2">
-          {user && (
-            <img
-              src={user.profilePicture || "/default-avatar.png"}
-              alt={user.name}
-              className="w-8 h-8 rounded-full mr-2"
-            />
-          )}
-          <span className="font-semibold">{user?.name || "Therapist"}</span>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div className="p-4">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-gray-900">{event.title}</h3>
+          <Badge className={isAvailable ? "bg-green-500" : "bg-red-500"}>
+            {isAvailable ? t("available") : t("unavailable")}
+          </Badge>
         </div>
-        {content && (
-          <p className="text-sm text-gray-700">{translatedContent}</p>
-        )}
-        <div className="flex justify-between mt-2">
-          <button className="text-gray-500 hover:text-blue-500" aria-label={t("like")}>
-            {t("like")}
-          </button>
-          <button className="text-gray-500 hover:text-blue-500" aria-label={t("comment")}>
-            {t("comment")}
-          </button>
-          <button className="text-gray-500 hover:text-blue-500" aria-label={t("share")}>
-            {t("share")}
-          </button>
-          {role === "therapist" && post && (
-            <InstantBookingButton
-              therapistId={post.user.id}
-              isAvailable={!!isAvailable}
-            />
-          )}
-          {content && (
-            <TranslationToggle
-              isTranslated={isTranslated}
-              onClick={handleTranslate}
-            />
-          )}
+        <p className="text-sm text-gray-500 mt-1">{formattedDate}</p>
+      </div>
+
+      <div className="p-4">
+        <p className="text-gray-800 whitespace-pre-wrap">{event.description}</p>
+        
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center space-x-1 text-gray-500"
+            >
+              <MessageCircle className="w-5 h-5" />
+              <span>{t("bookNow")}</span>
+            </Button>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-500"
+          >
+            <Share2 className="w-5 h-5" />
+          </Button>
         </div>
       </div>
     </div>
   );
+};
+
+// Main component
+interface PostCardProps {
+  post?: Post;
+  currentUserId?: string;
+  event?: Event;
+  isAvailable?: boolean;
 }
+
+export const PostCard = ({ post, currentUserId, event, isAvailable = false }: PostCardProps) => {
+  const { t } = useTranslation("common");
+
+  // If event is provided, render EventCard instead of PostCard
+  if (event) {
+    return <EventCard event={event} isAvailable={isAvailable} t={t} />;
+  }
+
+  // If no post is provided, return null
+  if (!post) {
+    return null;
+  }
+
+  const formattedDate = useMemo(() => {
+    try {
+      return formatDistanceToNow(new Date(post.createdAt), {
+        addSuffix: true,
+        locale: ja,
+      });
+    } catch (error) {
+      console.error("Date formatting error:", error);
+      return t("dateFormatError");
+    }
+  }, [post.createdAt, t]);
+
+  const isLiked = useMemo(() => {
+    if (!currentUserId || !post.likes) return false;
+    return post.likes.some((like) => like.userId === currentUserId);
+  }, [post.likes, currentUserId]);
+
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div className="p-4">
+        <div className="flex items-center space-x-3">
+          <Avatar
+            src={post.user.profilePicture}
+            alt={post.user.name}
+            className="w-10 h-10"
+          />
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-900">{post.user.name}</h3>
+            <p className="text-sm text-gray-500">{formattedDate}</p>
+          </div>
+        </div>
+      </div>
+
+      <PostMedia post={post} t={t} />
+
+      <div className="p-4">
+        <p className="text-gray-800 whitespace-pre-wrap">{post.content}</p>
+        
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`flex items-center space-x-1 ${
+                isLiked ? "text-red-500" : "text-gray-500"
+              }`}
+            >
+              <Heart className="w-5 h-5" />
+              <span>{post.likes.length}</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center space-x-1 text-gray-500"
+            >
+              <MessageCircle className="w-5 h-5" />
+              <span>{post.comments.length}</span>
+            </Button>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-500"
+          >
+            <Share2 className="w-5 h-5" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};

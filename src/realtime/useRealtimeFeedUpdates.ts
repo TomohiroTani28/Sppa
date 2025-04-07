@@ -1,14 +1,16 @@
 // src/realtime/useRealtimeFeedUpdates.ts
-import { useEffect } from "react";
-import { gql, useSubscription } from "@apollo/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { Post } from "@/types/post";
+import { gql, OnDataOptions, useSubscription } from "@apollo/client";
+import { useCallback, useEffect, useState } from "react";
 import { create } from "zustand";
 
-const deduplicatePosts = (posts: Array<any>): Array<any> =>
+const deduplicatePosts = (posts: Post[]): Post[] =>
   posts.filter((post, idx, self) => self.findIndex((p) => p.id === post.id) === idx);
 
 interface FeedState {
-  posts: Array<any>;
-  updateFeed: (newPosts: FeedState["posts"]) => void;
+  posts: Post[];
+  updateFeed: (newPosts: Post[]) => void;
 }
 
 export const useFeedStore = create<FeedState>((set) => ({
@@ -24,65 +26,98 @@ const FEED_SUBSCRIPTION = gql`
   subscription FeedUpdates($role: String!) {
     posts(
       where: { user: { role: { _eq: $role } } }
-      order_by: { created_at: desc }
+      order_by: { createdAt: desc }
       limit: 20
     ) {
       id
-      user_id
+      userId
       content
-      post_type
-      location
-      created_at
-      medium {
-        id
+      createdAt
+      updatedAt
+      media {
         url
-        media_type
+        mediaType
       }
       user {
         id
         name
-        profile_picture
+        profilePicture
         role
+      }
+      likes {
+        id
+        userId
+        postId
+        createdAt
+      }
+      comments {
+        id
+        content
+        userId
+        postId
+        createdAt
       }
     }
   }
 `;
 
+interface SubscriptionData {
+  posts: Post[];
+}
+
 export const useRealtimeFeedUpdates = (selectedTab: "tourist" | "therapist" = "tourist") => {
   const updateFeed = useFeedStore((state) => state.updateFeed);
   const posts = useFeedStore((state) => state.posts);
   const role = selectedTab || "tourist";
+  const { user, loading: authLoading } = useAuth();
+  const [subscriptionError, setSubscriptionError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY = 2000; // Base delay in milliseconds
 
-  console.log("useRealtimeFeedUpdates - サブスクリプション開始:", {
-    selectedTab,
-    role,
-    timestamp: new Date().toISOString(),
-  });
+  const handleSubscriptionError = useCallback((err: Error) => {
+    console.error("Subscription error:", err);
+    
+    if (err.message.includes("Forbidden") || err.message.includes("Unauthorized")) {
+      setSubscriptionError("Authentication error. Please log in again.");
+    } else if (err.message.includes("Network")) {
+      setSubscriptionError("Network error. Please check your connection.");
+    } else {
+      setSubscriptionError(`Subscription error: ${err.message}`);
+    }
+  }, []);
 
-  const { data, error, loading } = useSubscription(FEED_SUBSCRIPTION, {
+  const handleSubscriptionData = useCallback((options: OnDataOptions<SubscriptionData>) => {
+    const posts = options.data?.data?.posts || [];
+    console.log("リアルタイムデータ受信:", {
+      posts,
+      timestamp: new Date().toISOString(),
+    });
+    setSubscriptionError(null);
+  }, []);
+
+  // 認証状態に基づいてサブスクリプションをスキップするかどうかを決定
+  const shouldSkipSubscription = !user || authLoading;
+
+  const { data, error, loading } = useSubscription<SubscriptionData>(FEED_SUBSCRIPTION, {
     variables: { role },
-    skip: !role,
-    onError: (err) => {
-      console.error("サブスクリプションエラー詳細:", {
-        message: err.message,
-        graphQLErrors: err.graphQLErrors?.map((e) => ({
-          message: e.message,
-          path: e.path,
-        })),
-        protocolErrors: err.protocolErrors?.map((e) => ({
-          message: e.message,
-        })),
-        networkError: err.networkError ? err.networkError.message : null,
-        timestamp: new Date().toISOString(),
-      });
-    },
-    onData: ({ data }) => {
-      console.log("リアルタイムデータ受信:", {
-        posts: data?.data?.posts || [],
-        timestamp: new Date().toISOString(),
-      });
-    },
+    skip: shouldSkipSubscription || !role,
+    onError: handleSubscriptionError,
+    onData: handleSubscriptionData,
   });
+
+  // エラー発生時のリトライロジック
+  useEffect(() => {
+    if (error && retryCount < MAX_RETRIES) {
+      const delay = RETRY_DELAY * Math.pow(2, retryCount); // Exponential backoff
+      const timer = setTimeout(() => {
+        console.log(`Retrying subscription (${retryCount + 1}/${MAX_RETRIES})`);
+        setRetryCount(prev => prev + 1);
+      }, delay);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [error, retryCount]);
 
   useEffect(() => {
     if (data?.posts) {
@@ -100,5 +135,17 @@ export const useRealtimeFeedUpdates = (selectedTab: "tourist" | "therapist" = "t
     }
   }, [data, error, updateFeed]);
 
-  return { feedData: posts, loading, error };
+  // 認証状態が変わったときにリトライカウントをリセット
+  useEffect(() => {
+    if (user) {
+      setRetryCount(0);
+      setSubscriptionError(null);
+    }
+  }, [user]);
+
+  return { 
+    feedData: posts, 
+    loading: loading || authLoading, 
+    error: subscriptionError ?? error?.message ?? null 
+  };
 };

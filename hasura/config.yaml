@@ -11,3 +11,50 @@ databases:
   - name: sppa
     url:
       from_env: HASURA_GRAPHQL_DATABASE_URL
+    pool_settings:
+      max_connections: 50
+      idle_timeout: 180
+      retries: 3
+    isolation_level: read-committed
+    use_prepared_statements: true
+    enable_ssl: true
+    enable_logging: true
+    enable_telemetry: true
+    enable_console: true
+    enable_jwt: true
+    enable_anonymous_access: false
+    enable_cors: true
+    cors_domains:
+      - http://localhost:3000
+      - https://sppa.app
+    enable_rate_limit: true
+    rate_limit:
+      max_requests: 100
+      window_size: 60
+    enable_compression: true
+    enable_query_tags: true
+    enable_query_logging: true
+    enable_metrics: true
+    enable_tracing: true
+    enable_health_check: true
+    enable_prometheus: true
+    enable_graphiql: true
+    enable_playground: true
+    enable_introspection: true
+    enable_schema_dump: true
+    enable_migrations: true
+    enable_seeds: true
+    enable_metadata: true
+    enable_actions: true
+    enable_cron_triggers: true
+    enable_remote_schemas: true
+    enable_allow_list: true
+    enable_inherited_roles: true
+    enable_network: true
+    enable_query_collections: true
+    enable_metrics_config: true
+    enable_graphql_schema_introspection: true
+    enable_api_limits: true
+    enable_rest_endpoints: true
+    enable_opentelemetry: true
+    enable_backend_configs: true

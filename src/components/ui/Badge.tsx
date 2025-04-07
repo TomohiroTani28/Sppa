@@ -3,38 +3,32 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 
-const badgeVariants = {
-  default: "bg-primary text-white",
-  secondary: "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100",
-  outline:
-    "border border-gray-300 text-gray-900 dark:border-gray-600 dark:text-gray-100",
-  success: "bg-green-500 text-white",
-  warning: "bg-yellow-500 text-black",
-  danger: "bg-red-500 text-white",
-};
-
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: keyof typeof badgeVariants;
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  variant?: "default" | "secondary" | "destructive" | "outline";
 }
 
-const Badge: React.FC<BadgeProps> = ({
+export function Badge({
   className,
   variant = "default",
-  children,
   ...props
-}) => {
+}: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium",
-        badgeVariants[variant],
-        className,
+        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+        {
+          "bg-primary text-primary-foreground hover:bg-primary/80":
+            variant === "default",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80":
+            variant === "secondary",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/80":
+            variant === "destructive",
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground":
+            variant === "outline",
+        },
+        className
       )}
       {...props}
-    >
-      {children}
-    </span>
+    />
   );
-};
-
-export default Badge;
+}
