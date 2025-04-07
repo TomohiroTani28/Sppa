@@ -1,13 +1,14 @@
 // src/app/(common)/preferences/page.tsx
-import PreferenceForm from "./components/PreferenceForm";
+"use client";
+import dynamic from "next/dynamic";
 
-const PreferencesPage = () => {
-  return (
-    <div className="preferences-page">
-      <h1>Manage Your Preferences</h1>
-      <PreferenceForm />
-    </div>
-  );
-};
+// 別の名前を使用
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
 
-export default PreferencesPage;
+// 動的インポート
+const PreferencesClient = dynamic(() => import("@/app/tourist/preferences/PreferencesClient"), { ssr: false });
+
+export default function PreferencesPage() {
+  return <PreferencesClient />;
+}
