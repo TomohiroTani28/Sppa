@@ -2,12 +2,12 @@
 "use client";
 import dynamic from "next/dynamic";
 
-// 完全に異なる名前を使用
-export const fetchCache = "force-no-store";
+// 数値型を使用（関数ではなく実際の数値または定数）
 export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 // 動的インポート
-const BookingsClient = dynamic(() => import("@/app/tourist/bookings/BookingsClient"), { ssr: false });
+const BookingsClient = dynamic(() => import("./BookingsClient"), { ssr: false });
 
 export default function BookingsPage() {
   return <BookingsClient />;
