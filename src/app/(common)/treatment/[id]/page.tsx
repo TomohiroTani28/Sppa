@@ -33,13 +33,14 @@ const GET_THERAPIST_SERVICES = gql`
   }
 `;
 
-// Next.js 15 の PageProps に合わせた型定義
-export interface PageProps {
-  params: { id: string };
+// Next.js 15.2.4 に合わせた型定義
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
 
 export default async function TherapistDetailPage({ params }: PageProps) {
-  const { id } = params;
+  // params を await して id を取得
+  const { id } = await params;
 
   // Apollo Client インスタンスを取得
   const client = await graphqlClient();
