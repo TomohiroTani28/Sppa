@@ -1,7 +1,7 @@
 // src/app/api/therapists/[therapistId]/route.ts
-import { NextRequest, NextResponse } from "next/server";
 import { graphqlClient } from "@/lib/apollo-client";
 import { gql } from "@apollo/client";
+import { NextRequest, NextResponse } from "next/server";
 
 // GraphQL query to fetch therapist profile
 const GET_THERAPIST_PROFILE = gql`
@@ -32,10 +32,10 @@ const GET_THERAPIST_PROFILE = gql`
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { therapistId: string } }
+  context: { params: { therapistId: string } }
 ) {
   try {
-    const { therapistId } = params;
+    const { therapistId } = context.params;
 
     if (!therapistId) {
       return NextResponse.json(
