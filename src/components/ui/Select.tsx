@@ -1,8 +1,8 @@
 // src/components/ui/Select.tsx
-import * as React from "react";
+import { cn } from "@/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 
 /**
  * セレクトコンポーネントのルート
@@ -28,10 +28,7 @@ export const SelectValue = SelectPrimitive.Value;
  */
 export const SelectTrigger = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
-    className?: string;
-    children?: React.ReactNode;
-  }
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
@@ -55,11 +52,7 @@ SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
  */
 export const SelectContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> & {
-    className?: string;
-    children?: React.ReactNode;
-    position?: "popper" | "item-aligned";
-  }
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, children, position = "popper", ...props }, ref) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
@@ -93,10 +86,7 @@ SelectContent.displayName = SelectPrimitive.Content.displayName;
  */
 export const SelectLabel = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label> & {
-    className?: string;
-    children?: React.ReactNode;
-  }
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
@@ -115,9 +105,7 @@ SelectLabel.displayName = SelectPrimitive.Label.displayName;
 export const SelectItem = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
-    className?: string;
-    children?: React.ReactNode;
-    value: string; // 必須プロパティとして明示
+    value: string;
   }
 >(({ className, children, value, ...props }, ref) => (
   <SelectPrimitive.Item
@@ -126,7 +114,7 @@ export const SelectItem = React.forwardRef<
       "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
-    value={value} // valueを明示的に渡す
+    value={value}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -145,9 +133,7 @@ SelectItem.displayName = SelectPrimitive.Item.displayName;
  */
 export const SelectSeparator = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator> & {
-    className?: string;
-  }
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator
     ref={ref}

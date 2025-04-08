@@ -5,8 +5,8 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  checked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
+  checked?: boolean | undefined;
+  onCheckedChange?: ((checked: boolean) => void) | undefined;
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
@@ -24,14 +24,14 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         <div
           className={cn(
             "h-5 w-5 flex items-center justify-center rounded border border-gray-300 bg-white shadow-sm transition-all",
-            checked && "bg-primary border-primary",
+            checked && "bg-primary border-primary"
           )}
         >
           {checked && <Check className="h-4 w-4 text-white" />}
         </div>
       </div>
     );
-  },
+  }
 );
 
 Checkbox.displayName = "Checkbox";

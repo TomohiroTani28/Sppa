@@ -1,11 +1,11 @@
 // src/app/(common)/notifications/page.tsx
 "use client";
-import dynamic from "next/dynamic";
+import { default as nextDynamic } from "next/dynamic";
 
 // Force dynamic rendering to avoid SSG issues with client-side hooks
-export const forceDynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-const NotificationsClient = dynamic(() => import("./NotificationsClient"), { ssr: false });
+const NotificationsClient = nextDynamic(() => import("./NotificationsClient"), { ssr: false });
 
 export default function NotificationsPage() {
   return <NotificationsClient />;

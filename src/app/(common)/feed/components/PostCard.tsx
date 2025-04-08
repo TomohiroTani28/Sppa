@@ -1,6 +1,6 @@
 // src/app/(common)/feed/components/PostCard.tsx
 "use client";
-import { Avatar } from "@/components/ui/Avatar";
+import { Avatar, AvatarImage } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -199,11 +199,12 @@ export const PostCard = ({ post, currentUserId, event, isAvailable = false }: Po
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="p-4">
         <div className="flex items-center space-x-3">
-          <Avatar
-            src={post.user.profilePicture}
-            alt={post.user.name}
-            className="w-10 h-10"
-          />
+          <Avatar className="w-10 h-10">
+            <AvatarImage
+              src={post.user.profilePicture}
+              alt={post.user.name}
+            />
+          </Avatar>
           <div className="flex-1">
             <h3 className="font-semibold text-gray-900">{post.user.name}</h3>
             <p className="text-sm text-gray-500">{formattedDate}</p>

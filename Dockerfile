@@ -17,8 +17,11 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-# Build application
-RUN npm install -g pnpm && pnpm build
+# Install additional packages that might be missing
+RUN npm install -g pnpm && \
+    pnpm add -D postcss postcss-preset-env cssnano postcss-import tailwindcss && \
+    pnpm add @radix-ui/react-avatar @radix-ui/react-accordion cmdk && \
+    pnpm build
 
 # Production image, copy all the files and run next
 FROM node:18-alpine AS runner
