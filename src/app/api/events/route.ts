@@ -1,9 +1,10 @@
-// src/app/api/events.ts
+// src/app/api/events/route.ts
+import { NextRequest, NextResponse } from 'next/server';
 import { gql } from "@apollo/client";
+import graphqlClient from "@/lib/hasura-client";
 
-// GET_EVENTS は、指定された therapistId に紐づくイベントを取得するための GraphQL クエリです。
-// Hasura の自動生成 GraphQL API を前提としており、events テーブルの各種カラムを取得します。
-export const GET_EVENTS = gql`
+// Define the GraphQL query (not exported, used internally)
+const GET_EVENTS = gql`
   query GetEvents($therapistId: uuid!) {
     events(where: { therapist_id: { _eq: $therapistId } }) {
       id
@@ -19,3 +20,32 @@ export const GET_EVENTS = gql`
     }
   }
 `;
+
+// Export a GET handler for the API route
+export async function GET(request: NextRequest) {
+  // Extract therapistId from query parameters (e.g., /api/events?therapistId=some-id)
+  const url = new URL(request.url);
+  const therapistId = url.searchParams.get('therapistId');
+
+  // Validate that therapistId is provided
+  if (!therapistId) {
+    return NextResponse.json({ error: 'therapistId is required' }, { status: 400 });
+  }
+
+  try {
+    // Initialize Apollo Client (assuming graphqlClient is a utility that returns a client instance)
+    const client = await graphqlClient();
+
+    // Execute the GraphQL query
+    const { data } = await client.query({
+      query: GET_EVENTS,
+      variables: { therapistId },
+    });
+
+    // Return the events as a JSON response
+    return NextResponse.json(data.events);
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
