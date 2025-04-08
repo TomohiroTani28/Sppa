@@ -1,6 +1,6 @@
 // src/realtime/useRealtimeTransactions.ts
+import type { Transaction } from "@/hooks/api/useTransactions";
 import supabase from "@/lib/supabase-client";
-import { Transaction } from "@/hooks/api/useTransactions";
 
 /**
  * Subscribe to real-time transaction updates

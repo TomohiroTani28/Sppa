@@ -1,5 +1,5 @@
 // src/types/event.ts
-import { BaseEvent, BaseMedia } from './base';
+import type { BaseEvent, BaseMedia } from './base';
 
 export interface Event extends BaseEvent {
   therapistId: string;
