@@ -1,13 +1,13 @@
 // src/app/(common)/notifications/NotificationsClient.tsx
 "use client";
-import Badge from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Spinner } from "@/components/ui/Spinner";
 import { useAuth } from "@/hooks/api/useAuth";
 import { Notification, useNotifications } from "@/realtime/useNotifications";
 import { gql, useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 const MARK_NOTIFICATION_READ = gql`

@@ -1,17 +1,17 @@
 // src/app/tourist/bookings/components/AddOption.tsx
 "use client";
 
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Badge } from "@/components/ui/Badge";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/Card";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Label } from "@/components/ui/Label";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AdditionalOption {
   id: string;

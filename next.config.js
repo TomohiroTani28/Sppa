@@ -39,7 +39,9 @@ const nextConfig = {
   },
 
   experimental: {
-    serverActions: true,
+    serverActions: {
+      allowedOrigins: ['localhost:3000'],
+    },
   },
 
   webpack(config, { dev, isServer }) {

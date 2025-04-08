@@ -1,17 +1,17 @@
 // src/app/tourist/bookings/components/RealTimeAvailability.tsx
 "use client";
-import { useTranslation } from "react-i18next";
-import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
-import Badge from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/Badge";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/Card";
+import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
 import { formatTime } from "@/lib/date-utils";
-import { useState, useEffect } from "react";
 import { TherapistAvailabilitySlot } from "@/types/availability";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface RealTimeAvailabilityProps {
   therapistId: string;
@@ -69,7 +69,7 @@ const RealTimeAvailability = ({ therapistId }: RealTimeAvailabilityProps) => {
       <Card className="hover:shadow-md transition-shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg">Therapist</CardTitle>
-          <Badge variant={availabilitySlots.length > 0 ? "success" : "secondary"}>
+          <Badge variant={availabilitySlots.length > 0 ? "default" : "secondary"}>
             {t(`therapist_status_${availabilitySlots.length > 0 ? "online" : "offline"}`)}
           </Badge>
         </CardHeader>

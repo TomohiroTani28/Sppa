@@ -1,17 +1,17 @@
 "use client";
 // src/app/(common)/therapists/[therapistId]/components/ServiceDetails.tsx
-import React from 'react';
-import { useQuery, useSubscription } from '@apollo/client';
-import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { Spinner } from '@/components/ui/Spinner';
-import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { MediaGallery } from '@/components/MediaGallery';
-import { formatCurrency } from '@/lib/utils';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { Spinner } from '@/components/ui/Spinner';
 import { GET_SERVICE_DETAIL as GET_SERVICE_DETAILS, SUBSCRIBE_TO_THERAPIST_SERVICES as SUBSCRIBE_SERVICE_UPDATES } from '@/lib/queries/service';
+import { formatCurrency } from '@/lib/utils';
 import { Media } from '@/types/media';
+import { useQuery, useSubscription } from '@apollo/client';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ServiceDetailsProps {
   serviceId: string;
@@ -89,7 +89,7 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({ serviceId }) => {
           </div>
           {service.media.length > 0 && (
             <div className="mt-4">
-              <MediaGallery mediaList={service.media.map(item => item.media)} />
+              <MediaGallery media={service.media.map(item => item.media)} />
             </div>
           )}
           <Button

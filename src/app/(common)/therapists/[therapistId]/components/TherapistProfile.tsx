@@ -1,14 +1,13 @@
 "use client";
 // src/app/(common)/therapists/[therapistId]/components/TherapistProfile.tsx
-import { useQuery, useSubscription, gql } from "@apollo/client";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
-import { Spinner } from "@/components/ui/Spinner";
-import { useTranslation } from "next-i18next";
-import { TFunction } from "i18next";
 import Avatar from "@/components/Avatar";
+import { Badge } from "@/components/ui/Badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Spinner } from "@/components/ui/Spinner";
+import { cn } from "@/lib/utils";
+import { gql, useQuery, useSubscription } from "@apollo/client";
+import { useTranslation } from "next-i18next";
+import { useEffect, useState } from "react";
 
 // GraphQL Queries and Subscriptions
 const GET_THERAPIST_PROFILE = gql`
@@ -89,7 +88,7 @@ function ProfileSection({ title, content }: ProfileSectionProps) {
 }
 
 // Sub-component for Bio
-function BioSection({ bio, t }: { bio: string; t: TFunction<"common"> }) {
+function BioSection({ bio, t }: { readonly bio: string; readonly t: (key: string, options?: any) => string }) {
   return <ProfileSection title={t("profile.bio")} content={bio} />;
 }
 
@@ -99,9 +98,9 @@ function BusinessSection({
   address,
   t,
 }: {
-  business_name: string;
-  address?: string;
-  t: TFunction<"common">;
+  readonly business_name: string;
+  readonly address?: string;
+  readonly t: (key: string, options?: any) => string;
 }) {
   return (
     <ProfileSection
@@ -127,7 +126,7 @@ function processAvailabilityData(availability: any[]) {
 
 // Generate Availability Text
 function getAvailabilityText(
-  t: TFunction<"common">,
+  t: (key: string, options?: any) => string,
   isAvailable: boolean,
   hasNextAvailableTime: boolean,
   nextAvailableTime?: string
@@ -143,7 +142,7 @@ function getAvailabilityText(
 
 // Main Component
 export default function TherapistProfile({ therapistId, className }: TherapistProfileProps) {
-  const { t } = useTranslation("common") as { t: TFunction<"common"> }; // Fix TypeScript error
+  const { t } = useTranslation("common");
   const { data: profileData, loading, error } = useQuery<{
     therapist_profiles_by_pk: TherapistProfile;
   }>(GET_THERAPIST_PROFILE, {

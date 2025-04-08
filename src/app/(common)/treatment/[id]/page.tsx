@@ -1,9 +1,9 @@
 // src/app/(common)/treatment/[id]/page.tsx
-import { gql } from "@apollo/client";
-import TherapistProfile from "@/app/(common)/therapists/[therapistId]/components/TherapistProfile";
 import ServiceDetails from "@/app/(common)/therapists/[therapistId]/components/ServiceDetails";
+import TherapistProfile from "@/app/(common)/therapists/[therapistId]/components/TherapistProfile";
 import BookingButton from "@/components/BookingButton";
 import graphqlClient from "@/lib/hasura-client";
+import { gql } from "@apollo/client";
 
 // 動的レンダリングを強制して静的生成をスキップ
 export const dynamic = "force-dynamic";
@@ -35,11 +35,11 @@ const GET_THERAPIST_SERVICES = gql`
 
 // Next.js 15 の PageProps に合わせた型定義
 export interface PageProps {
-  params: { therapistId: string };
+  params: { id: string };
 }
 
 export default async function TherapistDetailPage({ params }: PageProps) {
-  const { therapistId } = params;
+  const { id } = params;
 
   // Apollo Client インスタンスを取得
   const client = await graphqlClient();
@@ -47,13 +47,13 @@ export default async function TherapistDetailPage({ params }: PageProps) {
   // プロフィールデータの取得
   const { data: profileData, error: profileError } = await client.query({
     query: GET_THERAPIST_PROFILE,
-    variables: { id: therapistId },
+    variables: { id },
   });
 
   // サービスデータの取得
   const { data: servicesData, error: servicesError } = await client.query({
     query: GET_THERAPIST_SERVICES,
-    variables: { therapistId },
+    variables: { therapistId: id },
   });
 
   // プロフィールデータのエラーハンドリング
@@ -74,7 +74,7 @@ export default async function TherapistDetailPage({ params }: PageProps) {
 
   return (
     <div className="container mx-auto py-8 space-y-6">
-      <TherapistProfile therapistId={therapistId} />
+      <TherapistProfile therapistId={id} />
       {services.length > 0 ? (
         services.map((service: { id: string; service_name: string }) => (
           <ServiceDetails key={service.id} serviceId={service.id} />
@@ -82,7 +82,7 @@ export default async function TherapistDetailPage({ params }: PageProps) {
       ) : (
         <p>No active services available.</p>
       )}
-      <BookingButton therapistId={therapistId} />
+      <BookingButton therapistId={id} />
     </div>
   );
 }

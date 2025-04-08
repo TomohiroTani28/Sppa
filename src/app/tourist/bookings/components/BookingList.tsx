@@ -1,10 +1,9 @@
 // src/app/tourist/bookings/components/BookingList.tsx
 "use client";
 
-import { useSubscription } from "@apollo/client";
-import { gql } from "@apollo/client";
+import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
+import { gql, useSubscription } from "@apollo/client";
 
 const BOOKING_SUBSCRIPTION = gql`
   subscription MyBookings($guestId: uuid!) {
@@ -42,7 +41,7 @@ export default function BookingList({ guestId }: { guestId: string }) {
               </p>
             </div>
             <Badge
-              variant={booking.status === "confirmed" ? "success" : "default"}
+              variant={booking.status === "confirmed" ? "default" : "secondary"}
             >
               {booking.status}
             </Badge>

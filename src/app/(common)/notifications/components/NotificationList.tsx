@@ -1,11 +1,10 @@
 // src/app/(common)/notifications/components/NotificationList.tsx
 "use client";
 
-import { useSubscription } from "@apollo/client";
-import { gql } from "@apollo/client";
+import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
 import { UserPreferences } from "@/hooks/useUserPreferences";
+import { gql, useSubscription } from "@apollo/client";
 
 const NOTIFICATION_SUBSCRIPTION = gql`
   subscription MyNotifications($userId: uuid!) {
