@@ -71,7 +71,7 @@ const MediaShare: React.FC<MediaShareProps> = ({
       const filePath = `uploads/${fileName}`;
 
       // Upload to Supabase Storage
-      const { data, error } = await supabaseClient.storage
+      const { error } = await supabaseClient.storage
         .from("media")
         .upload(filePath, selectedFile, {
           cacheControl: "3600",

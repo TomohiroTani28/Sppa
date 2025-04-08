@@ -3,23 +3,14 @@
 
 export const dynamic = "force-dynamic";
 
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { useTranslation } from "next-i18next";
-import ChatHeader from "@/components/ChatHeader";
-import BottomNavigation from "@/components/BottomNavigation";
-import ChatWindow from "@/app/(common)/chat/components/ChatWindow";
 import AutoTranslateToggle from "@/app/(common)/chat/components/AutoTranslateToggle";
+import ChatWindow from "@/app/(common)/chat/components/ChatWindow";
+import BottomNavigation from "@/components/BottomNavigation";
+import ChatHeader from "@/components/ChatHeader";
 import { useAuth as useAuthHook } from "@/hooks/api/useAuth";
-
-// 認証状態の型を定義
-interface AuthState {
-  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
+import { useTranslation } from "next-i18next";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function ChatPage() {
   const { t } = useTranslation("common");

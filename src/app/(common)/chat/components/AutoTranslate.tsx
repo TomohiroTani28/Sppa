@@ -1,9 +1,8 @@
 // src/app/(common)/chat/components/AutoTranslate.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/Button";
 import { useTranslation } from "next-i18next";
+import React, { useEffect, useState } from "react";
 
 interface AutoTranslateProps {
   text: string;
@@ -168,6 +167,12 @@ const AutoTranslate: React.FC<AutoTranslateProps> = ({
           ))}
         </select>
       </div>
+      
+      {isTranslated && translatedText && (
+        <div className="mt-2 text-sm text-gray-600">
+          {translatedText}
+        </div>
+      )}
     </div>
   );
 };

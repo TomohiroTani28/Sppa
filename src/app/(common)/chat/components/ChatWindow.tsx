@@ -3,21 +3,12 @@
 
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useAuth } from '@/hooks/api/useAuth';
-import { ChatMessage } from '@/types/chat';
+import type { ChatMessage } from '@/types/chat';
 import { useTranslation } from 'next-i18next';
+import { useEffect, useState } from 'react';
 import { useRealtimeChat } from '../../../../hooks/useRealtimeChat';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
-import { useEffect, useState } from 'react';
-
-// 認証状態の型を定義
-interface AuthState {
-  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
 
 // props を readonly に
 interface ChatWindowProps {

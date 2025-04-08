@@ -1,17 +1,17 @@
 // src/lib/auth.server.ts
 "use server";
+import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export type PublicUser = {
   id: string;
   name: string | null;
   email: string;
-  role: "tourist" | "therapist" | string;
+  role: string;
   profile_picture: string | null;
-  phone_number?: string;
-  verified_at?: string;
-  last_login_at?: string;
+  phone_number: string | null;
+  verified_at: string | null;
+  last_login_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -29,9 +29,9 @@ export async function auth(): Promise<PublicUser | null> {
     email: session.user.email ?? "",
     role: (session.user as any).role ?? "tourist",
     profile_picture: session.user.image ?? null,
-    phone_number: undefined,
-    verified_at: undefined,
-    last_login_at: undefined,
+    phone_number: null,
+    verified_at: null,
+    last_login_at: null,
     created_at: "",
     updated_at: "",
   };

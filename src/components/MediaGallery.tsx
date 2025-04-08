@@ -18,7 +18,7 @@ interface MediaGalleryProps {
  * メディアギャラリーコンポーネント
  * 画像やビデオのグリッド表示を提供します
  */
-const MediaGallery: React.FC<MediaGalleryProps> = ({ media, onMediaClick }) => {
+export const MediaGallery: React.FC<MediaGalleryProps> = ({ media, onMediaClick }) => {
   // メディアが空の場合はプレースホルダーを表示
   if (!media || media.length === 0) {
     return (

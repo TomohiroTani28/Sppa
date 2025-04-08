@@ -5,7 +5,6 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   generateEtags: true,
-  swcMinify: true,
 
   env: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || "http://localhost:54321",
@@ -40,11 +39,11 @@ const nextConfig = {
   },
 
   experimental: {
-    serverActions: true,
-    serverComponentsExternalPackages: ["@prisma/client"],
+    serverActions: {
+      allowedOrigins: ["localhost:3000"],
+    },
     optimizeCss: true,
     scrollRestoration: true,
-    legacyBrowsers: false,
   },
 
   webpack(config, { dev, isServer }) {
@@ -85,11 +84,6 @@ const nextConfig = {
     }
 
     return config;
-  },
-
-  // Error handling and logging
-  onError(error) {
-    console.error('Next.js build error:', error);
   },
 
   // Production specific settings

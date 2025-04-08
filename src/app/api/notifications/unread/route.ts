@@ -1,8 +1,8 @@
 // src/app/api/notifications/unread/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "@/lib/auth";
+import { gql, request } from "graphql-request";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { request, gql } from "graphql-request";
+import { NextRequest, NextResponse } from "next/server";
 
 // Notification type definition
 interface Notification {
@@ -19,7 +19,7 @@ interface UnreadNotificationsResponse {
 }
 
 // Hasura GraphQLエンドポイント（環境変数から取得）
-const HASURA_URL = process.env.HASURA_URL ?? "http://localhost:8081/v1/graphql";
+const HASURA_URL = process.env['HASURA_URL'] ?? "http://localhost:8081/v1/graphql";
 
 // 未読通知を取得するGraphQLクエリ
 const GET_UNREAD_NOTIFICATIONS = gql`
