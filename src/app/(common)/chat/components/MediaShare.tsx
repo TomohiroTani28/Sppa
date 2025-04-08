@@ -28,28 +28,29 @@ const MediaShare: React.FC<MediaShareProps> = ({
 
     if (!file) return;
 
-    // Check file type
+    // 許可するファイル形式のチェック
     const allowedTypes = [
       "image/jpeg",
       "image/png",
       "image/gif",
       "video/mp4",
       "video/quicktime",
+      "video/webm", // スマートフォン対応のために追加
     ];
     if (!allowedTypes.includes(file.type)) {
-      setError(t("Unsupported file type. Please use JPG, PNG, GIF, or MP4."));
+      setError(t("サポートされていないファイル形式です。JPG、PNG、GIF、MP4、またはWebMを使用してください。"));
       return;
     }
 
-    // Check file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setError(t("File is too large. Maximum size is 10MB."));
+    // ファイルサイズのチェック（最大50MB）
+    if (file.size > 50 * 1024 * 1024) {
+      setError(t("ファイルが大きすぎます。最大サイズは50MBです。"));
       return;
     }
 
     setSelectedFile(file);
 
-    // Create preview
+    // プレビュー生成
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewUrl(reader.result as string);
@@ -65,12 +66,12 @@ const MediaShare: React.FC<MediaShareProps> = ({
     setError(null);
 
     try {
-      // Generate a unique filename
+      // 一意のファイル名を生成
       const fileExt = selectedFile.name.split(".").pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
       const filePath = `uploads/${fileName}`;
 
-      // Upload to Supabase Storage
+      // Supabase Storageにアップロード
       const { error } = await supabaseClient.storage
         .from("media")
         .upload(filePath, selectedFile, {
@@ -80,21 +81,21 @@ const MediaShare: React.FC<MediaShareProps> = ({
 
       if (error) throw error;
 
-      // Get public URL
+      // 公開URLを取得
       const { data: urlData } = supabaseClient.storage
         .from("media")
         .getPublicUrl(filePath);
 
       onUploadComplete(urlData.publicUrl);
     } catch (err: any) {
-      console.error("Upload error:", err);
-      setError(t("Failed to upload file. Please try again."));
+      console.error("アップロードエラー:", err);
+      setError(t("ファイルのアップロードに失敗しました。もう一度お試しください。"));
     } finally {
       setIsUploading(false);
     }
   };
 
-  // Simulate upload progress
+  // アップロード進捗のシミュレーション（フォールバック）
   const simulateProgress = useCallback(() => {
     if (isUploading && uploadProgress < 90) {
       setUploadProgress((prev) => prev + 10);
@@ -102,7 +103,7 @@ const MediaShare: React.FC<MediaShareProps> = ({
     }
   }, [isUploading, uploadProgress]);
 
-  // Start progress simulation when uploading begins
+  // アップロード開始時に進捗シミュレーションを開始
   React.useEffect(() => {
     if (isUploading && uploadProgress === 0) {
       simulateProgress();
@@ -111,7 +112,7 @@ const MediaShare: React.FC<MediaShareProps> = ({
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
-      <h3 className="text-lg font-medium mb-4">{t("Share Media")}</h3>
+      <h3 className="text-lg font-medium mb-4">{t("メディアを共有")}</h3>
 
       {error && (
         <div className="mb-3 p-2 bg-red-100 text-red-700 rounded">
@@ -142,17 +143,17 @@ const MediaShare: React.FC<MediaShareProps> = ({
             <span className="text-sm font-medium text-gray-600">
               {selectedFile
                 ? selectedFile.name
-                : t("Click to select a photo or video")}
+                : t("写真またはビデオを選択するにはクリック")}
             </span>
             <span className="text-xs text-gray-500 mt-1">
-              {t("JPG, PNG, GIF or MP4. Max 10MB.")}
+              {t("JPG、PNG、GIF、MP4、またはWebM。最大50MB。")}
             </span>
           </div>
           <input
             id="file-upload"
             name="file-upload"
             type="file"
-            accept="image/jpeg,image/png,image/gif,video/mp4,video/quicktime"
+            accept="image/jpeg,image/png,image/gif,video/mp4,video/quicktime,video/webm"
             className="sr-only"
             onChange={handleFileSelect}
             disabled={isUploading}
@@ -165,7 +166,7 @@ const MediaShare: React.FC<MediaShareProps> = ({
           {selectedFile?.type.startsWith("image/") ? (
             <img
               src={previewUrl}
-              alt="Preview"
+              alt="プレビュー"
               className="max-h-40 max-w-full mx-auto rounded border border-gray-200"
             />
           ) : (
@@ -205,7 +206,7 @@ const MediaShare: React.FC<MediaShareProps> = ({
               ></div>
             </div>
             <div className="text-xs text-gray-500 mt-1 text-center">
-              {uploadProgress}% {t("Uploading...")}
+              {uploadProgress}% {t("アップロード中...")}
             </div>
           </div>
         </div>
@@ -213,14 +214,14 @@ const MediaShare: React.FC<MediaShareProps> = ({
 
       <div className="flex justify-end space-x-2">
         <Button onClick={onClose} variant="outline" disabled={isUploading}>
-          {t("Cancel")}
+          {t("キャンセル")}
         </Button>
         <Button
           onClick={uploadFile}
           disabled={!selectedFile || isUploading}
           className="bg-blue-500 hover:bg-blue-600 text-white"
         >
-          {isUploading ? t("Uploading...") : t("Send")}
+          {isUploading ? t("アップロード中...") : t("送信")}
         </Button>
       </div>
     </div>
