@@ -1,7 +1,7 @@
 // src/realtime/useRealtimeBookings.ts
+import type { Booking } from "@/types/booking";
 import { gql, useSubscription } from "@apollo/client";
-import { useState, useEffect } from "react";
-import { Booking } from "@/types/booking";
+import { useEffect, useState } from "react";
 
 export const GET_REALTIME_BOOKINGS = gql`
   subscription GetRealtimeBookings {

@@ -37,13 +37,13 @@ export const useRealtimeEvents = () => {
             case "UPDATE":
               setEvents((prev) =>
                 prev.map((event) =>
-                  event.id === payload.new.id ? payload.new : event,
+                  event.id === payload.new['id'] ? payload.new : event,
                 ),
               );
               break;
             case "DELETE":
               setEvents((prev) =>
-                prev.filter((event) => event.id !== payload.old.id),
+                prev.filter((event) => event.id !== payload.old['id']),
               );
               break;
           }
