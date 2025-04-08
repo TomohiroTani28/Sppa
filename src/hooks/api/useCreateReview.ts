@@ -36,11 +36,11 @@ const CREATE_REVIEW_MUTATION = gql`
 `;
 
 export const useCreateReview = () => {
-  const mutation = useMutation({
-    mutationFn: async (review: Review) => {
-      // Call hasuraClient() to get the Apollo Client instance
+  const [createReviewMutation, { loading, error }] = useMutation(CREATE_REVIEW_MUTATION);
+
+  const createReview = async (review: Review) => {
+    try {
       const client = await hasuraClient();
-      // Use the client instance to perform the mutation
       const { data } = await client.mutate({
         mutation: CREATE_REVIEW_MUTATION,
         variables: {
@@ -54,12 +54,15 @@ export const useCreateReview = () => {
         },
       });
       return data;
-    },
-  });
+    } catch (err) {
+      console.error("Error creating review:", err);
+      throw err;
+    }
+  };
 
   return {
-    createReview: mutation.mutateAsync,
-    isLoading: mutation.isPending,
-    error: mutation.error,
+    createReview,
+    isLoading: loading,
+    error,
   };
 };
