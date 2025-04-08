@@ -1,7 +1,7 @@
 // src/hooks/useSearchResults.ts
-import { useState, useEffect } from 'react';
 import { useFetchTherapists } from '@/hooks/api/useFetchTherapists';
-import { TherapistProfile, Therapist, WorkingHour, TherapistWorkingHours } from '@/types/therapist';
+import type { Therapist, TherapistProfile, TherapistWorkingHours, WorkingHour } from '@/types/therapist';
+import { useEffect, useState } from 'react';
 
 export function useSearchResults(query: string, filters: Record<string, string>) {
   const [results, setResults] = useState<TherapistProfile[]>([]);

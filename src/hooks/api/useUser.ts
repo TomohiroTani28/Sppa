@@ -1,7 +1,6 @@
 // src/hooks/api/useUser.ts
-import { useState, useEffect } from "react";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 
 // GraphQL query to fetch user data
 const GET_USER = gql`
@@ -94,9 +93,9 @@ export const useUser = (userId: string) => {
           "ネットワークエラーが発生しました。インターネット接続を確認してください。",
         );
       } else if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-        setErrorMessage(`GraphQLエラー: ${error.graphQLErrors[0].message}`);
+        setErrorMessage(`GraphQLエラー: ${error.graphQLErrors[0]?.message || '不明なエラー'}`);
       } else {
-        setErrorMessage("データの取得中にエラーが発生しました。");
+        setErrorMessage(`エラーが発生しました: ${error.message}`);
       }
     },
   });

@@ -1,12 +1,12 @@
 // src/hooks/useHomeData.ts
 "use client";
-import { useEffect, useMemo, useState } from "react";
-import { useUserPreferences } from "@/hooks/useUserPreferences";
-import { useLocationService } from "@/hooks/useLocationService";
+import { useAuth } from "@/hooks/api/useAuth";
+import { useFetchEvents } from "@/hooks/api/useFetchEvents";
 import { useFetchLocalExperiences } from "@/hooks/api/useFetchLocalExperiences";
 import { useFetchTherapists } from "@/hooks/api/useFetchTherapists";
-import { useFetchEvents } from "@/hooks/api/useFetchEvents";
-import { useAuth } from "@/hooks/api/useAuth";
+import { useLocationService } from "@/hooks/useLocationService";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useEffect, useMemo, useState } from "react";
 
 interface User {
   id: string;
@@ -23,7 +23,18 @@ export const useHomeData = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const authState = await auth.getAuthState();
-      setUser(authState.user);
+      if (authState.user) {
+        const userData = {
+          id: authState.user.id,
+          name: authState.user.name || null,
+          email: authState.user.email || null,
+          image: authState.user.image || null,
+          role: authState.user.role || null
+        };
+        setUser(userData);
+      } else {
+        setUser(null);
+      }
     };
     fetchUser();
   }, [auth]);
@@ -38,8 +49,8 @@ export const useHomeData = () => {
 
   useEffect(() => {
     const languages = preferences?.preferred_languages ?? [];
-    if (languages.length > 0) {
-      setPreferredLanguage(languages[0]);
+    if (languages && languages.length > 0) {
+      setPreferredLanguage(languages[0] || 'en');
     }
   }, [preferences]);
 

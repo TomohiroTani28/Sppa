@@ -1,9 +1,9 @@
 // src/hooks/useWebSocketSubscription.ts
 "use client";
-import { useEffect, useState } from "react";
-import { createClient } from "graphql-ws";
-import { print } from "graphql";
 import type { DocumentNode } from "graphql";
+import { print } from "graphql";
+import { createClient } from "graphql-ws";
+import { useEffect, useState } from "react";
 
 interface SubscriptionOptions<T> {
   query: DocumentNode;
@@ -27,12 +27,12 @@ export function useWebSocketSubscription<T = any>({
     // WebSocket クライアントの生成（wsに修正）
     const client = createClient({
       url:
-        process.env.NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT ||
+        process.env['NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT'] ||
         "ws://localhost:8081/v1/graphql",
       connectionParams: {
         headers: {
           "x-hasura-admin-secret":
-            process.env.HASURA_GRAPHQL_ADMIN_SECRET || "",
+            process.env['HASURA_GRAPHQL_ADMIN_SECRET'] || "",
         },
       },
     });

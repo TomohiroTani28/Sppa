@@ -1,10 +1,10 @@
 "use client";
 // src/components/UserCard.tsx
-import React, { FC } from "react";
-import { User } from "@/types/user";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import Avatar from "@/components/Avatar";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import type { User } from "@/types/user";
+import type { FC } from "react";
 
 interface UserCardProps {
   user: User;
@@ -26,7 +26,7 @@ const UserCard: FC<UserCardProps> = ({ user, onLike, onUnlike }) => {
         </div>
       </CardHeader>
       <CardContent>
-        {/* bio的な情報はUserには現状ないので非表示 */}
+        {/* bioのな情報はUserには現状ないので非表示 */}
         {/* 将来的に tourist_profiles などと組み合わせるなら props 拡張を検討 */}
       </CardContent>
       <CardFooter className="flex gap-2 justify-end">

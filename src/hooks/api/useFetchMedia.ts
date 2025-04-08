@@ -1,6 +1,5 @@
 // src/hooks/api/useFetchMedia.ts
-import { useQuery, gql } from "@apollo/client";
-import { Media } from "@/types/media";
+import { gql, useQuery } from "@apollo/client";
 
 // セラピストのメディアを取得するクエリ
 const GET_THERAPIST_MEDIA = gql`

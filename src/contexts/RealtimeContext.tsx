@@ -1,5 +1,6 @@
 "use client";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 // リアルタイム関連の状態や関数の型を定義
 interface RealtimeContextType {

@@ -1,8 +1,8 @@
 // src/app/(common)/chat/components/MessageBubble.tsx
-import { cn } from '@/lib/utils';
-import { ChatMessage } from '@/types/chat';
-import { format } from 'date-fns';
 import { useAutoTranslation } from '@/hooks/useAutoTranslation';
+import { cn } from '@/lib/utils';
+import type { ChatMessage } from '@/types/chat';
+import { format } from 'date-fns';
 
 interface MessageBubbleProps {
   readonly message: ChatMessage;
@@ -12,8 +12,8 @@ interface MessageBubbleProps {
 export default function MessageBubble({ message, isOwnMessage }: MessageBubbleProps) {
   const { isAutoTranslateEnabled } = useAutoTranslation();
   // translated_content が存在しない場合に備え、message.message を使用
-  const displayContent = isAutoTranslateEnabled && message.translated_content?.en
-    ? message.translated_content.en
+  const displayContent = isAutoTranslateEnabled && message.translated_content?.['en']
+    ? message.translated_content['en']
     : message.message;
 
   return (

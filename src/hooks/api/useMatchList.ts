@@ -1,8 +1,7 @@
 // src/hooks/api/useMatchList.ts
-import { useState, useEffect } from "react";
-import { useLazyQuery } from "@apollo/client";
-import { gql } from "graphql-tag";
-import { Therapist } from "@/types/therapist";
+import type { Therapist } from "@/types/therapist";
+import { gql, useLazyQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 
 // GraphQL query to fetch therapists with filters
 const GET_THERAPISTS = gql`

@@ -1,7 +1,7 @@
 // src/hooks/api/useFetchTherapists.ts
-import { useQuery, gql } from "@apollo/client";
+import type { Therapist } from "@/types/therapist";
+import { gql, useQuery } from "@apollo/client";
 import { useCallback } from "react";
-import { Therapist } from "@/types/therapist";
 
 // セラピスト一覧を取得する GraphQL クエリ
 const GET_THERAPISTS = gql`

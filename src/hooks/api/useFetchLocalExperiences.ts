@@ -1,7 +1,7 @@
 // src/hooks/api/useFetchLocalExperiences.ts
-import { useState, useCallback } from "react";
+import type { LocalExperience } from "@/types/local-experience";
 import { gql, useQuery } from "@apollo/client";
-import { LocalExperience } from "@/types/local-experience";
+import { useCallback, useState } from "react";
 
 const GET_LOCAL_EXPERIENCES = gql`
   query GetLocalExperiences(

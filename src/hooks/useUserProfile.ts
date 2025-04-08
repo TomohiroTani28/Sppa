@@ -1,7 +1,7 @@
 "use client";
 // src/hooks/useUserProfile.ts
-import { useState, useEffect } from "react";
-import { User } from "@/types/user";
+import type { User } from "@/types/user";
+import { useEffect, useState } from "react";
 
 // therapistId を引数にとり、指定したユーザのプロフィールを取得するフック
 export function useUserProfile(therapistId: string) {

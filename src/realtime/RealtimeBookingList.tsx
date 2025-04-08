@@ -1,7 +1,8 @@
 "use client";
 // src/app/realtime/RealtimeBookingList.tsx
+import type { Booking } from "@/types/booking";
 import React from "react";
-import { Booking } from "@/types/booking";
+
 interface RealtimeBookingListProps {
   realtimeBookings: Booking[];
 }

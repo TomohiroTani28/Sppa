@@ -1,6 +1,5 @@
 // src/hooks/api/useFetchReviews.ts
-import { useQuery, gql } from "@apollo/client";
-import { Review } from "@/types/review";
+import { gql, useQuery } from "@apollo/client";
 
 // セラピストのレビューを取得するクエリ
 const GET_THERAPIST_REVIEWS = gql`

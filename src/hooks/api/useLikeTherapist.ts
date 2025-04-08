@@ -1,6 +1,6 @@
 // src/hooks/api/useLikeTherapist.ts
-import { useMutation, gql } from "@apollo/client";
-import { FetchResult, ApolloError } from "@apollo/client";
+import type { ApolloError, FetchResult } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 const LIKE_THERAPIST = gql`
   mutation InsertLike($guestId: uuid!, $therapistId: uuid!) {

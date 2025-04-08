@@ -1,7 +1,7 @@
 "use client";
 // src/hooks/useTherapistDetails.ts
-import { useState, useEffect } from "react";
-import { Therapist } from "@/types/therapist";
+import type { Therapist } from "@/types/therapist";
+import { useEffect, useState } from "react";
 
 // セラピストの詳細を取得するフック
 export function useTherapistDetails(therapistId: string) {

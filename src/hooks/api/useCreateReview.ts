@@ -1,8 +1,7 @@
 // src/hooks/api/useCreateReview.ts
-import { useMutation } from "@tanstack/react-query";
-import { gql } from "@apollo/client";
 import hasuraClient from "@/lib/hasura-client";
-import { Review } from "@/types/review";
+import type { Review } from "@/types/review";
+import { gql, useMutation } from "@apollo/client";
 
 // GraphQL Mutation
 const CREATE_REVIEW_MUTATION = gql`

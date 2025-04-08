@@ -1,7 +1,7 @@
 // src/hooks/api/availability.ts
-import { useState } from "react";
 import { updateAvailability as updateAvailabilityApi } from "@/backend/api/graphql/availability";
-import { TherapistAvailability } from "@/types/availability";
+import type { TherapistAvailability } from "@/types/availability";
+import { useState } from "react";
 
 export const useUpdateAvailability = () => {
   const [isPending, setIsPending] = useState(false);

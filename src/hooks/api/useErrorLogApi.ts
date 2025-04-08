@@ -1,8 +1,9 @@
 "use client";
 // src/hooks/api/useErrorLogApi.ts
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import graphqlClient from "@/lib/hasura-client";
 import { gql } from "@apollo/client";
+import type { UseMutationResult } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const CREATE_ERROR_LOG_MUTATION = gql`
   mutation CreateErrorLog(

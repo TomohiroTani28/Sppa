@@ -1,6 +1,6 @@
 // src/hooks/useTherapistSearch.ts
-import { useState, useEffect } from "react";
 import { fetchTherapists } from "@/backend/api/graphql/therapists";
+import { useEffect, useState } from "react";
 
 // Define the shape of the raw therapist data returned by fetchTherapists
 interface RawTherapist {
@@ -32,8 +32,11 @@ export const useTherapistSearch = (filters: {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Explicitly type the return value of fetchTherapists
-        const data: RawTherapist[] = await fetchTherapists({ service: filters.specialty });
+        // serviceが未定義の場合、nullを渡す
+        const queryVars: TherapistsQueryVariables = {
+          service: filters.specialty || null
+        };
+        const data: RawTherapist[] = await fetchTherapists(queryVars);
         const filtered = data
           .filter((t: RawTherapist) => !filters.minRating || t.average_rating >= filters.minRating)
           .map((t: RawTherapist) => ({

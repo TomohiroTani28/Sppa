@@ -1,9 +1,9 @@
 "use client";
 // src/realtime/notifications-push.tsx
-import { useEffect } from "react";
-import { useToast } from "@/components/ui/Toast"; 
+import { useToast } from "@/components/ui/Toast";
+import supabase from "@/lib/supabase-client";
 import { RealtimeChannel } from "@supabase/supabase-js";
-import supabase from "@/lib/supabase-client"; 
+import { useEffect } from "react";
 
 export const NotificationsPush = ({ userId }: { userId: string }) => {
   const { addToast } = useToast(); 
@@ -22,9 +22,9 @@ export const NotificationsPush = ({ userId }: { userId: string }) => {
             filter: `user_id=eq.${userId}`,
           },
           (payload) => {
-            if (payload.new?.message) {
+            if (payload.new?.['message']) {
               addToast({
-                message: payload.new.message,
+                message: payload.new['message'],
                 type: "info",
                 translate: true,
                 duration: 5000,

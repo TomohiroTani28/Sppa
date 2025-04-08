@@ -1,9 +1,9 @@
 // src/i18n/server.ts
+import { getOptions } from "@/i18n/settings";
 import { createInstance } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
-import { initReactI18next } from "react-i18next/initReactI18next";
-import { getOptions } from "@/i18n/settings";
 import { cookies, headers } from "next/headers";
+import { initReactI18next } from "react-i18next/initReactI18next";
 
 // Get language from cookies or accept-language header
 export async function getLangFromHeaders() {
@@ -18,7 +18,7 @@ export async function getLangFromHeaders() {
   const acceptLanguage = headersList.get("accept-language");
 
   if (acceptLanguage) {
-    const preferredLang = acceptLanguage.split(",")[0].split("-")[0];
+    const preferredLang = acceptLanguage.split(",")[0]?.split("-")[0] || "en";
     if (["en", "id"].includes(preferredLang)) {
       return preferredLang;
     }

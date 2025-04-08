@@ -1,7 +1,7 @@
 // src/hooks/api/useCreateBooking.ts
+import type { Booking } from "@/types/booking";
 import { gql, useMutation } from "@apollo/client";
 import { useCallback } from "react";
-import { Booking } from "@/types/booking";
 
 type CreateBookingResponse = {
   insert_bookings: {

@@ -1,9 +1,9 @@
 // src/contexts/AuthContext.tsx
 "use client";
+import type { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState, useMemo } from "react";
-import { Session } from "next-auth";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 interface AuthContextType {
   user: Session['user'] | null;

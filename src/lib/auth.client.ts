@@ -25,15 +25,15 @@ export function useAuthClient(): { user: SppaUser | null; loading: boolean } {
 
   const user: SppaUser = {
     id: session.user.id,
-    name: session.user.name ?? undefined,
     email: session.user.email ?? "",
+    name: session.user.name ?? "",
     role: (session.user as any).role ?? "tourist",
-    profile_picture: session.user.image ?? undefined,
-    phone_number: undefined,
-    verified_at: undefined,
-    last_login_at: undefined,
-    created_at: "",
-    updated_at: "",
+    profile_picture: session.user.image ?? "",
+    phone_number: session.user.phone_number,
+    verified_at: session.user.verified_at,
+    last_login_at: session.user.last_login_at,
+    created_at: session.user.created_at ?? "",
+    updated_at: session.user.updated_at ?? "",
   };
 
   return { user, loading };

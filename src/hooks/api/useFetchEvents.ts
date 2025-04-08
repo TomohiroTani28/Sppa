@@ -1,7 +1,6 @@
 // src/hooks/api/useFetchEvents.ts
-import { Event } from "@/types/event";
-import { useQuery } from "@apollo/client";
-import { gql } from "graphql-tag";
+import type { Event } from "@/types/event";
+import { gql, useQuery } from "@apollo/client";
 
 const FETCH_EVENTS = gql`
   query FetchEvents {

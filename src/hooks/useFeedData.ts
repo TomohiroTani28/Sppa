@@ -1,7 +1,11 @@
 // src/hooks/useFeedData.ts
-import { useQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
-import { User } from "@/types/user";
+import type { User } from "@/types/user";
+import { gql, useQuery } from "@apollo/client";
+
+// Userの型を拡張して、profile_pictureプロパティを追加
+interface ExtendedUser extends User {
+  profile_picture?: string;
+}
 
 const GET_FEED_DATA = gql`
   query GetFeedData {
@@ -51,7 +55,7 @@ interface Post {
   post_type: "service" | "review" | "question" | "general";
   location?: string;
   created_at: string;
-  user: Pick<User, "id" | "name" | "profile_picture">;
+  user: Pick<ExtendedUser, "id" | "name" | "profile_picture">;
 }
 
 interface Event {
