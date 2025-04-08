@@ -18,10 +18,10 @@ function handleSupabaseError(error: any) {
 // GETハンドラー
 export async function GET(
   request: NextRequest,
-  context: { params: { therapistId: string } }
+  { params }: { params: { therapistId: string } }
 ) {
   try {
-    const therapistId = context.params.therapistId;
+    const therapistId = params.therapistId;
     if (!therapistId) {
       return NextResponse.json({ error: "therapistId is missing" }, { status: 400 });
     }
@@ -136,10 +136,10 @@ export async function GET(
 // POSTハンドラー
 export async function POST(
   request: NextRequest,
-  context: { params: { therapistId: string } }
+  { params }: { params: { therapistId: string } }
 ) {
   try {
-    const therapistId = context.params.therapistId;
+    const therapistId = params.therapistId;
     if (!therapistId) {
       return NextResponse.json({ error: "therapistId is missing" }, { status: 400 });
     }
