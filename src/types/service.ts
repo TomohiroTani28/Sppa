@@ -1,5 +1,5 @@
 // src/types/service.ts
-import { TherapistProfile } from '@/types/therapist';
+import type { TherapistProfile } from '@/types/therapist';
 
 export interface Service {
   id: string;

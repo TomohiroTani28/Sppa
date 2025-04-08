@@ -1,5 +1,5 @@
 // src/types/user.ts
-import { BaseUser } from './base';
+import type { BaseUser } from './base';
 
 export interface User extends BaseUser {
   image: string | null;
