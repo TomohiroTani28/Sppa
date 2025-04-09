@@ -35,7 +35,7 @@ interface TherapistAvailability {
 }
 
 interface CreateBookingResponse {
-  createBooking: string; // Assuming the mutation returns the booking ID as a string
+  createBooking: string;
 }
 
 interface BookingButtonProps {
@@ -51,7 +51,10 @@ interface BookingButtonProps {
   disabled?: boolean;
 }
 
-const useTimeSlots = (selectedDate: Date | undefined, availability: TherapistAvailability[]) => {
+const useTimeSlots = (
+  selectedDate: Date | undefined,
+  availability: TherapistAvailability[]
+) => {
   if (!selectedDate || !availability.length) return [];
 
   const today = new Date();
@@ -61,7 +64,8 @@ const useTimeSlots = (selectedDate: Date | undefined, availability: TherapistAva
 
   const dayAvailability = availability.filter(
     (slot) =>
-      format(new Date(slot.start_time), "yyyy-MM-dd") === selectedDateStr && slot.is_available
+      format(new Date(slot.start_time), "yyyy-MM-dd") === selectedDateStr &&
+      slot.is_available
   );
 
   dayAvailability.forEach((slot) => {
@@ -79,7 +83,9 @@ const useTimeSlots = (selectedDate: Date | undefined, availability: TherapistAva
     }
   });
 
-  return [...new Set(slots)].sort((a, b) => parseInt(a.replace(":", "")) - parseInt(b.replace(":", "")));
+  return Array.from(new Set(slots)).sort(
+    (a, b) => parseInt(a.replace(":", "")) - parseInt(b.replace(":", ""))
+  );
 };
 
 export const BookingButton: React.FC<BookingButtonProps> = ({
@@ -103,7 +109,10 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
 
   const { createBooking, loading: isLoading, error } = useCreateBooking();
   const { createErrorLog } = useErrorLogApi();
-  const { status } = useRealtimeAvailability(therapistId);
+  const { lastOnlineMap } = useRealtimeAvailability([therapistId]);
+
+  const therapistStatus = lastOnlineMap[therapistId] ? "online" : "offline";
+
   const [availability, setAvailability] = useState<TherapistAvailability[]>([]);
 
   useEffect(() => {
@@ -134,16 +143,26 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
       startTime.setHours(hours, minutes, 0, 0);
       const endTime = addHours(startTime, duration / 60);
 
-      const result = await createBooking(therapistId, serviceId, startTime.toISOString(), endTime.toISOString());
+      const result = await createBooking(
+        therapistId,
+        serviceId,
+        startTime.toISOString(),
+        endTime.toISOString()
+      );
 
       if ((result as any).data?.createBooking) {
         setOpen(false);
-        router.push(`/tourist/bookings?success=true&bookingId=${(result as any).data.createBooking}`);
+        router.push(
+          `/tourist/bookings?success=true&bookingId=${(result as any).data.createBooking}`
+        );
       }
     } catch (err) {
       createErrorLog({
         error_type: "BOOKING_ERROR",
-        message: `Failed to create booking: ${err instanceof Error ? err.message : String(err)}`,
+        message:
+          `Failed to create booking: ${
+            err instanceof Error ? err.message : String(err)
+          }`,
         stack_trace: err instanceof Error ? err.stack : undefined,
       });
     }
@@ -167,7 +186,7 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
     }
   };
 
-  const showPrice = price && currency;
+  const showPrice = price != null && currency != null;
 
   return (
     <>
@@ -175,7 +194,7 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
         variant={variant}
         size={size}
         className={className}
-        disabled={disabled || status !== "online"}
+        disabled={disabled || therapistStatus !== "online"}
         onClick={() => setOpen(true)}
       >
         {t("book_now")}
@@ -195,11 +214,15 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
                   {duration} {t("minutes")}
                 </p>
               </div>
-              {showPrice && <PriceDisplay amount={price} currency={currency} />}
+              {showPrice && (
+                <PriceDisplay amount={price ?? 0} currency={currency ?? "USD"} />
+              )}
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t("therapist_availability")}</label>
+              <label className="text-sm font-medium">
+                {t("therapist_availability")}
+              </label>
               <TherapistAvailabilityStatus therapistId={therapistId} />
             </div>
 
@@ -217,7 +240,10 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
               <div className="space-y-2">
                 <label className="text-sm font-medium">{t("select_time")}</label>
                 {timeSlots.length > 0 ? (
-                  <RadixSelect value={selectedTime || ""} onValueChange={setSelectedTime}>
+                  <RadixSelect
+                    value={selectedTime ?? ""}
+                    onValueChange={(val: string) => setSelectedTime(val)}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder={t("choose_time")} />
                     </SelectTrigger>
@@ -230,7 +256,9 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
                     </SelectContent>
                   </RadixSelect>
                 ) : (
-                  <p className="text-sm text-red-500">{t("no_available_slots")}</p>
+                  <p className="text-sm text-red-500">
+                    {t("no_available_slots")}
+                  </p>
                 )}
               </div>
             )}
@@ -249,14 +277,21 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
               />
             </div>
 
-            {error && <p className="text-sm text-red-500">{error.message || t("booking_error")}</p>}
+            {error && (
+              <p className="text-sm text-red-500">
+                {error.message ?? t("booking_error")}
+              </p>
+            )}
           </div>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
               {t("cancel")}
             </Button>
-            <Button onClick={handleBook} disabled={isLoading || !selectedDate || !selectedTime}>
+            <Button
+              onClick={handleBook}
+              disabled={isLoading || !selectedDate || !selectedTime}
+            >
               {isLoading ? t("booking") : t("confirm_booking")}
             </Button>
           </DialogFooter>

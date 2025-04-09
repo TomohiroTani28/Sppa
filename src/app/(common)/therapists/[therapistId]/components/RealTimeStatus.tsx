@@ -1,6 +1,6 @@
 // src/app/(common)/therapists/[therapistId]/components/RealTimeStatus.tsx
 import React from 'react';
-import Badge from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/Badge';
 import { useSubscription, gql } from '@apollo/client';
 import { useParams } from 'next/navigation';
 import { TherapistProfile } from '@/types/therapist';

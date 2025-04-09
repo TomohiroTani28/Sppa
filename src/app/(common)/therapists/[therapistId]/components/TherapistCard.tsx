@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import Text from "@/components/ui/Text";
 import Avatar from "@/components/Avatar";
 import RatingStars from "@/components/RatingStars";
-import { MediaDisplay } from "@/components/MediaDisplay";
+import MediaDisplay from "@/components/MediaDisplay";
 import { Card, CardContent, CardFooter } from "@/components/ui/Card";
 import { Heart } from "lucide-react";
 
@@ -32,21 +32,20 @@ const TherapistCard: React.FC<TherapistCardProps> = ({
     onLike();
   };
 
-  // 詳細ページへの遷移を実装
   const handleCardClick = () => {
     router.push(`/therapists/${therapist.id}`);
   };
 
   return (
     <Card className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      {/* クリック可能な部分は <button> 要素に置換し、アクセシビリティ対応 */}
       <button
         type="button"
         onClick={handleCardClick}
         className="relative w-full p-0 border-0 bg-transparent text-left"
       >
         <MediaDisplay
-          src={(therapist as any).mediaUrls?.[0] ?? "/fallback.jpg"}
+          type="photo"
+          media={(therapist as any).mediaUrls?.[0] ?? "/fallback.jpg"}
           aspectRatio="16:9"
         />
         <div className="absolute top-2 left-2 flex items-center bg-white bg-opacity-80 rounded-full px-3 py-1 text-sm">
@@ -58,7 +57,7 @@ const TherapistCard: React.FC<TherapistCardProps> = ({
             />
           </div>
           <Text variant="body" className="font-semibold">
-            {therapist.business_name || therapist.name}
+            {therapist.business_name ?? therapist.name}
           </Text>
         </div>
       </button>
@@ -76,7 +75,7 @@ const TherapistCard: React.FC<TherapistCardProps> = ({
           <div className="flex flex-wrap gap-1">
             {therapist.languages?.map((lang) => (
               <span
-                key={lang} // キーとしてインデックスではなく、言語自体を使用
+                key={lang}
                 className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-700"
               >
                 {lang}
