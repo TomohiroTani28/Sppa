@@ -2,22 +2,22 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { gql, useQuery } from "@apollo/client";
-import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
 import BookingCalendar from "@/app/therapist/bookings/components/BookingCalendar";
 import BookingList from "@/app/therapist/bookings/components/BookingList";
-import RealtimeBookingList from "@/realtime/RealtimeBookingList";
-import { Booking } from "@/types/booking";
 import { useAuth } from "@/hooks/api/useAuth";
-import type { AuthState } from "@/hooks/api/useAuth";
+import RealtimeBookingList from "@/realtime/RealtimeBookingList";
+import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
+import type { AuthState } from "@/types/auth";
+import { Booking } from "@/types/booking";
+import { gql, useQuery } from "@apollo/client";
+import React, { useCallback, useEffect, useState } from "react";
 
 const FETCH_BOOKINGS_QUERY = gql`
   query FetchTherapistBookings($therapistId: uuid!) {
     bookings(where: { therapist_id: { _eq: $therapistId } }) {
       id
-      startTime
-      endTime
+      start_time
+      end_time
       status
       booking_notes
       guest {
