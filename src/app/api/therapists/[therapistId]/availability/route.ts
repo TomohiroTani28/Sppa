@@ -22,10 +22,10 @@ function handleSupabaseError(error: any) {
 ───────────────────────────────────────────── */
 export async function GET(
   request: NextRequest,
-  context: { params: { therapistId: string } }
+  { params }: { params: { therapistId: string } }
 ): Promise<Response> {
   try {
-    const { therapistId } = context.params;
+    const { therapistId } = params;
     if (!therapistId) {
       return NextResponse.json({ error: "therapistId is missing" }, { status: 400 });
     }
