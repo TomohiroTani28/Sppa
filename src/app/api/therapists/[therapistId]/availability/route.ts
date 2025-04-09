@@ -1,5 +1,5 @@
 // src/app/api/therapists/[therapistId]/availability/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from "@supabase/supabase-js";
 
 /* ─────────────────────────────────────────────
@@ -23,7 +23,7 @@ function handleSupabaseError(error: any) {
 export async function GET(
   request: NextRequest,
   context: { params: { therapistId: string } }
-) {
+): Promise<Response> {
   try {
     const { therapistId } = context.params;
     if (!therapistId) {
@@ -134,7 +134,7 @@ export async function GET(
 export async function POST(
   request: NextRequest,
   context: { params: { therapistId: string } }
-) {
+): Promise<Response> {
   try {
     const { therapistId } = context.params;
     if (!therapistId) {
