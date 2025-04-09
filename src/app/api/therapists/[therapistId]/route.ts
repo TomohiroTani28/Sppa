@@ -3,7 +3,7 @@ import { graphqlClient } from "@/lib/apollo-client";
 import { gql } from "@apollo/client";
 import { NextRequest, NextResponse } from "next/server";
 
-// GraphQL query to fetch therapist profile
+// GraphQL query
 const GET_THERAPIST_PROFILE = gql`
   query GetTherapistProfile($id: uuid!) {
     therapist_profiles_by_pk(id: $id) {
@@ -30,12 +30,12 @@ const GET_THERAPIST_PROFILE = gql`
   }
 `;
 
-export async function GET(
-  request: NextRequest,
-  context: { params: { therapistId: string } }
-) {
+export async function GET(request: NextRequest) {
   try {
-    const { therapistId } = context.params;
+    // therapistId を URL パスから抽出
+    const url = new URL(request.url);
+    const pathSegments = url.pathname.split('/');
+    const therapistId = pathSegments[pathSegments.indexOf('therapists') + 1];
 
     if (!therapistId) {
       return NextResponse.json(

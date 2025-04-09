@@ -1,3 +1,4 @@
+// src/app/api/therapists/[therapistId]/availability/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
