@@ -45,7 +45,6 @@ const GET_USER = gql`
   }
 `;
 
-// Helper function to determine if sensitive data should be hidden
 function shouldHideSensitiveData(
   currentUserRole: string | undefined,
   targetUserRole: string | undefined,
@@ -58,17 +57,18 @@ function shouldHideSensitiveData(
   );
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const userId = params.userId;
+    // ❶ userId を URL パスから取得
+    const url = new URL(req.url);
+    const pathSegments = url.pathname.split("/");
+    const userId = pathSegments[pathSegments.indexOf("users") + 1];
+
     if (!userId) {
       return NextResponse.json({ error: "User ID is missing" }, { status: 400 });
     }
 
-    // Extract token from Authorization header
+    // ❷ 認証トークンを取得・検証
     const token = req.headers.get("Authorization")?.split("Bearer ")[1] ?? "";
     const session = await verifyIdToken(token);
     if (!session || !session.id) {
@@ -77,28 +77,26 @@ export async function GET(
 
     const sessionUserId = session.id;
 
-    // Set up Apollo Client
+    // ❸ Apollo クライアントの設定
     const httpLink = createHttpLink({
       uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT ?? "http://localhost:8081/v1/graphql",
     });
 
-    const authLink = setContext((_, { headers }) => {
-      return {
-        headers: {
-          ...headers,
-          authorization: `Bearer ${token}`,
-          "x-hasura-role": session.role,
-          "x-hasura-user-id": sessionUserId,
-        },
-      };
-    });
+    const authLink = setContext((_, { headers }) => ({
+      headers: {
+        ...headers,
+        authorization: `Bearer ${token}`,
+        "x-hasura-role": session.role,
+        "x-hasura-user-id": sessionUserId,
+      },
+    }));
 
     const client = new ApolloClient({
       link: authLink.concat(httpLink),
       cache: new InMemoryCache(),
     });
 
-    // Execute GraphQL query
+    // ❹ GraphQL クエリ実行
     const { data, errors } = await client.query({
       query: GET_USER,
       variables: { userId },
@@ -106,17 +104,14 @@ export async function GET(
 
     if (errors) {
       console.error("GraphQL Errors:", errors);
-      return NextResponse.json(
-        { error: "Failed to fetch user data" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Failed to fetch user data" }, { status: 500 });
     }
 
     if (!data.users_by_pk) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Filter sensitive data based on roles
+    // ❺ 機密情報のマスキング
     const user = data.users_by_pk;
     const isOwnProfile = sessionUserId === userId;
     if (shouldHideSensitiveData(session.role, user.role, isOwnProfile)) {
