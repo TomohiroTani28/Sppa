@@ -56,9 +56,9 @@ const NotificationItem: React.FC<{
 
 const NotificationsClient: React.FC = () => {
   const { t } = useTranslation("notifications");
-  const { user, loading: authLoading } = useAuth();
+  const { session, status, isLoadingToken } = useAuth();
 
-  const { notifications, isLoading, error } = useNotifications(user?.id);
+  const { notifications, isLoading, error } = useNotifications(session?.user?.id);
 
   const [markNotificationRead, { loading: mutationLoading }] = useMutation(MARK_NOTIFICATION_READ);
 
@@ -79,7 +79,7 @@ const NotificationsClient: React.FC = () => {
     }
   };
 
-  if (authLoading || isLoading) {
+  if (status === "loading" || isLoadingToken || isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Spinner />

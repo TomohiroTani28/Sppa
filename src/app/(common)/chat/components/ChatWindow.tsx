@@ -3,10 +3,10 @@
 
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useAuth } from '@/hooks/api/useAuth';
+import { useRealtimeChat } from '@/hooks/useRealtimeChat';
 import type { ChatMessage } from '@/types/chat';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
-import { useRealtimeChat } from '@/hooks/useRealtimeChat';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
 
@@ -17,14 +17,14 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ receiverId }: ChatWindowProps) {
   const { t } = useTranslation('common');
-  const authState = useAuth(); // useAuth から直接認証状態を取得
+  const { status, session, isLoadingToken } = useAuth();
   const { messages, loading, error } = useRealtimeChat(receiverId);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
   // 認証のローディング状態を監視
   useEffect(() => {
-    setIsLoadingAuth(authState.loading);
-  }, [authState.loading]);
+    setIsLoadingAuth(status === "loading" || isLoadingToken);
+  }, [status, isLoadingToken]);
 
   // ローディング中
   if (isLoadingAuth || loading) return <LoadingSpinner />;
@@ -33,7 +33,7 @@ export default function ChatWindow({ receiverId }: ChatWindowProps) {
   if (error) return <p className="text-red-500 text-center">{t('chat.error')}</p>;
 
   // ユーザーが未認証の場合
-  if (!authState.user) return <p className="text-gray-500 text-center">{t('auth.required')}</p>;
+  if (!session?.user) return <p className="text-gray-500 text-center">{t('auth.required')}</p>;
 
   // RealtimeMessage を ChatMessage に整形
   const formattedMessages: ChatMessage[] = messages.map((msg) => ({
@@ -55,7 +55,7 @@ export default function ChatWindow({ receiverId }: ChatWindowProps) {
             <MessageBubble
               key={message.id}
               message={message}
-              isOwnMessage={message.senderId === authState.user?.id}
+              isOwnMessage={message.senderId === session.user?.id}
             />
           ))
         )}

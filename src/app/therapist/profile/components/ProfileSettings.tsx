@@ -1,8 +1,8 @@
 "use client";
 // src/app/(therapist)/profile/components/ProfileSettings.tsx
-import React, { useState, useEffect } from "react";
-import { useUserProfile, useUpdateUserProfile } from "@/hooks/api/users";
+import { useUpdateUserProfile, useUserProfile } from "@/hooks/api/users";
 import { User } from "@/types/user";
+import React, { useEffect, useState } from "react";
 
 interface ProfileSettingsProps {
   therapistId: string;
@@ -28,7 +28,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ therapistId }) => {
   useEffect(() => {
     if (userProfile) {
       setName(userProfile.name || "");
-      setProfilePicture(userProfile.profile_picture || "");
+      setProfilePicture(userProfile.image || "");
     }
   }, [userProfile]);
 
@@ -39,7 +39,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ therapistId }) => {
     const updatedProfile: User = {
       ...userProfile, // 既存の情報を保持しつつ上書き
       name,
-      profile_picture: profilePicture,
+      image: profilePicture,
     };
     await updateUserProfile(updatedProfile);
   };

@@ -1,16 +1,18 @@
 // src/app/tourist/bookings/components/BookingDetailModal.tsx
+"use client";
 
-import { useState, useEffect } from "react";
-import { useTranslation } from "next-i18next";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
-import { Button } from "@/components/ui/Button";
-import Badge from "@/components/ui/Badge";
-import { Spinner } from "@/components/ui/Spinner";
-import { cn } from "@/lib/utils";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 import { format } from "date-fns";
-import { useQuery, useSubscription, gql } from "@apollo/client";
-import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
+import { useTranslation } from "next-i18next";
+import { useEffect, useState } from "react";
+
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
+import { Spinner } from "@/components/ui/Spinner";
 import { useUser } from "@/hooks/api/useUser";
+import { cn } from "@/lib/utils";
+import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
 
 /**
  * Booking 型の定義（GraphQL のエイリアスに合わせた形）

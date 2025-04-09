@@ -1,8 +1,8 @@
 "use client";
 // src/app/(common)/chat/components/OnlineTherapists.tsx
-import { useEffect, useState } from "react";
-import supabase from "@/lib/supabase-client";
 import { useAuth } from "@/hooks/api/useAuth";
+import supabase from "@/lib/supabase-client";
+import { useEffect, useState } from "react";
 
 interface OnlineTherapistsProps {
   readonly therapists: any[];
@@ -13,7 +13,7 @@ export default function OnlineTherapists({
   therapists,
   onSelect,
 }: OnlineTherapistsProps) {
-  const authState = useAuth();
+  const { status, session, isLoadingToken } = useAuth();
   const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
@@ -32,13 +32,13 @@ export default function OnlineTherapists({
   }, [therapists]);
 
   const createChatRoom = async (therapistId: string) => {
-    if (!authState.user) {
+    if (!session?.user) {
       console.error("ユーザーが存在しません");
       return;
     }
     const { data, error } = await supabase
       .from("chat_rooms")
-      .insert([{ participant1: authState.user.id, participant2: therapistId }])
+      .insert([{ participant1: session.user.id, participant2: therapistId }])
       .select()
       .single();
     if (error) {
@@ -48,11 +48,11 @@ export default function OnlineTherapists({
     }
   };
 
-  if (authState.loading) {
+  if (status === "loading" || isLoadingToken) {
     return <div>Loading authentication...</div>;
   }
 
-  if (!authState.user) {
+  if (!session?.user) {
     return <div>Please log in to view therapists.</div>;
   }
 

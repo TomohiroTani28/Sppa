@@ -1,8 +1,8 @@
 "use client";
 // src/app/(common)/chat/components/RecentConversations.tsx
-import { useEffect, useState } from "react";
-import supabase from "@/lib/supabase-client";
 import { useAuth } from "@/hooks/api/useAuth";
+import supabase from "@/lib/supabase-client";
+import { useEffect, useState } from "react";
 
 interface RecentConversationsProps {
   readonly chatRooms: any[];
@@ -13,7 +13,7 @@ export default function RecentConversations({
   chatRooms,
   onSelect,
 }: RecentConversationsProps) {
-  const authState = useAuth(); // useAuthから直接状態を取得
+  const { status, session, isLoadingToken } = useAuth();
   const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
@@ -31,12 +31,12 @@ export default function RecentConversations({
   }, []);
 
   // 認証状態が読み込み中の場合
-  if (authState.loading) {
+  if (status === "loading" || isLoadingToken) {
     return <div>Loading authentication...</div>;
   }
 
   // ユーザーがログインしていない場合
-  if (!authState.user) {
+  if (!session?.user) {
     return <div>Please log in to view recent conversations.</div>;
   }
 
@@ -44,7 +44,7 @@ export default function RecentConversations({
     <div className="recent-conversations">
       {chatRooms.map((room) => {
         const otherUserId =
-          room.participant1 === authState.user?.id ? room.participant2 : room.participant1;
+          room.participant1 === session.user?.id ? room.participant2 : room.participant1;
         const otherUser = users.find((u) => u.id === otherUserId);
         return (
           <div

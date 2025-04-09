@@ -15,17 +15,17 @@ import { useEffect, useState } from "react";
 export default function ChatPage() {
   const { t } = useTranslation("common");
   const { userId } = useParams();
-  const authState = useAuthHook(); // 直接 authState を取得
+  const { status, session, isLoadingToken } = useAuthHook();
   const [isLoading, setIsLoading] = useState(true);
 
   // ローディング状態を監視
   useEffect(() => {
-    if (authState.loading) {
+    if (status === "loading" || isLoadingToken) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [authState.loading]);
+  }, [status, isLoadingToken]);
 
   useEffect(() => {
     console.log(`ChatPage mounted for userId: ${userId}`);
@@ -36,9 +36,9 @@ export default function ChatPage() {
     return <p className="text-gray-500 text-center">{t("loading")}</p>;
   }
 
-  // userId または user が存在しない場合
+  // userId または session が存在しない場合
   if (!userId) return <p className="text-gray-500 text-center">{t("chat.noChatRoom")}</p>;
-  if (!authState.user) return <p className="text-gray-500 text-center">{t("auth.required")}</p>;
+  if (!session?.user) return <p className="text-gray-500 text-center">{t("auth.required")}</p>;
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-gray-300">
