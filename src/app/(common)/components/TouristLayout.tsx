@@ -1,10 +1,11 @@
 "use client";
 // src/app/(common)/components/TouristLayout.tsx
-import React from "react";
-import Navbar from "@/components/ui/Navbar";
 import NotificationList from "@/app/(common)/notifications/components/NotificationList";
-import { useUserPreferences } from "@/hooks/useUserPreferences";
+import Navbar from "@/components/ui/Navbar";
 import { useAuth } from "@/hooks/api/useAuth";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { AuthState } from "@/types/auth";
+import React, { useEffect, useState } from "react";
 
 // TouristLayoutのプロパティ
 type TouristLayoutProps = {
@@ -13,10 +14,21 @@ type TouristLayoutProps = {
 
 const TouristLayout: React.FC<TouristLayoutProps> = ({ children }) => {
   const { preferences, isLoading: preferencesLoading, error: preferencesError } = useUserPreferences();
-  const authState = useAuth(); // useAuthから直接状態を取得
+  const { status, getAuthState } = useAuth();
+  const [authState, setAuthState] = useState<AuthState | null>(null);
+
+  useEffect(() => {
+    const loadAuthState = async () => {
+      const state = await getAuthState();
+      setAuthState(state);
+    };
+    loadAuthState();
+  }, [getAuthState]);
 
   // 認証またはプリファレンスのローディング中
-  if (authState.loading || preferencesLoading) return <div>Loading preferences and authentication...</div>;
+  if (status === "loading" || preferencesLoading || !authState) {
+    return <div>Loading preferences and authentication...</div>;
+  }
 
   // プリファレンスのエラー処理
   if (preferencesError) return <div>Error loading preferences: {preferencesError}</div>;
