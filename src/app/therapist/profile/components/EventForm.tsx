@@ -1,9 +1,9 @@
 // src/app/therapist/profile/components/EventForm.tsx
 "use client";
-import React, { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/api/useAuth";
 import { useCreateEvent } from "@/hooks/api/useCreateEvent";
 import { Event } from "@/types/event";
-import { useAuth } from "@/hooks/api/useAuth";
+import React, { useEffect, useState } from "react";
 
 // 認証状態の型を定義
 interface AuthState {
@@ -25,6 +25,7 @@ const EventForm: React.FC = () => {
   const [eventDescription, setEventDescription] = useState("");
   const [eventStartDate, setEventStartDate] = useState("");
   const [eventEndDate, setEventEndDate] = useState("");
+  const [eventCapacity, setEventCapacity] = useState<number>(10); // デフォルトの定員数
   const { createEvent, loading, error } = useCreateEvent();
   const { getAuthState } = useAuth(); // getAuthState を使用
   const [authState, setAuthState] = useState<AuthState | null>(null);
@@ -61,6 +62,9 @@ const EventForm: React.FC = () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       imageUrl: "", // 初期値として空文字を設定
+      capacity: eventCapacity, // 定員数を追加
+      currentParticipants: 0, // 初期参加者数は0
+      status: "upcoming" // 新規イベントは "upcoming" ステータス
     };
 
     await createEvent(eventData);
@@ -107,10 +111,10 @@ const EventForm: React.FC = () => {
         </div>
         <div>
           <label htmlFor="startDate" className="block text-sm">
-            開始日付
+            開始日時
           </label>
           <input
-            type="date"
+            type="datetime-local"
             id="startDate"
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             value={eventStartDate}
@@ -120,10 +124,10 @@ const EventForm: React.FC = () => {
         </div>
         <div>
           <label htmlFor="endDate" className="block text-sm">
-            終了日付
+            終了日時
           </label>
           <input
-            type="date"
+            type="datetime-local"
             id="endDate"
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             value={eventEndDate}
@@ -131,15 +135,29 @@ const EventForm: React.FC = () => {
             required
           />
         </div>
+        <div>
+          <label htmlFor="capacity" className="block text-sm">
+            定員数
+          </label>
+          <input
+            type="number"
+            id="capacity"
+            min="1"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+            value={eventCapacity}
+            onChange={(e) => setEventCapacity(parseInt(e.target.value, 10))}
+            required
+          />
+        </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md"
+          className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
           disabled={loading}
         >
-          {loading ? "登録中..." : "登録"}
+          {loading ? "作成中..." : "イベントを作成"}
         </button>
+        {error && <div className="text-red-500">{error.message}</div>}
       </form>
-      {error && <div className="text-red-500 text-sm">{error.message}</div>}
     </div>
   );
 };
