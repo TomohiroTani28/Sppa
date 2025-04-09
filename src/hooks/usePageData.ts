@@ -4,25 +4,28 @@ import { useAuth } from "@/hooks/api/useAuth";
 import { useHomeData } from "./useHomeData";
 import { useNotificationsApi } from "@/hooks/api/useNotificationsApi";
 
+// Define AuthState type to match the actual return from getAuthState()
+type AuthState = {
+  user: {
+    id: string;
+    name: string | null;
+    email: string | null;
+    image: string | null;
+    role: string | null;
+  } | null;
+  token: string | null;
+  role: any;
+  profile_picture: string | null;
+  loading: boolean;
+};
+
 export const usePageData = () => {
   const { getAuthState } = useAuth();
 
-  // 認証状態を管理するための状態変数
-  const [authState, setAuthState] = useState<{
-    user: {
-      id: string;
-      name?: string | null | undefined;
-      email?: string | null | undefined;
-      image?: string | null | undefined;
-      role?: string | undefined;
-    } | null;
-    token: string | null;
-    role: any;
-    profile_picture: string | null;
-    loading: boolean;
-  } | null>(null);
+  // Fixed the type definition to match what getAuthState returns
+  const [authState, setAuthState] = useState<AuthState | null>(null);
 
-  // コンポーネントがマウントされたときに認証状態を取得
+  // Fetch auth state when component mounts
   useEffect(() => {
     const fetchAuthState = async () => {
       try {
@@ -30,7 +33,7 @@ export const usePageData = () => {
         setAuthState(state);
       } catch (error) {
         console.error('認証状態の取得に失敗しました:', error);
-        // 必要に応じてエラー処理を追加
+        // Error handling can be expanded here if needed
       }
     };
 
@@ -46,16 +49,17 @@ export const usePageData = () => {
     events 
   } = useHomeData();
   
-  // 簡易的な翻訳関数のフォールバック（useMultiLanguageの代わり）
+  // Simple translation function fallback (instead of useMultiLanguage)
   const t = (key: string): string => key;
   const languageLoading = false;
 
-  // 認証状態からuserとloadingを抽出
+  // Extract user and loading from auth state
   const user = authState?.user || null;
-  const authLoading = authState?.loading || true; // 認証状態が取得されるまではloadingをtrueに
+  const authLoading = authState?.loading ?? true; // Use nullish coalescing instead of logical OR
 
-  // user?.id が undefined の場合は空文字列を渡す
-  const { notifications, isLoading: notificationLoading } = useNotificationsApi(user?.id || "");
+  // Use nullish coalescing here too
+  const { notifications, isLoading: notificationLoading } = 
+    useNotificationsApi(user?.id ?? "");
 
   return {
     user,

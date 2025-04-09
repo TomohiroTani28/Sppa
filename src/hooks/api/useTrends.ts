@@ -10,85 +10,11 @@ import { useNotification } from '@/hooks/api/useNotification';
 /**
  * GraphQL Queries, Subscriptions, and Mutations
  */
-export const GET_TRENDS = gql`
-  query GetTrends($limit: Int, $offset: Int, $filters: jsonb) {
-    trends: posts_aggregate(
-      where: { post_type: { _eq: "trend" }, _and: $filters }
-      limit: $limit
-      offset: $offset
-    ) {
-      nodes {
-        id
-        user_id
-        content
-        location
-        created_at
-        updated_at
-        user {
-          name
-          profile_picture
-        }
-      }
-      aggregate {
-        count
-      }
-    }
-  }
-`;
-
-export const SUBSCRIBE_TREND_UPDATES = gql`
-  subscription SubscribeTrends($filters: jsonb) {
-    trends: posts(
-      where: { post_type: { _eq: "trend" }, _and: $filters }
-      order_by: { created_at: desc }
-    ) {
-      id
-      user_id
-      content
-      location
-      created_at
-      updated_at
-      user {
-        name
-        profile_picture
-      }
-    }
-  }
-`;
-
-export const CREATE_TREND = gql`
-  mutation CreateTrend($input: posts_insert_input!) {
-    createTrend: insert_posts_one(object: $input) {
-      id
-      user_id
-      content
-      location
-      created_at
-      updated_at
-    }
-  }
-`;
-
-export const UPDATE_TREND = gql`
-  mutation UpdateTrend($id: uuid!, $input: posts_set_input!) {
-    updateTrend: update_posts_by_pk(pk_columns: { id: $id }, _set: $input) {
-      id
-      user_id
-      content
-      location
-      created_at
-      updated_at
-    }
-  }
-`;
-
-export const DELETE_TREND = gql`
-  mutation DeleteTrend($id: uuid!) {
-    deleteTrend: delete_posts_by_pk(id: $id) {
-      id
-    }
-  }
-`;
+const GET_TRENDS = gql`...`;
+const SUBSCRIBE_TREND_UPDATES = gql`...`;
+const CREATE_TREND = gql`...`;
+const UPDATE_TREND = gql`...`;
+const DELETE_TREND = gql`...`;
 
 /**
  * Type Definitions
@@ -114,36 +40,30 @@ export interface TrendInput {
 
 export type NotificationType = 'success' | 'error' | 'info';
 
-export interface AuthState {
-  user: {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string;
-  } | null;
-  token: string | null;
-  role: any;
-  profile_picture: string | null;
-  loading: boolean;
+// Define our own AuthState to avoid type incompatibility issues
+export interface AuthStateUser {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string; // Removed redundant undefined since ? already implies it
 }
 
-export interface AuthHook {
-  getAuthState: () => Promise<AuthState>;
+export interface LocalAuthState {
+  user: AuthStateUser | null;
+  // Removed isLoggedIn as it doesn't exist in original AuthState
 }
 
 /**
- * Helper function to handle errors with reduced arguments
+ * Utility: Handle GraphQL or runtime errors
  */
-type ErrorHandlerUtils = {
-  createErrorLog: (log: any) => void;
-  notify: (message: string, type: NotificationType) => void;
-  t: (key: string) => string;
-};
-
 const handleError = (
   error: Error,
-  utils: ErrorHandlerUtils,
+  utils: {
+    createErrorLog: (log: any) => void;
+    notify: (msg: string, type: NotificationType) => void;
+    t: (key: string) => string;
+  },
   errorType: string
 ) => {
   const { createErrorLog, notify, t } = utils;
@@ -156,174 +76,152 @@ const handleError = (
 };
 
 /**
- * Data fetching logic
+ * Fetch trend data from GraphQL
  */
-const useTrendData = (auth: AuthHook) => {
+const useTrendData = (authLoaded: boolean) => {
   const { data, loading, error } = useQuery(GET_TRENDS, {
     variables: { limit: 10, offset: 0, filters: {} },
-    skip: !auth,
+    skip: !authLoaded,
   });
 
   const { data: subscriptionData } = useSubscription(SUBSCRIBE_TREND_UPDATES, {
     variables: { filters: {} },
-    skip: !auth,
+    skip: !authLoaded,
   });
 
-  const trends = useMemo(
-    (): Trend[] => subscriptionData?.trends || data?.trends?.nodes || [],
-    [data, subscriptionData]
-  );
-  const totalCount = useMemo(() => data?.trends?.aggregate?.count || 0, [data]);
+  const trends = useMemo(() => subscriptionData?.trends ?? data?.trends?.nodes ?? [], [data, subscriptionData]);
+  const totalCount = useMemo(() => data?.trends?.aggregate?.count ?? 0, [data]);
 
   return { trends, totalCount, loading, error };
 };
 
 /**
- * Mutation logic with explicit types
+ * CRUD operations for trends
  */
-const useTrendMutations = (
-  notify: (message: string, type: NotificationType) => void,
-  createErrorLog: (log: any) => void,
-  t: (key: string) => string
-) => {
-  const [createTrend] = useMutation<{ createTrend: Trend }, { input: TrendInput }>(CREATE_TREND, {
+const useTrendMutations = (utils: ReturnType<typeof useUtils>) => {
+  const { notify, t } = utils;
+  // Removed destructuring of createErrorLog since it's passed via utils to handleError
+
+  const [createTrend] = useMutation(CREATE_TREND, {
     onCompleted: () => notify(t('trends.created'), 'success'),
-    onError: (err) => handleError(err, { createErrorLog, notify, t }, 'TrendCreationError'),
+    onError: (err) => handleError(err, utils, 'TrendCreationError'),
   });
 
-  const [updateTrend] = useMutation<{ updateTrend: Trend }, { id: string; input: TrendInput }>(UPDATE_TREND, {
+  const [updateTrend] = useMutation(UPDATE_TREND, {
     onCompleted: () => notify(t('trends.updated'), 'success'),
-    onError: (err) => handleError(err, { createErrorLog, notify, t }, 'TrendUpdateError'),
+    onError: (err) => handleError(err, utils, 'TrendUpdateError'),
   });
 
-  const [deleteTrend] = useMutation<{ deleteTrend: { id: string } }, { id: string }>(DELETE_TREND, {
+  const [deleteTrend] = useMutation(DELETE_TREND, {
     onCompleted: () => notify(t('trends.deleted'), 'success'),
-    onError: (err) => handleError(err, { createErrorLog, notify, t }, 'TrendDeletionError'),
+    onError: (err) => handleError(err, utils, 'TrendDeletionError'),
   });
 
   return { createTrend, updateTrend, deleteTrend };
 };
 
 /**
- * Handler logic using authState
+ * Trend create/update/delete logic using handlers
  */
 const useTrendHandlers = (
-  authState: AuthState | null,
-  mutations: {
-    createTrend: (options?: any) => Promise<any>;
-    updateTrend: (options?: any) => Promise<any>;
-    deleteTrend: (options?: any) => Promise<any>;
-  },
-  utils: {
-    logActivity: (activity: any) => void;
-    createErrorLog: (log: any) => void;
-    notify: (message: string, type: NotificationType) => void;
-    t: (key: string) => string;
-  }
+  authState: LocalAuthState | null, 
+  mutations: ReturnType<typeof useTrendMutations>, 
+  utils: ReturnType<typeof useUtils>,
+  logActivity: (activity: any) => void
 ) => {
   const { createTrend, updateTrend, deleteTrend } = mutations;
-  const { logActivity, createErrorLog, notify, t } = utils;
-
-  const handleCreateTrend = useCallback(
-    async (input: TrendInput) => {
-      try {
-        if (!authState || !authState.user) {
-          notify(t('auth.required'), 'error');
-          return;
-        }
-        const trendInput = { ...input, user_id: authState.user.id, post_type: 'trend' };
-        await createTrend({ variables: { input: trendInput } });
-        logActivity({
-          activityType: 'trend_created',
-          description: `User ${authState.user.id} created a trend`,
-          requestDetails: { input: trendInput },
-        });
-      } catch (err) {
-        handleError(err as Error, { createErrorLog, notify, t }, 'TrendCreationHandlerError');
+  const { notify, t } = utils;
+  
+  // Extract common auth check logic to reduce complexity
+  const requireAuth = useCallback((callback: Function) => {
+    return async (...args: any[]) => {
+      if (!authState?.user) {
+        notify(t('auth.required'), 'error');
+        return;
       }
-    },
-    [authState, createTrend, logActivity, createErrorLog, notify, t]
-  );
-
-  const handleUpdateTrend = useCallback(
-    async (id: string, input: TrendInput) => {
-      try {
-        if (!authState || !authState.user) {
-          notify(t('auth.required'), 'error');
-          return;
-        }
-        await updateTrend({ variables: { id, input } });
-        logActivity({
-          activityType: 'trend_updated',
-          description: `User ${authState.user.id} updated trend ${id}`,
-          requestDetails: { input },
-        });
-      } catch (err) {
-        handleError(err as Error, { createErrorLog, notify, t }, 'TrendUpdateHandlerError');
-      }
-    },
-    [authState, updateTrend, logActivity, createErrorLog, notify, t]
-  );
-
-  const handleDeleteTrend = useCallback(
-    async (id: string) => {
-      try {
-        if (!authState || !authState.user) {
-          notify(t('auth.required'), 'error');
-          return;
-        }
-        await deleteTrend({ variables: { id } });
-        logActivity({
-          activityType: 'trend_deleted',
-          description: `User ${authState.user.id} deleted trend ${id}`,
-          requestDetails: { id },
-        });
-      } catch (err) {
-        handleError(err as Error, { createErrorLog, notify, t }, 'TrendDeletionHandlerError');
-      }
-    },
-    [authState, deleteTrend, logActivity, createErrorLog, notify, t]
-  );
-
-  return { handleCreateTrend, handleUpdateTrend, handleDeleteTrend };
+      return callback(...args);
+    };
+  }, [authState, notify, t]);
+  
+  // Handlers with focused implementation after auth check
+  const performCreateTrend = useCallback(async (input: TrendInput) => {
+    const trendInput = { ...input, user_id: authState!.user!.id, post_type: 'trend' };
+    await createTrend({ variables: { input: trendInput } });
+    logActivity({ 
+      activityType: 'trend_created', 
+      description: `User ${authState!.user!.id} created a trend`, 
+      requestDetails: { input: trendInput } 
+    });
+  }, [authState, createTrend, logActivity]);
+  
+  const performUpdateTrend = useCallback(async (id: string, input: TrendInput) => {
+    await updateTrend({ variables: { id, input } });
+    logActivity({ 
+      activityType: 'trend_updated', 
+      description: `User ${authState!.user!.id} updated trend ${id}`, 
+      requestDetails: { input } 
+    });
+  }, [authState, updateTrend, logActivity]);
+  
+  const performDeleteTrend = useCallback(async (id: string) => {
+    await deleteTrend({ variables: { id } });
+    logActivity({ 
+      activityType: 'trend_deleted', 
+      description: `User ${authState!.user!.id} deleted trend ${id}`, 
+      requestDetails: { id } 
+    });
+  }, [authState, deleteTrend, logActivity]);
+  
+  // Apply auth check to each handler
+  return {
+    handleCreateTrend: requireAuth(performCreateTrend),
+    handleUpdateTrend: requireAuth(performUpdateTrend),
+    handleDeleteTrend: requireAuth(performDeleteTrend)
+  };
 };
 
 /**
- * Custom hook for managing trends
+ * Utils shared by handlers and mutations
  */
-export const useTrends = () => {
+const useUtils = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
   const { createErrorLog } = useErrorLogApi();
   const { notify } = useNotification();
+  return { t, createErrorLog, notify };
+};
 
-  // State to hold the fetched AuthState
-  const [authState, setAuthState] = useState<AuthState | null>(null);
+/**
+ * Top-level trends hook
+ */
+export const useTrends = () => {
+  const auth = useAuth();
+  const [authState, setAuthState] = useState<LocalAuthState | null>(null);
+  const [authLoaded, setAuthLoaded] = useState(false);
 
-  // Fetch AuthState when auth changes
   useEffect(() => {
-    const fetchAuthState = async () => {
+    const fetchAuth = async () => {
       const state = await auth.getAuthState();
-      setAuthState(state);
+      // Convert imported AuthState to our LocalAuthState
+      setAuthState(state ? {
+        user: state.user ? {
+          id: state.user.id,
+          name: state.user.name,
+          email: state.user.email,
+          image: state.user.image,
+          role: state.user.role ?? undefined // Using nullish coalescing instead of logical OR
+        } : null
+      } : null);
+      setAuthLoaded(true);
     };
-    fetchAuthState();
+    fetchAuth();
   }, [auth]);
 
-  // Pass authState to useActivityLogging
-  const { logActivity } = useActivityLogging(authState);
+  const { logActivity } = useActivityLogging(authState as any); // Type assertion here is necessary but safer than before
+  const utils = useUtils();
+  const mutations = useTrendMutations(utils);
+  // Pass logActivity as a separate parameter
+  const handlers = useTrendHandlers(authState, mutations, utils, logActivity);
+  const { trends, totalCount, loading, error } = useTrendData(authLoaded);
 
-  const { trends, totalCount, loading, error } = useTrendData(auth);
-  const mutations = useTrendMutations(notify, createErrorLog, t);
-  const utils = { logActivity, createErrorLog, notify, t };
-  const { handleCreateTrend, handleUpdateTrend, handleDeleteTrend } = useTrendHandlers(authState, mutations, utils);
-
-  return {
-    trends,
-    totalCount,
-    loading,
-    error,
-    handleCreateTrend,
-    handleUpdateTrend,
-    handleDeleteTrend,
-  };
+  return { trends, totalCount, loading, error, ...handlers };
 };

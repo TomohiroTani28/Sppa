@@ -28,6 +28,23 @@ interface UserProfile {
 }
 
 /**
+ * Interface matching the actual AuthState returned by getAuthState()
+ */
+interface AuthState {
+  user: { 
+    id: string; 
+    name: string | null; 
+    email: string | null; 
+    image: string | null; 
+    role: string | null;
+  } | null;
+  token: string | null;
+  role: any;
+  profile_picture: string | null;
+  loading: boolean;
+}
+
+/**
  * Custom hook to manage user preferences.
  * @returns Object with preferences, loading state, error, and save function.
  */
@@ -35,13 +52,7 @@ export const useUserPreferences = () => {
   const { getAuthState } = useAuth();
 
   // Authentication state
-  const [authState, setAuthState] = useState<{
-    user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-    token: string | null;
-    role: any;
-    profile_picture: string | null;
-    loading: boolean;
-  } | null>(null);
+  const [authState, setAuthState] = useState<AuthState | null>(null);
 
   // Fetch auth state
   useEffect(() => {

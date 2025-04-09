@@ -4,8 +4,8 @@ import { getServerSession } from "next-auth/next";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-// 認証状態の型を定義
-interface AuthState {
+// 認証状態の型を定義（exportを追加）
+export interface AuthState {
   user: {
     id: string;
     name: string | null;
@@ -53,13 +53,15 @@ export const useAuth = () => {
 
   // 認証状態を構築
   const authState: AuthState = {
-    user: session?.user ? {
-      id: session.user.id || '',
-      name: session.user.name || null,
-      email: session.user.email || null,
-      image: session.user.image || null,
-      role: (session.user as any)?.role || null,
-    } : null,
+    user: session?.user
+      ? {
+          id: session.user.id || '',
+          name: session.user.name || null,
+          email: session.user.email || null,
+          image: session.user.image || null,
+          role: (session.user as any)?.role || null,
+        }
+      : null,
     token: jwtToken,
     role: (session?.user as any)?.role || null,
     profile_picture: session?.user?.image || null,
@@ -79,13 +81,15 @@ export const useAuth = () => {
 export const getAuthServerSide = async () => {
   const session = await getServerSession(authOptions);
   return {
-    user: session?.user ? {
-      id: session.user.id || '',
-      name: session.user.name || null,
-      email: session.user.email || null,
-      image: session.user.image || null,
-      role: (session.user as any)?.role || null,
-    } : null,
+    user: session?.user
+      ? {
+          id: session.user.id || '',
+          name: session.user.name || null,
+          email: session.user.email || null,
+          image: session.user.image || null,
+          role: (session.user as any)?.role || null,
+        }
+      : null,
     token: null,
     role: (session?.user as any)?.role || null,
     profile_picture: session?.user?.image || null,

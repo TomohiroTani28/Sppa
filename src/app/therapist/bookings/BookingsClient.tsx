@@ -2,28 +2,15 @@
 "use client";
 export const dynamic = "force-dynamic";
 
+import React, { useCallback, useEffect, useState } from "react";
+import { gql, useQuery } from "@apollo/client";
 import { useRealtimeBookings } from "@/realtime/useRealtimeBookings";
 import BookingCalendar from "@/app/therapist/bookings/components/BookingCalendar";
 import BookingList from "@/app/therapist/bookings/components/BookingList";
 import RealtimeBookingList from "@/realtime/RealtimeBookingList";
 import { Booking } from "@/types/booking";
-import { gql, useQuery } from "@apollo/client";
-import React, { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/hooks/api/useAuth";
-
-interface AuthState {
-  user: {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string;
-  } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
+import type { AuthState } from "@/hooks/api/useAuth";
 
 const FETCH_BOOKINGS_QUERY = gql`
   query FetchTherapistBookings($therapistId: uuid!) {
@@ -56,37 +43,39 @@ const BookingsClient: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const { realtimeBookings } = useRealtimeBookings();
 
-  // Fetch auth state only on the client side
+  // 認証状態を取得
   useEffect(() => {
-    const fetchAuthState = async () => {
+    const fetchAuth = async () => {
       try {
         const state = await getAuthState();
         setAuthState(state);
-      } catch (error) {
-        console.error("Failed to fetch auth state:", error);
+      } catch (err) {
+        console.error("Failed to fetch auth state:", err);
         setAuthState(null);
       } finally {
         setIsLoadingAuth(false);
       }
     };
-    fetchAuthState();
+    fetchAuth();
   }, [getAuthState]);
 
   const therapistId = authState?.user?.id;
 
+  // GraphQL で予約データを取得
   const {
-    loading,
-    error,
+    loading: isLoadingBookings,
+    error: bookingsError,
     data,
     refetch,
   } = useQuery<{ bookings: Booking[] }, { therapistId: string }>(
     FETCH_BOOKINGS_QUERY,
     {
-      skip: !therapistId, // Skip query until therapistId is available
+      skip: !therapistId,
       variables: { therapistId: therapistId ?? "" },
     }
   );
 
+  // GraphQLから取得したデータをステートにセット
   const updateBookings = useCallback(() => {
     if (data?.bookings) {
       setBookings(data.bookings);
@@ -97,26 +86,23 @@ const BookingsClient: React.FC = () => {
     updateBookings();
   }, [updateBookings]);
 
+  // カレンダーや予約更新で再取得
   const handleBookingUpdate = useCallback(() => {
     refetch();
     updateBookings();
   }, [refetch, updateBookings]);
 
-  // Render nothing until the component is mounted on the client
-  if (typeof window === "undefined") {
-    return null; // Prevent server-side rendering
-  }
+  // SSR対策：クライアントだけで表示
+  if (typeof window === "undefined") return null;
 
-  if (isLoadingAuth) {
-    return <div>Loading authentication...</div>;
-  }
+  if (isLoadingAuth) return <div>Loading authentication...</div>;
 
-  if (!authState?.user) {
-    return <div>Please log in to view bookings.</div>;
-  }
+  if (!authState?.user) return <div>Please log in to view bookings.</div>;
 
-  if (loading) return <div>Loading bookings...</div>;
-  if (error) return <div>Error loading bookings: {error.message}</div>;
+  if (isLoadingBookings) return <div>Loading bookings...</div>;
+
+  if (bookingsError)
+    return <div>Error loading bookings: {bookingsError.message}</div>;
 
   return (
     <div className="booking-page">

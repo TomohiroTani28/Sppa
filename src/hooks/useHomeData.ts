@@ -13,10 +13,11 @@ interface User {
   name?: string | null;
   email?: string | null;
   image?: string | null;
-  role?: string;
+  role?: string | null; // Changed to allow null
 }
 
-export const useHomeData = () => {
+// Separate hook for user data
+const useUser = () => {
   const auth = useAuth();
   const [user, setUser] = useState<User | null>(null);
 
@@ -26,10 +27,10 @@ export const useHomeData = () => {
       if (authState.user) {
         const userData = {
           id: authState.user.id,
-          name: authState.user.name || null,
-          email: authState.user.email || null,
-          image: authState.user.image || null,
-          role: authState.user.role || null
+          name: authState.user.name ?? null,
+          email: authState.user.email ?? null,
+          image: authState.user.image ?? null,
+          role: authState.user.role ?? null
         };
         setUser(userData);
       } else {
@@ -39,21 +40,25 @@ export const useHomeData = () => {
     fetchUser();
   }, [auth]);
 
-  const { preferences, isLoading: preferencesLoading } = useUserPreferences();
-  const { userLocation, loading: locationLoading } = useLocationService();
-  const { experiences, loading: experiencesLoading, fetchExperiences } = useFetchLocalExperiences();
-  const { therapists, loading: therapistsLoading } = useFetchTherapists();
-  const { events, loading: eventsLoading } = useFetchEvents();
+  return user;
+};
 
+// Separate hook for language preferences
+const useLanguagePreference = (preferences: any) => {
   const [preferredLanguage, setPreferredLanguage] = useState("en");
 
   useEffect(() => {
     const languages = preferences?.preferred_languages ?? [];
     if (languages && languages.length > 0) {
-      setPreferredLanguage(languages[0] || 'en');
+      setPreferredLanguage(languages[0] ?? 'en');
     }
   }, [preferences]);
 
+  return preferredLanguage;
+};
+
+// Separate hook for experiences based on location
+const useLocationBasedExperiences = (userLocation: any, fetchExperiences: any) => {
   useEffect(() => {
     if (userLocation) {
       const locationParams = {
@@ -61,11 +66,37 @@ export const useHomeData = () => {
         lng: userLocation.lng,
         radius: 10,
       };
-      fetchExperiences({ where: locationParams, limit: 10 }).catch((err) =>
+      fetchExperiences({ where: locationParams, limit: 10 }).catch((err: Error) =>
         console.error("Error fetching experiences:", err)
       );
     }
   }, [fetchExperiences, userLocation]);
+};
+
+// Transform preferences to the required format
+const transformPreferences = (preferences: any) => {
+  return {
+    categories: preferences?.preferred_services ?? [],
+    languages: preferences?.preferred_languages ?? [],
+    budget: preferences?.preferred_budget,
+    gender: preferences?.gender_preference,
+    amenities: preferences?.amenities_preference ?? {},
+  };
+};
+
+// Main hook with reduced complexity
+export const useHomeData = () => {
+  const user = useUser();
+  const { preferences, isLoading: preferencesLoading } = useUserPreferences();
+  const { userLocation, loading: locationLoading } = useLocationService();
+  const { experiences, loading: experiencesLoading, fetchExperiences } = useFetchLocalExperiences();
+  const { therapists, loading: therapistsLoading } = useFetchTherapists();
+  const { events, loading: eventsLoading } = useFetchEvents();
+
+  const preferredLanguage = useLanguagePreference(preferences);
+  
+  // Set up location-based experiences
+  useLocationBasedExperiences(userLocation, fetchExperiences);
 
   const isLoading = useMemo(
     () =>
@@ -78,13 +109,7 @@ export const useHomeData = () => {
   );
 
   const transformedPreferences = useMemo(
-    () => ({
-      categories: preferences?.preferred_services || [],
-      languages: preferences?.preferred_languages || [],
-      budget: preferences?.preferred_budget,
-      gender: preferences?.gender_preference,
-      amenities: preferences?.amenities_preference || {},
-    }),
+    () => transformPreferences(preferences),
     [preferences]
   );
 
