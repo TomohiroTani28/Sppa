@@ -1,6 +1,8 @@
 // src/app/api/therapists/[therapistId]/availability/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { graphqlClient } from "@/lib/apollo-client";
+import { gql } from "@apollo/client";
 import { createClient } from "@supabase/supabase-js";
+import { NextRequest, NextResponse } from 'next/server';
 
 /* ─────────────────────────────────────────────
    共通: Supabase エラーハンドリング
@@ -22,109 +24,39 @@ function handleSupabaseError(error: any) {
 ───────────────────────────────────────────── */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { therapistId: string } }
-): Promise<Response> {
+  context: { params: { therapistId: string } }
+) {
   try {
-    const { therapistId } = params;
-    if (!therapistId) {
-      return NextResponse.json({ error: "therapistId is missing" }, { status: 400 });
-    }
+    const { therapistId } = context.params;
 
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-    if (!supabaseUrl || !supabaseAnonKey) {
+    if (!therapistId) {
       return NextResponse.json(
-        { error: "Supabase environment variables are not set" },
-        { status: 500 },
+        { error: "Therapist ID is required" },
+        { status: 400 }
       );
     }
 
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const client = await graphqlClient();
+    const { data, error } = await client.query({
+      query: GET_THERAPIST_AVAILABILITY,
+      variables: { therapistId },
+    });
 
-    /* ----- クエリパラメータ ----- */
-    const url = new URL(request.url);
-    const startDate = url.searchParams.get("start_date");
-    const endDate   = url.searchParams.get("end_date");
-
-    /* ----- therapistId → userId 解決 ----- */
-    let userId: string;
-    const { data: profileData, error: profileError } = await supabase
-      .from("therapist_profiles")
-      .select("user_id")
-      .eq("id", therapistId)
-      .single();
-
-    if (profileError && profileError.code !== "PGRST116") {
-      return handleSupabaseError(profileError);
+    if (error) {
+      console.error("GraphQL error:", error);
+      return NextResponse.json(
+        { error: "Failed to fetch therapist availability" },
+        { status: 500 }
+      );
     }
 
-    if (profileData) {
-      userId = profileData.user_id;
-    } else {
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("id")
-        .eq("id", therapistId)
-        .eq("role", "therapist")
-        .single();
-
-      if (userError) {
-        return handleSupabaseError(userError);
-      }
-      if (!userData) {
-        return NextResponse.json({ error: "Therapist not found" }, { status: 404 });
-      }
-      userId = therapistId;
-    }
-
-    /* ----- 利用可能時間の取得 ----- */
-    let availabilityQuery = supabase
-      .from("therapist_availability")
-      .select("*")
-      .eq("therapist_id", userId)
-      .eq("is_available", true)
-      .order("start_time", { ascending: true });
-
-    availabilityQuery = startDate
-      ? availabilityQuery.gte("start_time", startDate)
-      : availabilityQuery.gte("start_time", new Date().toISOString());
-
-    if (endDate) {
-      availabilityQuery = availabilityQuery.lte("end_time", endDate);
-    }
-
-    const { data: availabilityData, error: availabilityError } = await availabilityQuery;
-    if (availabilityError) {
-      return handleSupabaseError(availabilityError);
-    }
-
-    /* ----- 予約済み時間の取得 ----- */
-    const { data: bookingsData, error: bookingsError } = await supabase
-      .from("bookings")
-      .select("start_time, end_time, status")
-      .eq("therapist_id", userId)
-      .not("status", "in", '("canceled", "completed")')
-      .order("start_time", { ascending: true });
-
-    if (bookingsError) {
-      return handleSupabaseError(bookingsError);
-    }
-
-    /* ----- レスポンス構築 ----- */
-    const response = {
-      therapist_id: userId,
-      availability: availabilityData,
-      bookings: bookingsData,
-      recurrence: await getRecurrenceRules(
-        supabase,
-        availabilityData.map((a: any) => a.id),
-      ),
-    };
-
-    return NextResponse.json(response);
+    return NextResponse.json(data.therapist_availability || []);
   } catch (error) {
-    console.error("Error fetching therapist data:", error);
-    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+    console.error("Server error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -236,3 +168,21 @@ async function getRecurrenceRules(supabase: any, availabilityIds: string[]) {
 
   return data;
 }
+
+// GraphQL query to fetch therapist availability
+const GET_THERAPIST_AVAILABILITY = gql`
+  query GetTherapistAvailability($therapistId: uuid!) {
+    therapist_availability(
+      where: { therapist_id: { _eq: $therapistId }, is_available: { _eq: true } }
+      order_by: { start_time: asc }
+    ) {
+      id
+      therapist_id
+      start_time
+      end_time
+      is_available
+      created_at
+      updated_at
+    }
+  }
+`;
