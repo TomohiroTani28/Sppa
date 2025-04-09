@@ -1,16 +1,16 @@
 // src/app/(common)/therapists/[therapistId]/components/TherapistCard.tsx
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { Therapist } from "@/types/therapist";
-import { TherapistAvailability } from "@/types/availability";
-import { Button } from "@/components/ui/Button";
-import Text from "@/components/ui/Text";
 import Avatar from "@/components/Avatar";
-import RatingStars from "@/components/RatingStars";
 import MediaDisplay from "@/components/MediaDisplay";
+import RatingStars from "@/components/RatingStars";
+import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardFooter } from "@/components/ui/Card";
+import Text from "@/components/ui/Text";
+import { TherapistAvailability } from "@/types/availability";
+import { Therapist } from "@/types/therapist";
 import { Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 interface TherapistCardProps {
   therapist: Therapist;
@@ -45,8 +45,15 @@ const TherapistCard: React.FC<TherapistCardProps> = ({
       >
         <MediaDisplay
           type="photo"
-          media={(therapist as any).mediaUrls?.[0] ?? "/fallback.jpg"}
+          media={{
+            id: "temp-id",
+            url: (therapist as any).mediaUrls?.[0] ?? "/fallback.jpg",
+            type: "photo",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          }}
           aspectRatio="16:9"
+          src={(therapist as any).mediaUrls?.[0] ?? "/fallback.jpg"}
         />
         <div className="absolute top-2 left-2 flex items-center bg-white bg-opacity-80 rounded-full px-3 py-1 text-sm">
           <div className="mr-2">
