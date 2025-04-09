@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "default" | "secondary" | "destructive" | "outline" | undefined;
+  variant?: "default" | "secondary" | "destructive" | "outline" | "success";
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
@@ -23,6 +23,8 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
               variant === "destructive",
             "border border-input bg-background hover:bg-accent hover:text-accent-foreground":
               variant === "outline",
+            "bg-green-500 text-white hover:bg-green-600":
+              variant === "success", // ✅ 追加部分
           },
           className
         )}

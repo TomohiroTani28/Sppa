@@ -1,5 +1,5 @@
 // src/app/(common)/search/components/RealTimeAvailabilityIndicator.tsx
-import Badge from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/Badge'; // ✅ 修正済み
 import { useRealtimeAvailability } from '@/hooks/api/useRealtimeAvailability';
 import { useEffect } from 'react';
 
@@ -8,7 +8,8 @@ interface RealTimeAvailabilityIndicatorProps {
 }
 
 export default function RealTimeAvailabilityIndicator({ therapistId }: RealTimeAvailabilityIndicatorProps) {
-  const { availabilityMap, subscribeToAvailability } = useRealtimeAvailability();
+  // ✅ therapistId を引数に渡すよう修正
+  const { availabilityMap, subscribeToAvailability } = useRealtimeAvailability([therapistId]);
 
   useEffect(() => {
     subscribeToAvailability(therapistId);
