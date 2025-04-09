@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/api/useAuth';
 import type { ChatMessage } from '@/types/chat';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
-import { useRealtimeChat } from '../../../../hooks/useRealtimeChat';
+import { useRealtimeChat } from '@/hooks/useRealtimeChat';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
 

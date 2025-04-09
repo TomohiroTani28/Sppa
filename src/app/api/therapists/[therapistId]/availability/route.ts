@@ -1,4 +1,3 @@
-// src/app/api/therapists/[therapistId]/availability/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
@@ -20,15 +19,12 @@ function handleSupabaseError(error: any) {
 /* ─────────────────────────────────────────────
    GET  /api/therapists/[therapistId]/availability
 ───────────────────────────────────────────── */
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Record<string, string | string[]> }
-): Promise<Response> {
+export async function GET(request: NextRequest): Promise<Response> {
   try {
-    // dynamic route パラメータの場合、値は string | string[] となるため、配列の場合は最初の要素を利用
-    const therapistId = Array.isArray(params.therapistId)
-      ? params.therapistId[0]
-      : params.therapistId;
+    const url = new URL(request.url);
+    const pathSegments = url.pathname.split('/');
+    const therapistId = pathSegments[pathSegments.indexOf('therapists') + 1];
+
     if (!therapistId) {
       return NextResponse.json({ error: "therapistId is missing" }, { status: 400 });
     }
@@ -36,20 +32,15 @@ export async function GET(
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
-      return NextResponse.json(
-        { error: "Supabase environment variables are not set" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Supabase env not set" }, { status: 500 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    /* ----- クエリパラメータ ----- */
-    const url = new URL(request.url);
     const startDate = url.searchParams.get("start_date");
     const endDate = url.searchParams.get("end_date");
 
-    /* ----- therapistId → userId 解決 ----- */
+    // therapistId → userId 解決
     let userId: string;
     const { data: profileData, error: profileError } = await supabase
       .from("therapist_profiles")
@@ -71,16 +62,12 @@ export async function GET(
         .eq("role", "therapist")
         .single();
 
-      if (userError) {
-        return handleSupabaseError(userError);
-      }
-      if (!userData) {
-        return NextResponse.json({ error: "Therapist not found" }, { status: 404 });
-      }
+      if (userError) return handleSupabaseError(userError);
+      if (!userData) return NextResponse.json({ error: "Therapist not found" }, { status: 404 });
+
       userId = therapistId;
     }
 
-    /* ----- 利用可能時間の取得 ----- */
     let availabilityQuery = supabase
       .from("therapist_availability")
       .select("*")
@@ -97,11 +84,8 @@ export async function GET(
     }
 
     const { data: availabilityData, error: availabilityError } = await availabilityQuery;
-    if (availabilityError) {
-      return handleSupabaseError(availabilityError);
-    }
+    if (availabilityError) return handleSupabaseError(availabilityError);
 
-    /* ----- 予約済み時間の取得 ----- */
     const { data: bookingsData, error: bookingsError } = await supabase
       .from("bookings")
       .select("start_time, end_time, status")
@@ -109,39 +93,34 @@ export async function GET(
       .not("status", "in", '("canceled", "completed")')
       .order("start_time", { ascending: true });
 
-    if (bookingsError) {
-      return handleSupabaseError(bookingsError);
-    }
+    if (bookingsError) return handleSupabaseError(bookingsError);
 
-    /* ----- レスポンス構築 ----- */
     const response = {
       therapist_id: userId,
       availability: availabilityData,
       bookings: bookingsData,
       recurrence: await getRecurrenceRules(
         supabase,
-        availabilityData.map((a: any) => a.id)
+        availabilityData.map((a: any) => a.id),
       ),
     };
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error("Error fetching therapist data:", error);
-    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+    console.error("Error in GET:", error);
+    return NextResponse.json({ error: "Unexpected error" }, { status: 500 });
   }
 }
 
 /* ─────────────────────────────────────────────
    POST /api/therapists/[therapistId]/availability
 ───────────────────────────────────────────── */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Record<string, string | string[]> }
-): Promise<Response> {
+export async function POST(request: NextRequest): Promise<Response> {
   try {
-    const therapistId = Array.isArray(params.therapistId)
-      ? params.therapistId[0]
-      : params.therapistId;
+    const url = new URL(request.url);
+    const pathSegments = url.pathname.split('/');
+    const therapistId = pathSegments[pathSegments.indexOf('therapists') + 1];
+
     if (!therapistId) {
       return NextResponse.json({ error: "therapistId is missing" }, { status: 400 });
     }
@@ -158,15 +137,11 @@ export async function POST(
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
-      return NextResponse.json(
-        { error: "Supabase environment variables are not set" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Supabase env not set" }, { status: 500 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    /* ----- therapistId → userId 解決 ----- */
     let userId: string;
     const { data: profileData, error: profileError } = await supabase
       .from("therapist_profiles")
@@ -177,9 +152,9 @@ export async function POST(
     if (profileError && profileError.code !== "PGRST116") {
       return handleSupabaseError(profileError);
     }
+
     userId = profileData ? profileData.user_id : therapistId;
 
-    /* ----- 利用可能時間の登録 ----- */
     const { data: newAvailability, error: availabilityError } = await supabase
       .from("therapist_availability")
       .insert({
@@ -191,11 +166,8 @@ export async function POST(
       .select()
       .single();
 
-    if (availabilityError) {
-      return handleSupabaseError(availabilityError);
-    }
+    if (availabilityError) return handleSupabaseError(availabilityError);
 
-    /* ----- 再帰スケジュールの登録（任意） ----- */
     let recurrenceData = null;
     if (recurrence) {
       const { data: newRecurrence, error: recurrenceError } = await supabase
@@ -218,8 +190,8 @@ export async function POST(
 
     return NextResponse.json({ ...newAvailability, recurrence: recurrenceData });
   } catch (error) {
-    console.error("Error adding availability:", error);
-    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+    console.error("Error in POST:", error);
+    return NextResponse.json({ error: "Unexpected error" }, { status: 500 });
   }
 }
 
