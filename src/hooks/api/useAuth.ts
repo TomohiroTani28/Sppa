@@ -3,27 +3,12 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth/next";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-
-// 認証状態の型を定義（exportを追加）
-export interface AuthState {
-  user: {
-    id: string;
-    name: string | null;
-    email: string | null;
-    image: string | null;
-    role: string | null;
-  } | null;
-  token: string | null;
-  role: string | null;
-  profile_picture: string | null;
-  loading: boolean;
-  error: string | null;
-}
+import { AuthState } from "@/types/auth";
 
 // クライアントサイドで使用する認証フック
 export const useAuth = () => {
   const { data: session, status } = useSession();
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
+  const [jwtToken, setJwtToken] = useState<string | undefined>(undefined);
   const [isLoadingToken, setIsLoadingToken] = useState(false);
 
   useEffect(() => {
@@ -34,47 +19,58 @@ export const useAuth = () => {
           const response = await fetch("/api/auth/get-jwt");
           if (response.ok) {
             const data = await response.json();
-            setJwtToken(data.token || null);
+            setJwtToken(data.token || undefined);
           } else {
             throw new Error(`Fetch failed: ${response.status}`);
           }
         } catch (error) {
           console.error("[useAuth] ❌ Failed to fetch JWT token:", error);
-          setJwtToken(null);
+          setJwtToken(undefined);
         } finally {
           setIsLoadingToken(false);
         }
       };
       fetchJwt();
     } else if (status === "unauthenticated") {
-      setJwtToken(null);
+      setJwtToken(undefined);
     }
   }, [status]);
 
-  // 認証状態を構築
-  const authState: AuthState = {
-    user: session?.user
-      ? {
-          id: session.user.id || '',
-          name: session.user.name || null,
-          email: session.user.email || null,
-          image: session.user.image || null,
-          role: (session.user as any)?.role || null,
-        }
-      : null,
-    token: jwtToken,
-    role: (session?.user as any)?.role || null,
-    profile_picture: session?.user?.image || null,
-    loading: status === "loading" || isLoadingToken,
-    error: status === "unauthenticated" ? "User is not authenticated" : null,
+  const getAuthState = async (): Promise<AuthState> => {
+    if (!session?.user) {
+      return {
+        user: null,
+        token: undefined,
+        role: undefined,
+        profile_picture: undefined,
+        loading: false,
+        error: undefined
+      };
+    }
+
+    return {
+      user: {
+        id: session.user.id,
+        name: session.user.name ?? undefined,
+        email: session.user.email ?? undefined,
+        image: session.user.image ?? undefined,
+        role: (session.user as any).role ?? undefined
+      },
+      token: jwtToken,
+      role: (session.user as any).role ?? undefined,
+      profile_picture: session.user.image ?? undefined,
+      loading: isLoadingToken,
+      error: undefined
+    };
   };
 
-  // getAuthState 関数を追加
-  const getAuthState = async () => {
-    return authState;
+  return {
+    session,
+    status,
+    jwtToken,
+    isLoadingToken,
+    getAuthState
   };
-
-  return { ...authState, getAuthState };
 };
 
 // サーバーサイド用の認証関数

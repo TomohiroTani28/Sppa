@@ -3,15 +3,15 @@ import { DefaultSession, DefaultUser } from "next-auth";
 
 // `next-auth` の型を拡張
 declare module "next-auth" {
-  interface Session extends DefaultSession {
+  interface Session {
     access_token?: string;
     user: {
       id: string;
-      name?: string | null | undefined;
-      email?: string | null | undefined;
-      image?: string | null | undefined;
-      role?: string;
-    };
+      name?: string | undefined;
+      email?: string | undefined;
+      image?: string | undefined;
+      role?: string | undefined;
+    } & DefaultSession["user"];
   }
 
   // User インターフェースを拡張
