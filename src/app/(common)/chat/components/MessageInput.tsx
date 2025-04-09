@@ -32,10 +32,13 @@ interface MessageInputProps {
 
 export default function MessageInput({ receiverId }: Readonly<MessageInputProps>) {
   const { t } = useTranslation("common");
-  const { user, loading: isLoadingAuth } = useAuth(); // Removed unused authError
+  const { session, status } = useAuth(); // Fix: Correctly destructure properties from useAuth
   const { isAutoTranslateEnabled, translateMessage } = useAutoTranslation();
   const [message, setMessage] = useState("");
   const [sendMessage, { loading, error }] = useMutation(SEND_MESSAGE);
+
+  const isLoadingAuth = status === "loading"; // Fix: Determine loading state from status
+  const user = session?.user; // Fix: Get user from session
 
   const handleSend = async () => {
     if (!message.trim() || !user) return;
@@ -86,7 +89,7 @@ export default function MessageInput({ receiverId }: Readonly<MessageInputProps>
           placeholder={t("chat.typeMessage")}
           className="flex-1"
           disabled={loading}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()} // Updated to onKeyDown
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
         <Button
           onClick={handleSend}
