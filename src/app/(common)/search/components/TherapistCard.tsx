@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Therapist } from '@/types/therapist';
 import { Card } from '@/components/ui/Card';
 import { useTranslation } from 'react-i18next';
-import Badge from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/Badge';
 import { TherapistAvailabilityStatus } from '@/components/TherapistAvailabilityStatus';
 
 // Component for displaying language badges
