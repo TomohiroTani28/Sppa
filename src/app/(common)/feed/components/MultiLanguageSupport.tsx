@@ -23,9 +23,15 @@ export const useMultiLanguage = () => {
   // 認証状態を設定
   useEffect(() => {
     if (!loading) {
-      setAuthState({ user, token, role, profile_picture, loading });
+      setAuthState({
+        user: user ? { ...user, role: user.role ?? undefined } : null,
+        token,
+        role,
+        profile_picture,
+        loading,
+      });
     }
-  }, [user, token, role, profile_picture, loading]);
+  }, [user, token, role, profile_picture, loading]);  
 
   useEffect(() => {
     if (!isLoading && preferences?.preferred_languages?.length) {
