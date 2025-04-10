@@ -4,8 +4,9 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@/hooks/api/useUser";
 import { useAuth } from "@/hooks/api/useAuth";
+import { AuthState } from '@/types/auth'; // インポートを追加
 
-// Define interfaces for type safety
+// UserPreferences と UserProfile のインターフェースはそのまま使用
 export interface UserPreferences {
   preferred_services?: string[];
   preferred_duration?: number;
@@ -27,27 +28,6 @@ interface UserProfile {
   currency?: string;
 }
 
-/**
- * Interface matching the actual AuthState returned by getAuthState()
- */
-interface AuthState {
-  user: { 
-    id: string; 
-    name: string | null; 
-    email: string | null; 
-    image: string | null; 
-    role: string | null;
-  } | null;
-  token: string | null;
-  role: any;
-  profile_picture: string | null;
-  loading: boolean;
-}
-
-/**
- * Custom hook to manage user preferences.
- * @returns Object with preferences, loading state, error, and save function.
- */
 export const useUserPreferences = () => {
   const { getAuthState } = useAuth();
 
