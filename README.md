@@ -1,7 +1,7 @@
 # Sppa - バリ島のセラピストと観光客をつなぐ次世代 SNS プラットフォーム
 
 <div align="center">
-  <img src="public/images/sppa.png" alt="Sppa Logo" width="200"/>
+  <img src="public/images/sppa.png" alt="Sppa Logo" />
   <br/>
   <p>
 
