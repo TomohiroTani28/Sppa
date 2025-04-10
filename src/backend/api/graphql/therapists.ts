@@ -2,6 +2,7 @@
 import { gql } from '@apollo/client';
 import hasuraClient from '@/lib/hasura-client';
 
+// TherapistProfile 型定義
 type TherapistProfile = {
   user: {
     id: string;
@@ -29,14 +30,18 @@ type TherapistProfile = {
   };
 };
 
+// TherapistsQuery 型定義
 type TherapistsQuery = { therapist_profiles: TherapistProfile[] };
-type TherapistsQueryVariables = {
+
+// TherapistsQueryVariables 型定義（export を追加）
+export type TherapistsQueryVariables = {
   location?: string;
   service?: string;
   language?: string;
   category?: string;
 };
 
+// GraphQL クエリ定義
 const THERAPISTS_QUERY = gql`
   query Therapists($location: String, $service: String, $language: String, $category: String) {
     therapist_profiles(
@@ -77,7 +82,7 @@ const THERAPISTS_QUERY = gql`
   }
 `;
 
-// Prepares query variables with wildcards for partial matching
+// クエリ変数の準備（部分一致用にワイルドカードを追加）
 const prepareVariables = (variables: TherapistsQueryVariables): TherapistsQueryVariables => ({
   location: variables.location ? `%${variables.location}%` : '%%',
   service: variables.service ? `%${variables.service}%` : '%%',
@@ -85,9 +90,9 @@ const prepareVariables = (variables: TherapistsQueryVariables): TherapistsQueryV
   category: variables.category || '',
 });
 
-// Fetches raw therapist data from Hasura
+// Hasura から生のセラピストデータを取得
 const fetchTherapistsData = async (variables: TherapistsQueryVariables) => {
-  const client = await hasuraClient(); // Get ApolloClient instance
+  const client = await hasuraClient(); // ApolloClient インスタンスを取得
   const preparedVars = prepareVariables(variables);
   const { data } = await client.query<TherapistsQuery, TherapistsQueryVariables>({
     query: THERAPISTS_QUERY,
@@ -101,7 +106,7 @@ const fetchTherapistsData = async (variables: TherapistsQueryVariables) => {
   return data.therapist_profiles;
 };
 
-// Transforms raw data into the desired format
+// 生データを所望の形式に変換
 const transformTherapistData = (profile: TherapistProfile) => ({
   id: profile.user.id,
   name: profile.user.name,
@@ -117,7 +122,7 @@ const transformTherapistData = (profile: TherapistProfile) => ({
   reviewCount: profile.user.reviews.length,
 });
 
-// Main function to fetch and transform therapist data
+// セラピストデータを取得して変換するメイン関数
 export const fetchTherapists = async (variables: TherapistsQueryVariables) => {
   const profiles = await fetchTherapistsData(variables);
   return profiles.map(transformTherapistData);
