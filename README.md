@@ -5,9 +5,6 @@
   <br/>
   <p>
 
-<div align="center">
-  <img src="public/images/sppa.png" alt="Sppa Logo" width="160" height="160" style="object-fit: contain; margin-bottom: 1rem"/>
-  <br/>
   <strong>言葉が違っても、癒しは分かち合える。</strong>
   <p>
     <a href="#ビジョン">ビジョン</a> ·
