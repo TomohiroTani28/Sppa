@@ -18,7 +18,7 @@ const UserCard: FC<UserCardProps> = ({ user, onLike, onUnlike }) => {
       <CardHeader>
         <div className="flex items-center gap-3">
           <Avatar
-            imageUrl={user.profile_picture ?? "/images/default-avatar.png"}
+            imageUrl={user.image ?? "/images/default-avatar.png"}
             alt={user.name ?? "Unknown User"}
             size="lg"
           />
@@ -26,8 +26,8 @@ const UserCard: FC<UserCardProps> = ({ user, onLike, onUnlike }) => {
         </div>
       </CardHeader>
       <CardContent>
-        {/* bioのな情報はUserには現状ないので非表示 */}
-        {/* 将来的に tourist_profiles などと組み合わせるなら props 拡張を検討 */}
+        {/* 現状、User 型に bio の情報は含まれていないため非表示 */}
+        {/* 将来的に tourist_profiles などの他データと組み合わせる場合は props の拡張を検討 */}
       </CardContent>
       <CardFooter className="flex gap-2 justify-end">
         {onLike && (
