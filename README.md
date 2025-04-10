@@ -53,6 +53,11 @@
 
 ---
 
+  <div align="center">
+  <img src="public/images/technology_stack.png" alt="Sppa Logo" />
+  <br/>
+  <p>
+
 ## テクノロジー
 
 | レイヤー | スタック |
