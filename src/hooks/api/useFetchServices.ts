@@ -40,7 +40,7 @@ export function useFetchServices() {
   });
 
   // Set up real-time updates for the "therapist_services" table
-  useRealtimeAvailability("therapist_services");
+  useRealtimeAvailability(["therapist_services"]);
 
   // Update services state when query data changes
   useEffect(() => {
