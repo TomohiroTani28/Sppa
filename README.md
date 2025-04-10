@@ -80,17 +80,12 @@ $ cp .env.example .env.local && pnpm setup
 $ pnpm dev
 ```
 
-詳しいガイドラインは [STYLE_GUIDE.md](STYLE_GUIDE.md) と [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
-
 ---
 
 ## コミュニティ
 
 - バグ報告や機能提案は [Issues](https://github.com/TomohiroTani28/Sppa/issues) へ。
 - コードやドキュメントの改善は [Pull Requests](https://github.com/TomohiroTani28/Sppa/pulls) で歓迎します。
-- 気軽な相談は Discord にもどうぞ → <https://discord.gg/sppa>
-
-誰でも参加できるオープンな場にしたいので、行動規範 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) をお読みいただけると助かります。
 
 ---
 
