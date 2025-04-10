@@ -4,131 +4,113 @@
   <img src="public/images/sppa.png" alt="Sppa Logo" width="200"/>
   <br/>
   <p>
-    <strong>バリ島のセラピストと観光客をつなぐ、リアルタイム翻訳付きSNSプラットフォーム</strong>
-  </p>
+
+<div align="center">
+  <img src="public/images/sppa.png" alt="Sppa Logo" width="160" height="160" style="object-fit: contain; margin-bottom: 1rem"/>
+  <br/>
+  <strong>言葉が違っても、癒しは分かち合える。</strong>
   <p>
-    <a href="#概要">概要</a> •
-    <a href="#主な機能">主な機能</a> •
-    <a href="#技術スタック">技術スタック</a> •
-    <a href="#開発環境">開発環境</a> •
-    <a href="#参加方法">参加方法</a> •
-    <a href="#今後の展望">今後の展望</a>
+    <a href="#ビジョン">ビジョン</a> ·
+    <a href="#機能">機能</a> ·
+    <a href="#テクノロジー">テクノロジー</a> ·
+    <a href="#始め方">始め方</a> ·
+    <a href="#コミュニティ">コミュニティ</a> ·
+    <a href="#ロードマップ">ロードマップ</a>
   </p>
 </div>
 
-## 概要
+---
 
-Sppa は、バリ島のセラピストと世界各国の観光客をつなぐ、コンテンツファーストの SNS プラットフォームです。リアルタイムチャット、インスタント予約管理、多言語翻訳機能を備え、言語の壁を超えたコミュニケーションを実現します。
+## ビジョン
 
-### 🌟 特徴
+**Sppa（スッパ）** は、バリ島の伝統セラピーを旅先で気軽に楽しめるようにするマッチングサービスです。
 
-- **リアルタイムコミュニケーション**: チャット、予約、通知がリアルタイムで更新
-- **多言語対応**: 自動翻訳機能で言語の壁を解消
-- **コンテンツファースト**: 写真や動画を中心とした直感的な UI
-- **コミュニティ駆動**: ユーザーの声を反映した継続的な改善
+名前はインドネシア語の “Santai” (リラックス) と “Pijat” (マッサージ) から取りました。旅人とセラピストのあいだにある言語や文化の壁をできるだけ低くし、安心して予約できる仕組みをつくっています。
 
-## 主な機能
+なぜバリ島なのか。年間 600 万人以上が訪れるウェルネスの聖地なのに、口コミ頼みで本当に自分に合うセラピストを探すのは意外と大変だからです。Sppa はその “探すストレス” を取り除き、現地セラピストの収入機会も広げます。
 
-### 🏠 ホームフィード
+---
 
-- パーソナライズされたコンテンツ表示
-- トレンド投稿のハイライト
-- おすすめセラピストの表示
+## 機能
 
-### 🔍 検索・発見
+### ホームフィード
 
-- 詳細なフィルタリング機能
-- 地図ベースの検索
-- リアルタイム空き状況表示
+- 写真と短いストーリーで施術の雰囲気がひと目で分かります。
+- “今すぐ予約” ボタンで気になったらすぐリクエスト。
+- 無限スクロールで新しい出会いを次々に表示。
 
-### 💬 チャット
+### 探す
 
-- リアルタイム翻訳付きメッセージング
-- メディア共有機能
-- テンプレートメッセージ
+- 「今日空きあり」「ホテルから 5 km 以内」など旅行者向けの絞り込み。
+- 地図表示で場所を直感的に確認。
 
-### 📅 予約管理
+### チャット
 
-- インスタント予約
-- カレンダー連携
-- リマインダー通知
+- メッセージはリアルタイムで自動翻訳。原文も見えるので安心です。
+- 写真やスタンプで細かい希望も伝えやすくしています。
 
-## 技術スタック
+### 予約管理
 
-### 🎨 フロントエンド
+- セラピスト用カレンダーとプッシュ通知でダブルブッキングを防止。
+- 旅行者には現地時間に合わせたリマインダーを送ります。
 
-- Next.js 14
-- React
-- Tailwind CSS
-- Shadcn UI
+---
 
-### 🔧 バックエンド
+## テクノロジー
 
-- Hasura
-- Supabase
-- PostgreSQL
-- GraphQL
+| レイヤー | スタック |
+| --- | --- |
+| フロントエンド | Next.js 14 / React / Tailwind CSS |
+| バックエンド | Hasura / Supabase / PostgreSQL / Redis |
+| インテグレーション | LibreTranslate / Mapbox / Stripe / Twilio |
+| インフラ | Vercel / Docker / GitHub Actions |
 
-### 🌐 その他
+---
 
-- WebSocket
-- LibreTranslate
-- Docker
-- GitHub Actions
-
-## 開発環境
-
-### 必要条件
-
-- Node.js 18 以上
-- pnpm
-- Docker & Docker Compose
-
-### セットアップ手順
-
-1. リポジトリのクローン
+## 始め方
 
 ```bash
-git clone https://github.com/TomohiroTani28/Sppa.git
-cd Sppa
+# クローン
+$ git clone https://github.com/TomohiroTani28/Sppa.git && cd Sppa
+
+# 依存をインストール
+$ pnpm install
+
+# 環境変数を設定
+$ cp .env.example .env.local && pnpm setup
+
+# 開発サーバーを起動
+$ pnpm dev
 ```
 
-2. 依存パッケージのインストール
+詳しいガイドラインは [STYLE_GUIDE.md](STYLE_GUIDE.md) と [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
 
-```bash
-pnpm install
-```
+---
 
-3. 環境変数の設定
+## コミュニティ
 
-```bash
-cp .env.example .env.development
-```
+- バグ報告や機能提案は [Issues](https://github.com/TomohiroTani28/Sppa/issues) へ。
+- コードやドキュメントの改善は [Pull Requests](https://github.com/TomohiroTani28/Sppa/pulls) で歓迎します。
+- 気軽な相談は Discord にもどうぞ → <https://discord.gg/sppa>
 
-4. 開発サーバーの起動
+誰でも参加できるオープンな場にしたいので、行動規範 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) をお読みいただけると助かります。
 
-```bash
-pnpm dev
-```
+---
 
-## 参加方法
+## ロードマップ
 
-Sppa は、オープンなコミュニティとして開発を進めています。以下の方法で参加できます：
+| 期 | やること |
+| --- | --- |
+| 2024 Q4 | バリ島版正式リリース（3 言語対応） |
+| 2025 上半期 | AI レコメンドと AR プレビュー |
+| 2025 下半期 | ブロックチェーンでレビュー透明化 |
+| その後 | 東南アジア・中南米の観光地へ展開 |
 
-- [Issues](https://github.com/TomohiroTani28/Sppa/issues)での議論
-- [Discussions](https://github.com/TomohiroTani28/Sppa/discussions)での提案
-- [Slack](https://sppaworld.slack.com)でのコミュニケーション
-
-## 今後の展望
-
-- **グローバル展開**: 主要国へのサービス展開
-- **多言語対応の強化**: 7 言語以上のサポート
-- **プロダクト進化**: ユーザーフィードバックに基づく継続的な改善
-- **IPO を視野にした成長**: 創業メンバーとしての参加機会
+---
 
 ## ライセンス
 
-このプロジェクトは[MIT ライセンス](LICENSE)の下で公開されています。
+MIT License です。詳しくは [LICENSE](LICENSE) をご覧ください。
 
 ---
 
