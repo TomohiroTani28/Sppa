@@ -42,14 +42,20 @@ services:
       - HASURA_GRAPHQL_ENABLE_ALLOWLIST=false
       - HASURA_GRAPHQL_ENABLE_TELEMETRY=false
       - HASURA_GRAPHQL_ENABLED_APIS=metadata,graphql,pgdump,developer,config,metrics
+      - HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT=60
+      - HASURA_GRAPHQL_ENABLE_METADATA_CONSISTENCY_CHECK=true
     depends_on:
-      - supabase
+      supabase:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    volumes:
+      - hasura_metadata:/hasura-metadata
+      - hasura_migrations:/hasura-migrations
 
   # ▼ ローカル開発用 Supabase (PostgreSQL + PostGIS)
   supabase:
@@ -71,8 +77,8 @@ services:
         ]
       interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 15s
+      retries: 10
+      start_period: 30s
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -91,3 +97,5 @@ services:
 
 volumes:
   postgres_data:
+  hasura_metadata:
+  hasura_migrations:
