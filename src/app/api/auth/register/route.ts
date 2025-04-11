@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     if (errors) {
       console.error("Registration GraphQL errors:", errors);
       return NextResponse.json(
-        { error: errors[0].message },
+        { error: errors[0]?.message ?? "Unknown GraphQL error" },
         { status: 500 }
       );
     }
