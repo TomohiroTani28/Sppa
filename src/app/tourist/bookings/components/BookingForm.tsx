@@ -61,7 +61,9 @@ const BookingForm = () => {
 
     // Create startTime from date and time
     const startTime = new Date(data.date);
-    const [hours, minutes] = data.time.split(":");
+    const timeParts = data.time?.split(":") || ["0", "0"];
+    const hours = timeParts[0] || "0";
+    const minutes = timeParts[1] || "0";
     startTime.setHours(parseInt(hours, 10));
     startTime.setMinutes(parseInt(minutes, 10));
 
