@@ -63,9 +63,9 @@
 | レイヤー | スタック |
 | --- | --- |
 | フロントエンド | Next.js 14 / React / Tailwind CSS |
-| バックエンド | Hasura / Supabase / PostgreSQL / Redis |
+| バックエンド | Hasura / Supabase / PostgreSQL |
 | インテグレーション | LibreTranslate / Mapbox / Stripe / Twilio |
-| インフラ | Vercel / Docker / GitHub Actions |
+| インフラ | Docker / GitHub Actions |
 
 ---
 
