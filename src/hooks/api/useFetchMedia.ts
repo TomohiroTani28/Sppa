@@ -58,17 +58,17 @@ const GET_SERVICE_MEDIA = gql`
 `;
 
 interface MediaFilter {
-  mediaType?: string | string[];
-  isProfileImage?: boolean;
-  isServiceImage?: boolean;
-  isReviewImage?: boolean;
-  accessLevel?: string;
+  mediaType: string | string[] | undefined;
+  isProfileImage: boolean | undefined;
+  isServiceImage: boolean | undefined;
+  isReviewImage: boolean | undefined;
+  accessLevel: string | undefined;
 }
 
 interface FetchMediaOptions {
-  limit?: number;
-  offset?: number;
-  filter?: MediaFilter;
+  limit: number | undefined;
+  offset: number | undefined;
+  filter: MediaFilter | undefined;
 }
 
 /**
@@ -76,7 +76,11 @@ interface FetchMediaOptions {
  */
 export const useFetchMedia = (
   therapistId: string,
-  options: FetchMediaOptions = {},
+  options: FetchMediaOptions = {
+    limit: undefined,
+    offset: undefined,
+    filter: undefined
+  },
 ) => {
   const { limit = 20, offset = 0, filter } = options;
 
@@ -103,7 +107,7 @@ export const useFetchMedia = (
         therapistId,
         limit,
         offset: newOffset,
-        filter,
+        filter: filter ?? undefined,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;

@@ -33,7 +33,10 @@ export const useTherapistSearch = (filters: {
     const fetchData = async () => {
       try {
         const queryVars: TherapistsQueryVariables = {
-          service: filters.specialty
+          service: filters.specialty ?? undefined,
+          location: undefined,
+          language: undefined,
+          category: undefined
         };
         const data: RawTherapist[] = await fetchTherapists(queryVars);
         const filtered = data

@@ -112,7 +112,11 @@ export function getFilenameFromUrl(url: string): string {
   if (!url) return "";
 
   const parts = url.split("/");
-  return parts[parts.length - 1].split("?")[0];
+  const lastPart = parts[parts.length - 1];
+  if (!lastPart) return "";
+
+  const filename = lastPart.split("?")[0];
+  return filename || "";
 }
 
 /**

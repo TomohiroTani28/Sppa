@@ -1,6 +1,6 @@
 // src/hooks/api/useCreateTransaction.ts
-import { gql, useMutation } from "@apollo/client";
 import type { Transaction } from "@/types/transaction";
+import { gql, useMutation } from "@apollo/client";
 
 const CREATE_TRANSACTION_MUTATION = gql`
   mutation CreateTransaction(
@@ -38,8 +38,8 @@ interface CreateTransactionVariables {
   amount: number;
   currency: string;
   paymentStatus: string; // 必要に応じてenum等に変更可
-  paymentMethod?: string;
-  gatewayTransactionId?: string;
+  paymentMethod: string | undefined;
+  gatewayTransactionId: string | undefined;
 }
 
 interface CreateTransactionResponse {

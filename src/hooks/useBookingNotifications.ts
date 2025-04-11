@@ -1,7 +1,7 @@
 // src/hooks/useBookingNotifications.ts
-import { useQuery, useMutation } from '@apollo/client';
-import { useEffect } from 'react';
 import { GET_NOTIFICATIONS, MARK_NOTIFICATION_AS_READ, ON_NEW_NOTIFICATION } from '@/graphql/queries';
+import { useMutation, useQuery } from '@apollo/client';
+import { useEffect } from 'react';
 
 // 通知の型を定義
 interface Notification {
@@ -36,7 +36,7 @@ export const useBookingNotifications = (userId: string) => {
       document: ON_NEW_NOTIFICATION,
       variables: { userId },
       updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
+        if (!subscriptionData.data?.notifications?.[0]) return prev;
         const newNotification = subscriptionData.data.notifications[0];
         // 新しい通知を既存のリストの先頭に追加
         return {

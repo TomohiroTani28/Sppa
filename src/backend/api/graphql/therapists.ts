@@ -1,6 +1,6 @@
 // src/backend/api/graphql/therapists.ts
-import { gql } from '@apollo/client';
 import hasuraClient from '@/lib/hasura-client';
+import { gql } from '@apollo/client';
 
 // TherapistProfile 型定義
 type TherapistProfile = {
@@ -35,10 +35,10 @@ type TherapistsQuery = { therapist_profiles: TherapistProfile[] };
 
 // TherapistsQueryVariables 型定義（export を追加）
 export type TherapistsQueryVariables = {
-  location?: string;
-  service?: string;
-  language?: string;
-  category?: string;
+  location?: string | undefined;
+  service?: string | undefined;
+  language?: string | undefined;
+  category?: string | undefined;
 };
 
 // GraphQL クエリ定義

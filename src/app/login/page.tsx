@@ -1,11 +1,12 @@
 "use client";
 // src/app/login/page.tsx
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { clearRedirectPath, getRedirectPath, saveRedirectPath } from "@/lib/storage-utils";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { clearRedirectPath, getRedirectPath, saveRedirectPath } from "@/lib/storage-utils";
+import { Suspense, useEffect, useState } from "react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -78,5 +79,13 @@ export default function LoginPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <LoginForm />
+    </Suspense>
   );
 }

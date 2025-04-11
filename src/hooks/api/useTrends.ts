@@ -1,11 +1,11 @@
 // src/hooks/api/useTrends.ts
-import { useQuery, useMutation, useSubscription, gql } from '@apollo/client';
-import { useCallback, useMemo, useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useActivityLogging } from '@/hooks/api/useActivityLogging';
 import { useAuth } from '@/hooks/api/useAuth';
 import { useErrorLogApi } from '@/hooks/api/useErrorLogApi';
-import { useActivityLogging } from '@/hooks/api/useActivityLogging';
 import { useNotification } from '@/hooks/api/useNotification';
+import { gql, useMutation, useQuery, useSubscription } from '@apollo/client';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * GraphQL Queries, Subscriptions, and Mutations
@@ -43,15 +43,14 @@ export type NotificationType = 'success' | 'error' | 'info';
 // Define our own AuthState to avoid type incompatibility issues
 export interface AuthStateUser {
   id: string;
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
-  role?: string; // Removed redundant undefined since ? already implies it
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  role: string | null;
 }
 
 export interface LocalAuthState {
   user: AuthStateUser | null;
-  // Removed isLoggedIn as it doesn't exist in original AuthState
 }
 
 /**
@@ -205,10 +204,10 @@ export const useTrends = () => {
       setAuthState(state ? {
         user: state.user ? {
           id: state.user.id,
-          name: state.user.name,
-          email: state.user.email,
-          image: state.user.image,
-          role: state.user.role ?? undefined // Using nullish coalescing instead of logical OR
+          name: state.user.name ?? null,
+          email: state.user.email ?? null,
+          image: state.user.image ?? null,
+          role: state.user.role ?? null
         } : null
       } : null);
       setAuthLoaded(true);

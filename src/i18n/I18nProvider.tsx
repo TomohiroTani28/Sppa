@@ -1,10 +1,10 @@
 "use client";
 // src/i18n/I18nProvider.tsx
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import i18next from "i18next";
-import { initReactI18next, useTranslation as useI18nextTranslation } from "react-i18next";
+import i18next, { TFunction } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import { useRouter } from "next/navigation";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { initReactI18next, useTranslation as useI18nextTranslation } from "react-i18next";
 
 // Updated translation data including keys for treatment, chat, booking, profile
 const enTranslations = {
@@ -110,7 +110,7 @@ if (!i18next.isInitialized) {
 interface I18nContextType {
   locale: string;
   setLocale: (locale: string) => void;
-  t: (key: string, params?: Record<string, string>) => string;
+  t: TFunction<["translation", ...string[]], undefined>;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
