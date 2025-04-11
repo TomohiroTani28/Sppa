@@ -36,7 +36,7 @@ const EventForm: React.FC = () => {
     const fetchAuthState = async () => {
       try {
         const state = await getAuthState();
-        setAuthState(state);
+        setAuthState(state as any);
       } catch (error) {
         console.error("Failed to fetch auth state:", error);
         setAuthState(null);
