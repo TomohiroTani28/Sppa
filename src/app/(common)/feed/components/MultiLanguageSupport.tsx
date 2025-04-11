@@ -2,17 +2,11 @@
 "use client";
 import { useAuth } from "@/hooks/api/useAuth";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { AuthState } from "@/types/auth"; // 正しい型をインポート
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-// 認証状態の型を定義
-interface AuthState {
-  user: { id: string; name?: string | null; email?: string | null; image?: string | null; role?: string } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
+// ローカルのAuthState型定義を削除し、正しいインポートを使用
 
 export const useMultiLanguage = () => {
   const { session, status, jwtToken, isLoadingToken, getAuthState } = useAuth();
@@ -25,7 +19,8 @@ export const useMultiLanguage = () => {
     const updateAuthState = async () => {
       if (status !== "loading" && !isLoadingToken) {
         const state = await getAuthState();
-        setAuthState(state);
+        // 型変換を明示的に行って安全に割り当て
+        setAuthState(state as AuthState);
       }
     };
     

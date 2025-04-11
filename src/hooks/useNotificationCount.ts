@@ -1,9 +1,9 @@
 // src/hooks/useNotificationCount.ts
-import { useQuery, useSubscription } from '@apollo/client';
-import { gql } from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { getGraphqlClient } from '@/lib/apollo-client'; // Import client getter
+import { gql, useQuery, useSubscription } from '@apollo/client';
+import { useSession } from 'next-auth/react'; // Use useSession for client-side auth state
 import { useTranslation } from 'next-i18next';
-import { useAuth } from '@/hooks/api/useAuth';
+import { useEffect, useState } from 'react';
 
 // GraphQL query to fetch initial unread notification count
 const GET_UNREAD_NOTIFICATIONS_COUNT = gql`
@@ -36,69 +36,62 @@ const SUBSCRIBE_UNREAD_NOTIFICATIONS_COUNT = gql`
  * @returns {Object} Object containing unreadCount, loading, and error states.
  */
 export const useNotificationCount = () => {
-  const { t } = useTranslation('common'); // i18n integration
-  const { getAuthState } = useAuth(); // Access the getAuthState function
-  const [userId, setUserId] = useState<string | null>(null); // Store user ID
-  const [authLoading, setAuthLoading] = useState(true); // Track auth loading state
+  const { t } = useTranslation('common');
+  const { data: session, status: sessionStatus } = useSession(); // Get session and status
+  const userId = session?.user?.id;
+  const client = getGraphqlClient(); // Get Apollo Client instance
+
   const [unreadCount, setUnreadCount] = useState<number>(0);
 
-  // Fetch auth state and set user ID when the component mounts
-  useEffect(() => {
-    const fetchAuthState = async () => {
-      try {
-        const authState = await getAuthState();
-        setUserId(authState.user?.id || null); // Set user ID or null if not authenticated
-      } catch (err) {
-        console.error('Failed to fetch auth state:', err);
-        setUserId(null);
-      } finally {
-        setAuthLoading(false); // Auth state is resolved
-      }
-    };
+  // Determine if the initial auth check is loading
+  const isAuthLoading = sessionStatus === 'loading';
 
-    fetchAuthState();
-  }, [getAuthState]);
+  // Skip query/subscription if not authenticated or auth is still loading
+  const skip = !userId || isAuthLoading;
 
   // Initial fetch of unread notification count
   const { data: initialData, loading: initialLoading, error: initialError } = useQuery(
     GET_UNREAD_NOTIFICATIONS_COUNT,
     {
       variables: { userId },
-      skip: !userId, // Skip query if userId is not available
+      skip: skip, // Use combined skip condition
       fetchPolicy: 'network-only',
+      client: client, // Pass client instance
     }
   );
 
   // Real-time subscription to unread notification count
-  const { data: subscriptionData, loading: subscriptionLoading } = useSubscription(
+  const { data: subscriptionData, loading: subscriptionLoading, error: subscriptionError } = useSubscription(
     SUBSCRIBE_UNREAD_NOTIFICATIONS_COUNT,
     {
       variables: { userId },
-      skip: !userId, // Skip subscription if userId is not available
+      skip: skip, // Use combined skip condition
+      client: client, // Pass client instance
     }
   );
 
   // Update unread count when initial data is fetched
   useEffect(() => {
-    if (initialData?.notifications_aggregate?.aggregate?.count !== undefined) {
+    if (!skip && initialData?.notifications_aggregate?.aggregate?.count !== undefined) {
       setUnreadCount(initialData.notifications_aggregate.aggregate.count);
     }
-  }, [initialData]);
+  }, [initialData, skip]);
 
   // Update unread count when subscription data changes
   useEffect(() => {
-    if (subscriptionData?.notifications_aggregate?.aggregate?.count !== undefined) {
+    if (!skip && subscriptionData?.notifications_aggregate?.aggregate?.count !== undefined) {
       setUnreadCount(subscriptionData.notifications_aggregate.aggregate.count);
     }
-  }, [subscriptionData]);
+  }, [subscriptionData, skip]);
 
-  // Handle errors gracefully
-  const error = initialError
+  // Combine errors
+  const error = initialError || subscriptionError
     ? new Error(t('notifications.error.fetch_failed'))
     : null;
 
   // Combined loading state (auth + query/subscription)
-  const loading = authLoading || initialLoading || subscriptionLoading;
+  // Consider if subscriptionLoading should be part of the overall loading state
+  const loading = isAuthLoading || (!skip && (initialLoading || subscriptionLoading));
 
   return {
     unreadCount,

@@ -8,16 +8,17 @@ import { Button } from "@/components/ui/Button";
 import Text from "@/components/ui/Text";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
+import { Post } from "@/types/post";
 import { RefreshCw } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import React, { Suspense, useCallback, useMemo, useState } from "react";
+import React, { Suspense, useCallback, useMemo, useState, useTransition } from "react";
 import { useInView } from "react-intersection-observer";
 import { FeedFilters } from "./components/FeedFilters";
 
 interface ErrorDisplayProps {
   error: string | null;
-  t: (key: string) => string;
+  t?: (key: string) => string;
   onRetry: () => void;
 }
 
@@ -26,7 +27,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = React.memo(({ error, t, onRetr
   
   return (
     <Alert variant="error" className="mb-4">
-      <AlertTitle>{t("errors.title")}</AlertTitle>
+      <AlertTitle>{t ? t("errors.title") : "Error"}</AlertTitle>
       <AlertDescription className="flex items-center justify-between">
         <span>{error}</span>
         <Button
@@ -36,7 +37,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = React.memo(({ error, t, onRetr
           className="ml-4"
         >
           <RefreshCw className="w-4 h-4 mr-2" />
-          {t("retry")}
+          {t ? t("retry") : "Retry"}
         </Button>
       </AlertDescription>
     </Alert>
@@ -60,7 +61,6 @@ const HomeMainContent = React.memo(({
   feedError,
   onTabChange,
 }: HomeMainContentProps) => {
-  const safeUserId: string = userData?.id ?? "";
   const { feedData, loading, error } = useRealtimeFeedUpdates(selectedTab);
   const { ref, inView } = useInView({
     threshold: 0.1,
@@ -118,18 +118,28 @@ const HomeMainContent = React.memo(({
 
 HomeMainContent.displayName = "HomeMainContent";
 
-export const FeedClient: React.FC = () => {
+interface FeedClientProps {
+  initialPosts: Post[];
+}
+
+export const FeedClient: React.FC<FeedClientProps> = ({ initialPosts }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
-  const { error } = useRealtimeFeedUpdates(selectedTab);
+  const [isPending, startTransition] = useTransition(); // React 19 Concurrent Mode
+  
+  const { 
+    feedData, 
+    loading, 
+    error, 
+    connectionStatus 
+  } = useRealtimeFeedUpdates(selectedTab, initialPosts);
 
   const handleTabChange = useCallback((tab: "tourist" | "therapist") => {
-    setSelectedTab(tab);
-  }, []);
-
-  const handleRetry = useCallback(() => {
-    window.location.reload();
+    // タブ変更をトランジションとして扱い、UIのレスポンシブ性を維持
+    startTransition(() => {
+      setSelectedTab(tab);
+    });
   }, []);
 
   const userData = useMemo(() => user ? {
@@ -140,23 +150,36 @@ export const FeedClient: React.FC = () => {
     role: user.role,
   } : null, [user]);
 
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] p-4">
-        <ErrorDisplay error={error} t={t} onRetry={handleRetry} />
-      </div>
-    );
-  }
+  // 接続ステータスをコンソールに表示
+  console.log("[FeedClient] WS Connection Status:", connectionStatus);
 
+  // メイン表示
   return (
     <div className="container mx-auto px-4 py-8">
-      <HomeMainContent
-        userData={userData}
+      {error && <ErrorDisplay error={error} onRetry={() => window.location.reload()} />}
+      
+      <FeedFilters
         selectedTab={selectedTab}
-        t={t}
-        feedError={error}
         onTabChange={handleTabChange}
+        userRole={userData?.role ?? ""}
       />
+      
+      <ErrorBoundary 
+        fallback={<ErrorDisplay error={t("errors.feedError")} t={t} onRetry={() => window.location.reload()} />}
+      >
+        <Suspense fallback={<LoadingSpinner />}>
+          {loading || isPending ? (
+            <LoadingSpinner />
+          ) : (
+            <MasonryFeed
+              posts={feedData}
+              hasMore={false}
+              isLoading={loading}
+              onLoadMore={() => {}}
+            />
+          )}
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };

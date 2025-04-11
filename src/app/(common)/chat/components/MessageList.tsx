@@ -1,9 +1,9 @@
 // src/app/(common)/chat/components/MessageList.tsx
 "use client";
 
+import useRealtimeChat from "@/realtime/useRealtimeChat";
 import React, { useEffect, useRef } from "react";
 import { FixedSizeList as List } from "react-window";
-import useRealtimeChat from "@/realtime/useRealtimeChat";
 
 // メッセージの型を定義
 interface Message {
@@ -23,6 +23,12 @@ interface MessageItemProps {
 // MessageItem コンポーネント
 const MessageItem: React.FC<MessageItemProps> = ({ index, style, data }) => {
   const message = data[index];
+  
+  // messageがundefinedの場合は何も表示しない
+  if (!message) {
+    return <div style={style} className="message p-2 empty">No message</div>;
+  }
+  
   return (
     <div style={style} className="message p-2">
       <p>{message.text}</p>
@@ -35,7 +41,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ index, style, data }) => {
               <track
                 kind="captions"
                 src="captions.vtt"
-                {...{ srclang: "en" } as any} // Type assertion to bypass TypeScript error
+                {...{ srclang: "en" } as any}
                 label="English"
               />
             </video>
@@ -57,12 +63,17 @@ const MessageList: React.FC<MessageListProps> = ({ chatRoomId }) => {
   const listRef = useRef<any>(null);
 
   useEffect(() => {
-    if (listRef.current) {
+    if (listRef.current && messages.length > 0) {
       listRef.current.scrollToItem(messages.length - 1, "end");
     }
   }, [messages]);
 
   if (loading) return <div>Loading...</div>;
+  
+  // メッセージがない場合の処理
+  if (messages.length === 0) {
+    return <div className="empty-chat">No messages yet</div>;
+  }
 
   return (
     <List

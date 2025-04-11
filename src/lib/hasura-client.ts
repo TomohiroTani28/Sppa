@@ -5,6 +5,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
 import { getSession } from "next-auth/react";
 
+// クライアント作成関数を定義
 export const createHasuraClient = async (headers: Record<string, string> = {}) => {
   const session = await getSession();
   const nextAuthToken = session?.access_token ?? "";
@@ -54,6 +55,16 @@ export const createHasuraClient = async (headers: Record<string, string> = {}) =
   });
 };
 
-export default async function getDefaultClient() {
+// 1. 非同期でクライアントを取得する関数 - 既存の実装との後方互換性を確保
+export async function getClient() {
   return createHasuraClient();
 }
+
+// 2. 古いコードとの互換性のためのエイリアス
+export const getGraphqlClient = getClient;
+
+// 3. デフォルトエクスポートとして関数を提供
+export default getClient;
+
+// 4. graphqlClient という名前で呼び出し可能な関数をエクスポート
+export const graphqlClient = getClient;

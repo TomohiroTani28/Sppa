@@ -7,8 +7,6 @@ services:
       - "3000:3000"
     env_file:
       - ./.env.development
-    volumes:
-      - ./jwt-secret.json:/jwt-secret.json:ro
     depends_on:
       hasura:
         condition: service_healthy
@@ -18,6 +16,10 @@ services:
       - NODE_ENV=development
       - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
       - NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=http://localhost:8081/v1/graphql
+      - NEXT_PUBLIC_HASURA_GRAPHQL_WS_ENDPOINT=ws://localhost:8081/v1/graphql
+      # JWT 設定
+      - NEXTAUTH_SECRET=wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw==
+      - JWT_TYPE=HS256
 
   # ▼ Hasura コンテナ（ローカルSupabaseに接続）
   hasura:
@@ -39,12 +41,24 @@ services:
     entrypoint: >
       sh -c "until nc -z supabase 5432; do echo 'Waiting for Supabase...'; sleep 2; done;
       graphql-engine serve"
-    volumes:
-      - ./jwt-secret.json:/jwt-secret.json:ro
     environment:
+      # データベース接続設定
       - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres@supabase:5432/sppa
+      # 開発モード設定
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_DEV_MODE=true
+      # 認証設定
+      - HASURA_GRAPHQL_ADMIN_SECRET=hasura-secret-key
+      - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
+      # CORS設定
+      - HASURA_GRAPHQL_CORS_DOMAIN=*
+      - HASURA_GRAPHQL_WS_READ_COOKIE=false
+      # API設定
+      - HASURA_GRAPHQL_ENABLED_APIS=metadata,graphql,pgdump,config,subscriptions
+      # ログ設定
+      - HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup,http-log,webhook-log,websocket-log,query-log
+      # JWT設定（注: 単一行で記述、エスケープなし）
+      - HASURA_GRAPHQL_JWT_SECRET={"type":"HS256","key":"wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw==","claims_namespace":"https://hasura.io/jwt/claims"}
 
   # ▼ ローカル開発用 Supabase (PostgreSQL + PostGIS)
   supabase:
@@ -55,11 +69,15 @@ services:
     env_file:
       - ./.env.development
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=sppa
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-sppa}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d sppa"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-sppa}",
+        ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -76,8 +94,8 @@ services:
     env_file:
       - ./.env.development
     environment:
-      - LT_DEBUG=true
-      - LT_PORT=5000
+      - LT_DEBUG=${LT_DEBUG:-true}
+      - LT_PORT=${LT_PORT:-5000}
     command: ["--load-only", "en,id,ja,fr,de,zh"]
 
 volumes:

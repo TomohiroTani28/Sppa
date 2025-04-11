@@ -1,11 +1,10 @@
 // src/app/(common)/feed/components/RecommendedExperiences.tsx
-import React, { useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { LocalExperience } from "@/types/local-experience";
-import { useTranslation } from "next-i18next";
 import { Spinner } from "@/components/ui/Spinner";
 import { useFetchLocalExperiences } from "@/hooks/api/useFetchLocalExperiences";
+import { useTranslation } from "next-i18next";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect } from "react";
 
 // Make sure these match your actual types
 interface Media {
@@ -88,7 +87,7 @@ const RecommendedExperiences: React.FC<RecommendedExperiencesProps> = ({
       className="block bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow"
     >
       <div className="relative h-32">
-        {experience.media && experience.media.length > 0 ? (
+        {experience.media && experience.media.length > 0 && experience.media[0]?.url ? (
           <Image
             src={experience.media[0].url}
             alt={experience.title || ""}

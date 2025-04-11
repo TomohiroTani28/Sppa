@@ -1,7 +1,7 @@
 // src/app/api/events/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { getClient } from "@/lib/hasura-client";
 import { gql } from "@apollo/client";
-import graphqlClient from "@/lib/hasura-client";
+import { NextRequest, NextResponse } from 'next/server';
 
 // Define the GraphQL query (not exported, used internally)
 const GET_EVENTS = gql`
@@ -33,14 +33,19 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Initialize Apollo Client (assuming graphqlClient is a utility that returns a client instance)
-    const client = await graphqlClient();
-
-    // Execute the GraphQL query
-    const { data } = await client.query({
+    // クライアントを非同期で直接取得
+    const client = await getClient();
+    
+    const { data, error } = await client.query({
       query: GET_EVENTS,
       variables: { therapistId },
+      fetchPolicy: 'network-only',
     });
+
+    if (error) {
+      console.error('Error fetching events:', error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
 
     // Return the events as a JSON response
     return NextResponse.json(data.events);

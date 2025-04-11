@@ -1,13 +1,8 @@
 "use client";
 // src/components/auth/SignUpForm.tsx
-import { createClient } from "@supabase/supabase-js";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export default function SignUpForm() {
   const [fullName, setFullName] = useState("");
@@ -31,34 +26,37 @@ export default function SignUpForm() {
     }
 
     try {
-      // サインアップ処理
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-            role,
-          },
-        },
+      // NextAuthを使用してユーザー登録API呼び出し
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: fullName,
+          email,
+          password,
+          role
+        }),
       });
 
-      if (signUpError) {
-        throw signUpError;
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Registration failed");
       }
 
-      // サインアップ成功後、同じ資格情報でサインインを試みる
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      // 登録後、NextAuthでログイン
+      const signInResult = await signIn("credentials", {
         email,
         password,
+        redirect: false,
       });
 
-      if (signInError) {
-        throw signInError;
+      if (signInResult?.error) {
+        throw new Error(signInResult.error);
       }
 
-      // 自動ログインに成功したら、共有のサインイン画面（例：/(common)/feed）へ遷移
-      router.push("/(common)/feed");
+      // フィードページへリダイレクト
+      router.push("/feed");
     } catch (error: any) {
       setError(error.message);
     } finally {

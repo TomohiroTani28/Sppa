@@ -100,9 +100,17 @@ const MapView: React.FC = () => {
       if (!isMounted || !mapRef.current || olMap) return;
 
       try {
-        const centerLat = userLocation?.lat || DEFAULT_LOCATION.lat;
-        const centerLng = userLocation?.lng || DEFAULT_LOCATION.lng;
-        const center = fromLonLat([centerLng, centerLat]);
+        // 確実に数値型を割り当てるために型アサーションを使用
+        const centerLat: number = userLocation?.lat !== undefined 
+          ? userLocation.lat 
+          : DEFAULT_LOCATION.lat;
+        
+        const centerLng: number = userLocation?.lng !== undefined 
+          ? userLocation.lng 
+          : DEFAULT_LOCATION.lng;
+        
+        // 型を明示的に示す
+        const center = fromLonLat([centerLng, centerLat] as [number, number]);
 
         const map = new Map({
           target: mapRef.current,
@@ -119,8 +127,17 @@ const MapView: React.FC = () => {
 
         // Add click handler
         map.on("click", (event) => {
-          const pixel = event.pixel;
-          setPopupPosition({ top: pixel[1], left: pixel[0] });
+          // pixel値が確実に配列であることを確認してからアクセス
+          const pixel = event.pixel || [0, 0];
+          
+          // 型アサーションを使用して明示的に数値であることを示す
+          const topPosition = pixel[1] !== undefined ? pixel[1] : 0;
+          const leftPosition = pixel[0] !== undefined ? pixel[0] : 0;
+          
+          setPopupPosition({ 
+            top: topPosition, 
+            left: leftPosition 
+          });
 
           const feature = map.forEachFeatureAtPixel(pixel, (f: any) => f);
           if (!feature) {
@@ -204,8 +221,18 @@ const MapView: React.FC = () => {
 
   // Update map center when user location changes
   const updateMapCenter = () => {
-    if (!olMap || !userLocation?.lat || !userLocation?.lng) return;
-    const center = fromLonLat([userLocation.lng, userLocation.lat]);
+    if (!olMap || !userLocation) return;
+
+    // 確実に数値型を使用する
+    const lat: number = userLocation.lat !== undefined 
+      ? userLocation.lat 
+      : DEFAULT_LOCATION.lat;
+    
+    const lng: number = userLocation.lng !== undefined 
+      ? userLocation.lng 
+      : DEFAULT_LOCATION.lng;
+    
+    const center = fromLonLat([lng, lat] as [number, number]);
     olMap.getView().animate({ center, duration: 1000 });
   };
 
@@ -215,8 +242,18 @@ const MapView: React.FC = () => {
 
   // Handle current location button click
   const handleGoToCurrentLocation = () => {
-    if (!olMap || !userLocation?.lat || !userLocation?.lng) return;
-    const center = fromLonLat([userLocation.lng, userLocation.lat]);
+    if (!olMap || !userLocation) return;
+    
+    // 確実に数値型を使用する
+    const lat: number = userLocation.lat !== undefined 
+      ? userLocation.lat 
+      : DEFAULT_LOCATION.lat;
+    
+    const lng: number = userLocation.lng !== undefined 
+      ? userLocation.lng 
+      : DEFAULT_LOCATION.lng;
+    
+    const center = fromLonLat([lng, lat] as [number, number]);
     olMap.getView().animate({ center, zoom: 12, duration: 1000 });
   };
 

@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const client = await graphqlClient();
+    const client = graphqlClient;
     const { data, error } = await client.query({
       query: GET_THERAPIST_PROFILE,
       variables: { id: therapistId },

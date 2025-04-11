@@ -1,25 +1,25 @@
 // src/app/(common)/search/components/FilterModal.tsx
 "use client";
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/Dialog";
 import { Button } from "@/components/ui/Button";
-import { Label } from "@/components/ui/Label";
-import { useRouter } from "next/navigation";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/Dialog";
+import { Label } from "@/components/ui/Label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/Select";
 import { useServices } from "@/hooks/api/useServices";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 // Define FilterOptions type (consistent with SearchPage)
 interface FilterOptions {
@@ -97,7 +97,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
                 onValueChange={(value) =>
                   setFilters({ ...filters, [option.id]: value })
                 }
-                value={filters[option.id]}
+                value={String(filters[option.id] || "")}
               >
                 <SelectTrigger id={option.id}>
                   <SelectValue placeholder={`${option.label}を選択`} />

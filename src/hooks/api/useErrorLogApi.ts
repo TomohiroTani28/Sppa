@@ -1,6 +1,6 @@
 "use client";
 // src/hooks/api/useErrorLogApi.ts
-import graphqlClient from "@/lib/hasura-client";
+import { getClient } from "@/lib/hasura-client";
 import { gql } from "@apollo/client";
 import type { UseMutationResult } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
@@ -49,19 +49,25 @@ export const useErrorLogApi = (): {
   const createErrorLog = async (
     errorLog: ErrorLogCreateInput
   ): Promise<ErrorLog> => {
-    // graphqlClient を呼び出して Apollo Client インスタンスを取得
-    const client = await graphqlClient();
-    const response = await client.mutate({
-      mutation: CREATE_ERROR_LOG_MUTATION,
-      variables: {
-        errorType: errorLog.error_type,
-        message: errorLog.message,
-        stackTrace: errorLog.stack_trace ?? null,
-        userId: errorLog.user_id ?? null,
-        requestDetails: errorLog.request_details ?? null,
-      },
-    });
-    return response.data.insert_error_logs_one;
+    try {
+      // クライアントを非同期で直接取得
+      const client = await getClient();
+      
+      const response = await client.mutate({
+        mutation: CREATE_ERROR_LOG_MUTATION,
+        variables: {
+          errorType: errorLog.error_type,
+          message: errorLog.message,
+          stackTrace: errorLog.stack_trace ?? null,
+          userId: errorLog.user_id ?? null,
+          requestDetails: errorLog.request_details ?? null,
+        },
+      });
+      return response.data.insert_error_logs_one;
+    } catch (error) {
+      console.error("Error creating error log:", error);
+      throw error;
+    }
   };
 
   const {

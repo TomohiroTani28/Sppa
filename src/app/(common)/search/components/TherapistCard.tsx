@@ -1,18 +1,18 @@
 // src/app/(common)/search/components/TherapistCard.tsx
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Therapist } from '@/types/therapist';
-import { Card } from '@/components/ui/Card';
-import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/ui/Badge';
 import { TherapistAvailabilityStatus } from '@/components/TherapistAvailabilityStatus';
+import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
+import { Therapist } from '@/types/therapist';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Component for displaying language badges
 const LanguageBadges: React.FC<{
   languages: string[],
   preferredLanguages: string[]
-}> = ({ languages, preferredLanguages }) => (
+}> = ({ languages, preferredLanguages = [] }) => (
   <div className="mt-2 flex flex-wrap gap-1">
     {languages.map(lang => (
       <Badge 

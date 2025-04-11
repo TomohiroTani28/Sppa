@@ -1,12 +1,11 @@
 // src/app/(common)/feed/components/RecommendedTherapists.tsx
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import Link from "next/link";
 import TherapistCard from "@/app/(common)/search/components/TherapistCard";
-import { Spinner } from "@/components/ui/Spinner";
-import { useTranslation } from "react-i18next";
 import { Therapist } from "@/types/therapist";
+import Link from "next/link";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 interface RecommendedTherapistsProps {
   therapists?: Therapist[];
@@ -62,7 +61,7 @@ const RecommendedTherapists: React.FC<RecommendedTherapistsProps> = ({
               userLocation={userLocation}
               showLanguages={true}
               showRating={true}
-              preferredLanguages={preferences?.languages}
+              preferredLanguages={preferences?.languages || []}
             />
           </SwiperSlide>
         ))}
