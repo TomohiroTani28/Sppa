@@ -1,11 +1,7 @@
 # Sppa – ✈️🌴 *Healing Without Borders*
 
 <div align="center">
-<<<<<<< HEAD
   <img src="public/images/sppa2.png" alt="Sppa Logo" style="max-width:100%;height:auto;"/>
-=======
-  <img src="public/images/sppa-logo-bali-sunset.svg" alt="Sppa Logo" width="200"/>
->>>>>>> fbaddbcc94cb946a9c22871f6bdc37a74e52d338
   <p><strong>言葉が違っても、癒しは分かち合える。</strong></p>
 
   <!-- Badges -->
@@ -95,13 +91,10 @@ flowchart TD
 ---
 
 ## ⚙️ テクノロジースタック
-<<<<<<< HEAD
 
 <div align="center">
   <img src="public/images/technology_stack.png" alt="Technology Stack" style="max-width:100%;height:auto;"/>
 </div>
-=======
->>>>>>> fbaddbcc94cb946a9c22871f6bdc37a74e52d338
 
 | レイヤー | スタック |
 | --- | --- |
@@ -175,13 +168,5 @@ Sppa は **MIT License** のもとで公開されています。詳細は [LICEN
 
 <div align="center">
   <sub>Made with ❤️ & Kopi Bali by the Sppa Community</sub>
-<<<<<<< HEAD
-=======
-</div>
-    <a href="https://github.com/TomohiroTani28/Sppa/issues">Issues</a> •
-    <a href="https://github.com/TomohiroTani28/Sppa/discussions">Discussions</a> •
-    <a href="https://sppaworld.slack.com">Slack</a>
-  </p>
->>>>>>> fbaddbcc94cb946a9c22871f6bdc37a74e52d338
 </div>
 
