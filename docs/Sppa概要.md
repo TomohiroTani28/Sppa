@@ -29,6 +29,7 @@
 ```
 Sppa
 ├── Dockerfile
+├── LICENSE
 ├── README.md
 ├── bug_report.md
 ├── config
@@ -111,6 +112,7 @@ Sppa
 ├── package.json
 ├── postcss.config.js
 ├── public
+│   ├── favicon.ico
 │   └── images
 │       ├── event1.jpg
 │       ├── event2.jpg
@@ -134,6 +136,8 @@ Sppa
 │   └── migrations
 │       └── script.sql
 ├── src
+│   ├── actions
+│   │   └── feed-actions.ts
 │   ├── app
 │   │   ├── (common)
 │   │   │   ├── chat
@@ -160,7 +164,9 @@ Sppa
 │   │   │   │   └── TouristLayout.tsx
 │   │   │   ├── feed
 │   │   │   │   ├── FeedClient.tsx
+│   │   │   │   ├── FeedWrapper.tsx
 │   │   │   │   ├── components
+│   │   │   │   │   ├── FeedFilters.tsx
 │   │   │   │   │   ├── FeedList.tsx
 │   │   │   │   │   ├── InstantBookingButton.tsx
 │   │   │   │   │   ├── MasonryFeed.tsx
@@ -230,7 +236,9 @@ Sppa
 │   │   │   ├── auth
 │   │   │   │   ├── [...nextauth]
 │   │   │   │   │   └── route.ts
-│   │   │   │   └── get-jwt
+│   │   │   │   ├── get-jwt
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── register
 │   │   │   │       └── route.ts
 │   │   │   ├── error-logs
 │   │   │   │   └── route.ts
@@ -419,24 +427,37 @@ Sppa
 │   │   ├── auth
 │   │   │   ├── LoginForm.tsx
 │   │   │   └── SignUpForm.tsx
+│   │   ├── booking
+│   │   │   ├── BookingForm.tsx
+│   │   │   ├── ConfirmationDialog.tsx
+│   │   │   └── PaymentSection.tsx
 │   │   └── ui
+│   │       ├── Accordion.tsx
 │   │       ├── Alert.tsx
+│   │       ├── AspectRatio.tsx
+│   │       ├── Avatar.tsx
 │   │       ├── Badge.tsx
 │   │       ├── Button.tsx
 │   │       ├── Calendar.tsx
 │   │       ├── Card.tsx
 │   │       ├── Checkbox.tsx
+│   │       ├── Command.tsx
+│   │       ├── ContextMenu.tsx
 │   │       ├── DatePicker.tsx
 │   │       ├── Dialog.tsx
+│   │       ├── DropdownMenu.tsx
 │   │       ├── ErrorMessage.tsx
 │   │       ├── Form.tsx
+│   │       ├── FormField.tsx
 │   │       ├── Input.tsx
 │   │       ├── Label.tsx
 │   │       ├── Navbar.tsx
 │   │       ├── Select.tsx
+│   │       ├── Skeleton.tsx
 │   │       ├── Spinner.tsx
 │   │       ├── Switch.tsx
 │   │       ├── Text.tsx
+│   │       ├── Textarea.tsx
 │   │       └── Toast.tsx
 │   ├── contexts
 │   │   ├── AuthContext.tsx
@@ -494,8 +515,10 @@ Sppa
 │   │   ├── useFeedData.ts
 │   │   ├── useFeedStore.ts
 │   │   ├── useHomeData.ts
+│   │   ├── useInternationalization.ts
 │   │   ├── useLocalExperiences.ts
 │   │   ├── useLocationService.ts
+│   │   ├── useMediaHandling.ts
 │   │   ├── useMyBookings.ts
 │   │   ├── useNotificationCount.ts
 │   │   ├── useNotificationState.ts
@@ -514,6 +537,7 @@ Sppa
 │   │   ├── useTherapistSearch.ts
 │   │   ├── useUserPreferences.ts
 │   │   ├── useUserProfile.ts
+│   │   ├── useWebSocketStatus.ts
 │   │   └── useWebSocketSubscription.ts
 │   ├── i18n
 │   │   ├── I18nProvider.tsx
@@ -523,15 +547,21 @@ Sppa
 │   │   ├── server.ts
 │   │   └── settings.ts
 │   ├── lib
+│   │   ├── apollo-client.ts
 │   │   ├── auth.client.ts
 │   │   ├── auth.server.ts
+│   │   ├── auth.ts
 │   │   ├── create-ws-client.ts
 │   │   ├── currency-utils.ts
 │   │   ├── date-utils.ts
 │   │   ├── enum-utils.ts
+│   │   ├── error-handler.ts
+│   │   ├── fragments.ts
 │   │   ├── geoUtils.ts
+│   │   ├── graphql-client.ts
 │   │   ├── hasura-client.ts
 │   │   ├── i18n.ts
+│   │   ├── logger.ts
 │   │   ├── queries
 │   │   │   ├── media.ts
 │   │   │   ├── post.ts
@@ -542,10 +572,15 @@ Sppa
 │   │   ├── string-utils.ts
 │   │   ├── supabase-client.ts
 │   │   ├── token.ts
-│   │   └── utils.ts
+│   │   ├── utils.ts
+│   │   └── validations
+│   │       └── form.ts
 │   ├── locales
 │   │   ├── en.json
 │   │   └── id.json
+│   ├── middleware.ts
+│   ├── queries
+│   │   └── getEvents.ts
 │   ├── realtime
 │   │   ├── RealtimeBookingList.tsx
 │   │   ├── RealtimeEventList.tsx
@@ -575,6 +610,7 @@ Sppa
 │   │   ├── activity-log.ts
 │   │   ├── auth.ts
 │   │   ├── availability.ts
+│   │   ├── base.ts
 │   │   ├── booking.ts
 │   │   ├── chat.ts
 │   │   ├── enums.ts
@@ -591,6 +627,7 @@ Sppa
 │   │   ├── notification.ts
 │   │   ├── post.ts
 │   │   ├── preference.ts
+│   │   ├── react-masonry-css.d.ts
 │   │   ├── react-window.d.ts
 │   │   ├── review.ts
 │   │   ├── service.ts
@@ -604,12 +641,14 @@ Sppa
 │   │   └── zen-observable-ts.d.ts
 │   └── utils
 │       ├── auth.ts
+│       ├── error-handling.ts
 │       └── supabase
 │           └── server.ts
 ├── supabase
 │   └── config.toml
 ├── tailwind.config.js
-└── tsconfig.json
+├── tsconfig.json
+└── tsconfig.tsbuildinfo
 ```
 
 ---
