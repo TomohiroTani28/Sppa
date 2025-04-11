@@ -102,7 +102,9 @@ const AvailabilitySettings: React.FC<{ therapistId: string }> = ({ therapistId }
                       : ""
                   }
                   onChange={(e) => {
-                    const [hours, minutes] = e.target.value.split(":");
+                    const parts = e.target.value.split(":");
+                    const hours = parts[0] || "0";
+                    const minutes = parts[1] || "0";
                     const date = new Date(slot.start_time || Date.now());
                     date.setHours(parseInt(hours), parseInt(minutes));
                     handleAvailabilityChange(
@@ -132,7 +134,9 @@ const AvailabilitySettings: React.FC<{ therapistId: string }> = ({ therapistId }
                       : ""
                   }
                   onChange={(e) => {
-                    const [hours, minutes] = e.target.value.split(":");
+                    const parts = e.target.value.split(":");
+                    const hours = parts[0] || "0";
+                    const minutes = parts[1] || "0";
                     const date = new Date(slot.end_time || Date.now());
                     date.setHours(parseInt(hours), parseInt(minutes));
                     handleAvailabilityChange(
