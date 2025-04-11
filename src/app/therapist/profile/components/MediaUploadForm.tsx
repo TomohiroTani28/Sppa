@@ -10,7 +10,7 @@ const MediaUploadForm = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setMediaFile(e.target.files[0]);
+      setMediaFile(e.target.files[0] || null);
     }
   };
 
