@@ -1,23 +1,19 @@
 "use client";
 // src/app/(common)/therapists/[therapistId]/components/BookingButton.tsx
-import React, { useState, useEffect } from "react";
+import { PriceDisplay } from "@/components/PriceDisplay";
+import { TherapistAvailabilityStatus } from "@/components/TherapistAvailabilityStatus";
 import { Button } from "@/components/ui/Button";
 import { Calendar } from "@/components/ui/Calendar";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/Dialog";
-import { useTranslation } from "next-i18next";
-import { PriceDisplay } from "@/components/PriceDisplay";
 import { useCreateBooking } from "@/hooks/api/useCreateBooking";
-import { useRealtimeAvailability } from "@/realtime/useRealtimeAvailability";
-import { TherapistAvailabilityStatus } from "@/components/TherapistAvailabilityStatus";
-import { format, addHours } from "date-fns";
 import { useErrorLogApi } from "@/hooks/api/useErrorLogApi";
-import { useRouter } from "next/navigation";
+import { useRealtimeAvailability } from "@/realtime/useRealtimeAvailability";
 import {
   Select as RadixSelect,
   SelectContent,
@@ -25,6 +21,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@radix-ui/react-select";
+import { addHours, format } from "date-fns";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 interface TherapistAvailability {
   id: string;
@@ -138,7 +138,10 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
     if (isFormIncomplete) return;
 
     try {
-      const [hours, minutes] = selectedTime.split(":").map(Number);
+      const timeComponents = selectedTime.split(":");
+      const hours = Number(timeComponents[0] || 0);
+      const minutes = Number(timeComponents[1] || 0);
+      
       const startTime = new Date(selectedDate);
       startTime.setHours(hours, minutes, 0, 0);
       const endTime = addHours(startTime, duration / 60);
@@ -159,11 +162,10 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
     } catch (err) {
       createErrorLog({
         error_type: "BOOKING_ERROR",
-        message:
-          `Failed to create booking: ${
-            err instanceof Error ? err.message : String(err)
-          }`,
-        stack_trace: err instanceof Error ? err.stack : undefined,
+        message: `Failed to create booking: ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+        stack_trace: err instanceof Error && err.stack ? err.stack : "",
       });
     }
   };

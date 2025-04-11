@@ -194,7 +194,11 @@ export default function TherapistProfile({ therapistId, className }: TherapistPr
       <CardContent className="space-y-6">
         {therapist.bio && <BioSection bio={therapist.bio} t={t} />}
         {therapist.business_name && (
-          <BusinessSection business_name={therapist.business_name} address={therapist.address} t={t} />
+          <BusinessSection 
+            business_name={therapist.business_name} 
+            {...(therapist.address ? { address: therapist.address } : {})} 
+            t={t} 
+          />
         )}
         {therapist.languages.length > 0 && (
           <ProfileSection

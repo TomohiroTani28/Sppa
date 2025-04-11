@@ -1,7 +1,7 @@
 "use client";
 // src/app/(common)/search/components/SearchResults.tsx
-import React from "react";
 import useFetchSearchResults from "@/hooks/api/useFetchSearchResults";
+import React from "react";
 
 interface SearchResultsProps {
   query: string;
@@ -61,8 +61,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
                     )}
                     {result.services && result.services.length > 0 && (
                       <p className="text-sm font-medium mt-1">
-                        From {result.services[0].price}{" "}
-                        {result.services[0].currency}
+                        From {result.services[0]?.price || "N/A"}{" "}
+                        {result.services[0]?.currency || "JPY"}
                       </p>
                     )}
                   </div>

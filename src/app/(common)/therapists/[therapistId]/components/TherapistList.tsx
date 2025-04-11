@@ -1,14 +1,14 @@
 // src/app/(common)/therapists/[therapistId]/components/TherapistList.tsx
 "use client";
-import React, { useEffect, useState } from "react";
-import { useFetchTherapists } from "@/hooks/api/useFetchTherapists";
-import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
-import { useLikeTherapist } from "@/hooks/api/useLikeTherapist";
-import { useRouter, usePathname } from "next/navigation";
 import Text from "@/components/ui/Text";
+import { useFetchTherapists } from "@/hooks/api/useFetchTherapists";
+import { useLikeTherapist } from "@/hooks/api/useLikeTherapist";
+import { useTherapistAvailabilityApi } from "@/hooks/api/useTherapistAvailabilityApi";
+import { TherapistAvailability, TherapistAvailabilitySlot } from "@/types/availability";
+import { Therapist, TherapistFilter } from "@/types/therapist";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import TherapistCard from "./TherapistCard";
-import { TherapistFilter, Therapist } from "@/types/therapist";
-import { TherapistAvailabilitySlot, TherapistAvailability } from "@/types/availability";
 
 interface TherapistListProps {
   initialFilter: TherapistFilter;
@@ -76,11 +76,11 @@ const TherapistList: React.FC<TherapistListProps> = ({ initialFilter }) => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {therapists.map((therapist) => {
-          // availabilityStatuses[therapist.id] は TherapistAvailabilitySlot[] なので、
-          // TherapistAvailability として渡すためにラップします
+          // availabilityStatuses[therapist.id] が undefined の可能性があるため、
+          // 空の配列をデフォルト値として使用します
           const availability: TherapistAvailability | null =
-            availabilityStatuses[therapist.id]
-              ? { available_slots: availabilityStatuses[therapist.id] }
+            availabilityStatuses[therapist.id] !== undefined
+              ? { available_slots: availabilityStatuses[therapist.id] || [] }
               : null;
           return (
             <TherapistCard
