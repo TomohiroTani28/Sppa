@@ -135,7 +135,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ userId }) => {
       const remainingMethods = paymentMethods.filter(
         (method) => method.id !== id,
       );
-      setDefaultPaymentId(remainingMethods[0].id);
+      setDefaultPaymentId(remainingMethods[0]?.id || '');
     }
   };
 
