@@ -2,6 +2,7 @@
 import { ApolloClient, HttpLink, InMemoryCache, split } from "@apollo/client";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from "@apollo/client/utilities";
+import type { DocumentNode } from "graphql";
 import { createClient } from "graphql-ws";
 import { getSession } from "next-auth/react";
 
@@ -33,12 +34,31 @@ export const createHasuraClient = async (headers: Record<string, string> = {}) =
         },
       };
     },
+    retryAttempts: 3,
+    retryWait: async (retries: number) => {
+      const delay = Math.min(1000 * Math.pow(2, retries), 8000);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    },
+    on: {
+      connected: () => console.log("[WebSocket] Connected"),
+      closed: () => console.log("[WebSocket] Closed"),
+      error: (error: unknown) => {
+        if (error instanceof Error) {
+          console.error("[WebSocket] Error:", error);
+        } else {
+          console.error("[WebSocket] Error:", String(error));
+        }
+      },
+    },
+    keepAlive: 10000,
+    lazy: true,
+    connectionAckWaitTimeout: 10000,
   });
 
   const wsLink = new GraphQLWsLink(wsClient);
 
   const splitLink = split(
-    ({ query }) => {
+    ({ query }: { query: DocumentNode }) => {
       const definition = getMainDefinition(query);
       return (
         definition.kind === "OperationDefinition" &&

@@ -24,54 +24,31 @@ services:
   # ▼ Hasura コンテナ（ローカルSupabaseに接続）
   hasura:
     image: hasura/graphql-engine:v2.46.0
-    platform: linux/arm64
     ports:
-      - "8081:8081"
+      - "8081:8080"
     env_file:
       - ./.env.development
-    depends_on:
-      supabase:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/healthz"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 15s
-    entrypoint: >
-      sh -c "until nc -z supabase 5432; do echo 'Waiting for Supabase...'; sleep 2; done;
-      graphql-engine serve"
     environment:
-      # データベース接続設定
-      - HASURA_GRAPHQL_DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@supabase:5432/${POSTGRES_DB:-sppa}
-      # 開発モード設定
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres@supabase:5432/postgres
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_DEV_MODE=true
-      # 認証設定
-      - HASURA_GRAPHQL_ADMIN_SECRET=hasura-secret-key
+      - HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup, http-log, webhook-log, websocket-log, query-log
+      - HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
+      - HASURA_GRAPHQL_JWT_SECRET={"type":"HS256","key":"wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw=="}
       - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
-      # CORS設定
       - HASURA_GRAPHQL_CORS_DOMAIN=*
-      - HASURA_GRAPHQL_DISABLE_CORS=false
-      # API設定
-      - HASURA_GRAPHQL_ENABLED_APIS=metadata,graphql,pgdump,developer,config,metrics
-      # ログ設定
-      - HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup,http-log,webhook-log,websocket-log,query-log
-      # JWT設定（注: 単一行で記述、エスケープなし）
-      - HASURA_GRAPHQL_JWT_SECRET={"type":"HS256","key":"wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw==","claims_namespace":"https://hasura.io/jwt/claims"}
-      # WebSocket設定
-      - HASURA_GRAPHQL_WS_READ_COOKIE=false
+      - HASURA_GRAPHQL_WS_READ_COOKIE=true
+      - HASURA_GRAPHQL_WEBSOCKET_CONNECTION_INIT_TIMEOUT=30
       - HASURA_GRAPHQL_ENABLE_ALLOWLIST=false
       - HASURA_GRAPHQL_ENABLE_TELEMETRY=false
-      # サブスクリプション設定
-      - HASURA_GRAPHQL_ENABLE_SUBSCRIPTIONS=true
-      - HASURA_GRAPHQL_SUBSCRIPTION_MODE=websocket
-      - HASURA_GRAPHQL_WEBSOCKET_COMPRESSION=true
-      - HASURA_GRAPHQL_WEBSOCKET_CONNECTION_INIT_TIMEOUT=30
-      # サブスクリプションの追加設定
-      - HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED=true
-      - HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED_BATCH_SIZE=100
-      - HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED_REFRESH_INTERVAL=1000
+    depends_on:
+      - supabase
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # ▼ ローカル開発用 Supabase (PostgreSQL + PostGIS)
   supabase:
