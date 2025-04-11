@@ -43,7 +43,7 @@ services:
       graphql-engine serve"
     environment:
       # データベース接続設定
-      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres@supabase:5432/sppa
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@supabase:5432/${POSTGRES_DB:-sppa}
       # 開発モード設定
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_DEV_MODE=true
@@ -52,6 +52,7 @@ services:
       - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
       # CORS設定
       - HASURA_GRAPHQL_CORS_DOMAIN=*
+      - HASURA_GRAPHQL_DISABLE_CORS=false
       # API設定
       - HASURA_GRAPHQL_ENABLED_APIS=metadata,graphql,pgdump,developer,config,metrics
       # ログ設定
@@ -59,7 +60,7 @@ services:
       # JWT設定（注: 単一行で記述、エスケープなし）
       - HASURA_GRAPHQL_JWT_SECRET={"type":"HS256","key":"wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw==","claims_namespace":"https://hasura.io/jwt/claims"}
       # WebSocket設定
-      - HASURA_GRAPHQL_WS_READ_COOKIE=true
+      - HASURA_GRAPHQL_WS_READ_COOKIE=false
       - HASURA_GRAPHQL_ENABLE_ALLOWLIST=false
       - HASURA_GRAPHQL_ENABLE_TELEMETRY=false
       # サブスクリプション設定
@@ -67,8 +68,6 @@ services:
       - HASURA_GRAPHQL_SUBSCRIPTION_MODE=websocket
       - HASURA_GRAPHQL_WEBSOCKET_COMPRESSION=true
       - HASURA_GRAPHQL_WEBSOCKET_CONNECTION_INIT_TIMEOUT=30
-      # CORS設定（WebSocket互換）
-      - HASURA_GRAPHQL_DISABLE_CORS=true
       # サブスクリプションの追加設定
       - HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED=true
       - HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED_BATCH_SIZE=100
