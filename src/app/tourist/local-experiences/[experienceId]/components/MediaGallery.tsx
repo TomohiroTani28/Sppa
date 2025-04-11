@@ -38,7 +38,7 @@ const MediaGallery: React.FC<MediaGalleryProps> = ({ images }) => {
       {/* Main Image */}
       <div className="relative w-full aspect-video">
         <Image
-          src={images[currentImageIndex]}
+          src={images[currentImageIndex] || ''}
           alt={`Local experience image ${currentImageIndex + 1}`}
           fill
           priority
