@@ -63,9 +63,9 @@
 | レイヤー | スタック |
 | --- | --- |
 | フロントエンド | Next.js 14 / React / Tailwind CSS |
-| バックエンド | Hasura / Supabase / PostgreSQL / Redis |
+| バックエンド | Hasura / Supabase / PostgreSQL |
 | インテグレーション | LibreTranslate / Mapbox / Stripe / Twilio |
-| インフラ | Vercel / Docker / GitHub Actions |
+| インフラ | Docker / GitHub Actions |
 
 ---
 
@@ -98,9 +98,8 @@ $ pnpm dev
 
 | 期 | やること |
 | --- | --- |
-| 2024 Q4 | バリ島版正式リリース（3 言語対応） |
-| 2025 上半期 | AI レコメンドと AR プレビュー |
-| 2025 下半期 | ブロックチェーンでレビュー透明化 |
+| 2025 上半期 | バリ島版正式リリース（7 言語対応） |
+| 2025 下半期 | AI レコメンド |
 | その後 | 東南アジア・中南米の観光地へ展開 |
 
 ---
