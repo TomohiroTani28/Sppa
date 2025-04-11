@@ -1,29 +1,15 @@
 // src/app/tourist/profile/components/ReviewHistory.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";
+import ProfileView from "@/app/tourist/profile/components/ProfileView";
+import BottomNavigation from "@/components/BottomNavigation";
+import { Spinner } from "@/components/ui/Spinner";
 import { useAuth } from "@/hooks/api/useAuth";
 import { useFetchUser } from "@/hooks/api/useFetchUser";
-import ProfileView from "@/app/tourist/profile/components/ProfileView";
-import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";
-import { Spinner } from "@/components/ui/Spinner";
-import BottomNavigation from "@/components/BottomNavigation";
-
-// 認証状態の型を定義
-interface AuthState {
-  user: {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string;
-  } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
+import { AuthState } from "@/types/auth";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 // ユーザーIDを決定し、エラーの場合に早期リターンするヘルパー関数
 const useEffectiveUserId = () => {

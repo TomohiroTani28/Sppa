@@ -39,13 +39,18 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     }
   };
 
+  // Extract error messages, ensuring they're either a string or undefined
+  const dateError = errors.date?.message;
+  const timeError = errors.time?.message;
+  const notesError = errors.notes?.message;
+
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
       <FormField
         id="date"
         label="予約日"
         type="date"
-        error={errors.date?.message}
+        {...(dateError && { error: dateError })}
         {...register('date')}
       />
 
@@ -53,7 +58,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         id="time"
         label="予約時間"
         type="time"
-        error={errors.time?.message}
+        {...(timeError && { error: timeError })}
         {...register('time')}
       />
 
@@ -61,7 +66,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         id="notes"
         label="備考"
         type="text"
-        error={errors.notes?.message}
+        {...(notesError && { error: notesError })}
         helperText="特記事項があればご記入ください"
         {...register('notes')}
       />

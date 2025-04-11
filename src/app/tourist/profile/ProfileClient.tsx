@@ -1,31 +1,17 @@
 "use client";
 // src/app/tourist/profile/ProfileClient.tsx
-import React, { useState, useEffect, useMemo } from "react";
-import { useRouter, useParams } from "next/navigation";
+import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";
+import ProfileView from "@/app/tourist/profile/components/ProfileView";
+import BottomNavigation from "@/components/BottomNavigation";
+import { Spinner } from "@/components/ui/Spinner";
 import { useAuth } from "@/hooks/api/useAuth";
 import { useFetchUser } from "@/hooks/api/useFetchUser";
-import ProfileView from "@/app/tourist/profile/components/ProfileView";
-import ProfileEdit from "@/app/tourist/profile/components/ProfileEdit";
-import { Spinner } from "@/components/ui/Spinner";
-import BottomNavigation from "@/components/BottomNavigation";
+import { saveRedirectPath } from "@/lib/storage-utils";
+import { AuthState } from "@/types/auth";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { saveRedirectPath } from "@/lib/storage-utils";
-
-// 認証状態の型を定義
-interface AuthState {
-  user: {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string;
-  } | null;
-  token?: string | null;
-  role?: string | null;
-  profile_picture?: string | null;
-  loading: boolean;
-}
 
 const ProfileClient: React.FC = () => {
   const router = useRouter();
@@ -44,7 +30,7 @@ const ProfileClient: React.FC = () => {
     const fetchAuthState = async () => {
       try {
         const state = await getAuthState();
-        setAuthState(state);
+        setAuthState(state as AuthState);
       } catch (error) {
         console.error("Failed to fetch auth state:", error);
         setAuthState(null);

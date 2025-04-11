@@ -39,6 +39,12 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
     }
   };
 
+  // Extract error messages
+  const cardNumberError = errors.cardNumber?.message;
+  const expiryDateError = errors.expiryDate?.message;
+  const cvvError = errors.cvv?.message;
+  const nameError = errors.name?.message;
+
   return (
     <div className="space-y-6">
       <div className="text-lg font-semibold">
@@ -50,7 +56,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
           id="cardNumber"
           label="カード番号"
           type="text"
-          error={errors.cardNumber?.message}
+          {...(cardNumberError && { error: cardNumberError })}
           placeholder="1234 5678 9012 3456"
           {...register('cardNumber')}
         />
@@ -60,7 +66,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
             id="expiryDate"
             label="有効期限"
             type="text"
-            error={errors.expiryDate?.message}
+            {...(expiryDateError && { error: expiryDateError })}
             placeholder="MM/YY"
             {...register('expiryDate')}
           />
@@ -69,7 +75,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
             id="cvv"
             label="CVV"
             type="text"
-            error={errors.cvv?.message}
+            {...(cvvError && { error: cvvError })}
             placeholder="123"
             {...register('cvv')}
           />
@@ -79,7 +85,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
           id="name"
           label="カード名義人"
           type="text"
-          error={errors.name?.message}
+          {...(nameError && { error: nameError })}
           placeholder="TARO YAMADA"
           {...register('name')}
         />

@@ -64,9 +64,12 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userId }) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
       setValue(name as keyof ProfileFormData, files[0]);
-      const url = URL.createObjectURL(files[0]);
-      if (name === "profilePicture") setProfilePreview(url);
-      if (name === "backgroundImage") setBackgroundPreview(url);
+      const file = files[0];
+      if (file) {
+        const url = URL.createObjectURL(file as Blob);
+        if (name === "profilePicture") setProfilePreview(url);
+        if (name === "backgroundImage") setBackgroundPreview(url);
+      }
     }
   };
 
@@ -103,7 +106,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userId }) => {
       <FormField
         id="name"
         label={t("profile.name")}
-        error={errors.name?.message}
+        error={errors.name?.message || ""}
         {...register("name")}
       />
 
@@ -111,7 +114,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userId }) => {
         id="email"
         label={t("profile.email")}
         type="email"
-        error={errors.email?.message}
+        error={errors.email?.message || ""}
         disabled
         helperText={t("profile.emailCannotChange")}
         {...register("email")}
@@ -121,7 +124,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userId }) => {
         id="phone_number"
         label={t("profile.phoneNumber")}
         type="tel"
-        error={errors.phone_number?.message}
+        error={errors.phone_number?.message || ""}
         placeholder="+6281234567890"
         {...register("phone_number")}
       />

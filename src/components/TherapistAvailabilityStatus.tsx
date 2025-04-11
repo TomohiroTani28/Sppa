@@ -1,7 +1,7 @@
 "use client";
 // src/components/TherapistAvailabilityStatus.tsx
-import { gql } from "@apollo/client";
 import { useWebSocketSubscription } from "@/hooks/useWebSocketSubscription";
+import { gql } from "@apollo/client";
 
 // GraphQL subscription for therapist availability
 const THERAPIST_AVAILABILITY_SUBSCRIPTION = gql`
@@ -38,7 +38,10 @@ export function TherapistAvailabilityStatus({
   if (!data || data.therapist_profiles.length === 0)
     return <div>No data available</div>;
 
-  const { status, last_online_at } = data.therapist_profiles[0];
+  const profile = data.therapist_profiles[0];
+  if (!profile) return <div>No profile data available</div>;
+
+  const { status, last_online_at } = profile;
 
   return (
     <div className="p-4 border rounded-md">

@@ -33,13 +33,17 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  // Extract error messages
+  const emailError = errors.email?.message;
+  const passwordError = errors.password?.message;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <FormField
         id="email"
         label="メールアドレス"
         type="email"
-        error={errors.email?.message}
+        {...(emailError && { error: emailError })}
         {...register("email")}
       />
 
@@ -47,7 +51,7 @@ const LoginForm: React.FC = () => {
         id="password"
         label="パスワード"
         type="password"
-        error={errors.password?.message}
+        {...(passwordError && { error: passwordError })}
         {...register("password")}
       />
 

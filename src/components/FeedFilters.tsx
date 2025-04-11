@@ -1,18 +1,18 @@
 // src/components/FeedFilters.tsx
-import React, { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { useQuery, gql } from "@apollo/client";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/Select";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Label } from "@/components/ui/Label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 import { Spinner } from "@/components/ui/Spinner";
 import { useFeedStore } from "@/hooks/useFeedStore";
+import { gql, useQuery } from "@apollo/client";
+import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 const GET_SERVICE_CATEGORIES = gql(`
   query GetServiceCategories {
@@ -73,7 +73,7 @@ const FeedFilters: React.FC = () => {
           <span>{t("feedFilters.category")}</span>
         </Label>
         <Select
-          value={filters.categoryId ?? undefined}
+          {...(filters.categoryId && { value: filters.categoryId })}
           onValueChange={handleCategoryChange}
         >
           <SelectTrigger id="category-filter" className="w-full">

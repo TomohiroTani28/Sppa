@@ -1,10 +1,10 @@
 "use client";
 // src/components/BookingButton.tsx
-import React, { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Calendar as ReactCalendar, CalendarProps } from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import { useTranslation } from 'next-i18next';
+import React, { useState } from 'react';
+import { CalendarProps, Calendar as ReactCalendar } from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 interface BookingButtonProps {
   therapistId: string;
@@ -99,7 +99,7 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
             <label className="text-sm font-medium">{t('select_date')}</label>
             <ReactCalendar
               onChange={handleDateSelect}
-              value={selectedDate}
+              value={selectedDate || minDate}
               minDate={minDate}
               className="rounded-md border"
             />
