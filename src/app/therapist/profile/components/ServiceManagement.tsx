@@ -325,7 +325,7 @@ export function ServiceManagement() {
             <div>
               <Label htmlFor="currency">{t("currency")}</Label>
               <Select
-                value={formData.currency}
+                value={formData.currency || ""}
                 onValueChange={(value) => handleSelectChange("currency", value)}
                 name="currency"
               >
