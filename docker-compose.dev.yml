@@ -41,6 +41,7 @@ services:
       - HASURA_GRAPHQL_WEBSOCKET_CONNECTION_INIT_TIMEOUT=30
       - HASURA_GRAPHQL_ENABLE_ALLOWLIST=false
       - HASURA_GRAPHQL_ENABLE_TELEMETRY=false
+      - HASURA_GRAPHQL_ENABLED_APIS=metadata,graphql,pgdump,developer,config,metrics
     depends_on:
       - supabase
     healthcheck:
