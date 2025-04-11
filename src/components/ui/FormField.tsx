@@ -3,15 +3,15 @@ import React from 'react';
 import { Input } from './Input';
 import { Label } from './Label';
 
-export interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface FormFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'error'> {
   label: string;
-  error?: string;
+  error?: string | null;
   helperText?: string;
   containerClassName?: string;
 }
 
 export const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
-  ({ label, error, helperText, containerClassName, className, ...props }, ref) => {
+  ({ label, error = null, helperText, containerClassName, className, ...props }, ref) => {
     return (
       <div className={cn('space-y-2', containerClassName)}>
         <Label htmlFor={props.id}>{label}</Label>

@@ -9,13 +9,14 @@ interface AuthContextType {
   user: Session['user'] | null;
   loading: boolean;
   error: string | null;
-  accessToken?: string;
+  accessToken: string | undefined;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   error: null,
+  accessToken: undefined
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
