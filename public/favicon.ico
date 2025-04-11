@@ -1,1 +1,3 @@
- 
+# favicon.icoファイルはバイナリファイルなので、ここでは作成できません。
+# 代わりに、以下のコマンドを実行してfavicon.icoファイルを生成してください：
+# curl -o public/favicon.ico https://raw.githubusercontent.com/vercel/next.js/canary/examples/with-typescript/public/favicon.ico 

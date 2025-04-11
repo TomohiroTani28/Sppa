@@ -118,6 +118,12 @@ export const useRealtimeFeedUpdates = (
     onComplete: () => setConnectionStatus('disconnected'),
     skip: authLoading,
     shouldResubscribe: true,
+    fetchPolicy: 'network-only',
+    context: {
+      headers: {
+        'x-hasura-role': role,
+      },
+    },
   });
 
   // 接続状態の更新
