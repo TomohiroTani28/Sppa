@@ -59,9 +59,14 @@ services:
       # JWT設定（注: 単一行で記述、エスケープなし）
       - HASURA_GRAPHQL_JWT_SECRET={"type":"HS256","key":"wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw==","claims_namespace":"https://hasura.io/jwt/claims"}
       # WebSocket設定
-      - HASURA_GRAPHQL_WS_READ_COOKIE=false
+      - HASURA_GRAPHQL_WS_READ_COOKIE=true
       - HASURA_GRAPHQL_ENABLE_ALLOWLIST=false
       - HASURA_GRAPHQL_ENABLE_TELEMETRY=false
+      # サブスクリプション設定
+      - HASURA_GRAPHQL_ENABLE_SUBSCRIPTIONS=true
+      - HASURA_GRAPHQL_SUBSCRIPTION_MODE=websocket
+      - HASURA_GRAPHQL_WEBSOCKET_COMPRESSION=true
+      - HASURA_GRAPHQL_WEBSOCKET_CONNECTION_INIT_TIMEOUT=30
 
   # ▼ ローカル開発用 Supabase (PostgreSQL + PostGIS)
   supabase:

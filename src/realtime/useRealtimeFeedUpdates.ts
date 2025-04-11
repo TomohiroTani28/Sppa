@@ -88,16 +88,25 @@ export const useRealtimeFeedUpdates = (
     if (err.message.includes("Forbidden") || err.message.includes("Unauthorized")) {
       setSubscriptionError("Authentication error. Please log in again.");
     } else if (err.message.includes("Network")) {
-      setSubscriptionError("Network error. Please check your connection.");
+      if (retryCount < MAX_RETRIES) {
+        setRetryCount(prev => prev + 1);
+        setTimeout(() => {
+          setConnectionStatus('connecting');
+          setSubscriptionError(null);
+        }, RETRY_DELAY * Math.pow(2, retryCount));
+      } else {
+        setSubscriptionError("Network error. Please check your connection and try again.");
+      }
     } else {
       setSubscriptionError(`Subscription error: ${err.message}`);
     }
-  }, []);
+  }, [retryCount]);
 
   // サブスクリプションデータハンドラー
   const handleSubscriptionData = useCallback((options: OnDataOptions<SubscriptionData>) => {
     const receivedPosts = options.data?.data?.posts || [];
     setConnectionStatus('connected');
+    setRetryCount(0); // Reset retry count on successful data
     updateFeed(receivedPosts);
   }, [updateFeed]);
 
@@ -108,6 +117,7 @@ export const useRealtimeFeedUpdates = (
     onError: handleSubscriptionError,
     onComplete: () => setConnectionStatus('disconnected'),
     skip: authLoading,
+    shouldResubscribe: true,
   });
 
   // 接続状態の更新

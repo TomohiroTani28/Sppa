@@ -105,6 +105,9 @@ function createWsLink() {
         closed: () => logger.info("[WebSocket] Closed", { context: 'WebSocket' }),
         error: (err) => logger.error("[WebSocket] Error", { context: 'WebSocket', data: { error: err } }),
       },
+      keepAlive: 10000,
+      lazy: true,
+      connectionAckWaitTimeout: 10000,
     })
   );
 }
