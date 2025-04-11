@@ -20,7 +20,7 @@ interface Props {
 export default function ApolloClientWrapper({ children }: Props) {
   const client = useMemo(() => {
     const httpLink = new HttpLink({
-      uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT,
+      uri: process.env.NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT || 'http://localhost:8080/v1/graphql',
       credentials: "include",
     });
 
