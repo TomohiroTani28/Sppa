@@ -51,7 +51,7 @@ const TherapistDetail: React.FC<TherapistDetailProps> = ({ therapistId }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <ProfileHeader therapist={therapist} therapistId={therapistId} />
-      <Biography bio={therapist.bio} />
+      <Biography bio={therapist.bio || ""} />
       <AdditionalInfo therapist={therapist} />
     </div>
   );
