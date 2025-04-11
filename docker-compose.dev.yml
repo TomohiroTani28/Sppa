@@ -52,13 +52,16 @@ services:
       - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
       # CORS設定
       - HASURA_GRAPHQL_CORS_DOMAIN=*
-      - HASURA_GRAPHQL_WS_READ_COOKIE=false
       # API設定
-      - HASURA_GRAPHQL_ENABLED_APIS=metadata,graphql,pgdump,config,subscriptions
+      - HASURA_GRAPHQL_ENABLED_APIS=metadata,graphql,pgdump,developer,config,metrics
       # ログ設定
       - HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup,http-log,webhook-log,websocket-log,query-log
       # JWT設定（注: 単一行で記述、エスケープなし）
       - HASURA_GRAPHQL_JWT_SECRET={"type":"HS256","key":"wbmvACz5zBHLgMFowQDj4OaTtNAt9EplKs1fyQi6qgPIP4eFoX31+OBWKfUAXYGBmcDCYyMDfQ7Zi5rjj4TOdw==","claims_namespace":"https://hasura.io/jwt/claims"}
+      # WebSocket設定
+      - HASURA_GRAPHQL_WS_READ_COOKIE=false
+      - HASURA_GRAPHQL_ENABLE_ALLOWLIST=false
+      - HASURA_GRAPHQL_ENABLE_TELEMETRY=false
 
   # ▼ ローカル開発用 Supabase (PostgreSQL + PostGIS)
   supabase:

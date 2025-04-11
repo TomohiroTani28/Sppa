@@ -10,9 +10,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeFeedUpdates } from "@/realtime/useRealtimeFeedUpdates";
 import { Post } from "@/types/post";
 import { RefreshCw } from "lucide-react";
-import { useTranslation } from "next-i18next";
+import type { Session } from "next-auth";
 import Link from "next/link";
-import React, { Suspense, useCallback, useMemo, useState, useTransition } from "react";
+import React, { Suspense, useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useInView } from "react-intersection-observer";
 import { FeedFilters } from "./components/FeedFilters";
 
@@ -47,7 +48,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = React.memo(({ error, t, onRetr
 ErrorDisplay.displayName = "ErrorDisplay";
 
 interface HomeMainContentProps {
-  userData: { id: string; name: string; profilePicture: string; email: string; role?: string | undefined } | null;
+  user: Session['user'] | null;
   selectedTab: "tourist" | "therapist";
   t: (key: string) => string;
   feedError: string | null;
@@ -55,7 +56,7 @@ interface HomeMainContentProps {
 }
 
 const HomeMainContent = React.memo(({
-  userData,
+  user,
   selectedTab,
   t,
   feedError,
@@ -104,7 +105,7 @@ const HomeMainContent = React.memo(({
         <FeedFilters
           selectedTab={selectedTab}
           onTabChange={onTabChange}
-          userRole={userData?.role ?? ""}
+          userRole={user?.role ?? ""}
         />
       </div>
       <Link href="/notifications" prefetch={false} className="block text-center mt-4">
@@ -118,68 +119,25 @@ const HomeMainContent = React.memo(({
 
 HomeMainContent.displayName = "HomeMainContent";
 
-interface FeedClientProps {
-  initialPosts: Post[];
-}
-
-export const FeedClient: React.FC<FeedClientProps> = ({ initialPosts }) => {
+export function FeedClient({ initialPosts }: { initialPosts: Post[] }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [selectedTab, setSelectedTab] = useState<"tourist" | "therapist">("tourist");
-  const [isPending, startTransition] = useTransition(); // React 19 Concurrent Mode
-  
-  const { 
-    feedData, 
-    loading, 
-    error, 
-    connectionStatus 
-  } = useRealtimeFeedUpdates(selectedTab, initialPosts);
+  const [feedError, setFeedError] = useState<string | null>(null);
 
   const handleTabChange = useCallback((tab: "tourist" | "therapist") => {
-    // タブ変更をトランジションとして扱い、UIのレスポンシブ性を維持
-    startTransition(() => {
-      setSelectedTab(tab);
-    });
+    setSelectedTab(tab);
   }, []);
 
-  const userData = useMemo(() => user ? {
-    id: user.id,
-    name: user.name ?? "Unknown User",
-    profilePicture: user.image ?? "/default-avatar.png",
-    email: user.email ?? "",
-    role: user.role,
-  } : null, [user]);
-
-  // 接続ステータスをコンソールに表示
-  console.log("[FeedClient] WS Connection Status:", connectionStatus);
-
-  // メイン表示
   return (
-    <div className="container mx-auto px-4 py-8">
-      {error && <ErrorDisplay error={error} onRetry={() => window.location.reload()} />}
-      
-      <FeedFilters
+    <div className="container mx-auto px-4">
+      <HomeMainContent
+        user={user}
         selectedTab={selectedTab}
+        t={t}
+        feedError={feedError}
         onTabChange={handleTabChange}
-        userRole={userData?.role ?? ""}
       />
-      
-      <ErrorBoundary 
-        fallback={<ErrorDisplay error={t("errors.feedError")} t={t} onRetry={() => window.location.reload()} />}
-      >
-        <Suspense fallback={<LoadingSpinner />}>
-          {loading || isPending ? (
-            <LoadingSpinner />
-          ) : (
-            <MasonryFeed
-              posts={feedData}
-              hasMore={false}
-              isLoading={loading}
-              onLoadMore={() => {}}
-            />
-          )}
-        </Suspense>
-      </ErrorBoundary>
     </div>
   );
-};
+}

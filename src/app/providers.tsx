@@ -7,6 +7,8 @@ import { graphqlClient } from "@/lib/graphql-client";
 import { ApolloProvider } from "@apollo/client";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
+// i18nextの初期化を追加
+import "@/lib/i18n";
 // Toasterのインポートを一時的に削除
 // import { Toaster } from "react-hot-toast";
 

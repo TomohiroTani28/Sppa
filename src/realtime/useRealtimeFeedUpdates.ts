@@ -98,77 +98,40 @@ export const useRealtimeFeedUpdates = (
   const handleSubscriptionData = useCallback((options: OnDataOptions<SubscriptionData>) => {
     const receivedPosts = options.data?.data?.posts || [];
     setConnectionStatus('connected');
-    
-    console.log("[Feed] Real-time data received:", {
-      count: receivedPosts.length,
-      firstPostId: receivedPosts[0]?.id,
-      timestamp: new Date().toISOString(),
-    });
-    
-    setSubscriptionError(null);
-    
-    if (receivedPosts.length > 0) {
-      updateFeed(receivedPosts);
-    }
+    updateFeed(receivedPosts);
   }, [updateFeed]);
 
-  // 認証状態に基づいてサブスクリプションをスキップするかどうかを決定
-  const shouldSkipSubscription = !user || authLoading;
-
-  // コンポーネントマウント時に接続中ステータスを設定
-  useEffect(() => {
-    if (!shouldSkipSubscription) {
-      setConnectionStatus('connecting');
-      console.log("[Feed] Initializing subscription...");
-    }
-  }, [shouldSkipSubscription]);
-
-  // サブスクリプションフック
-  const { data, error, loading } = useSubscription<SubscriptionData>(FEED_SUBSCRIPTION, {
+  // サブスクリプションの設定
+  const { error } = useSubscription<SubscriptionData>(FEED_SUBSCRIPTION, {
     variables: { role },
-    skip: shouldSkipSubscription || !role,
-    onError: handleSubscriptionError,
     onData: handleSubscriptionData,
+    onError: handleSubscriptionError,
+    onComplete: () => setConnectionStatus('disconnected'),
+    skip: authLoading,
   });
 
-  // エラー発生時のリトライロジック
+  // 接続状態の更新
+  useEffect(() => {
+    console.log("[FeedClient] WS Connection Status:", connectionStatus);
+  }, [connectionStatus]);
+
+  // リトライロジック
   useEffect(() => {
     if (error && retryCount < MAX_RETRIES) {
-      const delay = RETRY_DELAY * Math.pow(2, retryCount); // Exponential backoff
+      const delay = RETRY_DELAY * Math.pow(2, retryCount);
       console.log(`[Feed] Retrying in ${delay}ms (${retryCount + 1}/${MAX_RETRIES})`);
-      
       const timer = setTimeout(() => {
         setRetryCount(prev => prev + 1);
         setConnectionStatus('connecting');
       }, delay);
-      
       return () => clearTimeout(timer);
     }
   }, [error, retryCount]);
 
-  // データ更新ハンドラー
-  useEffect(() => {
-    if (data?.posts) {
-      console.log("[Feed] Updating feed data:", {
-        count: data.posts.length,
-        timestamp: new Date().toISOString(),
-      });
-      updateFeed(data.posts);
-    }
-  }, [data, updateFeed]);
-
-  // 認証状態変更時にリセット
-  useEffect(() => {
-    if (user) {
-      setRetryCount(0);
-      setSubscriptionError(null);
-    }
-  }, [user]);
-
-  return { 
-    feedData: posts, 
-    loading: loading || authLoading, 
-    error: subscriptionError ?? error?.message ?? null,
+  return {
+    feedData: posts,
+    loading: connectionStatus === 'initializing' || connectionStatus === 'connecting',
+    error: subscriptionError,
     connectionStatus,
   };
 };

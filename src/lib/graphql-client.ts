@@ -95,18 +95,25 @@ function createWsLink() {
           return {};
         }
       },
+      retryAttempts: 3,
+      retryWait: async (retries) => {
+        const delay = Math.min(1000 * Math.pow(2, retries), 8000);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      },
+      on: {
+        connected: () => logger.info("[WebSocket] Connected", { context: 'WebSocket' }),
+        closed: () => logger.info("[WebSocket] Closed", { context: 'WebSocket' }),
+        error: (err) => logger.error("[WebSocket] Error", { context: 'WebSocket', data: { error: err } }),
+      },
     })
   );
 }
 
+// 分割リンク作成関数
 function createSplitLink(
   httpLink: HttpLink, 
   wsLink: GraphQLWsLink | null
 ) {
-  if (!wsLink) {
-    return httpLink;
-  }
-  
   return split(
     ({ query }) => {
       const definition = getMainDefinition(query);
@@ -115,34 +122,39 @@ function createSplitLink(
         definition.operation === "subscription"
       );
     },
-    wsLink,
+    wsLink || httpLink,
     httpLink
   );
 }
 
+// ApolloClient作成関数
 function createApolloClient() {
   const httpLink = createHttpLink();
   const wsLink = createWsLink();
   const splitLink = createSplitLink(httpLink, wsLink);
   
   return new ApolloClient({
-    ssrMode: typeof window === "undefined",
-    link: splitLink,
+    link: errorLink.concat(splitLink),
     cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: {
         fetchPolicy: "cache-and-network",
+        errorPolicy: "all",
       },
       query: {
         fetchPolicy: "network-only",
+        errorPolicy: "all",
+      },
+      mutate: {
+        errorPolicy: "all",
       },
     },
   });
 }
 
-// 統一されたクライアントインスタンス
+// グローバルクライアントインスタンス
 export const graphqlClient = initApolloClient();
 
-// 以前の命名の互換性維持
+// クライアント取得関数
 export const getGraphqlClient = () => graphqlClient;
 export default getClient; 
